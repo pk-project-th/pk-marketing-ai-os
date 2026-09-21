@@ -1,0 +1,4513 @@
+{
+  "campaigns": [],
+  "products": [
+    {
+      "id": "prod-001",
+      "brand": "PK Auto [DEMO]",
+      "model_name": "PK Sedan X",
+      "variant": "Ultra Smart Hybrid 1.5 Turbo",
+      "price_msrp": 989000,
+      "specifications": {
+        "engine": "1.5L VTEC Turbo Hybrid (190 PS)",
+        "fuel_economy": "26.5 กม./ลิตร",
+        "battery": "Lithium-ion 1.8 kWh Warranty 8 Years",
+        "safety": "PK Sensing 3.0 Full Suite (7 Airbags, Blind Spot Monitor, ACC)",
+        "infotainment": "12.3-inch OLED Touchscreen, Apple CarPlay & Android Auto Wireless"
+      },
+      "approved_claims": [
+        "อัตราประหยัดน้ำมันสูงสุด 26.5 กม./ลิตร (ทดสอบตามมาตรฐาน Eco Sticker)",
+        "อัตราเร่ง 0-100 กม./ชม. ใน 7.8 วินาที",
+        "ระบบ PK Pilot ช่วยเบรกฉุกเฉินอัตโนมัติด้านหน้าและถอยหลัง",
+        "รับประกันระบบไฮบริดและแบตเตอรี่นาน 8 ปี หรือ 160,000 กม."
+      ],
+      "verified": true
+    },
+    {
+      "id": "prod-002",
+      "brand": "PK Auto [DEMO]",
+      "model_name": "PK SUV Horizon",
+      "variant": "EV All-Wheel Drive 400kW",
+      "price_msrp": 1490000,
+      "specifications": {
+        "range_nedc": "580 กม. ต่อการชาร์จหนึ่งครั้ง",
+        "fast_charging": "10-80% ภายใน 22 นาที (DC 150kW)",
+        "drivetrain": "Dual Motor AWD (536 PS)",
+        "suspension": "Adaptive Air Suspension"
+      },
+      "approved_claims": [
+        "ระยะทางวิ่งสูงสุด 580 กม. ตามมาตรฐาน NEDC",
+        "ชาร์จด่วน DC จาก 10% ถึง 80% ในเวลาเพียง 22 นาที",
+        "ระบบขับเคลื่อน 4 ล้ออัจฉริยะ ปรับตามสภาพผิวถนน 5 โหมด"
+      ],
+      "verified": true
+    }
+  ],
+  "ideas": [
+    {
+      "id": "idea-1789975578944-0",
+      "title": "มองเส้นสายสีสันของปลาส้มในจาน",
+      "concept": "Visual Aesthetic & Secret Highlights Hook – โฟกัสที่สีสันสดใสของปลาส้มและการจัดจานที่ทำให้คนดูหยุดมอง",
+      "hook": "ปลาส้มสีส้มสดใสพร้อมจานที่ทำให้หัวใจเต้นแรง",
+      "caption": "มาดูอัลบั้ม 4 ภาพที่เปิดโลกสีสันของปลาส้มจากมุมมองใกล้จนถึงมุมกว้าง ชมรายละเอียดและแรงบันดาลใจทำเมนูใหม่วันนี้",
+      "hashtags": [
+        "#ปลาส้ม",
+        "#สูตรอาหาร",
+        "#ทำง่าย"
+      ],
+      "media_type": "IMAGE",
+      "media_prompt": "Cinematic production prompt in English specifying: Camera 50mm f/1.8 prime, soft diffused lighting, natural window light, close‑up macro insert of fish scales, ARRI Alexa 4K quality, modern Thai typography overlay",
+      "target_audience": "กลุ่มลูกค้าและผู้ติดตามเป้าหมาย",
+      "objective": "สร้างความสนใจและยอดขาย",
+      "content_pillar": "Product & Lifestyle",
+      "format": "อัลบั้ม 4 รูป (ภาพรวมหน้าจาน, มุมใกล้ปลาส้ม, รายละเอียดเครื่องเคียง, ตารางเมนู)",
+      "priority": "HIGH",
+      "platform": "facebook",
+      "rating": 4.9,
+      "virality_score": "สูงมาก",
+      "brand_name": "ทำอาหาร (สูตร & ขั้นตอนการทำอาหาร)",
+      "is_series": false,
+      "media_blueprint": {
+        "count_recommended": 4,
+        "format": "อัลบั้ม 4 รูป",
+        "visual_direction": "ใช้แสงธรรมชาติจากหน้าต่างสีอุ่น โทนสีส้มและเขียวให้ความรู้สึกสดชื่น",
+        "real_shoot_guide": "ถ่ายด้วยสมาร์ทโฟนตั้งค่า HDR เปิดโหมดโปรไฟล์สีสัน ให้ความคมชัดสูง",
+        "equipment_needed": "สมาร์ทโฟน, แสง LEDพกพา, รีเฟลกเตอร์สีขาว",
+        "slides": [
+          {
+            "slide_no": 1,
+            "visual": "ภาพรวมจานปลาส้มจัดเต็มบนโต๊ะไม้",
+            "text_overlay": "สีส้มที่ทำให้คุณอยากลอง",
+            "camera_angle": "Wide angle 35mm from eye level",
+            "real_photo_tip": "ใช้โหมดพอร์ตเทรตเพื่อเบลอพื้นหลังให้จานเด่น",
+            "shoot_instruction": "จัดจานให้สมดุลสีสัน ใช้แสงข้างเพื่อเน้นเงา",
+            "prompt": "1:1 photo of orange fish dish on wooden table, warm natural light, high detail"
+          },
+          {
+            "slide_no": 2,
+            "visual": "มุมใกล้ปลาส้มแสดงเกล็ดเงางาม",
+            "text_overlay": "เกล็ดส่องแสง",
+            "camera_angle": "Macro 100mm close‑up from side angle",
+            "real_photo_tip": "ใกล้เคลื่อนกล้องช้าเพื่อจับรายละเอียดเกล็ด",
+            "shoot_instruction": "ใช้แสงแถบ LEDข้างเพื่อให้แสงสะท้อนบนเกล็ด",
+            "prompt": "Macro shot of orange fish scales, side lighting, sharp focus"
+          },
+          {
+            "slide_no": 3,
+            "visual": "รายละเอียดเครื่องเคียงสีเขียวสด",
+            "text_overlay": "เคียงคู่ที่ลงตัว",
+            "camera_angle": "45 degree angle with 50mm lens",
+            "real_photo_tip": "เปิดโหมด HDR เพื่อจับสีเขียวและสีส้มพร้อมกัน",
+            "shoot_instruction": "วางผักสีเขียวใกล้ปลาส้มเพื่อความคอนทราสต์",
+            "prompt": "45 degree shot of green garnish beside orange fish, balanced lighting"
+          },
+          {
+            "slide_no": 4,
+            "visual": "ตารางเมนูแสดงวิธีทำ 3 เมนูจากปลาส้ม",
+            "text_overlay": "เมนู 3 สูตรง่าย",
+            "camera_angle": "Flat lay 24mm from top",
+            "real_photo_tip": "ใช้ไฟสตูดิโอแบบกล่องเพื่อให้แสงสม่ำเสมอ",
+            "shoot_instruction": "จัดกระดาษตารางและอุปกรณ์ทำอาหารให้เรียงสวย",
+            "prompt": "Flat lay of menu table with three orange fish recipes, soft box lighting"
+          }
+        ]
+      },
+      "platform_captions": {
+        "facebook": "มาดูอัลบั้ม 4 ภาพที่เปิดโลกสีสันของปลาส้มจากมุมมองใกล้จนถึงมุมกว้าง ชมรายละเอียดและแรงบันดาลใจทำเมนูใหม่วันนี้",
+        "tiktok": "",
+        "instagram": "",
+        "lemon8": "",
+        "x": ""
+      },
+      "platform_prompts": {
+        "facebook": {
+          "prompt": "1:1 photo of orange fish dish, warm lighting, high detail",
+          "aspect_ratio": "1:1",
+          "format_type": "อัลบั้ม"
+        },
+        "tiktok": {
+          "prompt": "",
+          "aspect_ratio": "9:16",
+          "format_type": ""
+        },
+        "instagram": {
+          "prompt": "",
+          "aspect_ratio": "1:1",
+          "format_type": ""
+        },
+        "lemon8": {
+          "prompt": "",
+          "aspect_ratio": "3:4",
+          "format_type": ""
+        },
+        "x": {
+          "prompt": "",
+          "aspect_ratio": "16:9",
+          "format_type": ""
+        }
+      },
+      "music_prompt": {
+        "song_title": "มองเส้นสายสีสันของปลาส้มในจาน (Kitchen Chill BGM)",
+        "genre_style": "Cozy Acoustic Folk Pop, Cheerful Upbeat Kitchen BGM, Wholesome Lo-Fi Chill Hop",
+        "instruments": "Acoustic Nylon Guitar, Bright Ukulele Strum, Warm Upright Bass, Playful Glockenspiel, Gentle Shaker Rhythms",
+        "lyrics_structure": "[Intro: ท่วงทำนองกีตาร์โปร่งและอูคูเลเล่สดใส อบอุ่น ฟีลเข้าครัวทำอาหารยามเช้า]\n[Melody: จังหวะโยกตัวเบาๆ ชวนให้รู้สึกเพลิดเพลินและผ่อนคลายกับทุกขั้นตอนการทำอาหาร]\n[Refrain: เสียงเครื่องเคาะจังหวะสนุกสนาน เสริมความน่าทานและความสุขในมื้อพิเศษ]\n[Outro: ทำนองดนตรีอบอุ่นค่อยๆ คลายลง พอดีกับช่วงจัดจานเสิร์ฟความอร่อย]",
+        "full_prompt": "Warm cheerful upbeat acoustic folk instrumental, uplifting acoustic guitar plucking, joyful subtle ukulele and glockenspiel accents, relaxing lo-fi percussion, cozy kitchen cooking vlog background music, crystal clear studio mix, 105 BPM."
+      },
+      "created_at": "2026-09-21T07:26:18.947Z",
+      "updated_at": "2026-09-21T07:26:18.947Z"
+    },
+    {
+      "id": "idea-1789975578947-1",
+      "title": "เคล็ดลับทำปลาส้มอร่อยใน 5 นาที",
+      "concept": "Practical Guide & Insider Hacks – แบ่งขั้นตอนง่าย ๆ พร้อมเทคนิคมืออาชีพทำปลาส้มให้นุ่มและหอม",
+      "hook": "อยากทำปลาส้มอร่อยใน 5 นาทีไหม",
+      "caption": "ดูวิธีทำปลาส้มเร็ว ๆ แค่ 5 นาทีด้วยเทคนิคที่เชฟใช้จริง อย่าพลาดเลย",
+      "video_script": "สวัสดีครับทุกคน วันนี้ผมจะพาไปทำปลาส้มแบบเร็ว ๆ เพียง 5 นาที เริ่มจากล้างปลาสดแล้วซับให้แห้ง ใช้เกลือและพริกไทยโรยทั่วแล้วพัก 1 นาที จากนั้นตั้งกระทะให้ร้อนใส่น้ำมันมะกอก ใส่ปลาลงไปผัดจนสีทอง พลิกอีกด้านแล้วใส่ซอสถั่วเหลือง น้ำมะนาวและผักชีสับ ปิดไฟแล้วเสิร์ฟพร้อมข้าวสวยร้อน ๆ รับรองอร่อยจนต้องบอกต่อ",
+      "spoken_script": "สวัสดีครับทุกคน วันนี้ผมจะพาไปทำปลาส้มแบบเร็ว ๆ เพียง 5 นาที เริ่มจากล้างปลาสดแล้วซับให้แห้ง ใช้เกลือและพริกไทยโรยทั่วแล้วพัก 1 นาที จากนั้นตั้งกระทะให้ร้อนใส่น้ำมันมะกอก ใส่ปลาลงไปผัดจนสีทอง พลิกอีกด้านแล้วใส่ซอสถั่วเหลือง น้ำมะนาวและผักชีสับ ปิดไฟแล้วเสิร์ฟพร้อมข้าวสวยร้อน ๆ รับรองอร่อยจนต้องบอกต่อ",
+      "hashtags": [
+        "#ปลาส้ม",
+        "#เคล็ดลับทำอาหาร",
+        "#ทำเร็ว"
+      ],
+      "media_type": "VIDEO",
+      "media_prompt": "Cinematic production prompt in English specifying: Camera 35mm cinema lens, motorized gimbal push‑in, warm key light from side, diffused rim light, ARRI Alexa 4K, insert shots of seasoning, modern Thai typography overlay",
+      "target_audience": "กลุ่มลูกค้าและผู้ติดตามเป้าหมาย",
+      "objective": "สร้างความสนใจและยอดขาย",
+      "content_pillar": "Product & Lifestyle",
+      "format": "AI จัดลำดับโปรดักชันจริง 9:16 (Multi-Shot Coverage ไม่จำกัดฉาก 8-20+ ฉาก)",
+      "priority": "HIGH",
+      "platform": "tiktok",
+      "rating": 4.9,
+      "virality_score": "สูงมาก",
+      "brand_name": "ทำอาหาร (สูตร & ขั้นตอนการทำอาหาร)",
+      "is_series": false,
+      "media_blueprint": {
+        "count_recommended": 10,
+        "format": "คลิปสั้นแนวตั้ง 9:16",
+        "visual_direction": "ใช้แสงสตูดิโอแบบ softbox สร้างเงานุ่มบนกระทะให้ความรู้สึกอิ่มอุ่น",
+        "real_shoot_guide": "ถ่ายด้วยสมาร์ทโฟนหรือกล้อง DSLR ตั้งค่าความเร็วชัตเตอร์ 1/120 เพื่อจับการเคลื่อนไหวของไฟ",
+        "equipment_needed": "กล้อง DSLR, gimbal, softbox lights, ไมโครโฟนลาวา",
+        "slides": [
+          {
+            "slide_no": 1,
+            "visual": "เปิดคลิปด้วยมือชี้ปลาส้มสดบนบานเคาน์เตอร์",
+            "text_overlay": "ทำปลาส้มเร็ว ๆ",
+            "camera_angle": "Wide 24mm from eye level",
+            "real_photo_tip": "เริ่มด้วยการเคลื่อนกล้องช้าเพื่อให้ผู้ชมเห็นรายละเอียดปลา",
+            "shoot_instruction": "ให้แสงหน้าตรงส่องบนปลาเพื่อเน้นสีส้ม",
+            "prompt": "Opening shot of fresh orange fish on kitchen counter, wide angle, natural light"
+          },
+          {
+            "slide_no": 2,
+            "visual": "ใส่เกลือและพริกไทยโรยทั่วปลา",
+            "text_overlay": "ขั้นตอน 1",
+            "camera_angle": "Close‑up 50mm from top angle",
+            "real_photo_tip": "ใช้โหมดแมคโครจับเม็ดเกลือ",
+            "shoot_instruction": "ให้แสงข้างส่องเงาเม็ดเกลือ",
+            "prompt": "Close‑up of seasoning orange fish, top view, sharp focus"
+          },
+          {
+            "slide_no": 3,
+            "visual": "กระทะร้อนพร้อมน้ำมันมะกอก",
+            "text_overlay": "ขั้นตอน 2",
+            "camera_angle": "45 degree 35mm",
+            "real_photo_tip": "จับการส่องแสงของน้ำมันที่กำลังร้อน",
+            "shoot_instruction": "ใช้ไฟสตูดิโอเพิ่มความเงาให้กระทะ",
+            "prompt": "45 degree shot of hot pan with olive oil, warm lighting"
+          },
+          {
+            "slide_no": 4,
+            "visual": "ใส่ปลาลงผัดจนสีทอง",
+            "text_overlay": "ขั้นตอน 3",
+            "camera_angle": "Dynamic tracking 24mm moving around pan",
+            "real_photo_tip": "ใช้ gimbal ทำการไหลของกล้องรอบกระทะ",
+            "shoot_instruction": "จับเสียง sizzle เพิ่มความสมจริง",
+            "prompt": "Dynamic tracking shot of orange fish frying, sizzling sound"
+          },
+          {
+            "slide_no": 5,
+            "visual": "พลิกปลาด้วยตะหลิว",
+            "text_overlay": "พลิกด้าน",
+            "camera_angle": "Extreme close‑up 100mm from side",
+            "real_photo_tip": "จับการเปลี่ยนสีของผิวน้ำมัน",
+            "shoot_instruction": "ให้แสงส่องข้างเพื่อเน้นเงา",
+            "prompt": "Extreme close‑up of flipping fish, side lighting"
+          },
+          {
+            "slide_no": 6,
+            "visual": "ใส่ซอสถั่วเหลือง น้ำมะนาวและผักชี",
+            "text_overlay": "ขั้นตอน 4",
+            "camera_angle": "Insert macro 100mm from top",
+            "real_photo_tip": "จับหยดซอสที่หยดลงบนปลา",
+            "shoot_instruction": "ใช้แสงส่องตรงจากด้านบน",
+            "prompt": "Macro insert of soy sauce and lemon juice pouring over fish"
+          },
+          {
+            "slide_no": 7,
+            "visual": "ปิดไฟและโรยผักชีสับ",
+            "text_overlay": "ขั้นตอนสุดท้าย",
+            "camera_angle": "Wide 35mm from front",
+            "real_photo_tip": "ให้แสงสว่างทั่วถึงเพื่อให้สีผักชีโดดเด่น",
+            "shoot_instruction": "จับการเคลื่อนไหวของมือที่โรยผักชี",
+            "prompt": "Wide shot of final garnish on orange fish, bright lighting"
+          },
+          {
+            "slide_no": 8,
+            "visual": "เสิร์ฟปลาส้มบนจานข้าวสวย",
+            "text_overlay": "พร้อมเสิร์ฟ",
+            "camera_angle": "Over‑the‑shoulder 50mm",
+            "real_photo_tip": "ให้มุมมองจากมือตัวเองเพื่อความเป็นกันเอง",
+            "shoot_instruction": "ใช้แสงธรรมชาติจากหน้าต่าง",
+            "prompt": "Over‑the‑shoulder shot of serving orange fish on rice"
+          },
+          {
+            "slide_no": 9,
+            "visual": "ชิมและยิ้มแสดงความอร่อย",
+            "text_overlay": "อร่อยจนต้องบอกต่อ",
+            "camera_angle": "Close‑up 85mm on face reaction",
+            "real_photo_tip": "จับอารมณ์ยิ้มให้ชัดเจน",
+            "shoot_instruction": "ใช้แสงแผ่จากด้านข้างเพื่อไฮไลท์ใบหน้า",
+            "prompt": "Close‑up of smiling face tasting orange fish, soft lighting"
+          },
+          {
+            "slide_no": 10,
+            "visual": "CTA แสดงข้อความสั่งสูตรเต็มบนหน้าจอ",
+            "text_overlay": "กดติดตามเพื่อสูตรเต็ม",
+            "camera_angle": "Static 24mm front view",
+            "real_photo_tip": "ใส่กราฟิกข้อความ CTA ชัดเจน",
+            "shoot_instruction": "ใช้แสงสว่างสม่ำเสมอบนหน้าจอ",
+            "prompt": "Static shot of CTA overlay with call to action, bright lighting"
+          }
+        ]
+      },
+      "platform_captions": {
+        "facebook": "",
+        "tiktok": "อยากทำปลาส้มอร่อยใน 5 นาทีไหม ดูวิธีทำเร็ว ๆ กับเคล็ดลับเชฟมืออาชีพ",
+        "instagram": "",
+        "lemon8": "",
+        "x": ""
+      },
+      "platform_prompts": {
+        "facebook": {
+          "prompt": "",
+          "aspect_ratio": "1:1",
+          "format_type": ""
+        },
+        "tiktok": {
+          "prompt": "9:16 vertical video of quick orange fish recipe, dynamic shots, fast pace",
+          "aspect_ratio": "9:16",
+          "format_type": "คลิปสั้น"
+        },
+        "instagram": {
+          "prompt": "",
+          "aspect_ratio": "1:1",
+          "format_type": ""
+        },
+        "lemon8": {
+          "prompt": "",
+          "aspect_ratio": "3:4",
+          "format_type": ""
+        },
+        "x": {
+          "prompt": "",
+          "aspect_ratio": "16:9",
+          "format_type": ""
+        }
+      },
+      "music_prompt": {
+        "song_title": "เคล็ดลับทำปลาส้มอร่อยใน 5 นาที (Kitchen Chill BGM)",
+        "genre_style": "Cozy Acoustic Folk Pop, Cheerful Upbeat Kitchen BGM, Wholesome Lo-Fi Chill Hop",
+        "instruments": "Acoustic Nylon Guitar, Bright Ukulele Strum, Warm Upright Bass, Playful Glockenspiel, Gentle Shaker Rhythms",
+        "lyrics_structure": "[Intro: ท่วงทำนองกีตาร์โปร่งและอูคูเลเล่สดใส อบอุ่น ฟีลเข้าครัวทำอาหารยามเช้า]\n[Melody: จังหวะโยกตัวเบาๆ ชวนให้รู้สึกเพลิดเพลินและผ่อนคลายกับทุกขั้นตอนการทำอาหาร]\n[Refrain: เสียงเครื่องเคาะจังหวะสนุกสนาน เสริมความน่าทานและความสุขในมื้อพิเศษ]\n[Outro: ทำนองดนตรีอบอุ่นค่อยๆ คลายลง พอดีกับช่วงจัดจานเสิร์ฟความอร่อย]",
+        "full_prompt": "Warm cheerful upbeat acoustic folk instrumental, uplifting acoustic guitar plucking, joyful subtle ukulele and glockenspiel accents, relaxing lo-fi percussion, cozy kitchen cooking vlog background music, crystal clear studio mix, 105 BPM."
+      },
+      "created_at": "2026-09-21T07:26:18.947Z",
+      "updated_at": "2026-09-21T07:26:18.947Z"
+    },
+    {
+      "id": "idea-1789975578947-2",
+      "title": "รีวิวแบบหมดเปลือก: จุดเด่น vs จุดสังเกตของ ปลาส้ม สามารถนำไปทำอาหารอะไรได้บ้าง",
+      "concept": "นำเสนอในมุมมองที่ 3: รีวิวจากประสบการณ์จริงแบบเจาะลึก เน้นความจริงใจ สร้างความน่าเชื่อถือและตอบข้อสงสัยของลูกค้า",
+      "hook": "ถ้ากำลังตัดสินใจเรื่อง ปลาส้ม สามารถนำไปทำอาหารอะไรได้บ้าง ฟังทางนี้ก่อนตัดสินใจ!",
+      "caption": "📌 รีวิวเจาะลึก ปลาส้ม สามารถนำไปทำอาหารอะไรได้บ้าง แบบตรงไปตรงมา ดีจริงไหม คุ้มค่าแค่ไหน มาดูกันครับ\n\n#ปลาส้ม #สูตรอาหาร #ทำง่าย",
+      "hashtags": [
+        "#ปลาส้ม",
+        "#สูตรอาหาร",
+        "#ทำง่าย"
+      ],
+      "media_type": "IMAGE",
+      "media_prompt": "Cinematic production prompt in English specifying: Camera 50mm f/1.8 prime, soft diffused lighting, natural window light, close‑up macro insert of fish scales, ARRI Alexa 4K quality, modern Thai typography overlay",
+      "target_audience": "กลุ่มลูกค้าและผู้ติดตามเป้าหมาย",
+      "objective": "สร้างความสนใจและยอดขาย",
+      "content_pillar": "Product & Lifestyle",
+      "format": "อัลบั้ม 4 รูป (ภาพรวมหน้ารถ, ภายในค็อกพิท, ดีเทลแม็กซ์/ไฟหน้า, ตารางโปรโมชั่น)",
+      "priority": "HIGH",
+      "platform": "facebook",
+      "rating": 4.8,
+      "virality_score": "สูงมาก",
+      "brand_name": "ทำอาหาร (สูตร & ขั้นตอนการทำอาหาร)",
+      "is_series": false,
+      "media_blueprint": {
+        "count_recommended": 4,
+        "format": "อัลบั้ม 4 รูป",
+        "visual_direction": "ใช้แสงธรรมชาติจากหน้าต่างสีอุ่น โทนสีส้มและเขียวให้ความรู้สึกสดชื่น",
+        "real_shoot_guide": "ถ่ายด้วยสมาร์ทโฟนตั้งค่า HDR เปิดโหมดโปรไฟล์สีสัน ให้ความคมชัดสูง",
+        "equipment_needed": "สมาร์ทโฟน, แสง LEDพกพา, รีเฟลกเตอร์สีขาว",
+        "slides": [
+          {
+            "slide_no": 1,
+            "visual": "ภาพรวมจานปลาส้มจัดเต็มบนโต๊ะไม้",
+            "text_overlay": "สีส้มที่ทำให้คุณอยากลอง",
+            "camera_angle": "Wide angle 35mm from eye level",
+            "real_photo_tip": "ใช้โหมดพอร์ตเทรตเพื่อเบลอพื้นหลังให้จานเด่น",
+            "shoot_instruction": "จัดจานให้สมดุลสีสัน ใช้แสงข้างเพื่อเน้นเงา",
+            "prompt": "1:1 photo of orange fish dish on wooden table, warm natural light, high detail"
+          },
+          {
+            "slide_no": 2,
+            "visual": "มุมใกล้ปลาส้มแสดงเกล็ดเงางาม",
+            "text_overlay": "เกล็ดส่องแสง",
+            "camera_angle": "Macro 100mm close‑up from side angle",
+            "real_photo_tip": "ใกล้เคลื่อนกล้องช้าเพื่อจับรายละเอียดเกล็ด",
+            "shoot_instruction": "ใช้แสงแถบ LEDข้างเพื่อให้แสงสะท้อนบนเกล็ด",
+            "prompt": "Macro shot of orange fish scales, side lighting, sharp focus"
+          },
+          {
+            "slide_no": 3,
+            "visual": "รายละเอียดเครื่องเคียงสีเขียวสด",
+            "text_overlay": "เคียงคู่ที่ลงตัว",
+            "camera_angle": "45 degree angle with 50mm lens",
+            "real_photo_tip": "เปิดโหมด HDR เพื่อจับสีเขียวและสีส้มพร้อมกัน",
+            "shoot_instruction": "วางผักสีเขียวใกล้ปลาส้มเพื่อความคอนทราสต์",
+            "prompt": "45 degree shot of green garnish beside orange fish, balanced lighting"
+          },
+          {
+            "slide_no": 4,
+            "visual": "ตารางเมนูแสดงวิธีทำ 3 เมนูจากปลาส้ม",
+            "text_overlay": "เมนู 3 สูตรง่าย",
+            "camera_angle": "Flat lay 24mm from top",
+            "real_photo_tip": "ใช้ไฟสตูดิโอแบบกล่องเพื่อให้แสงสม่ำเสมอ",
+            "shoot_instruction": "จัดกระดาษตารางและอุปกรณ์ทำอาหารให้เรียงสวย",
+            "prompt": "Flat lay of menu table with three orange fish recipes, soft box lighting"
+          }
+        ]
+      },
+      "platform_captions": {
+        "facebook": "มาดูอัลบั้ม 4 ภาพที่เปิดโลกสีสันของปลาส้มจากมุมมองใกล้จนถึงมุมกว้าง ชมรายละเอียดและแรงบันดาลใจทำเมนูใหม่วันนี้",
+        "tiktok": "",
+        "instagram": "",
+        "lemon8": "",
+        "x": ""
+      },
+      "platform_prompts": {
+        "facebook": {
+          "prompt": "1:1 photo of orange fish dish, warm lighting, high detail",
+          "aspect_ratio": "1:1",
+          "format_type": "อัลบั้ม"
+        },
+        "tiktok": {
+          "prompt": "",
+          "aspect_ratio": "9:16",
+          "format_type": ""
+        },
+        "instagram": {
+          "prompt": "",
+          "aspect_ratio": "1:1",
+          "format_type": ""
+        },
+        "lemon8": {
+          "prompt": "",
+          "aspect_ratio": "3:4",
+          "format_type": ""
+        },
+        "x": {
+          "prompt": "",
+          "aspect_ratio": "16:9",
+          "format_type": ""
+        }
+      },
+      "music_prompt": {
+        "song_title": "รีวิวแบบหมดเปลือก: จุดเด่น vs (Kitchen Chill BGM)",
+        "genre_style": "Cozy Acoustic Folk Pop, Cheerful Upbeat Kitchen BGM, Wholesome Lo-Fi Chill Hop",
+        "instruments": "Acoustic Nylon Guitar, Bright Ukulele Strum, Warm Upright Bass, Playful Glockenspiel, Gentle Shaker Rhythms",
+        "lyrics_structure": "[Intro: ท่วงทำนองกีตาร์โปร่งและอูคูเลเล่สดใส อบอุ่น ฟีลเข้าครัวทำอาหารยามเช้า]\n[Melody: จังหวะโยกตัวเบาๆ ชวนให้รู้สึกเพลิดเพลินและผ่อนคลายกับทุกขั้นตอนการทำอาหาร]\n[Refrain: เสียงเครื่องเคาะจังหวะสนุกสนาน เสริมความน่าทานและความสุขในมื้อพิเศษ]\n[Outro: ทำนองดนตรีอบอุ่นค่อยๆ คลายลง พอดีกับช่วงจัดจานเสิร์ฟความอร่อย]",
+        "full_prompt": "Warm cheerful upbeat acoustic folk instrumental, uplifting acoustic guitar plucking, joyful subtle ukulele and glockenspiel accents, relaxing lo-fi percussion, cozy kitchen cooking vlog background music, crystal clear studio mix, 105 BPM."
+      },
+      "created_at": "2026-09-21T07:26:18.947Z",
+      "updated_at": "2026-09-21T07:26:18.947Z"
+    }
+  ],
+  "assets": [],
+  "repurposed": [
+    {
+      "id": "rep-1788945979304",
+      "source_text": "ยินดีด้วยกับบัณฑิตใหม่ทุกคนครับ! วันนี้เราคัด 3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่มาฝาก รับรองว่าได้รูปสวยคลาสสิกฟีลต่างประเทศแน่นอน",
+      "outputs": {
+        "facebook": {
+          "platform": "facebook",
+          "title": "🎓 แจกพิกัด! 3 จุดถ่ายรูปนอกรอบสุดปังในเชียงใหม่ ได้รูปสวยคลาสสิกฟีลเมืองนอก 📸✨",
+          "content": "ยินดีด้วยกับบัณฑิตใหม่ทุกคนครับ! 🎉 เรียนจบทั้งที จะไม่มีรูปนอกรอบสวยๆ ได้ยังไงจริงไหม?\n\nวันนี้เราคัดเน้นๆ กับ \"3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่\" ที่รับรองเลยว่าได้รูปสวยคลาสสิก มู้ดดี ฟีลเหมือนอยู่ต่างประเทศแน่นอน ไม่ต้องบินไปไกลก็ได้รูปโปรไฟล์ใหม่แบบสับแบบปัง!\n\n📍 1. อ่างแก้ว มช. - พิกัดยอดฮิตตลอดกาล ฟีลสวนสาธารณะในยุโรป แสงแดดอุ่นๆ ช่วงเย็นกระทบผืนน้ำและสนามหญ้าสีเขียว ถ่ายมุมไหนก็รอด!\n📍 2. สวนสนแม่แตง - หลบความวุ่นวายไปฟีลเกาหลีเกาใจ ท่ามกลางต้นสนสูงตระหง่าน ได้มู้ดโทนเขียว-น้ำตาลสุดอบอุ่นและคลาสสิก\n📍 3. ประตูท่าแพ - ฟีลสตรีทยุโรปสุดคลาสสิก กำแพงอิฐสีส้มตัดกับชุดครุยเข้มๆ เพิ่มลูกเล่นด้วยการถ่ายรูปตอนนกพิราบบิน รับรองรูปดูมีชีวิตชีวาและอินเตอร์สุดๆ\n\n💡 Trick: แนะนำให้ไปถ่ายช่วง 16.00 - 17.30 น. แสง Golden Hour จะสวยละมุนที่สุดครับ!",
+          "cta": "แท็กเพื่อนสนิทหรือตากล้องคู่ใจใต้โพสต์นี้ แล้วนัดวันไปลุยถ่ายรูปกันเลย! 👇👇"
+        },
+        "tiktok": {
+          "platform": "tiktok",
+          "hook": "เรียนจบทั้งที จะถ่ายรูปธรรมดาได้ไง! แจก 3 พิกัดถ่ายรูปนอกรอบเชียงใหม่ ฟีลเมืองนอกสุดๆ! 🎓✨",
+          "cta": "กดเซฟคลิปนี้ไว้ แล้วแท็กตากล้องด่วน! 📸",
+          "video_script": "[Visual: ภาพซูมเข้าบัณฑิตยิ้มแย้มโยนหมวกปริญญาขึ้นฟ้าอย่างสดใส]\n[Music: เพลงบีทสนุกสนาน แนวอินดี้ป๊อปฟีลสดชื่น]\n[Voiceover]: \"ยินดีด้วยกับบัณฑิตใหม่ทุกคนน้าา! วันนี้เรามัดรวม 3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่มาให้ รับรองว่าได้รูปสวยคลาสสิกฟีลต่างประเทศแน่นอน!\"\n\n[Visual: ตัดภาพเร็วไปที่อ่างแก้ว มช. แสงเย็นสีทองสะท้อนผืนน้ำ]\n[Voiceover]: \"ที่แรก 'อ่างแก้ว มช.' ฟีลสวนสาธารณะยุโรป แสงเย็นคือที่สุด!\"\n\n[Visual: ตัดภาพไปที่ทิวต้นสนสูงตระหง่านที่สวนสนแม่แตง บัณฑิตเดินหมุนตัวช้าๆ]\n[Voiceover]: \"ที่สอง 'สวนสนแม่แตง' ได้ฟีลเกาหลีเกาใจ ถ่ายมุมไหนก็ดูแพง\"\n\n[Visual: ตัดภาพไปที่ประตูท่าแพ มีนกพิราบบินผ่านหลังบัณฑิต]\n[Voiceover]: \"และที่สาม 'ประตูท่าแพ' ฟีลสตรีทยุโรปสุดคลาสสิก!\"\n\n[Visual: ขึ้นข้อความตัวอักษรใหญ่ๆ บนจอ \"Save ไว้เลย!\" บัณฑิตส่งมินิฮาร์ทให้กล้อง]\n[Voiceover]: \"ชอบพิกัดไหน คอมเมนต์บอกกันหน่อยนะ!\""
+        },
+        "instagram": {
+          "platform": "instagram",
+          "content": "🎓 Graduation Season is here! ยินดีด้วยกับบัณฑิตใหม่ทุกคนครับ 🎉 วันนี้เราคัด 3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่มาฝาก รับรองรูปสวยคลาสสิกฟีลต่างประเทศแน่นอน ปัดซ้ายดูพิกัดเลย! 👉✨\n\n#รีวิวเชียงใหม่ #ถ่ายรูปนอกรอบ #รับปริญญา #เชียงใหม่ #GraduationDay #ChiangMai",
+          "hashtags": [
+            "รีวิวเชียงใหม่",
+            "ถ่ายรูปนอกรอบ",
+            "รับปริญญา",
+            "เชียงใหม่",
+            "GraduationDay",
+            "ChiangMai"
+          ],
+          "carousel_slides": [
+            "Slide 1: 3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่ 🎓✨ (ฟีลเมืองนอก ไม่ซ้ำใคร!)",
+            "Slide 2: 📍 Spot 1: อ่างแก้ว มช. | ฟีลสวนสาธารณะยุโรป แสงอุ่นๆ ช่วงเย็นคือเดอะเบสท์ 🌅",
+            "Slide 3: 📍 Spot 2: สวนสนแม่แตง | ฟีลป่าสนเมืองหนาว เกาหลีเกาใจสุดๆ 🌲",
+            "Slide 4: 📍 Spot 3: ประตูท่าแพ | ฟีลสตรีทยุโรปสุดคลาสสิก ถ่ายกับกำแพงอิฐและนกพิราบ 🧱🕊️",
+            "Slide 5: 💡 Tips สำหรับบัณฑิต: แนะนำให้ไปช่วง 16.00 - 17.30 น. จะได้แสง Golden Hour ที่ละมุนที่สุด!",
+            "Slide 6: เตรียมชุดครุยและตากล้องคู่ใจให้พร้อม แล้วไปลุยกันเลย! 📸",
+            "Slide 7: กด Save & Share โพสต์นี้เก็บไว้เลย! ยินดีด้วยกับบัณฑิตใหม่อีกครั้งนะครับ 🎓❤️"
+          ]
+        },
+        "x": {
+          "platform": "x",
+          "content": "ยินดีด้วยกับบัณฑิตใหม่ทุกคนครับ! 🎉 ใครกำลังหาที่ถ่ายรูปนอกรอบเก๋ๆ วันนี้เราคัด '3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่' มาฝาก ได้รูปสวยคลาสสิกฟีลต่างประเทศแน่นอน! มีที่ไหนบ้าง มาดูกันเลย 👇🧵 #รีวิวเชียงใหม่ #ถ่ายรูปนอกรอบ",
+          "x_thread": [
+            "1/5 ยินดีด้วยกับบัณฑิตใหม่ทุกคนครับ! 🎉 ใครกำลังหาที่ถ่ายรูปนอกรอบเก๋ๆ วันนี้เราคัด '3 พิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่' มาฝาก ได้รูปสวยคลาสสิกฟีลต่างประเทศแน่นอน! มีที่ไหนบ้าง มาดูกันเลย 👇🧵",
+            "2/5 📍 1. อ่างแก้ว มช. - พิกัดยอดฮิตตลอดกาล ฟีลสวนสาธารณะในยุโรป แนะนำให้ไปช่วงเย็น แสงแดดอุ่นๆ กระทบผืนน้ำและสนามหญ้าสีเขียว ถ่ายมุมไหนก็รอด! 🌅✨",
+            "3/5 📍 2. สวนสนแม่แตง - หลบความวุ่นวายไปฟีลเกาหลีเกาใจ ท่ามกลางต้นสนสูงตระหง่าน เรียงรายเป็นระเบียบ ได้มู้ดโทนเขียว-น้ำตาลสุดอบอุ่น คลาสสิกมาก 🌲🍂",
+            "4/5 📍 3. ประตูท่าแพ - ฟีลสตรีทยุโรปสุดคลาสสิก กำแพงอิฐสีส้มตัดกับชุดครุยเข้มๆ เพิ่มลูกเล่นด้วยการถ่ายรูปตอนนกพิราบบิน รับรองรูปดูมีชีวิตชีวาและอินเตอร์สุดๆ 🕊️🧱",
+            "5/5 💡 Trick: แนะนำไปช่วง 16.00-17.30 น. แสงจะสวยละมุนที่สุด! ใครชอบพิกัดไหน หรือมีที่อื่นแนะนำ คอมเมนต์บอกกันหน่อยน้า 👇 อย่าลืมกดรีทวีตเก็บไว้ตามรอยกันด้วยครับ!"
+          ]
+        },
+        "lemon8": {
+          "platform": "lemon8",
+          "content": "ยินดีด้วยกับบัณฑิตใหม่ทุกคนน้าาา! 🎉 วันนี้เรามีพิกัดถ่ายรูปนอกรอบสุดปังในเชียงใหม่มาป้ายยา บอกเลยว่าแต่ละที่คือคัดมาแล้ว ได้รูปสวยคลาสสิกฟีลต่างประเทศแน่นอน ไม่ต้องบินไปไกลก็ได้รูปปังๆ ลงไอจีแล้วค่ะ! ✨",
+          "cta": "ใครมีแพลนถ่ายรูปนอกรอบ เซฟโพสต์นี้แล้วตามไปเช็คอินกันเลย! อย่าลืมกดติดตามเพื่อไม่พลาดพิกัดดีๆ นะคะ 💖",
+          "hashtags": [
+            "lemon8บอกต่อ",
+            "รีวิวของดี",
+            "ป้ายยากับlemon8",
+            "ถ่ายรูปนอกรอบ",
+            "เชียงใหม่",
+            "รีวิวเชียงใหม่"
+          ],
+          "lemon8_cover_title": "🍋 ✨ ถ่ายรูปนอกรอบเชียงใหม่ ฟีลเมืองนอก! 🎓📸",
+          "lemon8_points": [
+            "🌲 สวนสนแม่แตง: ฟีลป่าสนเกาหลี ได้มู้ดอบอุ่นคลาสสิก",
+            "🌅 อ่างแก้ว มช.: ฟีลสวนสาธารณะยุโรป แสงเย็นละมุนตาที่สุด",
+            "🧱 ประตูท่าแพ: ฟีลสตรีทยุโรปสุดชิค ถ่ายกับกำแพงอิฐและนกพิราบ",
+            "⏰ Best Time: แนะนำช่วง 16.00 - 17.30 น. แสง Golden Hour สวยมาก!"
+          ]
+        }
+      },
+      "status": "DRAFT",
+      "created_at": "2026-09-09T09:26:19.304Z"
+    }
+  ],
+  "documents": [],
+  "form_templates": [
+    {
+      "id": "tpl-001",
+      "name": "แบบฟอร์มขออนุมัติงบประมาณและเริ่มแคมเปญการตลาด (Campaign Budget Approval Form)",
+      "description": "ฟอร์มมาตรฐานสำหรับการเสนอผู้บริหารฝ่ายการตลาดและจัดซื้อ",
+      "target_fields": [
+        {
+          "key": "campaign_name",
+          "label": "ชื่อโครงการ/แคมเปญ",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "model_name",
+          "label": "รุ่นรถยนต์/ผลิตภัณฑ์",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "start_date",
+          "label": "วันที่เริ่มต้น",
+          "required": true,
+          "type": "date"
+        },
+        {
+          "key": "end_date",
+          "label": "วันที่สิ้นสุด",
+          "required": true,
+          "type": "date"
+        },
+        {
+          "key": "total_budget",
+          "label": "งบประมาณรวมที่เสนอขอ (บาท)",
+          "required": true,
+          "type": "number"
+        },
+        {
+          "key": "audience_segment",
+          "label": "กลุ่มเป้าหมายหลัก",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "objective",
+          "label": "วัตถุประสงค์และ KPI",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "media_mix",
+          "label": "สัดส่วนงบประมาณสื่อ",
+          "required": false,
+          "type": "text"
+        },
+        {
+          "key": "deliverables",
+          "label": "ชิ้นงานที่ต้องส่งมอบ",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "manager",
+          "label": "ผู้รับผิดชอบโครงการ",
+          "required": true,
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "tpl-002",
+      "name": "แบบฟอร์มส่งมอบบรีฟงานฝ่ายผลิตสื่อ (Production Creative Request Form)",
+      "description": "ฟอร์มสำหรับส่งมอบงานให้ทีมกราฟิกและโปรดักชันเฮาส์",
+      "target_fields": [
+        {
+          "key": "campaign_name",
+          "label": "ชื่องาน",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "deliverables",
+          "label": "ประเภทชิ้นงานที่ต้องการ",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "end_date",
+          "label": "กำหนดส่งงาน (Deadline)",
+          "required": true,
+          "type": "date"
+        },
+        {
+          "key": "manager",
+          "label": "ผู้ประสานงาน",
+          "required": true,
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "analytics": [
+    {
+      "id": "rep-amulet-recent",
+      "brand_name": "ขายพระเครื่อง (ลงขายพระของพ่อ / พระแท้)",
+      "title": "รายงานสถิติ — ขายพระของพ่อ (ช่วงกระแสเริ่มดร็อปลง)",
+      "period": "สิงหาคม - กันยายน 2026 (ช่วงเน้นขายตรง)",
+      "data_source": "MANUAL",
+      "notes": "ช่วงนี้ไม่มีเวลาเล่าเรื่อง เลยเน้นถ่ายภาพเดี่ยวแล้วลงราคาบูชาเลย ให้ทัก Inbox ปรากฏว่าคนไลก์และคนแชร์ลดลงฮวบ ทักแชทเงียบกว่าเดิมมาก ยอด Reach หายไป 85%",
+      "metrics": {
+        "reach": 12300,
+        "impressions": 28500,
+        "engagement": 980,
+        "engagement_rate": 7.96,
+        "ctr": 2.1,
+        "views": 4500,
+        "watch_time_hours": 60,
+        "conversions": 5,
+        "leads": 18,
+        "cost": 0,
+        "roas": 0,
+        "cpc": 0,
+        "cpm": 0
+      },
+      "executive_summary": "ประสิทธิภาพของเพจลดลงอย่างมีนัยสำคัญ ยอด Reach ลดลง 85.6% จากช่วงพีค (เหลือ 12,300 คน) และยอดแชร์ลดลงเหลือเพียง 14 ครั้ง ปัญหาหลักมาจากการปรับเปลี่ยนรูปแบบคอนเทนต์จากอัลบั้มเล่าเรื่องส่องมวลสารไปเป็นภาพเดี่ยวติดป้ายราคา ทำให้คนมองเป็นโพสต์ขายของและเลื่อนผ่าน",
+      "key_findings": [
+        "ยอด Reach ลดลงจาก 85,400 เหลือ 12,300 (-85.6%) เนื่องจากขาดการมีส่วนร่วมกดดูภาพและแชร์ต่อ",
+        "Engagement Rate ตกลงมาอยู่ที่ 7.96% และยอดทักข้อความลดลงจาก 128 เหลือเพียง 18 คน",
+        "โพสต์ภาพเดี่ยวมีระยะเวลาในการรับชม (Watch Duration) ต่ำกว่าเดิมถึง 75%"
+      ],
+      "performance_patterns": [
+        "ผู้ชมส่วนใหญ่เพียงแค่เลื่อนผ่าน ไม่คลิกขยายรูปและไม่คอมเมนต์",
+        "มีคนเข้ามาพิมพ์ถามราคาใต้โพสต์เพียงเล็กน้อย แต่ไม่มีการทักแชทจริงจัง"
+      ],
+      "identified_problems": [
+        "ขาดมนต์เสน่ห์ของการเล่าเรื่อง (Storytelling Decay) และไม่มีการส่องมวลสารเชิงลึก",
+        "ใช้รูปแบบภาพเดี่ยวธรรมดา ทำให้โพสต์ดูกลืนไปกับเพจขายของทั่วไป",
+        "การเปิดราคาตรงๆ โดยไม่สร้างคุณค่าและความศรัทธาก่อน ทำให้ผู้ชมรู้สึกว่าแพง"
+      ],
+      "what_performed_well": [
+        "ยังมีลูกค้าเก่าบางท่านทักมาทักทายสอบถามองค์อื่นๆ"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพเดี่ยวพร้อมแคปชันสั้น เปิดบูชาพระ สนใจทักแชทครับ ไม่มีคนแชร์เลย"
+      ],
+      "content_themes_worked": [
+        "ยังคงเป็นพระสายเดียวกัน แต่ขาดเนื้อหาเจาะลึก"
+      ],
+      "formats_worked": [],
+      "hooks_worked": [],
+      "platforms_worked": [
+        "Facebook"
+      ],
+      "what_to_repeat": [],
+      "what_to_reduce": [
+        "หยุดโพสต์ภาพเดี่ยวเน้นขายราคาแบบเดิมทันที"
+      ],
+      "what_to_test_next": [
+        "ดึงเทคนิคอัลบั้ม 4 รูปกลับมาใช้อย่างเร่งด่วน พร้อม Hook เล่าเรื่องมวลสาร"
+      ],
+      "recommendations": [
+        "ต้องกู้คืนกระแสด้วยการย้อนกลับไปใช้สูตรสำเร็จของช่วง ก.ค. 2026 ทันที",
+        "เปลี่ยนโฟกัสจากอยากขาย มาเป็นผู้เชี่ยวชาญชวนส่องพระแท้ของพ่อ",
+        "ใช้ระบบ AI สร้าง Blueprint อัลบั้มภาพ 4 รูปทุกครั้งก่อนโพสต์"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เทียบชัดๆ พระแท้ของพ่อ vs งานเลียนแบบ: จุดสังเกตที่คนทั่วไปมักดูพลาด",
+          "pillar": "Educational & Trust",
+          "platform": "facebook",
+          "format": "อัลบั้ม 4 ภาพ",
+          "rationale": "ดึงความสนใจกลับมาด้วยความรู้เชิงลึกเพื่อสร้างกระแสไวรัลรอบใหม่"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-05T16:00:00Z"
+    },
+    {
+      "id": "rep-amulet-peak",
+      "brand_name": "ขายพระเครื่อง (ลงขายพระของพ่อ / พระแท้)",
+      "title": "รายงานสถิติ — ขายพระของพ่อ (ช่วงไวรัล/กระแสพีคสุด)",
+      "period": "กรกฎาคม 2026 (ช่วงไวรัลส่องมวลสาร)",
+      "data_source": "MANUAL",
+      "notes": "ช่วงนี้ทำคอนเทนต์ 4 รูปเปิดหัวด้วยเรื่องเล่ามวลสารพระแท้ที่พ่อเก็บไว้ มีเกร็ดประวัติศาสตร์ ดึงดูดเซียนพระและคนสนใจเข้ามาแลกเปลี่ยนความเห็นเพียบ ปิดท้ายด้วยเปิดให้บูชา คนแชร์และทัก Inbox ล้นหลาม",
+      "metrics": {
+        "reach": 85400,
+        "impressions": 142000,
+        "engagement": 14500,
+        "engagement_rate": 16.97,
+        "ctr": 5.4,
+        "views": 48000,
+        "watch_time_hours": 890,
+        "conversions": 42,
+        "leads": 128,
+        "cost": 0,
+        "roas": 0,
+        "cpc": 0,
+        "cpm": 0
+      },
+      "executive_summary": "โพสต์อัลบั้มภาพ 4 รูป ส่องมวลสารและเล่าเรื่องพระแท้สร้างยอดไวรัลสูงสุดเป็นประวัติการณ์ มีคนแชร์ไปกว่า 420 ครั้ง นำไปสู่ยอดทัก Inbox 128 ราย และปิดยอดบูชาได้ 42 รายการโดยไม่ต้องยิงแอดเลยแม้แต่บาทเดียว",
+      "key_findings": [
+        "คอนเทนต์แนวเล่าสตอรี่ประวัติศาสตร์และส่องมวลสารแบบซูมลึก ดึงดูดสายสะสมและสร้างความน่าเชื่อถือระดับสูงสุด",
+        "รูปแบบ Album 4 รูปภาพทำให้ผู้ใช้งานหยุดดูและกดปัดดูภาพจนจบ ส่งผลให้อัลกอริทึมดันโพสต์ออกนอกเพจมหาศาล",
+        "ยอดคนทักแชท (Leads) พุ่งสูงถึง 128 คนเนื่องจากเกิดความเลื่อมใสศรัทธาและความมั่นใจในความแท้"
+      ],
+      "performance_patterns": [
+        "โพสต์ช่วงเวลา 19:30 - 21:00 น. วันเสาร์-อาทิตย์ ได้รับ Engagement สูงสุด",
+        "คอมเมนต์ส่วนใหญ่เข้ามาสอบถามมวลสาร พิมพ์ สาธุ และขอส่องภาพเพิ่มเติม"
+      ],
+      "identified_problems": [
+        "ตอบแชทไม่ทันในช่วง 2 วันแรกเนื่องจากข้อความเข้ามากกว่า 100 ข้อความพร้อมกัน"
+      ],
+      "what_performed_well": [
+        "ภาพหน้าปก: พระสมเด็จวัดระฆังพิมพ์ใหญ่ พร้อมพาดหัว พระของพ่อ... ส่องมวลสารที่หาชมได้ยาก",
+        "การเล่าสตอรี่ความผูกพันของพ่อกับการสะสมพระอย่างบริสุทธิ์ใจ",
+        "การถ่ายภาพซูมระดับไมโครเห็นเนื้อหามวลสารคมชัด"
+      ],
+      "what_performed_poorly": [
+        "ไม่มี"
+      ],
+      "content_themes_worked": [
+        "Storytelling & Heritage (มรดกพระแท้ของคุณพ่อ)",
+        "Microscopic Material Inspection (ส่องมวลสารเจาะลึก)",
+        "Authenticity & Transparency (รับประกันแท้ตลอดชีพ)"
+      ],
+      "formats_worked": [
+        "Facebook Multi-photo Album (4-5 Images)",
+        "High-resolution Macro Photography"
+      ],
+      "hooks_worked": [
+        "พระของพ่อ... องค์นี้พ่อเก็บรักษามากว่า 40 ปี วันนี้ขออนุญาตนำมวลสารมาแบ่งปันให้พี่น้องได้ศึกษาร่วมกันครับ",
+        "จุดสังเกต 3 ตำแหน่งที่เซียนพระรุ่นเก่าใช้ดูมวลสารพระแท้... ที่หลายคนมองข้าม"
+      ],
+      "platforms_worked": [
+        "Facebook (Organic Reach สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "ใช้แกนคอนเทนต์เล่าสตอรี่ความทรงจำและคุณค่าทางจิตใจคู่กับความรู้เชิงลึกเสมอ",
+        "คงรูปแบบอัลบั้มภาพ 4 รูปภาพ ซูมมวลสารชัดเจน"
+      ],
+      "what_to_reduce": [
+        "หลีกเลี่ยงการเปิดราคาโต้งๆ ตั้งแต่บรรทัดแรก ให้เน้นคุณค่าและการศึกษาก่อน"
+      ],
+      "what_to_test_next": [
+        "ทำคลิปสั้น Reels / TikTok ส่องพระผ่านกล้อง 1000x ประกอบเสียงบรรยายสั้นๆ 45 วินาที"
+      ],
+      "recommendations": [
+        "ยึดรูปแบบอัลบั้ม 4 รูปนี้เป็นเสาหลักคอนเทนต์ (Content Pillar) หลักของเพจ",
+        "เตรียมภาพสต็อกพระองค์อื่นๆ ของพ่อในมุมมองเดียวกันเพื่อโพสต์อย่างต่อเนื่องสัปดาห์ละ 2-3 ครั้ง"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เจาะลึกมวลสารพระรอดลำพูน... ตำนานพระกรุที่พ่อหวงแหนที่สุด",
+          "pillar": "Story & Heritage",
+          "platform": "facebook",
+          "format": "อัลบั้ม 5 ภาพ",
+          "rationale": "ต่อยอดจากโพสต์ส่องมวลสารเดิมที่สร้างยอดวิวและยอดบูชาสูงสุด"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-07-28T14:00:00Z"
+    },
+    {
+      "id": "rep-1788854802478",
+      "title": "รายงานสถิติ — ภาพรวม",
+      "period": "สัปดาห์ทดสอบ กันยายน 2026",
+      "data_source": "MANUAL",
+      "metrics": {
+        "reach": 35000,
+        "impressions": 42000,
+        "engagement": 2800,
+        "engagement_rate": 8,
+        "views": 12000,
+        "leads": 38,
+        "conversions": 7,
+        "cost": 0
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ undefinedx และ CTR เฉลี่ย undefined% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 38 รายการ ด้วยต้นทุนเฉลี่ย ฿0.00 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 8% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-08T08:06:42.478Z"
+    },
+    {
+      "id": "rep-1788853145356",
+      "title": "บันทึกผลงานสัปดาห์ที่ 1 ก.ย. — Mazda & BYD",
+      "brand_name": "Mazda & BYD (ดีลเลอร์ & โปรโมชั่น)",
+      "period": "สัปดาห์ที่ 1 ก.ย. 2026",
+      "data_source": "MANUAL",
+      "metrics": {
+        "reach": 38000,
+        "impressions": 74000,
+        "engagement": 2900,
+        "engagement_rate": 7.63,
+        "ctr": 3.2,
+        "views": 22000,
+        "watch_time_hours": 310,
+        "conversions": 6,
+        "leads": 54,
+        "cost": 5000,
+        "roas": 6.2,
+        "cpc": 3.8,
+        "cpm": 67.5
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 6.2x และ CTR เฉลี่ย 3.2% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 54 รายการ ด้วยต้นทุนเฉลี่ย ฿92.59 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 7.63% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-08T07:39:05.356Z"
+    },
+    {
+      "id": "rep-1788853130024",
+      "title": "รายงานสถิติอัตโนมัติ — ขายพระเครื่อง (ลงขายพระของพ่อ / พระแท้)",
+      "brand_name": "ขายพระเครื่อง (ลงขายพระของพ่อ / พระแท้)",
+      "period": "สัปดาห์ล่าสุด (8/9/2569)",
+      "data_source": "API",
+      "metrics": {
+        "reach": 16343,
+        "impressions": 34320,
+        "engagement": 1961,
+        "engagement_rate": 12.4,
+        "ctr": 4.8,
+        "views": 11440,
+        "watch_time_hours": 145,
+        "conversions": 13,
+        "leads": 47,
+        "cost": 0,
+        "roas": 0,
+        "cpc": 0,
+        "cpm": 0
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 0x และ CTR เฉลี่ย 4.8% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 47 รายการ ด้วยต้นทุนเฉลี่ย ฿0.00 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 12.4% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-08T07:38:50.024Z"
+    },
+    {
+      "id": "rep-1788751919056",
+      "title": "Q3 Automotive Campaign Performance",
+      "period": "August 2026",
+      "data_source": "MANUAL",
+      "metrics": {
+        "reach": 180000,
+        "impressions": 420000,
+        "engagement": 14500,
+        "engagement_rate": 3.45,
+        "ctr": 2.1,
+        "views": 65000,
+        "watch_time_hours": 1200,
+        "conversions": 85,
+        "leads": 42,
+        "cost": 45000,
+        "roas": 4.8,
+        "cpc": 8.5,
+        "cpm": 107
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 4.8x และ CTR เฉลี่ย 2.1% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 42 รายการ ด้วยต้นทุนเฉลี่ย ฿1071.43 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 3.45% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-07T03:31:59.056Z"
+    },
+    {
+      "id": "rep-1788603409943",
+      "title": "Q3 Automotive Campaign Performance",
+      "period": "August 2026",
+      "data_source": "MANUAL",
+      "metrics": {
+        "reach": 180000,
+        "impressions": 420000,
+        "engagement": 14500,
+        "engagement_rate": 3.45,
+        "ctr": 2.1,
+        "views": 65000,
+        "watch_time_hours": 1200,
+        "conversions": 85,
+        "leads": 42,
+        "cost": 45000,
+        "roas": 4.8,
+        "cpc": 8.5,
+        "cpm": 107
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 4.8x และ CTR เฉลี่ย 2.1% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 42 รายการ ด้วยต้นทุนเฉลี่ย ฿1071.43 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 3.45% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-05T10:16:49.943Z"
+    },
+    {
+      "id": "rep-1788603397593",
+      "title": "Q3 Automotive Campaign Performance",
+      "period": "August 2026",
+      "data_source": "MANUAL",
+      "metrics": {
+        "reach": 180000,
+        "impressions": 420000,
+        "engagement": 14500,
+        "engagement_rate": 3.45,
+        "ctr": 2.1,
+        "views": 65000,
+        "watch_time_hours": 1200,
+        "conversions": 85,
+        "leads": 42,
+        "cost": 45000,
+        "roas": 4.8,
+        "cpc": 8.5,
+        "cpm": 107
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 4.8x และ CTR เฉลี่ย 2.1% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 42 รายการ ด้วยต้นทุนเฉลี่ย ฿1071.43 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 3.45% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-05T10:16:37.593Z"
+    },
+    {
+      "id": "rep-1788596813742",
+      "title": "Weekly Automotive Test",
+      "period": "Sep 2026",
+      "data_source": "CSV",
+      "metrics": {
+        "ctr": 2.5,
+        "cpm": 100,
+        "cost": 100000,
+        "cpc": 4,
+        "engagement_rate": 5,
+        "reach": 500000,
+        "conversions": 150,
+        "roas": 4.5,
+        "watch_time_hours": 3000,
+        "impressions": 1000000,
+        "engagement": 50000,
+        "views": 200000,
+        "leads": 250
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพโดยรวมอยู่ในเกณฑ์ดีเยี่ยม ด้วย ROAS ที่ 4.5x และ CTR เฉลี่ย 2.5% สูงกว่าเกณฑ์มาตรฐานอุตสาหกรรมรถยนต์ การสื่อสารด้านความคุ้มค่าทางการเงินและการทดสอบขับจริงเป็นตัวขับเคลื่อนยอด Lead หลัก",
+      "key_findings": [
+        "สร้างยอด Lead รวม 250 รายการ ด้วยต้นทุนเฉลี่ย ฿400.00 ต่อ Lead",
+        "อัตราส่วนการมีส่วนร่วม (Engagement Rate) แตะ 5% บ่งชี้ว่าเนื้อหาสร้างความสนใจต่อกลุ่มเป้าหมายได้ดี",
+        "คอนเทนต์วิดีโอสั้นแบบ POV สร้างอัตราการดูจบ (Completion Rate) สูงกว่าภาพนิ่งทั่วไปถึง 2.4 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลา 19:30 - 22:00 น. ในวันธรรมดาเป็นช่วงที่เกิด Conversion กรอกแบบฟอร์มสูงสุด",
+        "กลุ่มอายุ 25-34 ปีมีสัดส่วนการคลิกลิงก์ทดลองขับสูงสุด คิดเป็น 62% ของทั้งหมด"
+      ],
+      "identified_problems": [
+        "หน้า Landing Page ในมือถือมีการ Drop-off ประมาณ 38% ช่วงกรอกเบอร์โทรศัพท์",
+        "โพสต์ภาพนิ่งที่เป็นข้อความโปรโมชั่นล้วนมีต้นทุนต่อคลิก (CPC) สูงกว่าค่าเฉลี่ย 45%"
+      ],
+      "what_performed_well": [
+        "คอนเทนต์แจกแจงค่าผ่อนรายวันและค่าน้ำมันจริง (CTR 3.4%)",
+        "คลิปสั้น POV สาธิต 3 ปุ่มแก้เมื่อยเวลารถติด",
+        "ข้อเสนอทดลองขับรับบัตรเติมน้ำมันฟรี"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพโบรชัวร์ทางการที่ไม่มีผู้ขับขี่หรือสถานการณ์จริง",
+        "วิดีโอความยาวเกิน 5 นาทีที่ไม่มีท่อน Hook ดึงดูดใน 3 วินาทีแรก"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility (ความคุ้มค่าด้านค่าใช้จ่ายจริง)",
+        "Daily Commute Pain Relief (แก้ปัญหารถติดในเมือง)",
+        "Real-world Verification (การทดสอบจริงไม่พึ่งโบรชัวร์)"
+      ],
+      "formats_worked": [
+        "Short-form Video (30-45 วินาที)",
+        "Multi-slide Carousel Infographic (6-8 หน้า)",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริด... ไหวไหม?",
+        "ถ้าคุณต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่ช่วยคุณได้",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate สูงสุด)",
+        "Facebook (จำนวน Lead และยอดจองสูงสุด)",
+        "Instagram (Brand Affinity และยอด Save สูงสุด)"
+      ],
+      "what_to_repeat": [
+        "เพิ่มสัดส่วนงบโฆษณาในคอนเทนต์หมวด Financial & Value Proof อีก 30%",
+        "ผลิตวิดีโอสั้นแนว POV เจาะฟังก์ชันรายจุดสัปดาห์ละอย่างน้อย 2 ชิ้น"
+      ],
+      "what_to_reduce": [
+        "ลดการโปรโมทโพสต์ภาพเดี่ยวโบรชัวร์ที่ไม่มีการเล่าเรื่อง",
+        "หลีกเลี่ยงการใช้วิดีโอที่มีไตเติลโลโก้หมุนนานเกิน 3 วินาที"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับกลุ่ม First-Jobber",
+        "ทดสอบ Lead Form อัตโนมัติผ่าน LINE Official Account เทียบกับหน้าเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "นำประเด็น 'ความคุ้มค่าทางการเงิน' ไปต่อยอดเป็นชุดไอเดียคอนเทนต์ประจำเดือนถัดไปทันที",
+        "ปรับปรุง UX แบบฟอร์มในโทรศัพท์มือถือให้สั้นกระชับเพื่อลดอัตราการละทิ้งฟอร์ม",
+        "เปิดรับรีวิวและเรื่องเล่าจากผู้ใช้จริง (User-Generated Content) เพื่อเสริมความน่าเชื่อถือ"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากโพสต์เงินเดือน 35K ที่ผู้บริโภคสนใจตัวเลขการเงินเชิงลึกอย่างมาก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "กลุ่มผู้ชมเพศหญิงมีอัตราการเติบโตของยอดรับชมสูงสุดในรอบสัปดาห์"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีอัตราการบันทึก (Save Rate) สูงเป็นพิเศษ"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-05T08:26:53.742Z"
+    },
+    {
+      "id": "rep-001",
+      "campaign_id": "camp-001",
+      "title": "[DEMO] รายงานวิเคราะห์ผลแคมเปญประจำสัปดาห์ที่ 3 — PK Sedan X",
+      "period": "15 ส.ค. 2026 - 31 ส.ค. 2026",
+      "data_source": "CSV",
+      "metrics": {
+        "reach": 485200,
+        "impressions": 1240000,
+        "engagement": 68400,
+        "engagement_rate": 5.51,
+        "ctr": 2.84,
+        "views": 312000,
+        "watch_time_hours": 4250,
+        "conversions": 184,
+        "leads": 342,
+        "cost": 145000,
+        "roas": 4.85,
+        "cpc": 4.12,
+        "cpm": 116.93
+      },
+      "executive_summary": "แคมเปญมีประสิทธิภาพยอดเยี่ยม โดยเฉพาะช่องทาง TikTok และ Facebook Carousel ที่ทำให้อัตรา CTR สูงกว่าค่าเฉลี่ยอุตสาหกรรมยานยนต์ (2.84% vs 1.45%) ส่งผลให้ต้นทุนต่อ Lead ต่ำกว่าเป้าหมาย 22%",
+      "key_findings": [
+        "คอนเทนต์แนวคำนวณค่างวดรายวันและเปรียบเทียบความประหยัดน้ำมันจริงสร้าง Lead สูงสุด คิดเป็น 58% ของยอดจองทั้งหมด",
+        "TikTok Video ความยาว 30-45 วินาที ที่เน้นเสียง ASMR และ POV มีอัตราการดูจบ (Completion Rate) สูงถึง 38%",
+        "คอนเทนต์เชิงภาพนิ่งแบบทางการมี Engagement ต่ำกว่าวิดีโอสั้นเกือบ 3 เท่า"
+      ],
+      "performance_patterns": [
+        "ช่วงเวลาที่เกิด Conversion สูงสุดคือ 20:00 - 22:30 น. ของวันพุธและวันพฤหัสบดี",
+        "กลุ่มผู้ชมผู้หญิงอายุ 28-34 ปี ให้ความสนใจฟังก์ชันช่วยจอดอัตโนมัติและกล้อง 360 องศาเป็นพิเศษ"
+      ],
+      "identified_problems": [
+        "โฆษณาบน YouTube Long-form ขาด Drop-off สูงในวินาทีที่ 15 เนื่องจาก Hook ยังไม่กระชับพอ",
+        "หน้า Landing Page บนมือถือโหลดช้าเกิน 3.2 วินาทีในเครือข่าย 4G ส่งผลให้อัตรา Bounce Rate แตะ 42%"
+      ],
+      "what_performed_well": [
+        "Carousel แจกแจงค่างวดรายวัน (CTR 3.4%)",
+        "TikTok POV: รถติดสาทรแต่ไม่เมื่อยขาด้วย Auto Brake Hold (Views 140K, Shares 3.2K)",
+        "ข้อเสนอทดลองขับฟรีพร้อมรับบัตรเติมน้ำมัน"
+      ],
+      "what_performed_poorly": [
+        "โพสต์ภาพเดี่ยวโชว์โบรชัวร์ตัวหนังสือเยอะ",
+        "YouTube Intro ที่ใช้กราฟิกโลโก้หมุนนานเกิน 6 วินาที"
+      ],
+      "content_themes_worked": [
+        "Financial Feasibility & Daily Cost Breakdown",
+        "Real-world City Traffic Comfort (Pain relief)",
+        "Unbiased Fuel Economy Test"
+      ],
+      "formats_worked": [
+        "TikTok / Reels 30-45s Short Video",
+        "Facebook Swipe-through Carousel 6-8 Slides",
+        "Interactive Lead Form"
+      ],
+      "hooks_worked": [
+        "เงินเดือน 35K แต่อยากขับ Sedan ไฮบริดตัวจบ... ไหวไหม?",
+        "ถ้าต้องติดไฟแดงวันละ 2 ชั่วโมง... นี่คือ 3 ปุ่มที่คุณจะกดขอบคุณวิศวกร",
+        "ท้าพิสูจน์ 26.5 กม./ลิตร ขับจริงเปิดแอร์ฉ่ำจะรอดไหม?"
+      ],
+      "platforms_worked": [
+        "TikTok (Engagement Rate 8.2%)",
+        "Facebook (Lead Quality & Volume สูงสุด)",
+        "Instagram (Brand Affinity & Saves สูง)"
+      ],
+      "what_to_repeat": [
+        "ขยายสเกลงบประมาณในคอนเทนต์แนวคำนวณค่างวด (Scale Up Ad Spend)",
+        "ผลิตคลิปสั้น POV รีวิวฟังก์ชันเฉพาะจุดอย่างต่อเนื่องสัปดาห์ละ 3 คลิป"
+      ],
+      "what_to_reduce": [
+        "ลดการยิงแอดภาพเดี่ยวโบรชัวร์ที่ไม่มีเรื่องราวด้านประโยชน์ต่อผู้ใช้",
+        "ตัดทอน Intro วิดีโอ YouTube ให้เข้าเรื่องทันทีภายใน 3 วินาทีแรก"
+      ],
+      "what_to_test_next": [
+        "ทดสอบ Hook แนวเปรียบเทียบค่าชาร์จไฟ vs ค่าน้ำมันสำหรับรุ่น PHEV",
+        "ทดสอบ Lead Form แบบ WhatsApp / LINE Chatbot Automation เทียบกับเว็บฟอร์มเดิม"
+      ],
+      "recommendations": [
+        "ดึงข้อมูลเชิงลึกเรื่อง 'ความคุ้มค่าทางการเงิน' ไปขยายผลต่อใน Idea Agent สำหรับแคมเปญเดือนหน้าทันที",
+        "ปรับปรุงความเร็วหน้า Landing Page เพื่อลด Bounce Rate ของกลุ่มผู้ใช้มือถือ",
+        "จัดแคมเปญประกวดคลิปทดลองขับจากลูกค้าจริงเพื่อสร้าง User-Generated Content (UGC)"
+      ],
+      "content_opportunities": [
+        {
+          "title": "เปรียบเทียบค่าเดินทาง 1 ปี: รถไฟฟ้า vs ไฮบริด vs น้ำมันล้วน ในเส้นทางเดียวกัน",
+          "pillar": "Financial Proof",
+          "platform": "facebook",
+          "format": "Infographic Carousel",
+          "rationale": "ต่อยอดจากความสำเร็จของโพสต์เงินเดือน 35K ที่ผู้บริโภคต้องการตัวเลขการเงินเชิงลึก"
+        },
+        {
+          "title": "ผู้หญิงขับคนเดียวตอนกลางคืน... ทำไมฟังก์ชันนี้ใน PK Sedan X ถึงทำให้อุ่นใจที่สุด",
+          "pillar": "Safety & Emotional",
+          "platform": "tiktok",
+          "format": "POV Short Story",
+          "rationale": "เจาะกลุ่มเป้าหมายผู้หญิงที่มีอัตราการตอบรับสูงในสัปดาห์ที่ผ่านมา"
+        },
+        {
+          "title": "กล้องรอบคัน 360 องศาช่วยจอดในซองแคบห้างดัง ง่ายเหมือนเล่นเกม",
+          "pillar": "Product Feature Demo",
+          "platform": "instagram",
+          "format": "Reels 20s",
+          "rationale": "วิดีโอสาธิตการใช้งานจริงสั้นๆ มีการแชร์และเซฟสูงมาก"
+        }
+      ],
+      "is_data_sufficient": true,
+      "created_at": "2026-09-01T18:00:00Z"
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "kb-1788751918897",
+      "category": "PRODUCT",
+      "title": "Test Specification PK Sedan Z",
+      "content": "# PK Sedan Z Specification\n- 0-100 km/h in 5.8s\n- Fuel: 28 km/L",
+      "tags": [
+        "Test",
+        "Sedan Z",
+        "Speed"
+      ],
+      "verified": true,
+      "created_at": "2026-09-07T03:31:58.897Z",
+      "updated_at": "2026-09-07T03:31:58.897Z"
+    },
+    {
+      "id": "kb-1788748709079",
+      "category": "PRODUCT",
+      "title": "Test Specification PK Sedan Z",
+      "content": "# PK Sedan Z Specification\n- 0-100 km/h in 5.8s\n- Fuel: 28 km/L",
+      "tags": [
+        "Test",
+        "Sedan Z",
+        "Speed"
+      ],
+      "verified": true,
+      "created_at": "2026-09-07T02:38:29.079Z",
+      "updated_at": "2026-09-07T02:38:29.079Z"
+    },
+    {
+      "id": "kb-1788603409817",
+      "category": "PRODUCT",
+      "title": "Test Specification PK Sedan Z",
+      "content": "# PK Sedan Z Specification\n- 0-100 km/h in 5.8s\n- Fuel: 28 km/L",
+      "tags": [
+        "Test",
+        "Sedan Z",
+        "Speed"
+      ],
+      "verified": true,
+      "created_at": "2026-09-05T10:16:49.817Z",
+      "updated_at": "2026-09-05T10:16:49.817Z"
+    },
+    {
+      "id": "kb-1788603397466",
+      "category": "PRODUCT",
+      "title": "Test Specification PK Sedan Z",
+      "content": "# PK Sedan Z Specification\n- 0-100 km/h in 5.8s\n- Fuel: 28 km/L",
+      "tags": [
+        "Test",
+        "Sedan Z",
+        "Speed"
+      ],
+      "verified": true,
+      "created_at": "2026-09-05T10:16:37.466Z",
+      "updated_at": "2026-09-05T10:16:37.466Z"
+    },
+    {
+      "id": "kb-1788603333337",
+      "category": "PRODUCT",
+      "title": "Test Specification PK Sedan Z",
+      "content": "# PK Sedan Z Specification\n- 0-100 km/h in 5.8s\n- Fuel: 28 km/L",
+      "tags": [
+        "Test",
+        "Sedan Z",
+        "Speed"
+      ],
+      "verified": true,
+      "created_at": "2026-09-05T10:15:33.337Z",
+      "updated_at": "2026-09-05T10:15:33.337Z"
+    },
+    {
+      "id": "kb-001",
+      "category": "BRAND",
+      "title": "[DEMO] PK Auto Brand Identity & Tone of Voice Guidelines 2026",
+      "content": "# PK Auto Brand Guidelines 2026\n\n## ค่านิยมหลักของแบรนด์ (Core Values)\n1. Human-Centric Innovation: นวัตกรรมที่ออกแบบโดยมีมนุษย์และความสะดวกสบายเป็นศูนย์กลาง\n2. Accessible Premium: ความหรูหราทันสมัยที่จับต้องได้และคุ้มค่าอย่างมีเหตุผล\n3. Zero Compromise Safety: ความปลอดภัยที่ต้องมีเป็นอุปกรณ์มาตรฐาน ไม่ใช่ตัวเลือกเสริม\n\n## โทนเสียงและการสื่อสาร (Tone of Voice)\n- ภาษา: เป็นมิตร มั่นใจ มีเหตุผล ไม่โอ้อวดเกินจริง\n- หลีกเลี่ยง: คำโฆษณาที่เป็นนามธรรมจนจับต้องไม่ได้ เช่น 'ดีที่สุดในจักรวาล' หรือการดูถูกคู่แข่ง\n- เน้น: การใช้ตัวเลขทางวิศวกรรมที่ได้รับการรับรองจริง และการอธิบายประโยชน์ต่อการใช้ชีวิตจริง (Benefit over Feature)",
+      "verified": true,
+      "tags": [
+        "Brand",
+        "Tone of Voice",
+        "Guidelines",
+        "Values"
+      ],
+      "created_at": "2026-08-01T09:00:00Z",
+      "updated_at": "2026-08-01T09:00:00Z"
+    },
+    {
+      "id": "kb-002",
+      "category": "PRODUCT",
+      "title": "[DEMO] เอกสารข้อมูลทางเทคนิคและการรับรอง: PK Sedan X (Smart Hybrid)",
+      "content": "# ข้อกำหนดทางเทคนิค PK Sedan X (Ultra Smart Hybrid)\n\n## ขุมพลังและสมรรถนะ\n- เครื่องยนต์เบนซิน 4 สูบ 1.5 ลิตร VTEC Turbo พร้อมมอเตอร์ไฟฟ้าคู่\n- กำลังสูงสุดรวม: 190 แรงม้า (PS)\n- แรงบิดสูงสุด: 260 นิวตัน-เมตร ที่ 1,500 - 4,500 รอบ/นาที\n- อัตราสิ้นเปลืองน้ำมันเฉลี่ย: 26.5 กม./ลิตร (มาตรฐาน Eco Sticker มอก. 2540-2554)\n- ปล่อยก๊าซคาร์บอนไดออกไซด์ (CO2): เพียง 88 กรัม/กิโลเมตร\n\n## การรับประกัน (Approved Warranty Claims)\n- รับประกันคุณภาพตัวรถ (Warranty): 5 ปี หรือ 150,000 กิโลเมตร\n- รับประกันระบบไฮบริดและแบตเตอรี่: 8 ปี หรือ 160,000 กิโลเมตร\n- ฟรีค่าแรงเช็กระยะตลอด 5 ปีแรก\n\n⚠️ ข้อห้าม: ห้ามระบุว่าสามารถประหยัดน้ำมันได้ถึง 30 กม./ลิตร หากไม่มีการทดสอบในสภาวะควบคุมอย่างเป็นทางการ",
+      "verified": true,
+      "tags": [
+        "Product",
+        "PK Sedan X",
+        "Specifications",
+        "Warranty",
+        "Eco Sticker"
+      ],
+      "created_at": "2026-08-10T11:00:00Z",
+      "updated_at": "2026-08-10T11:00:00Z"
+    },
+    {
+      "id": "kb-003",
+      "category": "TEMPLATES",
+      "title": "[DEMO] แม่แบบบรีฟการผลิตคอนเทนต์และสคริปต์วิดีโอสั้น (Short Video Brief Template)",
+      "content": "# Short Video Brief Template (TikTok / Reels / Shorts)\n\n1. Target Audience & Mindset:\n2. Core Hook (First 3 Seconds):\n3. Problem & Tension:\n4. Product Demo / Solution Moment:\n5. Proof Point (Scientific or User test):\n6. On-screen Call to Action:\n7. Audio & Music Direction:",
+      "verified": true,
+      "tags": [
+        "Templates",
+        "Brief",
+        "Video Script"
+      ],
+      "created_at": "2026-08-15T15:00:00Z",
+      "updated_at": "2026-08-15T15:00:00Z"
+    },
+    {
+      "id": "kb-004",
+      "category": "TEMPLATES",
+      "title": "⭐ [MASTER] คู่มือสร้าง AI Video & Storyboard: 20 ท่าโพสต์ยอดฮิต, 36 มุมกล้อง, ล็อคหน้า และ Hollywood Beats",
+      "content": "# คลังความรู้มาตรฐาน AI Video & Storyboard (Veo / Kling / Runway / Flux / ComfyUI)\n\n## 1. TOP 20 ACTION ที่ใช้บ่อยที่สุดในงาน AI Video\n1. smiling (ยิ้ม)\n2. looking at camera (มองกล้อง)\n3. making eye contact (สบตากล้อง)\n4. walking toward camera (เดินเข้าหากล้อง)\n5. looking back (หันกลับมามอง)\n6. turning around (หมุนตัว)\n7. waving (โบกมือ)\n8. pointing (ชี้นิ้ว)\n9. holding product (ถือสินค้า)\n10. presenting product (นำเสนอสินค้า)\n11. sipping coffee (จิบกาแฟ)\n12. laughing softly (หัวเราะเบาๆ)\n13. nodding (พยักหน้า)\n14. leaning forward (โน้มตัวเข้าหากล้อง)\n15. crossing arms (กอดอก)\n16. touching hair (จับผม)\n17. looking off-camera (มองออกนอกเฟรม)\n18. gazing into distance (มองไกล)\n19. confident smile (ยิ้มมั่นใจ)\n20. hero pose (ท่าฮีโร่)\n\n---\n\n## 2. แผ่นอ้างอิงมุมกล้อง 36 มุม (Master Camera Reference Sheet)\n1. หน้าตรงเต็มตัว | 2. หน้าตรงครึ่งตัว | 3. หน้าตรงระยะใกล้ (ใบหน้า)\n4. มุมเฉียง 45 องศาเต็มตัว | 5. มุมเฉียง 45 องศาครึ่งตัว | 6. มุมเฉียง 45 องศาระยะใกล้\n7. ด้านข้างเต็มตัว | 8. ด้านข้างระยะใกล้ | 9. ด้านหลัง | 10. หันมองข้ามไหล่\n11. มุมสูงเต็มตัว | 12. มุมสูงระยะใกล้ | 13. มุมต่ำเต็มตัว | 14. มุมต่ำระยะใกล้\n15. มุมมองจากด้านบน 90 องศาเต็มตัว | 16. มุมมองจากด้านบน 90 องศาครึ่งตัว\n17. มุมมองจากด้านบน 90 องศา (นอน) | 18. มุมมองจากด้านบน 90 องศา (นั่ง)\n19. มุมกว้างมาก | 20. มุมใกล้แบบกว้าง | 21. มุมเอียง (Dutch angle)\n22. ระดับเอว กอดอก | 23. ครึ่งตัวกอดอก | 24. กำลังจัดแว่น\n25. ภาพระยะใกล้เนื้อผ้า | 26. ท่าเดิน | 27. ท่านั่งบนสตูล | 28. ท่าพิงกำแพง\n29. เงยหน้ามองขึ้น | 30. ก้มหน้ามองลง | 31. ภาพระยะใกล้ดวงตา\n32. แสงหน้าต่างและลวดลายเงา | 33. ภาพระยะใกล้ครึ่งใบหน้า | 34. โน้มตัวไปด้านหน้า\n35. ยกมือจัดทรงผม | 36. ท่ายืนเชิงศิลป์\n\n---\n\n## 3. Strict Facial Consistency Mode (คำสั่งล็อคหน้าตัวละคร)\n> \"Enable strict facial consistency mode. Prioritize the facial features from the provided reference image for all subsequent generations. Maintain the subject's identity accurately while only adapting the pose, lighting, and background. Do not alter the core facial structure.\"\n\n---\n\n## 4. โครงสร้างสตอรี่บอร์ด 8 ฉาก (Commercial Infographic 10 วินาที)\n- Panel 1 เปิดเรื่อง (Wide Establishing Shot)\n- Panel 2 เตรียมพร้อม (Medium / Close-up)\n- Panel 3 เริ่มลงมือ (Action Close-up)\n- Panel 4 จุดเปลี่ยนสำคัญ (Dramatic Shot)\n- Panel 5 ความคืบหน้า (Progress Medium)\n- Panel 6 มุมมองพิเศษ (Top-down 90° / Creative Angle)\n- Panel 7 ขั้นตอนสุดท้าย (Final Detail Close-up)\n- Panel 8 เผยผลลัพธ์ (Wide Resolution & Satisfaction)\n\n---\n\n## 5. แม่แบบ Hollywood Storyboard (9 Cinematic Beats)\n1. ESTABLISHING (Wide)\n2. INTRO CHARACTER (Medium)\n3. ENVIRONMENT / CONTEXT (Tracking)\n4. CONFLICT INTRO (Close-up)\n5. BUILD TENSION (Dutch Angle)\n6. ACTION (Dynamic)\n7. TWIST (POV / OTS)\n8. CLIMAX (Heroic Low-Angle)\n9. RESOLUTION (Wide Pullback)",
+      "verified": true,
+      "tags": [
+        "AI Video",
+        "Storyboard",
+        "Veo",
+        "Kling",
+        "Runway",
+        "Camera Angles",
+        "Face Lock",
+        "Hollywood Beats"
+      ],
+      "created_at": "2026-09-09T17:18:00Z",
+      "updated_at": "2026-09-09T17:18:00Z"
+    }
+  ],
+  "approvals": [],
+  "workflows": [
+    {
+      "id": "wf-001",
+      "name": "Idea Generation Pipeline",
+      "slug": "idea-generation",
+      "description": "ดึงข้อมูลแบรนด์และสเปกรถจาก Knowledge Base แล้วสร้างชุดไอเดียตาม Framework การตลาด",
+      "trigger_type": "MANUAL",
+      "status": "ACTIVE",
+      "last_run": "2026-09-07T03:32:00.034Z",
+      "last_duration_ms": 890,
+      "last_result": "SUCCESS",
+      "n8n_workflow_id": "n8n_wf_ideas_01"
+    },
+    {
+      "id": "wf-002",
+      "name": "Content Production Automation",
+      "slug": "content-production",
+      "description": "แปลงไอเดียที่อนุมัติเป็น แคปชัน สคริปต์วิดีโอ และ Creative Brief สำหรับทีมถ่ายทำ",
+      "trigger_type": "EVENT",
+      "status": "ACTIVE",
+      "last_run": "2026-09-05T09:15:00Z",
+      "last_duration_ms": 3840,
+      "last_result": "SUCCESS",
+      "n8n_workflow_id": "n8n_wf_prod_02"
+    },
+    {
+      "id": "wf-003",
+      "name": "Document Extraction & Field Mapping",
+      "slug": "doc-extraction",
+      "description": "วิเคราะห์เอกสาร PDF/DOCX/XLSX สกัดฟิลด์สำคัญ และจับคู่ลงฟอร์มอัตโนมัติ",
+      "trigger_type": "MANUAL",
+      "status": "ACTIVE",
+      "last_run": "2026-09-05T08:30:00Z",
+      "last_duration_ms": 4120,
+      "last_result": "SUCCESS"
+    },
+    {
+      "id": "wf-004",
+      "name": "Multi-Platform Repurposing",
+      "slug": "content-repurposing",
+      "description": "ปรับรูปแบบเนื้อหา 1 ชิ้นให้เข้ากับจริตและฟอร์แมตของ Facebook, IG, TikTok, YouTube, LinkedIn, X",
+      "trigger_type": "MANUAL",
+      "status": "ACTIVE",
+      "last_run": "2026-09-04T17:00:00Z",
+      "last_duration_ms": 3600,
+      "last_result": "SUCCESS"
+    },
+    {
+      "id": "wf-005",
+      "name": "Marketing Performance Analysis",
+      "slug": "analytics-diagnostic",
+      "description": "นำเข้าไฟล์ตัวเลขสถิติ วิเคราะห์ 9 มิติ และส่งผลลัพธ์ย้อนกลับเข้าคลังไอเดีย",
+      "trigger_type": "SCHEDULE",
+      "status": "ACTIVE",
+      "last_run": "2026-09-01T18:00:00Z",
+      "last_duration_ms": 4890,
+      "last_result": "SUCCESS"
+    },
+    {
+      "id": "wf-006",
+      "name": "Document-to-Form External Submission",
+      "slug": "doc-to-form-submission",
+      "description": "ส่งข้อมูลฟิลด์ที่ผ่านการอนุมัติแล้วไปยัง Google Forms หรือ ERP ภายนอกผ่าน Webhook",
+      "trigger_type": "WEBHOOK",
+      "status": "ACTIVE",
+      "last_run": "2026-09-01T14:30:00Z",
+      "last_duration_ms": 1200,
+      "last_result": "SUCCESS"
+    },
+    {
+      "id": "wf-007",
+      "name": "Knowledge Base Auto-Ingestion",
+      "slug": "knowledge-ingestion",
+      "description": "อัปเดตข้อมูลผลิตภัณฑ์ ตรวจสอบคำเคลม และแบ่งหมวดหมู่เอกสารอ้างอิง",
+      "trigger_type": "MANUAL",
+      "status": "ACTIVE",
+      "last_run": "2026-08-15T15:10:00Z",
+      "last_duration_ms": 1950,
+      "last_result": "SUCCESS"
+    }
+  ],
+  "workflow_runs": [],
+  "ai_generations": [
+    {
+      "id": "gen-1789975578940",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 5048,
+      "completion_tokens": 4096,
+      "total_tokens": 9144,
+      "latency_ms": 12286,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-21T07:26:18.940Z"
+    },
+    {
+      "id": "gen-1789523448541",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 4121,
+      "completion_tokens": 4096,
+      "total_tokens": 8217,
+      "latency_ms": 10691,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-16T01:50:48.541Z"
+    },
+    {
+      "id": "gen-1789465674774",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 3967,
+      "completion_tokens": 4096,
+      "total_tokens": 8063,
+      "latency_ms": 11184,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-15T09:47:54.774Z"
+    },
+    {
+      "id": "gen-1789459038920",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 3967,
+      "completion_tokens": 4041,
+      "total_tokens": 8008,
+      "latency_ms": 12585,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-15T07:57:18.920Z"
+    },
+    {
+      "id": "gen-1789380479931",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 4681,
+      "completion_tokens": 4052,
+      "total_tokens": 8733,
+      "latency_ms": 11547,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-14T10:07:59.931Z"
+    },
+    {
+      "id": "gen-1789373857718",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (Groq Cloud Qwen 3.8)",
+      "prompt_tokens": 3975,
+      "completion_tokens": 950,
+      "total_tokens": 4925,
+      "latency_ms": 11970,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-14T08:17:37.718Z"
+    },
+    {
+      "id": "gen-1789355018068",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 4094,
+      "completion_tokens": 950,
+      "total_tokens": 5044,
+      "latency_ms": 3882,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-14T03:03:38.068Z"
+    },
+    {
+      "id": "gen-1789354996793",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 4681,
+      "completion_tokens": 4096,
+      "total_tokens": 8777,
+      "latency_ms": 11830,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-14T03:03:16.793Z"
+    },
+    {
+      "id": "gen-1789208782119",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 4677,
+      "completion_tokens": 4096,
+      "total_tokens": 8773,
+      "latency_ms": 11967,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-12T10:26:22.119Z"
+    },
+    {
+      "id": "gen-1789119721617",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (Groq Cloud Qwen 3.8)",
+      "prompt_tokens": 5017,
+      "completion_tokens": 950,
+      "total_tokens": 5967,
+      "latency_ms": 11557,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:42:01.617Z"
+    },
+    {
+      "id": "gen-1789119701318",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (Groq Cloud Qwen 3.8)",
+      "prompt_tokens": 4506,
+      "completion_tokens": 4096,
+      "total_tokens": 8602,
+      "latency_ms": 9276,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:41:41.318Z"
+    },
+    {
+      "id": "gen-1789119481618",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (Groq Cloud Qwen 3.8)",
+      "prompt_tokens": 2271,
+      "completion_tokens": 2048,
+      "total_tokens": 4319,
+      "latency_ms": 4604,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:38:01.618Z"
+    },
+    {
+      "id": "gen-1789119302066",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 2279,
+      "completion_tokens": 2048,
+      "total_tokens": 4327,
+      "latency_ms": 6296,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:35:02.066Z"
+    },
+    {
+      "id": "gen-1789118079563",
+      "model": "Groq Cloud (openai/gpt-oss-120b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 2773,
+      "completion_tokens": 3072,
+      "total_tokens": 5845,
+      "latency_ms": 8382,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:14:39.563Z"
+    },
+    {
+      "id": "gen-1789118065689",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (Groq Cloud Qwen 3.8)",
+      "prompt_tokens": 2412,
+      "completion_tokens": 2048,
+      "total_tokens": 4460,
+      "latency_ms": 4706,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T09:14:25.689Z"
+    },
+    {
+      "id": "gen-1789117091573",
+      "model": "Groq Cloud (qwen/qwen3.8-27b)",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 2279,
+      "completion_tokens": 2048,
+      "total_tokens": 4327,
+      "latency_ms": 5206,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T08:58:11.574Z"
+    },
+    {
+      "id": "gen-1789116574647",
+      "model": "Built-in Zero-Quota Engine",
+      "workflow": "Idea Agent (ChatGPT)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 1240,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T08:49:34.647Z"
+    },
+    {
+      "id": "gen-1789115765042",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2027,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T08:36:05.042Z"
+    },
+    {
+      "id": "gen-1789115098845",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 1927,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T08:24:58.845Z"
+    },
+    {
+      "id": "gen-1789109668927",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2137,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T06:54:28.927Z"
+    },
+    {
+      "id": "gen-1789103064446",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2100,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T05:04:24.446Z"
+    },
+    {
+      "id": "gen-1789102193096",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2086,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:49:53.096Z"
+    },
+    {
+      "id": "gen-1789102103862",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2264,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:48:23.862Z"
+    },
+    {
+      "id": "gen-1789102048049",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 1999,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:47:28.049Z"
+    },
+    {
+      "id": "gen-1789102047960",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 1913,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:47:27.960Z"
+    },
+    {
+      "id": "gen-1789102040843",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2065,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:47:20.843Z"
+    },
+    {
+      "id": "gen-1789101588813",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2101,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T04:39:48.813Z"
+    },
+    {
+      "id": "gen-1789094562676",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2078,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T02:42:42.676Z"
+    },
+    {
+      "id": "gen-1789094476666",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2008,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-11T02:41:16.666Z"
+    },
+    {
+      "id": "gen-1789030915574",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2050,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T09:01:55.574Z"
+    },
+    {
+      "id": "gen-1789030907905",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2662,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T09:01:47.905Z"
+    },
+    {
+      "id": "gen-1789030905218",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2044,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T09:01:45.218Z"
+    },
+    {
+      "id": "gen-1789029418787",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2006,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T08:36:58.787Z"
+    },
+    {
+      "id": "gen-1789028344203",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2005,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T08:19:04.203Z"
+    },
+    {
+      "id": "gen-1789028335518",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2158,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T08:18:55.518Z"
+    },
+    {
+      "id": "gen-1789027774906",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2191,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T08:09:34.906Z"
+    },
+    {
+      "id": "gen-1789027480462",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2120,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T08:04:40.462Z"
+    },
+    {
+      "id": "gen-1789024472101",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2225,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T07:14:32.101Z"
+    },
+    {
+      "id": "gen-1789007604132",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini 3.8 Flash - High Reasoning)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2133,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T02:33:24.132Z"
+    },
+    {
+      "id": "gen-1789006763265",
+      "model": "gemini-3.5-flash-lite",
+      "workflow": "Idea Agent (Gemini)",
+      "prompt_tokens": 2568,
+      "completion_tokens": 5176,
+      "total_tokens": 7744,
+      "latency_ms": 17226,
+      "status": "SUCCESS",
+      "cost_usd": 0.001162,
+      "timestamp": "2026-09-10T02:19:23.265Z"
+    },
+    {
+      "id": "gen-1789006636150",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (Gemini)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 36715,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-10T02:17:16.150Z"
+    },
+    {
+      "id": "gen-1789006387810",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (Gemini)",
+      "prompt_tokens": 2572,
+      "completion_tokens": 8270,
+      "total_tokens": 16945,
+      "latency_ms": 53265,
+      "status": "SUCCESS",
+      "cost_usd": 0.002542,
+      "timestamp": "2026-09-10T02:13:07.810Z"
+    },
+    {
+      "id": "gen-1789006055300",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2587,
+      "completion_tokens": 15648,
+      "total_tokens": 19576,
+      "latency_ms": 89108,
+      "status": "SUCCESS",
+      "cost_usd": 0.002936,
+      "timestamp": "2026-09-10T02:07:35.300Z"
+    },
+    {
+      "id": "gen-1788949784679",
+      "model": "gemini-3.8-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 92376,
+      "status": "ERROR",
+      "cost_usd": 0,
+      "timestamp": "2026-09-09T10:29:44.679Z"
+    },
+    {
+      "id": "gen-1788949784677",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2589,
+      "completion_tokens": 15495,
+      "total_tokens": 20192,
+      "latency_ms": 92374,
+      "status": "SUCCESS",
+      "cost_usd": 0.003029,
+      "timestamp": "2026-09-09T10:29:44.677Z"
+    },
+    {
+      "id": "gen-1788949594765",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2584,
+      "completion_tokens": 16609,
+      "total_tokens": 20805,
+      "latency_ms": 106118,
+      "status": "SUCCESS",
+      "cost_usd": 0.003121,
+      "timestamp": "2026-09-09T10:26:34.765Z"
+    },
+    {
+      "id": "gen-1788948807573",
+      "model": "gemini-3.5-flash-lite",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2584,
+      "completion_tokens": 7403,
+      "total_tokens": 9987,
+      "latency_ms": 64281,
+      "status": "SUCCESS",
+      "cost_usd": 0.001498,
+      "timestamp": "2026-09-09T10:13:27.573Z"
+    },
+    {
+      "id": "gen-1788945979300",
+      "model": "gemini-3.5-flash",
+      "workflow": "Repurposing Agent (Multi-Platform)",
+      "prompt_tokens": 537,
+      "completion_tokens": 2280,
+      "total_tokens": 5234,
+      "latency_ms": 42553,
+      "status": "SUCCESS",
+      "cost_usd": 0.000785,
+      "timestamp": "2026-09-09T09:26:19.300Z"
+    },
+    {
+      "id": "gen-1788945675506",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2587,
+      "completion_tokens": 3640,
+      "total_tokens": 7565,
+      "latency_ms": 51368,
+      "status": "SUCCESS",
+      "cost_usd": 0.001135,
+      "timestamp": "2026-09-09T09:21:15.506Z"
+    },
+    {
+      "id": "gen-1788944288927",
+      "model": "gemini-3.5-flash-lite",
+      "workflow": "Idea Agent (ChatGPT) (ChatGPT Persona)",
+      "prompt_tokens": 2092,
+      "completion_tokens": 2802,
+      "total_tokens": 4894,
+      "latency_ms": 38823,
+      "status": "SUCCESS",
+      "cost_usd": 0.000734,
+      "timestamp": "2026-09-09T08:58:08.927Z"
+    },
+    {
+      "id": "gen-1788944020707",
+      "model": "gemini-3.5-flash",
+      "workflow": "Idea Agent (Gemini)",
+      "prompt_tokens": 2077,
+      "completion_tokens": 3465,
+      "total_tokens": 8058,
+      "latency_ms": 44680,
+      "status": "SUCCESS",
+      "cost_usd": 0.001209,
+      "timestamp": "2026-09-09T08:53:40.707Z"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "audit-1789975578948",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789975578948",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:26:18.948Z"
+    },
+    {
+      "id": "audit-1789975578942",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:26:18.942Z"
+    },
+    {
+      "id": "audit-1789975569460",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:26:09.460Z"
+    },
+    {
+      "id": "audit-1789974289276",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789523448547-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:04:49.276Z"
+    },
+    {
+      "id": "audit-1789974288761",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789523448547-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:04:48.761Z"
+    },
+    {
+      "id": "audit-1789974287784",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789523448545-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-21T07:04:47.784Z"
+    },
+    {
+      "id": "audit-1789523448549",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789523448549",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:50:48.549Z"
+    },
+    {
+      "id": "audit-1789523448543",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:50:48.543Z"
+    },
+    {
+      "id": "audit-1789523439367",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:50:39.367Z"
+    },
+    {
+      "id": "audit-1789523395478",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789465674781-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:49:55.478Z"
+    },
+    {
+      "id": "audit-1789523394611",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789465674780-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:49:54.611Z"
+    },
+    {
+      "id": "audit-1789523393367",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789465674779-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-16T01:49:53.367Z"
+    },
+    {
+      "id": "audit-1789465674782",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789465674782",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:54.782Z"
+    },
+    {
+      "id": "audit-1789465674776",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:54.776Z"
+    },
+    {
+      "id": "audit-1789465665247",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:45.247Z"
+    },
+    {
+      "id": "audit-1789465631594",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789459038925-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:11.594Z"
+    },
+    {
+      "id": "audit-1789465631115",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789459038925-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:11.115Z"
+    },
+    {
+      "id": "audit-1789465630270",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789459038924-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T09:47:10.270Z"
+    },
+    {
+      "id": "audit-1789459262120",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789459038924-0",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T08:01:02.120Z"
+    },
+    {
+      "id": "audit-1789459038927",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789459038927",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:57:18.927Z"
+    },
+    {
+      "id": "audit-1789459038921",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:57:18.921Z"
+    },
+    {
+      "id": "audit-1789459029715",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:57:09.715Z"
+    },
+    {
+      "id": "audit-1789458986257",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789380479944-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:56:26.257Z"
+    },
+    {
+      "id": "audit-1789458985473",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789380479944-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:56:25.473Z"
+    },
+    {
+      "id": "audit-1789458984035",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789380479937-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-15T07:56:24.035Z"
+    },
+    {
+      "id": "audit-1789380638142",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789380479944-1",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:10:38.142Z"
+    },
+    {
+      "id": "audit-1789380479947",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789380479947",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:59.947Z"
+    },
+    {
+      "id": "audit-1789380479933",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:59.933Z"
+    },
+    {
+      "id": "audit-1789380470365",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:50.365Z"
+    },
+    {
+      "id": "audit-1789380464847",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119302068-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:44.847Z"
+    },
+    {
+      "id": "audit-1789380463984",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119481620-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:43.984Z"
+    },
+    {
+      "id": "audit-1789380461816",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119701323-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:41.816Z"
+    },
+    {
+      "id": "audit-1789380461197",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119701323-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:41.197Z"
+    },
+    {
+      "id": "audit-1789380460726",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119701321-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:40.726Z"
+    },
+    {
+      "id": "audit-1789380459776",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119721619-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:39.776Z"
+    },
+    {
+      "id": "audit-1789380459056",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119721619-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:39.056Z"
+    },
+    {
+      "id": "audit-1789380458479",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119721619-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:38.479Z"
+    },
+    {
+      "id": "audit-1789380457926",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789119721619-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:37.926Z"
+    },
+    {
+      "id": "audit-1789380457271",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789208782125-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:37.271Z"
+    },
+    {
+      "id": "audit-1789380456668",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789208782125-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:36.668Z"
+    },
+    {
+      "id": "audit-1789380456257",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789208782124-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:36.257Z"
+    },
+    {
+      "id": "audit-1789380455700",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789354996799-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:35.700Z"
+    },
+    {
+      "id": "audit-1789380455025",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789354996799-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:35.025Z"
+    },
+    {
+      "id": "audit-1789380454531",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789354996798-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:34.531Z"
+    },
+    {
+      "id": "audit-1789380453848",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789355018073-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:33.848Z"
+    },
+    {
+      "id": "audit-1789380452751",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789355018073-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:32.751Z"
+    },
+    {
+      "id": "audit-1789380449719",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789355018072-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:29.719Z"
+    },
+    {
+      "id": "audit-1789380448799",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789373857723-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:28.799Z"
+    },
+    {
+      "id": "audit-1789380447720",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789373857723-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:27.720Z"
+    },
+    {
+      "id": "audit-1789380447179",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789373857721-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T10:07:27.179Z"
+    },
+    {
+      "id": "audit-1789373857726",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789373857726",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: NO)",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T08:17:37.726Z"
+    },
+    {
+      "id": "audit-1789355018076",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789355018076",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:38.076Z"
+    },
+    {
+      "id": "audit-1789355018070",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:38.070Z"
+    },
+    {
+      "id": "audit-1789355015144",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:35.144Z"
+    },
+    {
+      "id": "audit-1789354996801",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789354996801",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:16.801Z"
+    },
+    {
+      "id": "audit-1789354996795",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:16.795Z"
+    },
+    {
+      "id": "audit-1789354987362",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-14T03:03:07.362Z"
+    },
+    {
+      "id": "audit-1789208782127",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789208782127",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-12T10:26:22.127Z"
+    },
+    {
+      "id": "audit-1789208782121",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-12T10:26:22.121Z"
+    },
+    {
+      "id": "audit-1789208772670",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-12T10:26:12.670Z"
+    },
+    {
+      "id": "audit-1789119721621",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789119721621",
+      "details": "Generated 4 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: NO)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:42:01.621Z"
+    },
+    {
+      "id": "audit-1789119701324",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789119701324",
+      "details": "Generated 3 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: NO)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:41:41.324Z"
+    },
+    {
+      "id": "audit-1789119481622",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789119481622",
+      "details": "Generated 1 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: NO)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:38:01.622Z"
+    },
+    {
+      "id": "audit-1789119302071",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789119302071",
+      "details": "Generated 1 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:35:02.071Z"
+    },
+    {
+      "id": "audit-1789119302067",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:35:02.067Z"
+    },
+    {
+      "id": "audit-1789119297169",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:57.169Z"
+    },
+    {
+      "id": "audit-1789119286206",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789115765052-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:46.206Z"
+    },
+    {
+      "id": "audit-1789119285295",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789115765051-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:45.295Z"
+    },
+    {
+      "id": "audit-1789119285017",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789115765051-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:45.017Z"
+    },
+    {
+      "id": "audit-1789119284339",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789115765051-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:44.339Z"
+    },
+    {
+      "id": "audit-1789119283863",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789116574655-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:43.863Z"
+    },
+    {
+      "id": "audit-1789119283027",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789116574655-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:43.027Z"
+    },
+    {
+      "id": "audit-1789119282003",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789117091578-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:42.003Z"
+    },
+    {
+      "id": "audit-1789119281359",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789118065692-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:41.359Z"
+    },
+    {
+      "id": "audit-1789119280748",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789118079567-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:40.748Z"
+    },
+    {
+      "id": "audit-1789119279766",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789118079567-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:34:39.766Z"
+    },
+    {
+      "id": "audit-1789118079570",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789118079570",
+      "details": "Generated 2 ideas (Engine: Groq Cloud (openai/gpt-oss-120b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:14:39.570Z"
+    },
+    {
+      "id": "audit-1789118079565",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:14:39.565Z"
+    },
+    {
+      "id": "audit-1789118072596",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:14:32.596Z"
+    },
+    {
+      "id": "audit-1789118065697",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789118065697",
+      "details": "Generated 1 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: NO)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:14:25.697Z"
+    },
+    {
+      "id": "audit-1789117738048",
+      "action": "TEST_API_GROQ",
+      "entity_type": "SETTINGS",
+      "entity_id": "system",
+      "details": "Groq Test: SUCCESS",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T09:08:58.048Z"
+    },
+    {
+      "id": "audit-1789117091581",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789117091581",
+      "details": "Generated 1 ideas (Engine: Groq Cloud (qwen/qwen3.8-27b), Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:58:11.581Z"
+    },
+    {
+      "id": "audit-1789117091575",
+      "action": "AUTO_FAILOVER_SUCCESS",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "groq",
+      "details": "Successfully failed over to Groq Cloud (Free Tier - High Speed) after quota exhaustion on earlier tiers",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:58:11.575Z"
+    },
+    {
+      "id": "audit-1789117086976",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:58:06.976Z"
+    },
+    {
+      "id": "audit-1789117086345",
+      "action": "TEST_API_GROQ",
+      "entity_type": "SETTINGS",
+      "entity_id": "system",
+      "details": "Groq Test: SUCCESS",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:58:06.345Z"
+    },
+    {
+      "id": "audit-1789117038241",
+      "action": "UPDATE_SETTINGS",
+      "entity_type": "SETTINGS",
+      "entity_id": "system",
+      "details": "Updated system preferences & API configuration with Auto-Failover settings",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:57:18.241Z"
+    },
+    {
+      "id": "audit-1789116585846",
+      "action": "UPDATE_SETTINGS",
+      "entity_type": "SETTINGS",
+      "entity_id": "system",
+      "details": "Updated system preferences & API configuration with Auto-Failover settings",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:49:45.846Z"
+    },
+    {
+      "id": "audit-1789116574657",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789116574657",
+      "details": "Generated 2 ideas (Engine: Built-in Zero-Quota Engine, Failover: YES)",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:49:34.657Z"
+    },
+    {
+      "id": "audit-1789116574645",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "gemini",
+      "details": "Quota exhausted on Google Gemini Primary (gemini-3.8-flash) (429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Your prepayment credits are depleted. Please go to A). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:49:34.645Z"
+    },
+    {
+      "id": "audit-1789116574191",
+      "action": "QUOTA_EXHAUSTED_FAILOVER",
+      "entity_type": "AI_FAILOVER",
+      "entity_id": "openai",
+      "details": "Quota exhausted on OpenAI Primary (GPT-4o) (429: {\n    \"error\": {\n        \"message\": \"You have no credits remaining. Add credits to continue using th). Switching to next tier...",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:49:34.191Z"
+    },
+    {
+      "id": "audit-1789115765055",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789115765055",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:36:05.055Z"
+    },
+    {
+      "id": "audit-1789115098850",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789115098850",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:58.850Z"
+    },
+    {
+      "id": "audit-1789115075112",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102193099-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:35.112Z"
+    },
+    {
+      "id": "audit-1789115074678",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102193099-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:34.678Z"
+    },
+    {
+      "id": "audit-1789115073920",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789103064457-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:33.920Z"
+    },
+    {
+      "id": "audit-1789115073446",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789103064456-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:33.446Z"
+    },
+    {
+      "id": "audit-1789115072781",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789109668931-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:32.781Z"
+    },
+    {
+      "id": "audit-1789115071668",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789109668931-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:31.668Z"
+    },
+    {
+      "id": "audit-1789115071082",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789109668930-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T08:24:31.083Z"
+    },
+    {
+      "id": "audit-1789109668933",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789109668933",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T06:54:28.933Z"
+    },
+    {
+      "id": "audit-1789103064460",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789103064460",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T05:04:24.460Z"
+    },
+    {
+      "id": "audit-1789102223644",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102193099-1",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:50:23.644Z"
+    },
+    {
+      "id": "audit-1789102193100",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789102193100",
+      "details": "Generated 3 ideas using gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:49:53.100Z"
+    },
+    {
+      "id": "audit-1789102174812",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102103864-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:49:34.812Z"
+    },
+    {
+      "id": "audit-1789102174315",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102103864-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:49:34.315Z"
+    },
+    {
+      "id": "audit-1789102173425",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102103864-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:49:33.425Z"
+    },
+    {
+      "id": "audit-1789102103865",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789102103865",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:23.865Z"
+    },
+    {
+      "id": "audit-1789102087091",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789101588819-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:07.091Z"
+    },
+    {
+      "id": "audit-1789102086645",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789101588819-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:06.645Z"
+    },
+    {
+      "id": "audit-1789102085860",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789101588819-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:05.860Z"
+    },
+    {
+      "id": "audit-1789102084559",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102040850-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:04.559Z"
+    },
+    {
+      "id": "audit-1789102084164",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102040850-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:04.164Z"
+    },
+    {
+      "id": "audit-1789102083844",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102040850-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:03.844Z"
+    },
+    {
+      "id": "audit-1789102083517",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102040849-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:03.517Z"
+    },
+    {
+      "id": "audit-1789102082902",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102047962-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:02.902Z"
+    },
+    {
+      "id": "audit-1789102081887",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102047962-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:01.887Z"
+    },
+    {
+      "id": "audit-1789102081196",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102048053-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:01.196Z"
+    },
+    {
+      "id": "audit-1789102080503",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789102048052-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:48:00.503Z"
+    },
+    {
+      "id": "audit-1789102048055",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789102048055",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:47:28.055Z"
+    },
+    {
+      "id": "audit-1789102047964",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789102047964",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:47:27.964Z"
+    },
+    {
+      "id": "audit-1789102040853",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789102040853",
+      "details": "Generated 4 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:47:20.853Z"
+    },
+    {
+      "id": "audit-1789101588820",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789101588820",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:48.820Z"
+    },
+    {
+      "id": "audit-1789101559491",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094476673-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:19.491Z"
+    },
+    {
+      "id": "audit-1789101559179",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094476672-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:19.179Z"
+    },
+    {
+      "id": "audit-1789101558883",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094562678-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:18.883Z"
+    },
+    {
+      "id": "audit-1789101558531",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094562678-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:18.531Z"
+    },
+    {
+      "id": "audit-1789101558086",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094562678-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T04:39:18.086Z"
+    },
+    {
+      "id": "audit-1789094562680",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789094562680",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:42:42.680Z"
+    },
+    {
+      "id": "audit-1789094541329",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094476672-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:42:21.329Z"
+    },
+    {
+      "id": "audit-1789094522486",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789094476672-0",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:42:02.486Z"
+    },
+    {
+      "id": "audit-1789094476675",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789094476675",
+      "details": "Generated 3 ideas using gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:41:16.675Z"
+    },
+    {
+      "id": "audit-1789094432902",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030905225-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:32.902Z"
+    },
+    {
+      "id": "audit-1789094432455",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030907908-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:32.455Z"
+    },
+    {
+      "id": "audit-1789094431199",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030907908-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:31.199Z"
+    },
+    {
+      "id": "audit-1789094430722",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030907907-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:30.722Z"
+    },
+    {
+      "id": "audit-1789094429864",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030907907-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:29.864Z"
+    },
+    {
+      "id": "audit-1789094429548",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789030915577-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-11T02:40:29.548Z"
+    },
+    {
+      "id": "audit-1789030915578",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789030915578",
+      "details": "Generated 1 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T09:01:55.578Z"
+    },
+    {
+      "id": "audit-1789030907910",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789030907910",
+      "details": "Generated 4 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T09:01:47.910Z"
+    },
+    {
+      "id": "audit-1789030905227",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789030905227",
+      "details": "Generated 1 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T09:01:45.227Z"
+    },
+    {
+      "id": "audit-1789030550410",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789029418789-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:55:50.410Z"
+    },
+    {
+      "id": "audit-1789029418790",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789029418790",
+      "details": "Generated 1 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:58.790Z"
+    },
+    {
+      "id": "audit-1789029373476",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055303-4",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:13.476Z"
+    },
+    {
+      "id": "audit-1789029372594",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055303-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:12.594Z"
+    },
+    {
+      "id": "audit-1789029371418",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055303-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:11.418Z"
+    },
+    {
+      "id": "audit-1789029371115",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055302-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:11.115Z"
+    },
+    {
+      "id": "audit-1789029370779",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055301-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:10.779Z"
+    },
+    {
+      "id": "audit-1789029370460",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006387813-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:10.460Z"
+    },
+    {
+      "id": "audit-1789029369830",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006387813-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:09.830Z"
+    },
+    {
+      "id": "audit-1789029369243",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789006636156-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:09.243Z"
+    },
+    {
+      "id": "audit-1789029368572",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789006636156-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:08.572Z"
+    },
+    {
+      "id": "audit-1789029368053",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006763270-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:08.053Z"
+    },
+    {
+      "id": "audit-1789029367716",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006763268-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:07.716Z"
+    },
+    {
+      "id": "audit-1789029366557",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789007604138-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:06.557Z"
+    },
+    {
+      "id": "audit-1789029366283",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789007604138-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:06.283Z"
+    },
+    {
+      "id": "audit-1789029366019",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789024472110-4",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:06.019Z"
+    },
+    {
+      "id": "audit-1789029365739",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789024472110-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:05.739Z"
+    },
+    {
+      "id": "audit-1789029365444",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789024472110-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:05.444Z"
+    },
+    {
+      "id": "audit-1789029365203",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789024472110-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:05.203Z"
+    },
+    {
+      "id": "audit-1789029364916",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789024472110-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:04.916Z"
+    },
+    {
+      "id": "audit-1789029364604",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789027480468-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:04.604Z"
+    },
+    {
+      "id": "audit-1789029364285",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789027774910-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:04.285Z"
+    },
+    {
+      "id": "audit-1789029364005",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789027774910-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:04.005Z"
+    },
+    {
+      "id": "audit-1789029363693",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789027774910-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:03.693Z"
+    },
+    {
+      "id": "audit-1789029363399",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789027774910-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:03.399Z"
+    },
+    {
+      "id": "audit-1789029362860",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028335527-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:02.860Z"
+    },
+    {
+      "id": "audit-1789029362424",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028335526-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:02.424Z"
+    },
+    {
+      "id": "audit-1789029362197",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028335526-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:02.197Z"
+    },
+    {
+      "id": "audit-1789029361964",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028335526-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:01.964Z"
+    },
+    {
+      "id": "audit-1789029361700",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028344208-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:01.700Z"
+    },
+    {
+      "id": "audit-1789029361258",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1789028344207-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:36:01.258Z"
+    },
+    {
+      "id": "audit-1789028344214",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789028344214",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:19:04.214Z"
+    },
+    {
+      "id": "audit-1789028335530",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789028335530",
+      "details": "Generated 4 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:18:55.530Z"
+    },
+    {
+      "id": "audit-1789027774917",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789027774917",
+      "details": "Generated 4 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:09:34.917Z"
+    },
+    {
+      "id": "audit-1789027480472",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789027480472",
+      "details": "Generated 1 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T08:04:40.472Z"
+    },
+    {
+      "id": "audit-1789024472115",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789024472115",
+      "details": "Generated 5 ideas using gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T07:14:32.115Z"
+    },
+    {
+      "id": "audit-1789007604140",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789007604140",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:33:24.140Z"
+    },
+    {
+      "id": "audit-1789007404127",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1789006055303-4",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:30:04.127Z"
+    },
+    {
+      "id": "audit-1789006763272",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789006763272",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:19:23.272Z"
+    },
+    {
+      "id": "audit-1789006636158",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789006636158",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:17:16.158Z"
+    },
+    {
+      "id": "audit-1789006387816",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789006387816",
+      "details": "Generated 2 ideas using Gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:13:07.816Z"
+    },
+    {
+      "id": "audit-1789006055305",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1789006055305",
+      "details": "Generated 5 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:07:35.305Z"
+    },
+    {
+      "id": "audit-1789005938077",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1788949784683-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:05:38.077Z"
+    },
+    {
+      "id": "audit-1789005937246",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1788949784683-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:05:37.246Z"
+    },
+    {
+      "id": "audit-1789005935957",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1788949784683-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:05:35.957Z"
+    },
+    {
+      "id": "audit-1789005935144",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1788949784683-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:05:35.144Z"
+    },
+    {
+      "id": "audit-1789005933456",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-fb-1788949784683-4",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-10T02:05:33.456Z"
+    },
+    {
+      "id": "audit-1788949784686",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788949784686",
+      "details": "Generated 5 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:29:44.686Z"
+    },
+    {
+      "id": "audit-1788949695670",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788949594769-4",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:28:15.670Z"
+    },
+    {
+      "id": "audit-1788949694985",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788949594769-3",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:28:14.985Z"
+    },
+    {
+      "id": "audit-1788949694046",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788949594769-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:28:14.046Z"
+    },
+    {
+      "id": "audit-1788949693265",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788949594769-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:28:13.265Z"
+    },
+    {
+      "id": "audit-1788949654447",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788949594767-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:27:34.447Z"
+    },
+    {
+      "id": "audit-1788949594772",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788949594772",
+      "details": "Generated 5 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:26:34.772Z"
+    },
+    {
+      "id": "audit-1788949463024",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788948807576-2",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:24:23.024Z"
+    },
+    {
+      "id": "audit-1788949460839",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788948807576-1",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:24:20.839Z"
+    },
+    {
+      "id": "audit-1788949459360",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788948807575-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:24:19.360Z"
+    },
+    {
+      "id": "audit-1788948807578",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788948807578",
+      "details": "Generated 3 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:13:27.578Z"
+    },
+    {
+      "id": "audit-1788948721929",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788945675507-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T10:12:01.929Z"
+    },
+    {
+      "id": "audit-1788945979306",
+      "action": "REPURPOSE_CONTENT",
+      "entity_type": "REPURPOSED_CONTENT",
+      "entity_id": "rep-1788945979304",
+      "details": "Repurposed content for 5 platforms",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T09:26:19.306Z"
+    },
+    {
+      "id": "audit-1788945756946",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788945675507-0",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T09:22:36.946Z"
+    },
+    {
+      "id": "audit-1788945675509",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788945675509",
+      "details": "Generated 1 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T09:21:15.509Z"
+    },
+    {
+      "id": "audit-1788945587908",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788944288928-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T09:19:47.908Z"
+    },
+    {
+      "id": "audit-1788944758892",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788944288928-0",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T09:05:58.892Z"
+    },
+    {
+      "id": "audit-1788944288929",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788944288929",
+      "details": "Generated 1 ideas using chatgpt",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T08:58:08.929Z"
+    },
+    {
+      "id": "audit-1788944207345",
+      "action": "DELETE_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788944020709-0",
+      "details": "Deleted idea",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T08:56:47.345Z"
+    },
+    {
+      "id": "audit-1788944044231",
+      "action": "ACCEPT_IDEA",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "idea-1788944020709-0",
+      "details": "Accepted idea and forwarded to Step 2: Media Studio",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T08:54:04.231Z"
+    },
+    {
+      "id": "audit-1788944020711",
+      "action": "GENERATE_IDEAS",
+      "entity_type": "CONTENT_IDEA",
+      "entity_id": "batch-1788944020711",
+      "details": "Generated 1 ideas using gemini",
+      "actor": "Admin",
+      "timestamp": "2026-09-09T08:53:40.711Z"
+    }
+  ],
+  "settings": {
+    "gemini_model": "gemini-3.8-flash",
+    "gemini_thinking_effort": "high",
+    "google_drive_status": "NOT_CONNECTED",
+    "google_sheets_status": "NOT_CONNECTED",
+    "google_forms_status": "NOT_CONNECTED",
+    "image_gen_provider": "NONE",
+    "social_publisher_status": "NOT_CONNECTED",
+    "gemini_api_key": "",
+    "has_gemini_key": false,
+    "has_n8n_webhook": false,
+    "storage_mode": "LOCAL_JSON",
+    "supabase_status": {
+      "connected": true,
+      "mode": "LOCAL_JSON",
+      "message": "ทำงานในโหมด Local JSON Database (src/data/db.json) พร้อมใช้งานแบบ Self-Hosted ทันทีโดยไม่ต้องต่อเน็ต"
+    },
+    "n8n_webhook_url": "",
+    "openai_api_key": "",
+    "has_openai_key": false,
+    "has_custom_image_key": false,
+    "default_ai_engine": "groq",
+    "auto_failover_enabled": true,
+    "groq_api_key": "",
+    "has_groq_key": false
+  },
+  "social_accounts": [
+    {
+      "id": "soc-01",
+      "brand_name": "Mazda & BYD (ดีลเลอร์ & โปรโมชั่น)",
+      "platform": "facebook",
+      "page_name": "Mazda & BYD Chiang Rai Dealer",
+      "page_id": "page_mazda_byd_cr",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T02:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-02",
+      "brand_name": "เพจรถ (ความรู้เรื่องรถ & ข่าวสารยานยนต์)",
+      "platform": "facebook",
+      "page_name": "เพจคนรักรถ & สาระยานยนต์",
+      "page_id": "page_auto_knowledge",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T23:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-03",
+      "brand_name": "PP Fishing (ขายอุปกรณ์ตกปลา & ความรู้หน้าร้าน เชียงราย)",
+      "platform": "facebook",
+      "page_name": "PP Fishing Shop เชียงราย",
+      "page_id": "page_pp_fishing",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T19:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-04",
+      "brand_name": "Lanna Lab Records (ค่ายเพลง & ดนตรีล้านนา)",
+      "platform": "youtube",
+      "page_name": "Lanna Lab Records Official",
+      "page_id": "yt_lanna_lab",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T07:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-05",
+      "brand_name": "Mr. Must Have (นายหน้า / ป้ายยาของน่าใช้)",
+      "platform": "tiktok",
+      "page_name": "Mr. Must Have ป้ายยาของดี",
+      "page_id": "tt_mr_must_have",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T01:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-06",
+      "brand_name": "ขายพระเครื่อง (ลงขายพระของพ่อ / พระแท้)",
+      "platform": "facebook",
+      "page_name": "ขายพระของพ่อ พระแท้มาตรฐานสากล",
+      "page_id": "page_father_amulets",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T07:38:50.027Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-07",
+      "brand_name": "ขายของต่าง ๆ (ของมือสอง & ของไม่ใช้แล้ว)",
+      "platform": "facebook",
+      "page_name": "ตลาดแบ่งปันของมือสองสภาพดี",
+      "page_id": "page_second_hand",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T13:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-08",
+      "brand_name": "หนังสือ (พัฒนาตนเอง & สรุปข้อคิดดี ๆ)",
+      "platform": "instagram",
+      "page_name": "Book Byte ข้อคิดเปลี่ยนชีวิต",
+      "page_id": "ig_book_byte",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T17:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-09",
+      "brand_name": "ช่องข่าว (ประเด็นร้อน & อัปเดตกระแสประจำวัน)",
+      "platform": "facebook",
+      "page_name": "ทันข่าว ทันกระแส ไวทุกประเด็น",
+      "page_id": "page_daily_news",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T03:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-10",
+      "brand_name": "สารคดี (เรื่องลึกลับ & วิทยาศาสตร์ & ประวัติศาสตร์)",
+      "platform": "youtube",
+      "page_name": "สารคดีรอบโลก & ปริศนาลี้ลับ",
+      "page_id": "yt_documentary_th",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T01:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-11",
+      "brand_name": "นิทาน (นิทานสอนใจ & เรื่องเล่าก่อนนอน)",
+      "platform": "youtube",
+      "page_name": "นิทานก่อนนอน สร้างแรงบันดาลใจ",
+      "page_id": "yt_bedtime_tales",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T03:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-12",
+      "brand_name": "ทำอาหาร (สูตร & ขั้นตอนการทำอาหาร)",
+      "platform": "tiktok",
+      "page_name": "ครัวก้นครัว สูตรเด็ดทำง่าย",
+      "page_id": "tt_cooking_secrets",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T00:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-13",
+      "brand_name": "ฟุตบอล (ไฮไลท์ยิงประตู & กีฬา)",
+      "platform": "facebook",
+      "page_name": "คอบอลตัวจริง เกาะติดช็อตเด็ด",
+      "page_id": "page_football_zone",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-08T04:38:31.167Z",
+      "auto_sync_enabled": true
+    },
+    {
+      "id": "soc-14",
+      "brand_name": "แอคเค้าท์ส่วนตัว (Lifestyle & คอนเทนต์ส่วนตัว)",
+      "platform": "instagram",
+      "page_name": "My Personal Lifestyle",
+      "page_id": "ig_personal_profile",
+      "access_token": "",
+      "status": "SIMULATED",
+      "last_synced_at": "2026-09-07T15:38:31.167Z",
+      "auto_sync_enabled": true
+    }
+  ],
+  "comparisons": []
+}
