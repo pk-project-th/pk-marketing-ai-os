@@ -58,115 +58,118 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: RENDER UNMISSABLE "START PRODUCTION" BUTTON & REMOVE MANDATORY IMAGE UPLOADS (v4.7 Instant Studio):
-The current tool has NO button to click generate and confusingly shows mandatory image boxes. Fix this immediately with the following exact specifications:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX (v4.8): 1-CLICK "GENERATE ALL VIDEOS" BUTTON, STRICT ACCURATE 4-STEP STEPPER, & RESILIENT AUTO-RETRY QUEUE ("ฉันรอได้"):
 
-1. RENDER PROMINENT PRIMARY "START PRODUCTION" BUTTON (ALWAYS VISIBLE, NEVER HIDDEN):
-- Directly beneath the Directive Text Area in the left column, render an unmissable, bright primary action button:
+The user reported 3 critical issues in the tool that must be fixed immediately:
+1. MISSING 1-CLICK VIDEO GENERATION: There is no button to generate all video clips at once! Users can generate still keyframes, but cannot animate all shots in one click.
+2. PREMATURE GREEN STEPPER: Step 3 ("3. วิดีโอ VEO") shows a green checkmark before videos are generated or even when video generation failed!
+3. VIDEO GENERATION FAILS WITHOUT RETRY: Video generation fails ("สร้างวิดีโอไม่สำเร็จ") due to API rate-limits/concurrency. The user explicitly requests: "เมื่อเจนเป็นคลิปไม่สำเร็จให้มันรีใหม่ระยะเวลาตามที่มันจะเจนได้ ฉันรอได้" (When video generation fails, auto-retry with countdown cooldown until it succeeds — I can wait!).
+
+IMPLEMENT THE FOLLOWING EXACT UPGRADES:
+
+### 1. RENDER PROMINENT "🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (GENERATE ALL VIDEOS)" BUTTON:
+- In the top action bar right above the cards gallery (and also directly beneath [🚀 เริ่มผลิตโฆษณา] in the left sidebar), render an unmissable primary action button:
   <button 
-    onClick={handleStartProduction}
-    className="w-full mt-3 py-3.5 px-6 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black text-sm rounded-xl shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
+    onClick={handleGenerateAllVideos}
+    disabled={isGeneratingAllVideos || shots.length === 0}
+    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
   >
-    <span>🚀 เริ่มผลิตโฆษณา (Start Production)</span>
+    {isGeneratingAllVideos ? (
+      <>
+        <span className="inline-block animate-spin">⏳</span>
+        <span>กำลังเจนคลิปวิดีโอ ({completedVideosCount}/{shots.length} ช็อต)...</span>
+      </>
+    ) : (
+      <>
+        <span>🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (Generate All {shots.length || 10} Clips)</span>
+      </>
+    )}
   </button>
-- Also in the center of the right empty area (where it currently says "INITIALIZE ISOLATED PRODUCTION"), render a welcoming Hero Card with a large clickable button:
-  "พร้อมผลิตโฆษณา — คลิกเพื่อเริ่มสร้างภาพและวิดีโอ" with a matching [🚀 เริ่มต้นผลิตโฆษณาทันที] button.
-- CRITICAL: Both buttons must ALWAYS be visible and clickable. NEVER hide them, NEVER require images to enable them, and NEVER disable them if images are empty!
+- In EACH individual shot card, provide:
+  - If video not generated: [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)] button alongside the [🔄 เจนใหม่เฉพาะภาพนิ่ง] button.
+  - If video generated: An interactive HTML5 video player (<video src="..." controls loop autoPlay playsInline />) with a [🔄 เจนวิดีโอฉากนี้ใหม่] button.
 
-2. 100% PURE PROMPT MODE (ZERO IMAGE UPLOADS REQUIRED):
-- The user is generating food/commercials (e.g. Pla Som) purely from text prompts — NO PHOTOS EXIST TO UPLOAD!
-- REMOVE or HIDE the "REFERENCE ANCHORS" (FACE LOCK / PRODUCT LOCK) boxes. Do NOT display empty upload boxes that mislead users into thinking images are required!
-- Display a clear reassurance tag above the button:
-  "✨ โหมด Prompt ล้วน: สร้างภาพและวิดีโอจากสคริปต์ 100% (ไม่ต้องแนบรูปภาพใดๆ)"
+### 2. STRICT & ACCURATE 4-STEP STEPPER (ZERO PREMATURE GREEN TICKS):
+The top stepper must reflect the TRUE state of the pipeline — NEVER mark a step green prematurely:
+- [ 1. วิเคราะห์ ]:
+  - Gray circle when empty.
+  - Green checkmark "✔ 1. วิเคราะห์" ONLY after [SHOT 1..N] are parsed successfully into state.
+- [ 2. ภาพ 8K ]:
+  - Gray circle when no keyframes generated.
+  - Pulsing amber spinner while generating: "🎨 กำลังเจนภาพ ({stillsDone}/{totalShots})".
+  - Green checkmark "✔ 2. ภาพ 8K" ONLY when ALL 8K keyframe still images are generated.
+- [ 3. วิดีโอ VEO ]:
+  - CRITICAL: MUST REMAIN GRAY OUTLINE during Stage 1 (Keyframes). DO NOT SHOW GREEN CHECKMARK UPFRONT!
+  - When video generation starts: Turns pulsing purple with live counter "⏳ กำลังเจนวิดีโอ ({videosDone}/{totalShots})".
+  - If a shot fails and is waiting to retry: Amber/Red badge "⚠️ รอคิวลองใหม่...".
+  - Turns green checkmark "✔ 3. วิดีโอ VEO" ONLY AND ONLY WHEN 100% of video clips are successfully finished!
+- [ 4. ประกอบสื่อ Master ]:
+  - Shows green checkmark "✔ 4. ประกอบสื่อ Master" only when all video clips are ready and master preview player is available.
 
-3. INSTANT ONE-CLICK EXECUTION (CLICK TO RUN):
-- When user clicks "🚀 เริ่มผลิตโฆษณา":
-  1. Immediately parse all [SHOT N] from the directive text using:
-     const shotRegex = /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]([^\\n]*)\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi;
-  2. Perform Hard Reset: setShots([]); setGeneratedMedia({}); setProgress(0);
-  3. Populate shots state and immediately render all shot cards into the right workspace gallery.
-  4. Automatically kick off 8K Keyframe image generation for each parsed shot.
-  5. Advance the top stepper to Step 2 ("2. ภาพ 8K").
+### 3. RESILIENT SEQUENTIAL QUEUE & AUTO-RETRY SYSTEM ("ฉันรอได้"):
+Why video failed: Blasting 10 concurrent requests to Veo API triggers rate-limit (429) or timeouts, producing "สร้างวิดีโอไม่สำเร็จ".
+Fix with Queue + Auto-Retry:
+1. Sequential / Throttled Queue:
+   - In \`handleGenerateAllVideos\`, process shots one by one (or max 1-2 concurrent).
+   - Add a 3 to 5-second cooldown pause between each completed video before starting the next one.
+2. Auto-Retry on Failure with Countdown:
+   - When any shot returns an error:
+     - DO NOT abort the whole pipeline!
+     - Set card status to "retrying" with attempt counter (e.g. attempt 1 of 5).
+     - Display a visible countdown banner on that card:
+       "⚠️ เซิร์ฟเวอร์ไม่ตอบสนอง กำลังรอคูลดาวน์เพื่อลองใหม่อัตโนมัติในอีก [COUNTDOWN]s (ครั้งที่ {attempt}/5)... ฉันรอได้"
+     - Countdown timer (e.g., 15 seconds for attempt 1, 25 seconds for attempt 2, 40 seconds for attempt 3).
+     - Live ticker updates every second (15s... 14s... 13s...).
+     - When timer reaches 0, automatically re-trigger video generation for that specific shot!
+     - Up to 5 automatic retries per shot.
+   - Also provide a manual override button: [🔁 กดลองใหม่ทันที (Retry Now)] so the user can bypass the countdown if desired.
 
-4. BULLETPROOF PRODUCT ANCHORING (NO WATCHES/CARS):
-- Skip all header text before [SHOT 1]. Shot 1 must be the first real shot (e.g. Pla Som crispy skin hook).
-- Extract Campaign Product from "CAMPAIGN:\\s*([^\\n]+)".
-- Ensure every visual prompt explicitly includes the extracted product name. NEVER generate watches or cars!
+### 4. BULLETPROOF PRODUCT CONTINUITY (100% PURE PROMPT & FOOD ANCHORING):
+- Keep 100% pure prompt mode active — NO mandatory photo uploads required.
+- Maintain product anchoring: if Campaign is "ปลาส้ม" (fermented fish), all image and video prompts must strictly portray "ปลาส้ม" with golden crispy skin. Never fall back to watches, cars, or random stock objects!
 
-5. BALANCED, UNCLUTTERED CARD LAYOUT:
-- 16:9 media viewport with status tag at top-left, duration pill at top-right.
+### 5. UI POLISH & MASTER PLAYER:
+- Thai voiceover audio dialogue card with speaker icon.
 - Thai on-screen subtitle pill centered at the bottom of the media viewport with dark frosted glass backing.
-- Clear Thai voiceover dialogue card with speaker icon.
-- Per-shot "🔄 เจนใหม่เฉพาะฉากนี้ (Re-roll)" button.`;
+- Once all videos are finished, display a Master Video Player at the top with a [⬇️ ดาวน์โหลดวิดีโอทั้งหมด] button.`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build a production-grade 2-Stage Commercial Video Studio tool named "PK Commercial Video Studio v4.7 (Instant Studio Edition)" with an ultra-modern Dark Glassmorphism aesthetic, bulletproof null-checks, multi-scene video generation (1 to 30+ scenes), vector-sharp Thai on-screen typography, TTS voiceover synchronization, and auto-retry capabilities:
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build a production-grade 2-Stage Commercial Video Studio tool named "PK Commercial Video Studio v4.8 (Auto-Retry & Batch Video Edition)" with an ultra-modern Dark Glassmorphism aesthetic, bulletproof null-checks, multi-scene video generation (1 to 30+ scenes), vector-sharp Thai on-screen typography, TTS voiceover synchronization, 1-click batch video rendering, and resilient auto-retry capabilities ("ฉันรอได้"):
 
-### 1. ALWAYS VISIBLE PRIMARY CTA & ZERO REQUIRED IMAGES:
-1. Primary Generate Buttons (Dual Triggers):
-   - Left Sidebar Trigger: Render directly under the Directive Textarea a vibrant solid emerald button:
-     "🚀 เริ่มผลิตโฆษณา (Start Production)" (bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm py-3.5 w-full rounded-xl shadow-lg cursor-pointer).
-   - Main Canvas Trigger: In the center of the right empty area, render an interactive Hero Card:
-     "พร้อมผลิตโฆษณา — คลิกปุ่มด้านล่างเพื่อเริ่มสร้างภาพและวิดีโอ" with a matching [🚀 เริ่มต้นผลิตโฆษณาทันที] button.
-   - NON-NEGOTIABLE: These buttons must ALWAYS be visible, clickable, and never disabled by missing images.
-2. 100% Pure Prompt-to-Video:
-   - Remove or hide mandatory "FACE LOCK" and "PRODUCT LOCK" image upload boxes.
-   - Show reassurance badge: "✨ โหมด Prompt ล้วน: สร้างภาพและวิดีโอจากสคริปต์ 100% ไม่ต้องแนบรูปภาพ".
+### 1. ALWAYS VISIBLE PRIMARY DUAL ACTIONS & ZERO REQUIRED IMAGES:
+1. Primary Stage 1 Trigger:
+   - Left Sidebar: Vibrant emerald button "🚀 เริ่มผลิตโฆษณา (Start Production)" under the Directive Textarea.
+   - Main Canvas: Welcoming Hero Card "พร้อมผลิตโฆษณา — คลิกปุ่มด้านล่างเพื่อเริ่มสร้างภาพและวิดีโอ".
+   - 100% Pure Prompt Mode: No mandatory face/product image uploads required.
+2. Primary Stage 2 Trigger (1-Click Batch Video):
+   - In the gallery header and control bar: Vibrant purple button "🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (Generate All Clips)".
+   - Automatically processes all shots sequentially with 3-second throttle delay between scenes to prevent rate limits.
+   - Live progress indicator: "⏳ กำลังแปลงภาพเป็นวิดีโอ (ช็อต 2/10)... [====>    ] 20%".
+   - Per-shot video button on each card: [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)].
 
-### 2. REAL-TIME PIPELINE PROGRESS & COMPACT STEPPER:
-- Display a sleek, compact horizontal stepper (40px height):
-  [ 1. วิเคราะห์สคริปต์ ] ➔ [ 2. ภาพคีย์เฟรม 8K ] ➔ [ 3. แอนิเมตวิดีโอ Veo ] ➔ [ 4. ประกอบสื่อ Master ]
-- Display live percentage counter (0% to 100%) and current scene indicator.
+### 2. STRICT & ACCURATE 4-STEP STEPPER:
+- Step 1: [ 1. วิเคราะห์ ] - Green checkmark ONLY after script regex parses all shots.
+- Step 2: [ 2. ภาพ 8K ] - Pulsing amber during diffusion -> Green checkmark ONLY when all keyframe stills are done.
+- Step 3: [ 3. วิดีโอ VEO ] - MUST NOT turn green prematurely! Muted gray during Stage 1 -> Pulsing purple while generating videos -> Red/Amber banner if retrying -> Green checkmark ONLY when 100% of video clips finish!
+- Step 4: [ 4. ประกอบสื่อ Master ] - Green checkmark when master timeline player is ready.
 
-### 3. INTERACTIVE SHOT PRODUCTION GALLERY:
-- Render each parsed shot as a responsive luxury card:
-  * Media Viewport:
-    - 16:9 widescreen or 9:16 vertical unwarped frame with rounded-xl corners.
-    - Top-Left: Status pill only ("🎨 8K Keyframe" or "⏳ Generating" or "🎬 Veo Video").
-    - Top-Right: Duration pill only ("3.8s · 16:9").
-    - Bottom-Center: Thai on-screen subtitle pill (backdrop-blur bg-black/75 text-white px-4 py-1.5 rounded-full text-xs font-bold border border-white/10).
-    - Phase 1 (Keyframes): Display crisp 8K keyframe still.
-    - Phase 2 (Video): Built-in HTML5 video player with loop and controls.
-  * Metadata Box:
-    - Shot Title: "ช็อต 01: เปิดเรื่อง (Viral Hook)" in bold white.
-    - Thai Voiceover dialogue box with speaker icon. If empty, display "(ดนตรีประกอบ ไม่มีเสียงพากย์)".
-    - Visual prompt summary (EN) and camera movement direction.
-  * Card Actions:
-    - "🔄 Re-roll Keyframe" button to regenerate any individual frame.
-    - Live Status: [⏳ Queued] | [🎨 Diffusing] | [🎬 Animating Veo] | [✅ Ready]
+### 3. RESILIENT SEQUENTIAL QUEUE & AUTO-RETRY SYSTEM ("ฉันรอได้"):
+- Sequential Processing: Render video clips one by one with a 3-5s spacing between requests to eliminate 429 rate limits.
+- Auto-Retry with Countdown:
+  - If any video generation fails:
+    - Card status: "retrying"
+    - Banner: "⚠️ เซิร์ฟเวอร์ไม่ตอบสนอง กำลังรอคูลดาวน์เพื่อลองใหม่อัตโนมัติในอีก [COUNTDOWN]s (ครั้งที่ {attempt}/5)... ฉันรอได้"
+    - Auto-re-invokes generation after countdown (15s, 25s, 40s). Up to 5 auto-retries.
+    - Manual button: [🔁 กดลองใหม่ทันที (Retry Now)].
 
-### 4. RESILIENT NODE PIPELINE (Rock-Solid Execution):
+### 4. INTERACTIVE SHOT PRODUCTION GALLERY:
+- Responsive cards with 16:9 / 9:16 media viewport.
+- Phase 1: Crisp 8K Keyframe still.
+- Phase 2: Built-in HTML5 video player with loop and controls.
+- Bottom-Center: Thai on-screen subtitle pill (backdrop-blur bg-black/75 text-white px-4 py-1.5 rounded-full text-xs font-bold border border-white/10).
+- Thai Voiceover dialogue card with speaker icon.
 
-[Node 1: Preamble-Proof Regex Directive Parser]
-- Use exact shot regex: /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]([^\\n]*)\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi
-- Completely ignore header text before [SHOT 1]. Never treat preamble as Shot 1 or Shot 2.
-- Extract: Campaign Title, Total Runtime, Aspect Ratio, Shot Number, Duration, Timecode, On-Screen Text (TH), Voiceover Script, Visual Prompt (EN), Camera Motion.
-- Extract Campaign Product from "CAMPAIGN: ...". If any shot's visual prompt is missing, anchor it to the campaign product. NEVER fall back to generic watches or sports cars!
-
-[Node 2: Keyframe Diffusion Generator (Pristine 8K Visuals)]
-- Generate crisp photographic commercial still frame matching Aspect Ratio for each shot.
-- ZERO IN-DIFFUSION TEXT RULE: Negative prompt ("text, watermark, typography, subtitles, distorted Thai characters, blurry").
-- ZERO DEFAULT MOCK IMAGES: Never use demo images (watches, whiskey bottles, jewelry, perfume). All visuals must come purely from the text prompt.
-
-[Node 3: Quality Review Gate & Single-Frame Re-roll]
-- Display generated keyframes side-by-side with Thai voiceover and on-screen text badge.
-- Provide per-frame "Re-roll" button.
-
-[Node 4: Veo Image-to-Video Animator with Auto-Retry]
-- Animate approved keyframes using Google Veo with parsed Camera Motion and shot duration.
-- AUTO-RETRY ON FAILURE: Automatically retry failed video generations up to 3 times with a 5-second delay.
-
-[Node 5: Vector Thai Typography Compositor]
-- Composite "On-Screen Text (TH)" directly over video clips as vector typography graphics (Kanit/Sukhumvit font with frosted glass pill).
-
-[Node 6: Master Sequencer & Export]
-- Stitch animated clips with spoken Thai TTS voiceover audio.
-- Provide Master Video Player and export controls: "⬇️ Download Master Video (.MP4)".
-
-### 5. CRITICAL NON-NEGOTIABLE STABILITY RULES:
-- HARD RESET PER RUN: Clicking Start Production wipes previous state: setShots([]), setGeneratedMedia({}), setProgress(0).
-- STRICT NULL SAFETY: Never call .url, .data, or .type on undefined objects.
-- DUAL-TRACK THAI TEXT: Spoken Thai is TTS audio; On-Screen Thai is vector graphic overlay.
-- STRICT CONTENT ISOLATION: Every frame must show ONLY the product described in its Visual Prompt. If the directive is about "ปลาส้ม" (fermented fish), every single frame must depict fermented fish — never watches, whiskey, or cars!`;
+### 5. BULLETPROOF PRODUCT CONTINUITY:
+- Anchor all visual prompts to Campaign Product (e.g. ปลาส้ม fermented fish). Zero hallucinated watches or cars!`;
 
 export default function CommercialStudioPage() {
   return (
@@ -1404,7 +1407,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v4.5 Luxury Studio")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v4.8 Auto-Retry Studio")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1415,7 +1418,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v4.5 Luxury Studio)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v4.8 Auto-Retry Studio)</span>
                 </>
               )}
             </button>
@@ -1470,7 +1473,7 @@ function CommercialStudioContent() {
                 </button>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                {selectedFlowPromptTab === "edit" ? "Fix & Redesign Prompt v4.5" : "Full Builder Prompt v4.5"}
+                {selectedFlowPromptTab === "edit" ? "Fix & Auto-Retry Prompt v4.8" : "Full Builder Prompt v4.8"}
               </span>
             </div>
             <textarea
@@ -2143,7 +2146,7 @@ function CommercialStudioContent() {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span>ทางเลือกที่ 2: คำสั่งสร้าง Tool ใหม่ v3.5 (Full Rebuild Prompt):</span>
+                    <span>ทางเลือกที่ 2: คำสั่งสร้าง Tool ใหม่ v4.8 (Full Rebuild Prompt):</span>
                   </span>
                   <button
                     type="button"
