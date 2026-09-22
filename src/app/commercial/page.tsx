@@ -58,118 +58,100 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX (v4.8): 1-CLICK "GENERATE ALL VIDEOS" BUTTON, STRICT ACCURATE 4-STEP STEPPER, & RESILIENT AUTO-RETRY QUEUE ("ฉันรอได้"):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL BUG FIX (ZERO UNCAUGHT CRASH) & LUXURY UI/UX REDESIGN (v4.9 Studio Edition):
 
-The user reported 3 critical issues in the tool that must be fixed immediately:
-1. MISSING 1-CLICK VIDEO GENERATION: There is no button to generate all video clips at once! Users can generate still keyframes, but cannot animate all shots in one click.
-2. PREMATURE GREEN STEPPER: Step 3 ("3. วิดีโอ VEO") shows a green checkmark before videos are generated or even when video generation failed!
-3. VIDEO GENERATION FAILS WITHOUT RETRY: Video generation fails ("สร้างวิดีโอไม่สำเร็จ") due to API rate-limits/concurrency. The user explicitly requests: "เมื่อเจนเป็นคลิปไม่สำเร็จให้มันรีใหม่ระยะเวลาตามที่มันจะเจนได้ ฉันรอได้" (When video generation fails, auto-retry with countdown cooldown until it succeeds — I can wait!).
+The tool currently crashes with "⚠️ Uncaught" and the user requested: "Flow เจนไม่ได้ และอยากออกแบบให้สวยงามด้วย ให้องค์ประกอบมันสวยงามถูกต้อง ไม่รก สมส่วน"
 
-IMPLEMENT THE FOLLOWING EXACT UPGRADES:
+Fix the crash immediately and redesign the interface to be clean, proportional, and luxurious:
 
-### 1. RENDER PROMINENT "🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (GENERATE ALL VIDEOS)" BUTTON:
-- In the top action bar right above the cards gallery (and also directly beneath [🚀 เริ่มผลิตโฆษณา] in the left sidebar), render an unmissable primary action button:
-  <button 
-    onClick={handleGenerateAllVideos}
-    disabled={isGeneratingAllVideos || shots.length === 0}
-    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
-  >
-    {isGeneratingAllVideos ? (
-      <>
-        <span className="inline-block animate-spin">⏳</span>
-        <span>กำลังเจนคลิปวิดีโอ ({completedVideosCount}/{shots.length} ช็อต)...</span>
-      </>
-    ) : (
-      <>
-        <span>🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (Generate All {shots.length || 10} Clips)</span>
-      </>
-    )}
-  </button>
-- In EACH individual shot card, provide:
-  - If video not generated: [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)] button alongside the [🔄 เจนใหม่เฉพาะภาพนิ่ง] button.
-  - If video generated: An interactive HTML5 video player (<video src="..." controls loop autoPlay playsInline />) with a [🔄 เจนวิดีโอฉากนี้ใหม่] button.
+### 1. ELIMINATE THE "Uncaught" CRASH (100% TRY-CATCH & NULL-SAFETY):
+- Wrap EVERY event handler and async function (handleStart, parseShots, generateKeyframes, generateVideo, reRoll) in safe try-catch blocks:
+  try { ... } catch (err) { console.error("Safe caught:", err); setErrorMessage("เกิดข้อผิดพลาด กรุณากดลองใหม่"); }
+- Never access properties on undefined (use optional chaining '?.' and default fallbacks: shot?.visualPromptEn || '', shot?.sceneNumber || index + 1).
+- Safe initial states: shots = [], isGeneratingStills = false, isGeneratingVideos = false, activeStep = 1, currentGeneratingId = null.
+- Remove any un-memoized useEffect or unmanaged setInterval tickers that cause infinite re-renders or unhandled rejections.
 
-### 2. STRICT & ACCURATE 4-STEP STEPPER (ZERO PREMATURE GREEN TICKS):
-The top stepper must reflect the TRUE state of the pipeline — NEVER mark a step green prematurely:
-- [ 1. วิเคราะห์ ]:
-  - Gray circle when empty.
-  - Green checkmark "✔ 1. วิเคราะห์" ONLY after [SHOT 1..N] are parsed successfully into state.
-- [ 2. ภาพ 8K ]:
-  - Gray circle when no keyframes generated.
-  - Pulsing amber spinner while generating: "🎨 กำลังเจนภาพ ({stillsDone}/{totalShots})".
-  - Green checkmark "✔ 2. ภาพ 8K" ONLY when ALL 8K keyframe still images are generated.
-- [ 3. วิดีโอ VEO ]:
-  - CRITICAL: MUST REMAIN GRAY OUTLINE during Stage 1 (Keyframes). DO NOT SHOW GREEN CHECKMARK UPFRONT!
-  - When video generation starts: Turns pulsing purple with live counter "⏳ กำลังเจนวิดีโอ ({videosDone}/{totalShots})".
-  - If a shot fails and is waiting to retry: Amber/Red badge "⚠️ รอคิวลองใหม่...".
-  - Turns green checkmark "✔ 3. วิดีโอ VEO" ONLY AND ONLY WHEN 100% of video clips are successfully finished!
-- [ 4. ประกอบสื่อ Master ]:
-  - Shows green checkmark "✔ 4. ประกอบสื่อ Master" only when all video clips are ready and master preview player is available.
+### 2. LUXURY & BALANCED UI/UX REDESIGN (สวยงาม สมส่วน ไม่รกตา):
+Aesthetic: Dark Modern Luxury Creative Studio (Deep Charcoal #0d0f17, Card #161924, Subtle Glass Borders rgba(255,255,255,0.08), Vibrant Purple & Emerald Accents).
 
-### 3. RESILIENT SEQUENTIAL QUEUE & AUTO-RETRY SYSTEM ("ฉันรอได้"):
-Why video failed: Blasting 10 concurrent requests to Veo API triggers rate-limit (429) or timeouts, producing "สร้างวิดีโอไม่สำเร็จ".
-Fix with Queue + Auto-Retry:
-1. Sequential / Throttled Queue:
-   - In \`handleGenerateAllVideos\`, process shots one by one (or max 1-2 concurrent).
-   - Add a 3 to 5-second cooldown pause between each completed video before starting the next one.
-2. Auto-Retry on Failure with Countdown:
-   - When any shot returns an error:
-     - DO NOT abort the whole pipeline!
-     - Set card status to "retrying" with attempt counter (e.g. attempt 1 of 5).
-     - Display a visible countdown banner on that card:
-       "⚠️ เซิร์ฟเวอร์ไม่ตอบสนอง กำลังรอคูลดาวน์เพื่อลองใหม่อัตโนมัติในอีก [COUNTDOWN]s (ครั้งที่ {attempt}/5)... ฉันรอได้"
-     - Countdown timer (e.g., 15 seconds for attempt 1, 25 seconds for attempt 2, 40 seconds for attempt 3).
-     - Live ticker updates every second (15s... 14s... 13s...).
-     - When timer reaches 0, automatically re-trigger video generation for that specific shot!
-     - Up to 5 automatic retries per shot.
-   - Also provide a manual override button: [🔁 กดลองใหม่ทันที (Retry Now)] so the user can bypass the countdown if desired.
+Layout Structure:
+1. HEADER BAR:
+   - Left: 🎬 PK COMMERCIAL STUDIO v4.9 (Pro Edition) with live status indicator.
+   - Center: Sleek 3-Step Stepper:
+     [ 1. สคริปต์ ] ➔ [ 2. ภาพคีย์เฟรม 8K ] ➔ [ 3. วิดีโอ VEO ]
+     * Step 3 MUST remain neutral/gray during keyframe stage! Never show green check until all videos are done.
+   - Right: Primary Master CTA:
+     <button className="bg-purple-600 hover:bg-purple-500 font-bold px-5 py-2.5 rounded-xl text-white shadow-lg flex items-center gap-2">
+       🎬 เจนวิดีโอทุกฉากพร้อมกัน (Batch Generate)
+     </button>
 
-### 4. BULLETPROOF PRODUCT CONTINUITY (100% PURE PROMPT & FOOD ANCHORING):
-- Keep 100% pure prompt mode active — NO mandatory photo uploads required.
-- Maintain product anchoring: if Campaign is "ปลาส้ม" (fermented fish), all image and video prompts must strictly portray "ปลาส้ม" with golden crispy skin. Never fall back to watches, cars, or random stock objects!
+2. LEFT PANEL (Compact Directive & Controls):
+   - Clean directive textarea with syntax line count.
+   - One-click [✨ โหลดสคริปต์ปลาส้มตัวอย่าง (Load Demo)] helper button if empty.
+   - Big Emerald Action Button: [🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K (Start)]
+   - Reassurance tag: "✨ โหมด Prompt ล้วน 100% (ไม่ต้องอัปโหลดรูปภาพ)"
 
-### 5. UI POLISH & MASTER PLAYER:
-- Thai voiceover audio dialogue card with speaker icon.
-- Thai on-screen subtitle pill centered at the bottom of the media viewport with dark frosted glass backing.
-- Once all videos are finished, display a Master Video Player at the top with a [⬇️ ดาวน์โหลดวิดีโอทั้งหมด] button.`;
+3. RIGHT GALLERY (Proportional & Elegant Shot Cards):
+   - Display cards in a clean responsive grid (3-column on wide screens).
+   - Card Media Viewport (9:16 or 16:9):
+     * Sharp rounded-xl frame with smooth dark inner shadow.
+     * Top-Left: Minimalist tag \`ช็อต 01\` (Top-Left).
+     * Top-Right: Duration pill \`2.4s · 9:16\` (Top-Right).
+     * Center: Image or Video player (<video src="..." controls loop autoPlay playsInline />).
+     * Bottom-Center: Thai on-screen subtitle pill centered over dark frosted glass:
+       (backdrop-blur-md bg-black/70 text-white font-medium text-xs px-3.5 py-1 rounded-full border border-white/10).
+   - Card Content (Purge Clutter):
+     * Shot Title: Bold white Thai title (e.g. \`ช็อต 01: เคล็ดลับทอดปลาส้ม\`).
+     * Voiceover: Dialogue box with speaker icon \`🔊 "เคยเจอปัญหาทอดปลาส้ม..."\`
+     * CRITICAL CLUTTER FIX: HIDE the giant English prompt inside a neat collapsible toggle:
+       <details className="text-[11px] text-zinc-400 mt-1 cursor-pointer">
+         <summary className="hover:text-zinc-200">🔍 ดู Prompt ภาษาอังกฤษ (Visual Prompt)</summary>
+         <p className="mt-1 p-2 bg-black/40 rounded border border-white/5 font-mono text-[10.5px] leading-relaxed text-zinc-300">{shot.visualPromptEn}</p>
+       </details>
+       (This prevents walls of English text from crowding the card!)
+   - Card Action Bar (Neat Bottom Row):
+     * [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)] (Purple button)
+     * [🔄 เจนภาพใหม่] (Zinc button)
+     * If failed: [⚠️ เซิร์ฟเวอร์หน่วง — 🔁 กดลองใหม่] (Amber/Red button)
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build a production-grade 2-Stage Commercial Video Studio tool named "PK Commercial Video Studio v4.8 (Auto-Retry & Batch Video Edition)" with an ultra-modern Dark Glassmorphism aesthetic, bulletproof null-checks, multi-scene video generation (1 to 30+ scenes), vector-sharp Thai on-screen typography, TTS voiceover synchronization, 1-click batch video rendering, and resilient auto-retry capabilities ("ฉันรอได้"):
+### 3. RELIABLE VIDEO GENERATION & RETRY:
+- Sequential Generation: Process videos one by one with a 3-second delay between scenes to prevent API 429 rate limit.
+- Safe Error Handling: If a video fails, mark that card as 'error', display the retry button, and continue processing remaining scenes.
+- Manual Retry: Clicking [🔁 กดลองใหม่] retries that specific scene cleanly.
+
+### 4. FORGIVING SCRIPT PARSER:
+- Accept both [SHOT N], [ช็อต N], and [SCENE N] flexibly.
+- Never throw an error on unrecognized preamble text.`;
+
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build a production-grade 2-Stage Commercial Video Studio tool named "PK Commercial Video Studio v4.9 (Luxury Pro Studio)" with an ultra-modern Dark Glassmorphism aesthetic, 100% null-checks and try-catch safety (zero uncaught errors), clean proportional layout without cluttered text, 1-click batch video rendering, and individual video triggers:
 
 ### 1. ALWAYS VISIBLE PRIMARY DUAL ACTIONS & ZERO REQUIRED IMAGES:
 1. Primary Stage 1 Trigger:
-   - Left Sidebar: Vibrant emerald button "🚀 เริ่มผลิตโฆษณา (Start Production)" under the Directive Textarea.
-   - Main Canvas: Welcoming Hero Card "พร้อมผลิตโฆษณา — คลิกปุ่มด้านล่างเพื่อเริ่มสร้างภาพและวิดีโอ".
+   - Left Sidebar: Vibrant emerald button "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" under the Directive Textarea.
+   - Helper Button: [✨ โหลดสคริปต์ปลาส้มตัวอย่าง] if textarea is empty.
    - 100% Pure Prompt Mode: No mandatory face/product image uploads required.
 2. Primary Stage 2 Trigger (1-Click Batch Video):
-   - In the gallery header and control bar: Vibrant purple button "🎬 เจนคลิปวิดีโอทั้งหมดทีเดียว (Generate All Clips)".
+   - In the gallery header: Vibrant purple button "🎬 เจนวิดีโอทุกฉากพร้อมกัน (Batch Generate)".
    - Automatically processes all shots sequentially with 3-second throttle delay between scenes to prevent rate limits.
-   - Live progress indicator: "⏳ กำลังแปลงภาพเป็นวิดีโอ (ช็อต 2/10)... [====>    ] 20%".
    - Per-shot video button on each card: [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)].
 
-### 2. STRICT & ACCURATE 4-STEP STEPPER:
-- Step 1: [ 1. วิเคราะห์ ] - Green checkmark ONLY after script regex parses all shots.
-- Step 2: [ 2. ภาพ 8K ] - Pulsing amber during diffusion -> Green checkmark ONLY when all keyframe stills are done.
-- Step 3: [ 3. วิดีโอ VEO ] - MUST NOT turn green prematurely! Muted gray during Stage 1 -> Pulsing purple while generating videos -> Red/Amber banner if retrying -> Green checkmark ONLY when 100% of video clips finish!
-- Step 4: [ 4. ประกอบสื่อ Master ] - Green checkmark when master timeline player is ready.
+### 2. STRICT & ACCURATE 3-STEP STEPPER:
+- Step 1: [ 1. สคริปต์ ] - Green checkmark ONLY after script regex parses all shots.
+- Step 2: [ 2. ภาพคีย์เฟรม 8K ] - Pulsing amber during diffusion -> Green checkmark ONLY when all keyframe stills are done.
+- Step 3: [ 3. วิดีโอ VEO ] - MUST NOT turn green prematurely! Muted gray during Stage 1 -> Pulsing purple while generating videos -> Red/Amber tag if retry needed -> Green checkmark ONLY when 100% of video clips finish!
 
-### 3. RESILIENT SEQUENTIAL QUEUE & AUTO-RETRY SYSTEM ("ฉันรอได้"):
-- Sequential Processing: Render video clips one by one with a 3-5s spacing between requests to eliminate 429 rate limits.
-- Auto-Retry with Countdown:
-  - If any video generation fails:
-    - Card status: "retrying"
-    - Banner: "⚠️ เซิร์ฟเวอร์ไม่ตอบสนอง กำลังรอคูลดาวน์เพื่อลองใหม่อัตโนมัติในอีก [COUNTDOWN]s (ครั้งที่ {attempt}/5)... ฉันรอได้"
-    - Auto-re-invokes generation after countdown (15s, 25s, 40s). Up to 5 auto-retries.
-    - Manual button: [🔁 กดลองใหม่ทันที (Retry Now)].
-
-### 4. INTERACTIVE SHOT PRODUCTION GALLERY:
-- Responsive cards with 16:9 / 9:16 media viewport.
+### 3. LUXURY, PROPORTIONAL & UNCLUTTERED CARD DESIGN:
+- Responsive cards with 9:16 or 16:9 media viewport.
 - Phase 1: Crisp 8K Keyframe still.
 - Phase 2: Built-in HTML5 video player with loop and controls.
-- Bottom-Center: Thai on-screen subtitle pill (backdrop-blur bg-black/75 text-white px-4 py-1.5 rounded-full text-xs font-bold border border-white/10).
+- Bottom-Center: Thai on-screen subtitle pill (backdrop-blur-md bg-black/70 text-white px-3.5 py-1 rounded-full text-xs font-medium border border-white/10).
 - Thai Voiceover dialogue card with speaker icon.
+- Clutter-free: English visual prompts are collapsed inside <details><summary>🔍 ดู Prompt ภาษาอังกฤษ</summary></details> so cards remain sleek and beautiful.
 
-### 5. BULLETPROOF PRODUCT CONTINUITY:
-- Anchor all visual prompts to Campaign Product (e.g. ปลาส้ม fermented fish). Zero hallucinated watches or cars!`;
+### 4. 100% SAFE CODING (ZERO UNCAUGHT CRASHES):
+- All async actions wrapped in try/catch.
+- Defend every object access with optional chaining ?. and default fallbacks.
+- Safe sequential execution with clean error state per shot.`;
 
 export default function CommercialStudioPage() {
   return (
