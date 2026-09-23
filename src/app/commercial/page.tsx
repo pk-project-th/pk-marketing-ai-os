@@ -58,98 +58,98 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: UNIVERSAL TOPIC LOCK & ZERO CROSS-TOPIC LEAKAGE — PK STUDIO v5.4:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: UNIVERSAL TOPIC LOCK & ZERO CROSS-TOPIC LEAKAGE — PK STUDIO v5.5 PRO:
 
-ปัญหาปัจจุบันที่ต้องแก้ไขอย่างเด็ดขาด:
-1. ข้อมูลเก่าหรือภาพจากโปรเจกต์เดิม (เช่น นาฬิกา, รถยนต์, สินค้าเก่า) ติดค้างมาปนกับโปรเจกต์ใหม่
-2. เมื่อสั่งเจนเรื่องใดก็ตาม (เช่น สั่งเรื่อง "ข้าวโอ๊ต" หรือ "สอนว่ายน้ำ"):
-   - ถ้าระบบไม่มี Topic Lock หรือ Prompt สั้น AI จะสุ่มวาดนาฬิกาหรู/กระเป๋าแบรนด์เนม/รถยนต์แทน
-   - กฎเหล็ก: สั่งเรื่องไหน ต้องมีแต่เรื่องนั้น 100% ห้ามมีสิ่งของอื่นที่ไม่เกี่ยวข้องปนมาเด็ดขาด!
-     * สั่ง "ปลาส้ม" ➔ ต้องมีแต่เรื่องปลา สมุนไพร ทอดในกระทะ
-     * สั่ง "ข้าวโอ๊ต" ➔ ต้องมีแต่ชามข้าวโอ๊ต โฟมนมโอ๊ต ผลเบอร์รี่ อาหารเช้าคลีน (ห้ามมีนาฬิกาเด็ดขาด)
-     * สั่ง "สอนว่ายน้ำ" ➔ ต้องมีแต่สระว่ายน้ำ โค้ชสอนว่ายน้ำ โฟมเตะขา แว่นตาว่ายน้ำ (ห้ามมีปลา ห้ามมีนาฬิกา)
+ปัญหาสำคัญที่ต้องแก้ไขทันที:
+1. ❌ ลบปุ่ม "ตัวอย่าง OAT MILK" และปุ่ม Mock Data ออกจากหน้าจอ 100% ห้ามมีปุ่มตัวอย่างใดๆ ค้างอยู่เด็ดขาด! หน้านี้ต้องเป็น Universal Studio รองรับทุกสินค้า ไม่ผูกติดกับตัวอย่างใดๆ!
+2. ❌ แก้บักภาพเพี้ยนเป็นเครื่องชงกาแฟ/กาดริป/นาฬิกาหรู:
+   - สาเหตุแท้จริง: ตัวเครื่องมือเดิมดึงข้อความจากบรรทัด "- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Camera executes Smooth Forward Tracking Shot. Heroic product showcase..." ไปส่งให้ Imagen เจนภาพ! ซึ่งข้อความนั้นไม่มีชื่อสินค้าเลย Imagen จึงวาดเครื่องชงกาแฟ กาดริป หรือนาฬิกาหรูออกมาแทน!
+   - การแก้ไขเด็ดขาด:
+     * ฟังก์ชันเจนภาพ (generateImage): ต้องใช้เฉพาะข้อความจาก "- Visual Prompt (EN): ..." เท่านั้น! ห้ามส่ง Motion Prompt ไปเจนรูปเด็ดขาด!
+     * ฟังก์ชันเจนวิดีโอ (generateVideo): ค่อยใช้ข้อความจาก "- Camera & Physical Motion (Veo 2): ..."
+3. ❌ หัวการ์ดแสดงผลเพี้ยน:
+   - บนหัวการ์ดของแต่ละช็อต ให้แสดงชื่อช็อตภาษาไทย เช่น "ช็อต 01: เปิดเรื่อง (Viral Hook)" ห้ามเอาข้อความภาษาอังกฤษยาวๆ มาแสดงเป็นชื่อช็อต!
+   - แสดงเสียงพากย์ภาษาไทยในกล่องเสียงพากย์ "🔊 [บทพากย์ไทย]" ให้ถูกต้อง
 
 แก้ไขระบบทั้งหมดตาม 5 ข้อนี้:
 
-### 1. 🎯 UNIVERSAL TOPIC LOCK (ล็อกหัวข้อ 100% ป้องกันภาพเพี้ยน):
-- แยกอ่านชื่อหัวข้อจากบรรทัด "CAMPAIGN: [ชื่อหัวข้อ]" ด้านบนสุดของ Directive เสมอ
-- ในทุกครั้งที่สั่งเจนภาพ (Keyframe Generation):
-  * บังคับใส่ Topic Prefix กำกับเสมอ:
-    "[TOPIC LOCK: Campaign Subject] Cinematic commercial scene strictly focused on [Campaign Subject]..."
-  * บังคับใส่ Negative Constraint ท้าย Prompt เสมอ:
-    ", zero watches, zero luxury cars, zero handbags, zero jewelry, zero unrelated items, pure topic cinematography"
-- ห้ามใช้คำกว้างๆ ลอยๆ เช่น "modern luxury studio", "podium packshot", "premium showcase" เด็ดขาด เพราะเป็นคำที่ทำให้ Imagen วาดนาฬิกาหรู!
+### 1. 🗑️ ลบปุ่มตัวอย่าง & ABSOLUTE HARD RESET:
+- ลบปุ่ม "ตัวอย่าง OAT MILK" ออกจาก UI โดยสิ้นเชิง
+- ช่อง CAMPAIGN SCRIPT ต้องเริ่มต้นด้วยความว่างเปล่า (Empty Textarea) รอรับข้อความที่ผู้ใช้นำมาวาง
+- เมื่อผู้ใช้วางสคริปต์ใหม่ หรือกดปุ่ม "🗑️ ล้างข้อมูล (Hard Reset)":
+  * ล้างข้อมูลทั้งหมดทันที: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
+  * ห้ามเก็บแคชรูปหรือวิดีโอจากรอบที่แล้วเด็ดขาด ทุกโปรเจกต์ต้องเริ่มใหม่ 100%
 
-### 2. 🗑️ ABSOLUTE HARD RESET (ล้างข้อมูลเก่า 100% ทุกครั้งที่เริ่มใหม่):
-- เมื่อผู้ใช้กดปุ่ม "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" หรือวางสคริปต์ Directive ใหม่:
-  * ทำการ WIPE State เก่าทิ้งทันที:
-    setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
-  * ห้าม Merge หรือเก็บภาพ/วิดีโอจาก Session ก่อนหน้าไว้เด็ดขาด ทุกโปรเจกต์ต้องเริ่มจาก Clean Slate เสมอ
-  * ห้ามใส่ mock data หรือ dummy shots ที่มีรูปนาฬิกาหรือรถยนต์ใน Initial State
-- เพิ่มปุ่ม "🗑️ ล้างโปรเจกต์เดิม & เริ่มใหม่ (Hard Reset)" เด่นชัดข้างช่องกรอก Directive
+### 2. 🎯 UNIVERSAL TOPIC LOCK (ส่ง Prompt ภาพนิ่งให้ถูกฟิลด์):
+- ดึงชื่อแคมเปญจาก "CAMPAIGN: [ชื่อแคมเปญ]" ที่บรรทัดบนสุด
+- เมื่อสั่งสร้างภาพ (generateImage):
+  * ต้องดึงข้อความจาก "- Visual Prompt (EN): [ข้อความ]" เท่านั้น
+  * เติม Topic Lock กำกับเสมอ:
+    "[TOPIC LOCK: Campaign Subject] " + visualPromptEn + ", zero in-image text, zero watches, zero cars, zero jewelry, zero unrelated items, pure topic cinematography"
+  * ห้ามส่งคำสั่ง Camera & Physical Motion ไปให้ฟังก์ชันสร้างภาพเด็ดขาด!
 
-### 3. 🛡️ SMART PROMPT SANITIZER & ADAPTIVE VEO RETRY:
-A) SANITIZE BEFORE SENDING TO VEO (กันคำโดนแบน):
-   - แปลง "incisions" ➔ "scored pattern"
-   - แปลง "eruption" ➔ "gentle sizzling"
-   - แปลง "flesh" ➔ "tender meat"
-   - แปลง "drops smoothly into" ➔ "gently sizzling in"
-B) ADAPTIVE FALLBACK ON RETRY (ห้ามส่ง Prompt เดิมซ้ำเมื่อล้มเหลว!):
-   - รอบที่ 1: ส่ง Motion Prompt ปกติ
-   - รอบที่ 2 (Retry #1): เปลี่ยนเป็น Simplified Safe Prompt อัตโนมัติ:
-     "Cinematic slow motion. Camera slowly pushes in. Natural movement with gentle atmosphere, realistic lighting, 24fps."
-   - รอบที่ 3 (Retry #2): เปลี่ยนเป็น Minimal Universal Prompt:
-     "Smooth cinematic slow motion camera push-in, natural gentle movement, 24fps."
-C) INLINE EDIT: มีปุ่ม "✏️ แก้ไข Prompt" บนการ์ดให้แก้ไขเองได้
+### 3. 🔍 REGEX PARSER ที่แม่นยำ 100%:
+const shotRegex = /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi;
+สำหรับแต่ละช็อต แยกฟิลด์อย่างเคร่งครัด:
+- shotNumber: m[1] (1, 2, 3...)
+- shotTitle: m[2]?.trim() || ("ช็อต " + m[1]) (ภาษาไทย)
+- duration: line.match(/- Duration:\\s*([\\d.]+)s?/i)?.[1] || "3"
+- onScreenText: line.match(/- On-Screen Text \\(TH\\):\\s*"?([^"\\n]*)"?/i)?.[1] || ""
+- thaiVoiceover: line.match(/- Thai Voiceover Script:\\s*"?([^"\\n]*)"?/i)?.[1] || ""
+- visualPrompt: line.match(/- Visual Prompt \\(EN\\):\\s*([^\\n]+)/i)?.[1] || "" (สำหรับ generateImage)
+- motionPrompt: line.match(/- Camera & Physical Motion[^:]*:\\s*([^\\n]+)/i)?.[1] || "" (สำหรับ generateVideo)
 
-### 4. ⏱️ SEQUENTIAL QUEUE & 3-STEP STEPPER:
-- เจนวิดีโอทีละช็อต (Sequential Only) ดีเลย์ 10 วินาทีพร้อมนับถอยหลัง
-- ปุ่ม "⏸️ พักเซิร์ฟเวอร์ 60s" สำหรับ cooldown
-- Step 1 สคริปต์ ➔ Step 2 ภาพ 8K ➔ Step 3 วิดีโอ (เริ่มต้นเป็นสีเทา ห้ามเขียวก่อนจริง)
+### 4. 💎 การ์ดแสดงผลเรียบหรู สมส่วน ไม่รก (Pro UI):
+- สัดส่วนการ์ด 16:9 คมชัด
+- หัวการ์ด: แสดง "ช็อต 01: [ชื่อช็อตภาษาไทย]" (text-white font-bold) และป้ายเวลา "2.4s · 16:9"
+- ด้านล่างภาพ: กล่องเสียงพากย์ภาษาไทย "🔊 [บทพากย์ไทย]" (bg-slate-900/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-300)
+- ซ่อน Prompt ภาษาอังกฤษไว้ในแถบพับเก็บ:
+  <details className="text-xs text-slate-400 mt-2">
+    <summary className="cursor-pointer hover:text-slate-200">🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>
+    <div className="p-2 mt-1 bg-slate-950 rounded-lg text-[11px] font-mono text-slate-400 space-y-1">
+      <div><b>Image:</b> {shot.visualPrompt}</div>
+      <div><b>Motion:</b> {shot.motionPrompt}</div>
+    </div>
+  </details>
+- ปุ่ม "🔄 เจนใหม่ฉากนี้" และ "✏️ แก้ไข Prompt"
 
-### 5. 💎 ULTRA-CLEAN UI:
-- Dark Glassmorphism, การ์ดแสดงหัวข้อภาษาไทยชัดเจน
-- Collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>`;
+### 5. 🛡️ VEO RETRY & SEQUENTIAL QUEUE:
+- เจนวิดีโอทีละฉาก เรียงตามลำดับ พร้อมเวลานับถอยหลังพัก 10 วินาที
+- ปุ่ม "⏸️ พักเซิร์ฟเวอร์ 60s" สำหรับ Cooldown
+- ฟังก์ชัน Auto-retry อัตโนมัติ 3 ครั้งเมื่อเรนเดอร์ไม่ผ่าน`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.4 (Universal Topic Lock & Zero Cross-Topic Leakage Edition)" — a production-grade 2-stage video production tool with 100% topic adherence, total project isolation, and zero cross-topic leakage.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.5 Pro (Universal Topic Lock & Zero Cross-Topic Leakage Edition)" — a production-grade 2-stage video production tool with 100% topic adherence, total project isolation, and zero cross-topic leakage.
 
-## 1. UNIVERSAL TOPIC LOCK (ZERO WRISTWATCHES / ZERO UNRELATED OBJECTS):
-- Extract the core campaign subject from "CAMPAIGN: [Topic Name]" in the Master Directive header.
-- STRICT TOPIC ENFORCEMENT: Every generated image must strictly depict ONLY the active topic:
-  * If CAMPAIGN is "ข้าวโอ๊ต" (Oats) -> ONLY oatmeal bowl, oat milk foam, fresh berries, wholesome breakfast.
-  * If CAMPAIGN is "สอนว่ายน้ำ" (Swimming) -> ONLY swimming pool, swim coach, kickboard, freestyle stroke.
-  * If CAMPAIGN is "ปลาส้ม" (Crispy Fish) -> ONLY crispy fish, wok, fresh herbs, aromatic steam.
-- In every image prompt, append safety negative constraints:
-  ", zero watches, zero luxury cars, zero handbags, zero jewelry, zero unrelated objects"
-- NEVER use generic prompt phrases like "modern luxury studio podium" which trick Imagen into drawing luxury watches.
+## 1. ABSOLUTE BAN ON MOCK / SAMPLE BUTTONS:
+- DO NOT render any sample buttons like "ตัวอย่าง OAT MILK", "Sample Script", etc.
+- The CAMPAIGN SCRIPT textarea must start 100% empty and clean, waiting for user input.
+- Provide a clean "🗑️ ล้างข้อมูล (Hard Reset)" button next to the input area to wipe all state in 1 click.
 
-## 2. ABSOLUTE HARD RESET & ZERO PREVIOUS STATE RETENTION:
-- When clicking "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" or pasting a new Master Directive:
-  * COMPLETELY CLEAR ALL STATE: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
-  * ZERO LEAKAGE: Never retain cached images, old shots, or previous project history. Each run is 100% ISOLATED.
-  * ZERO DEFAULT SHOTS: Never pre-populate mock cards with luxury watches, cars, or dummy data.
-  * Provide a prominent "🗑️ ล้างข้อมูลและเริ่มใหม่ (Clean Reset)" button next to the input area.
+## 2. STRICT SEPARATION: VISUAL PROMPT VS MOTION PROMPT:
+- ROOT CAUSE OF HALLUCINATIONS: Never pass "- Camera & Physical Motion (Veo 2)" into the image generator!
+- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, pure topic cinematography".
+- generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
 
-## 3. RELIABLE VEO VIDEO GENERATION (ADAPTIVE FALLBACK):
-- Sequential generation only (one shot at a time) with 10-second delay between shots and live countdown.
-- Auto-sanitize prompts before sending to Veo (strip "incisions", "eruption", "flesh", "drops into").
-- Adaptive fallback on retry:
-  * Attempt 1: Full motion prompt.
-  * Attempt 2 (Retry #1): Simplified Safe Prompt ("Cinematic slow motion. Camera slowly pushes in. Natural movement with gentle atmosphere, realistic lighting, 24fps.").
-  * Attempt 3 (Retry #2): Minimal Universal Prompt ("Smooth cinematic slow motion camera push-in, natural gentle movement, 24fps.").
-- Inline editing: [✏️ แก้ไข Prompt] button on each card.
-- Header Cooldown Button: "⏸️ หยุดพัก 60 วินาที".
+## 3. ROCK-SOLID PARSER REGEX:
+Use regex: /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi
+- shotNumber: m[1]
+- shotTitle: m[2]?.trim() (e.g. "เปิดเรื่อง (Viral Hook)")
+- duration: parse from "- Duration: [N]s"
+- onScreenText: parse from "- On-Screen Text (TH): [text]"
+- thaiVoiceover: parse from "- Thai Voiceover Script: [text]"
+- visualPrompt: parse from "- Visual Prompt (EN): [text]" (SENT ONLY TO IMAGE GENERATION)
+- motionPrompt: parse from "- Camera & Physical Motion (Veo 2): [text]" (SENT ONLY TO VIDEO GENERATION)
 
-## 4. STRICT 3-STEP STEPPER:
-- Step 1: Green check ONLY when shots parsed > 0.
-- Step 2: Green check ONLY when 100% of still images exist.
-- Step 3: Gray by default (NEVER green initially!) -> Purple pulsing during generation -> Green check ONLY when 100% of videos are rendered.
+## 4. PRO CARD UI:
+- Card Title: Bold Thai scene name ("ช็อต 01: เปิดเรื่อง (Viral Hook)").
+- Media: 16:9 widescreen card with status badge.
+- Audio container: Thai voiceover with speaker icon.
+- Technical English prompts hidden inside collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>.
+- Re-roll button ("🔄 เจนใหม่เฉพาะฉากนี้") and inline edit button.
 
-## 5. PREMIUM CLEAN UI:
-- Dark Glassmorphism aesthetic.
-- Bold Thai titles on cards. Voiceover audio box.
-- English visual prompts hidden inside collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>.
-- All async functions in try/catch, null-safe optional chaining.`;
+## 5. HARD RESET & ISOLATION:
+- When starting or pasting: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({});
+- Never retain media from previous sessions. Every project is completely independent.`;
 
 export default function CommercialStudioPage() {
   return (
@@ -1305,17 +1305,17 @@ function CommercialStudioContent() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-200">
-                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v4.5 LUXURY STUDIO)
+                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.5 PRO STUDIO)
                 </span>
                 <span className="text-xs font-bold text-slate-600">
-                  แก้บักนาฬิกา/รถยนต์ · เริ่มต้นโปรเจกต์ใหม่ไม่ปนข้อมูลเก่า · ดีไซน์สมส่วนไม่รก · ป้ายไม่ทับซ้อน
+                  ลบปุ่มตัวอย่าง Oat Milk · แก้บักภาพกาแฟ/นาฬิกา · ล็อกหัวข้อ 100% ปราศจากของเก่า
                 </span>
               </div>
               <h2 className="text-base font-black text-slate-900 tracking-tight mt-1">
                 คำสั่งแก้และอัปเกรด Google Flow Tool (นำไปวางในแท็บ [แก้ไข] ของ Flow)
               </h2>
               <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
-                Google Flow ทำงานบนเบราว์เซอร์ของคุณ AI ผู้ช่วยในระบบจึงไม่สามารถคลิกหน้าต่างภายนอกให้เองได้ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ขวาบนของหน้า Google Flow แล้วกด Enter 1 ครั้ง Flow AI จะแก้บักรูปปน (นาฬิกา/รถยนต์) ให้หมดไป, ตัดขาดข้อมูลเก่าเริ่มใหม่ทุกครั้ง, และปรับดีไซน์ให้สมส่วน สะอาดตา ไม่รกทันที!
+                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>ลบปุ่มตัวอย่าง Oat Milk ออกทั้งหมด, แยกคำสั่งภาพนิ่งออกจาก Motion ป้องกันภาพเพี้ยนเป็นเครื่องชงกาแฟ/นาฬิกา, และล็อกหัวข้อแคมเปญ 100%</strong> ทันที!
               </p>
             </div>
           </div>
@@ -1336,28 +1336,28 @@ function CommercialStudioContent() {
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div className="flex items-center gap-2 font-bold text-slate-900">
               <span className="w-5 h-5 rounded-md bg-teal-700 text-white flex items-center justify-center text-[11px] font-mono">1</span>
-              <span>กดคัดลอกคำสั่ง</span>
+              <span>กดคัดลอกคำสั่งแก้</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              กดปุ่มสีเขียว <strong>"คัดลอกคำสั่งแก้ Tool เดิม"</strong> ด้านล่างนี้ (ระบบจะคัดลอก Prompt อัปเกรดให้ทันที)
+              กดปุ่มสีเขียว <strong>"📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.5 Pro)"</strong> ด้านล่างนี้
             </p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div className="flex items-center gap-2 font-bold text-slate-900">
               <span className="w-5 h-5 rounded-md bg-teal-700 text-white flex items-center justify-center text-[11px] font-mono">2</span>
-              <span>ไปที่ Google Flow</span>
+              <span>ไปที่แท็บ [แก้ไข] ใน Flow</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              คลิกปุ่ม <strong>"🚀 เปิด Google Flow Tool"</strong> หรือเปิดแท็บ Flow ของคุณ แล้วคลิกแท็บ <strong>[ แก้ไข ]</strong> มุมบนขวา
+              เปิด Google Flow ของคุณ แล้วคลิกแท็บ <strong>[ แก้ไข ]</strong> (Edit Tool)
             </p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div className="flex items-center gap-2 font-bold text-slate-900">
               <span className="w-5 h-5 rounded-md bg-teal-700 text-white flex items-center justify-center text-[11px] font-mono">3</span>
-              <span>วางคำสั่งแล้วกด Enter</span>
+              <span>วางคำสั่งแล้วกดบันทึก</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              วางข้อความที่คัดลอกลงในช่องแชต แล้วกด Enter รอ Flow AI บิลด์เสร็จประมาณ 10 วินาที เครื่องมือจะพร้อมรัน 100%
+              วางข้อความลงในช่องแชต แล้วกด Enter เพื่ออัปเกรด Tool ให้เสถียร 100%
             </p>
           </div>
         </div>
@@ -1379,7 +1379,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Copy className="w-4 h-4 text-teal-200" />
-                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (แท็บ [แก้ไข]) — แนะนำ</span>
+                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.5 Pro) — แนะนำ</span>
                 </>
               )}
             </button>
@@ -1387,7 +1387,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.4 Universal Topic Lock Edition")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.5 Pro")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1398,7 +1398,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.4 Topic Lock)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.5 Pro Rebuild)</span>
                 </>
               )}
             </button>

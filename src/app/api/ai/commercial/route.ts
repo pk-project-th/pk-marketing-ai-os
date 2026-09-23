@@ -2032,18 +2032,33 @@ export async function POST(req: Request) {
             "Iconic master commercial showcase under warm cinematic lighting"
           ];
           const beatDescEn = panelBeatsEn[idx % panelBeatsEn.length];
+          const naturalVoiceBeats = [
+            `คุณเคยเจอปัญหาหรือกำลังมองหาตัวช่วยเรื่อง ${productName} อยู่ใช่ไหม?`,
+            `เพราะทุกรายละเอียดของ ${productName} ถูกคัดสรรมาอย่างพิถีพิถัน เพื่อให้คุณได้ผลลัพธ์ที่ดีที่สุด`,
+            `สัมผัสได้ถึงความแตกต่างตั้งแต่ครั้งแรก ใช้งานง่าย ตอบโจทย์ชีวิตได้อย่างลงตัว`,
+            `ดูความประณีตและคุณภาพในทุกรายละเอียด ทุกจุดสะท้อนถึงมาตรฐานระดับพรีเมียม`,
+            `เปลี่ยนเรื่องยุ่งยากให้เป็นเรื่องง่าย เพิ่มความสะดวกสบายและความมั่นใจให้คุณในทุกๆ วัน`,
+            `การันตีด้วยความประทับใจจริง บอกเลยว่าใครได้ลองก็ต้องหลงรัก`,
+            `ยกระดับประสบการณ์ใหม่ที่คุณคู่ควร คุ้มค่าและตอบโจทย์เกินความคาดหมาย`,
+            `พร้อมให้คุณได้สัมผัสแล้ววันนี้! ${productPrice} ทักข้อความรับสิทธิ์ด่วนก่อนหมดเขต`
+          ];
+          const naturalTextBeats = [
+            `${productName} ที่ทุกคนตามหา! ✨`,
+            `คัดสรรคุณภาพ เพื่อคุณโดยเฉพาะ 🌟`,
+            `สัมผัสความแตกต่างที่ลงตัว 💫`,
+            `ประณีตทุกขั้นตอน มาตรฐานพรีเมียม 🔍`,
+            `สะดวก ง่าย สบายกว่าที่เคย 🚀`,
+            `การันตีความคุ้มค่า เกินราคา 🏆`,
+            `ยกระดับชีวิตให้ดีขึ้นทุกวัน 💖`,
+            `${productPrice || "ทักแชตรับสิทธิ์ด่วน!"} 📲`
+          ];
           return {
             type: p.name,
             camera: idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide",
-            motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} naturally presenting ${effectiveProductEn} with relaxed charisma.` : `Heroic commercial showcase of ${effectiveProductEn}.`} Real-world physical dynamics, rigid geometry, zero morphing. 24fps.`,
-            prompt: `Photorealistic 8K commercial scene ${idx + 1}. ${angleObj.promptKeyword}. ${beatDescEn} featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Pure commercial cinematography, 8K ultra detail, tack-sharp focus, strictly focused on ${effectiveProductEn}, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
-            voice: idx === 0
-              ? `เริ่มต้นสัมผัสความพิเศษของ ${productName} ไปด้วยกัน`
-              : idx === 3
-                ? `จุดเปลี่ยนสำคัญ ที่ทำให้ ${productName} แตกต่างจากสิ่งอื่น`
-                : idx === 7
-                  ? `พร้อมให้คุณได้สัมผัสแล้ววันนี้! ${productPrice} ทักข้อความจองสิทธิ์ด่วน`
-                  : `ความประทับใจในสเต็ปที่ ${idx + 1} ของ ${productName}`,
+            motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} presenting ${effectiveProductEn} in ${effectiveEnvironmentEn} with confident charisma.` : `Heroic commercial presentation of ${effectiveProductEn} in ${effectiveEnvironmentEn}.`} Natural motion, rigid geometry, zero morphing, 24fps.`,
+            prompt: `Photorealistic 8K commercial scene ${idx + 1}. ${angleObj.promptKeyword}. ${beatDescEn} featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Pure commercial cinematography, 8K ultra detail, tack-sharp focus, strictly focused on ${effectiveProductEn}, zero in-image text, zero watches, zero cars, zero jewelry, zero unrelated objects. --ar ${aspectRatio}`,
+            voice: naturalVoiceBeats[idx % naturalVoiceBeats.length],
+            text: naturalTextBeats[idx % naturalTextBeats.length],
             sfx: idx === 7 ? "Triumphant brand sonic chime" : "Cinematic atmospheric soundscape."
           };
         });
