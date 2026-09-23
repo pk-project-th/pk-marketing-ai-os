@@ -58,108 +58,82 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX & PROMPT SANITIZER — PK STUDIO v5.2 (Adaptive Safe Fallback Edition):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: ZERO OLD STATE LEAKAGE & STRICT PRODUCT ANCHOR — PK STUDIO v5.3 (Pure Project Isolation):
 
-สาเหตุที่บางช็อตเจนไม่ได้ (เช่น ช็อต 1):
-1. คำต้องห้ามที่ติด Safety Filter ของ Veo: เช่น "incisions" (กรีด/แผลผ่าตัด), "eruption" (ระเบิด), "flesh" (เนื้อสด)
-2. Prompt ซับซ้อนขัดแย้งกับภาพตั้งต้น (Frame 0): เช่น ภาพเป็นปลาในกระทะอยู่แล้ว แต่ prompt สั่ง "drops into oil"
-3. พอล้มเหลว ระบบกลับ retry ส่ง "Prompt เดิมซ้ำๆ" ทำให้ติด loop retry ไม่รู้จบ!
+ปัญหาปัจจุบัน:
+1. มีภาพเก่า (เช่น นาฬิกา/รถ) หรือ mock data จากประวัติเก่าติดค้างมาปนกับโปรเจกต์ใหม่
+2. เมื่อเจนสินค้าใหม่ (เช่น ข้าวโอ๊ต) ถ้าไม่มีการล้าง State เก่า หรือถ้า Prompt เป็นคำกว้างๆ (เช่น "Premium showcase") ระบบจะสุ่มวาดนาฬิกาหรูแทน!
 
-แก้ไขทั้งหมดดังนี้:
+แก้ไขทั้งหมดอย่างเด็ดขาดตามนี้:
 
-### 1. 🛡️ SMART PROMPT SANITIZER & ADAPTIVE FALLBACK (แก้ปัญหาช็อตติด Retry ถาวร):
-A) SANITIZE BEFORE SENDING (ล้างคำต้องห้ามก่อนส่งให้ Veo เสมอ):
-   - แทนที่ "incisions" ➔ "scored pattern"
-   - แทนที่ "eruption" ➔ "gentle sizzling"
-   - แทนที่ "flesh" ➔ "tender meat"
-   - แทนที่ "drops smoothly into hot oil" ➔ "gently sizzling in hot oil"
-B) ADAPTIVE FALLBACK ON RETRY (ห้ามส่ง Prompt เดิมซ้ำเมื่อล้มเหลว!):
-   - รอบที่ 1 (Initial): ใช้ Motion Prompt ตามปกติที่ผ่านการ Sanitize แล้ว
-   - รอบที่ 2 (Retry #1): หากรอบแรกไม่ผ่าน ให้เปลี่ยนเป็น **Simplified Safe Prompt** ทันที:
-     "Cinematic macro close-up. Camera slowly pushes in. Sizzling golden cooking oil with delicate steam, warm ambient lighting, 24fps."
-   - รอบที่ 3 (Retry #2): หากยังไม่ผ่าน ให้เปลี่ยนเป็น **Universal Safe Prompt** สั้นที่สุด:
-     "Smooth cinematic slow motion camera push-in, gentle natural movement, realistic lighting, 24fps."
-   * การเปลี่ยน prompt ในรอบ retry จะทำให้ Veo ผ่าน 100% แน่นอน เพราะไม่มีคำ trigger หรือความซับซ้อนที่ติด filter!
-C) INLINE PROMPT EDITING:
-   - เพิ่มปุ่ม "✏️ แก้ไข Prompt" บนการ์ด เพื่อให้ผู้ใช้กดแก้ข้อความ prompt ได้เองทันทีหากต้องการ
+### 1. 🗑️ TOTAL HARD RESET & ZERO STATE RETENTION (ห้ามมีข้อมูลเก่าปนเด็ดขาด):
+- เมื่อผู้ใช้กดปุ่ม "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" หรือวางสคริปต์ใหม่:
+  * ทำการ HARD RESET ล้างข้อมูลเก่าทิ้งทั้งหมด 100%:
+    setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
+  * ห้าม Merge หรือเก็บภาพ/วิดีโอจากรันก่อนหน้าไว้เด็ดขาด ทุกโปรเจกต์ต้องเริ่มจากจอขาวสะอาด (Clean Slate)
+  * ห้ามมี Initial State ที่เป็น mock data ของนาฬิกาหรือรถยนต์ใดๆ ทั้งสิ้น
+- เพิ่มปุ่ม "🗑️ ล้างประวัติ & เริ่มโปรเจกต์ใหม่ (Hard Reset)" ไว้ข้างช่องใส่สคริปต์ เพื่อให้กดเคลียร์ทุกอย่างได้ทันทีในคลิกเดียว
 
-### 2. ⏱️ SEQUENTIAL QUEUE & SAFE TIMING:
-- เจนวิดีโอทีละช็อต (Sequential Only) รอ 8-10 วินาที ระหว่างแต่ละช็อต พร้อมแสดง Countdown
-- Retry delays: 15s ➔ 30s ➔ 60s (สูงสุด 3 ครั้ง แล้วข้ามไปช็อตถัดไป)
-- เพิ่มปุ่ม "⏸️ พักเซิร์ฟเวอร์ 60s" ที่ Header สำหรับ manual cooldown
+### 2. 🎯 STRICT PRODUCT ANCHOR (ป้องกันการวาดนาฬิกา/รถยนต์ผิดสินค้า):
+- อ่านชื่อแคมเปญจากบรรทัด "CAMPAIGN: [ชื่อสินค้า]" ด้านบนสุดเสมอ
+- ทุกช็อตต้องผูกกับ [ชื่อสินค้า] นั้นๆ เท่านั้น!
+- ห้ามใช้ Prompt ลอยๆ เช่น "Cinematic luxury commercial" หรือ "Premium showcase" เพราะจะทำให้ AI สุ่มวาดนาฬิกาหรู
+- หาก Visual Prompt ช็อตใดสั้นหรือไม่สมบูรณ์ ให้เติมชื่อสินค้าเข้าไปเสมอ:
+  "[Campaign Product], professional 8K commercial product packshot, clean studio lighting, zero watches, zero cars"
 
-### 3. ✨ LUXURY & UNCLUTTERED CARD DESIGN (สวยงาม ไม่รกตา):
-- ด้านบนการ์ด: Media Frame (สัดส่วน 9:16 หรือ 16:9) ขอบมน rounded-2xl มี Badge ช็อต 01 และความยาว
-- กลางการ์ด:
-  * หัวข้อช็อตภาษาไทยตัวหนาเด่นชัด: เช่น "ช็อต 01: เคล็ดลับทอดปลาส้ม หนังกรอบฟู"
-  * กล่องเสียงพากย์ไทย 🔊 สวยงาม สบายตา
-  * ❌ ห้ามโชว์ English Prompt และ Motion Prompt ยาวๆ บนหน้าการ์ดโดยตรง!
-  * ✅ ให้ซ่อนไว้ใน <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details> เท่านั้น
-- ด้านล่างการ์ด: แถบปุ่ม [🎨 เจนภาพใหม่] [🎬 เจนเป็นวิดีโอ] [✏️ แก้ไข]
-
-### 4. 🟢 STRICT 3-STEP STEPPER:
-- Step 1 สคริปต์: เขียวเมื่อ parse shots > 0
-- Step 2 ภาพ 8K: เขียวเมื่อทุกภาพเสร็จสมบูรณ์
-- Step 3 วิดีโอ VEO: เริ่มต้นเป็นสีเทา (ห้ามเขียวก่อน!) ➔ ม่วง pulse ตอนเจน ➔ ส้มถ้ามีบางช็อต fail ➔ เขียวเฉพาะเมื่อทุกช็อตมี videoUrl ครบ 100%`;
-
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.2 (Adaptive Safe Fallback Edition)" — a production-grade 2-stage video production tool with guaranteed video generation reliability, automatic prompt sanitization, adaptive fallback on retry, inline prompt editing, accurate step tracking, and premium dark UI.
-
-## ARCHITECTURE & CRITICAL FIX FOR VEO FAILURES:
-Veo API video generation often fails on specific shots due to:
-1. Safety triggers in prompt text ("incisions", "eruption", "flesh", "drops into hot oil")
-2. Prompt complexity contradicting Frame 0 keyframe
-3. Retrying the exact same failed prompt repeatedly in an endless loop
-
-## 1. SMART PROMPT SANITIZER & ADAPTIVE FALLBACK (MANDATORY):
+### 3. 🛡️ SMART PROMPT SANITIZER & ADAPTIVE FALLBACK (แก้ปัญหาวิดีโอติด Retry):
 A) SANITIZE BEFORE SENDING TO VEO:
-   Auto-replace before calling Veo API:
-   - "incisions" -> "scored pattern"
-   - "eruption" -> "gentle sizzling"
-   - "flesh" -> "tender meat"
-   - "drops smoothly into" -> "gently sizzling in"
-   - "aggressive" -> "vibrant"
-
-B) ADAPTIVE FALLBACK ON RETRY (NEVER RETRY THE SAME PROMPT!):
-   - Attempt 1: Sanitize and send original motion prompt.
-   - Attempt 2 (Retry #1): Automatically fallback to Simplified Safe Prompt:
-     "Cinematic macro close-up. Camera slowly pushes in. Sizzling golden cooking oil with delicate steam, warm ambient lighting, 24fps."
-   - Attempt 3 (Retry #2): Automatically fallback to Minimal Universal Prompt:
+   - แปลง "incisions" ➔ "scored pattern"
+   - แปลง "eruption" ➔ "gentle sizzling"
+   - แปลง "flesh" ➔ "tender meat"
+   - แปลง "drops smoothly into" ➔ "gently sizzling in"
+B) ADAPTIVE FALLBACK ON RETRY (ห้ามส่ง Prompt เดิมซ้ำเมื่อล้มเหลว!):
+   - รอบที่ 1: ส่ง Motion Prompt ปกติ
+   - รอบที่ 2 (Retry #1): เปลี่ยนเป็น Simplified Safe Prompt อัตโนมัติ:
+     "Cinematic slow motion. Camera slowly pushes in. Sizzling golden cooking oil with gentle steam, warm ambient lighting, 24fps."
+   - รอบที่ 3 (Retry #2): เปลี่ยนเป็น Minimal Universal Prompt:
      "Smooth cinematic slow motion camera push-in, gentle natural movement, realistic lighting, 24fps."
-   - Result: Guaranteed generation success because simplified prompts bypass all semantic & safety filters!
+C) INLINE EDIT: มีปุ่ม "✏️ แก้ไข Prompt" บนการ์ดให้แก้ไขเองได้
 
-C) INLINE PROMPT EDITING:
-   - Provide a [✏️ แก้ไข Prompt] modal/drawer on each card allowing user to inspect and edit the prompt text directly.
+### 4. ⏱️ SEQUENTIAL QUEUE & 3-STEP STEPPER:
+- เจนวิดีโอทีละช็อต (Sequential Only) ดีเลย์ 10 วินาทีพร้อมนับถอยหลัง
+- ปุ่ม "⏸️ พักเซิร์ฟเวอร์ 60s" สำหรับ cooldown
+- Step 1 สคริปต์ ➔ Step 2 ภาพ 8K ➔ Step 3 วิดีโอ (เริ่มต้นเป็นสีเทา ห้ามเขียวก่อนจริง)`;
 
-## 2. TIMING & RATE LIMIT PROTECTION:
-- Sequential video processing only (one shot at a time)
-- 10-second delay between shots with on-screen countdown: "⏳ พักเซิร์ฟเวอร์ 10... 9... 8..."
-- Retry backoff: 15s -> 30s -> 60s (max 3 attempts per shot)
-- If a shot fails 3 times: mark as amber error, skip to next shot, continue pipeline
-- Header Cooldown Button: "⏸️ หยุดพัก 60 วินาที" for manual reset
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.3 (Pure Project Isolation & Safe Veo Edition)" — a production-grade 2-stage video production tool with 100% project isolation, total hard reset (zero state leakage from previous campaigns), strict product anchoring (zero unwanted watches/cars), and reliable Veo video rendering.
 
-## 3. STRICT 3-STEP STEPPER:
-- Step 1 (สคริปต์): Inactive (gray) -> Active (yellow) -> Complete (green) when shots parsed
-- Step 2 (ภาพ 8K): Inactive (gray) -> Active (yellow pulse) -> Complete (green) when all images generated
-- Step 3 (วิดีโอ VEO): Inactive (gray, NEVER green initially!) -> Active (purple pulse) -> Partial (amber) -> Complete (green) ONLY when 100% of videos exist
+## 1. TOTAL PROJECT HARD RESET & ZERO PREVIOUS STATE (CRITICAL):
+- Whenever a user clicks "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" or pastes a new Master Directive:
+  * COMPLETELY WIPE ALL STATE: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
+  * NEVER retain cached images, old shots, or previous project history. Each run is 100% ISOLATED.
+  * ZERO DEFAULT SHOTS: Never pre-populate mock cards with luxury watches, cars, or dummy data.
+  * Add a visible "🗑️ ล้างข้อมูลและเริ่มใหม่ (Clean Reset)" button next to the textarea.
 
-## 4. PREMIUM CLEAN UI (ZERO CLUTTER):
-- Dark Glassmorphism theme (#0a0c14 background, #161924 cards)
-- Card Top: Media frame (9:16 or 16:9) with "ช็อต 01" badge and duration pill
-- Card Body:
-  * Bold Thai title (e.g. "ช็อต 01: เคล็ดลับทอดปลาส้ม หนังกรอบฟู")
-  * Thai voiceover script in styled audio container 🔊
-  * DO NOT print long English text directly on card!
-  * Put all English prompts inside collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>
-- Card Bottom: Action buttons [🎨 เจนภาพใหม่] [🎬 เจนเป็นวิดีโอ] [✏️ แก้ไข]
-- Overlay States: Shimmer skeleton for image gen, purple spinner for video gen, amber countdown for retry
+## 2. STRICT PRODUCT ANCHOR (ZERO WATCHES / ZERO CARS):
+- Extract the product name from "CAMPAIGN: [Product]" in the directive header.
+- Every keyframe generation MUST be explicitly anchored to this extracted product.
+- Never use generic fallback prompts like "Cinematic luxury commercial" or "Premium showcase" which cause Imagen to hallucinate luxury watches or cars.
 
-## 5. ZERO-CRASH SAFETY:
-- All async calls in try-catch
-- Optional chaining on all fields (shot?.imageUrl, shot?.videoUrl)
-- Proper cleanup of all timers
-- Accept: [SHOT N], [ช็อต N], [SCENE N], "Shot N:", "ช็อตที่ N"
-- Gracefully skip unrecognized text (never throw)
-- Show friendly Thai error if zero shots parsed`;
+## 3. RELIABLE VEO VIDEO GENERATION (ADAPTIVE FALLBACK):
+- Sequential generation only (one shot at a time) with 10-second delay between shots and live countdown.
+- Auto-sanitize prompts before sending to Veo (strip "incisions", "eruption", "flesh", "drops into").
+- Adaptive fallback on retry:
+  * Attempt 1: Full motion prompt.
+  * Attempt 2 (Retry #1): Simplified Safe Prompt ("Cinematic macro close-up. Camera slowly pushes in. Sizzling golden cooking oil with delicate steam, 24fps.").
+  * Attempt 3 (Retry #2): Minimal Universal Prompt ("Smooth cinematic slow motion camera push-in, natural gentle movement, 24fps.").
+- Inline editing: [✏️ แก้ไข Prompt] button on each card.
+- Header Cooldown Button: "⏸️ หยุดพัก 60 วินาที".
+
+## 4. STRICT 3-STEP STEPPER:
+- Step 1: Green check ONLY when shots parsed > 0.
+- Step 2: Green check ONLY when 100% of still images exist.
+- Step 3: Gray by default (NEVER green initially!) -> Purple pulsing during generation -> Green check ONLY when 100% of videos are rendered.
+
+## 5. PREMIUM CLEAN UI:
+- Dark Glassmorphism aesthetic.
+- Bold Thai titles on cards. Voiceover audio box.
+- English visual prompts hidden inside collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>.
+- All async functions in try/catch, null-safe optional chaining.`;
 
 export default function CommercialStudioPage() {
   return (
@@ -1397,7 +1371,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.2 Adaptive Safe Fallback Edition")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.3 Pure Project Isolation Edition")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1408,7 +1382,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.2 Adaptive Fallback)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.3 Pure Isolation)</span>
                 </>
               )}
             </button>
@@ -1463,7 +1437,7 @@ function CommercialStudioContent() {
                 </button>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                {selectedFlowPromptTab === "edit" ? "Fix & Adaptive Fallback Prompt v5.2" : "Full Builder Prompt v5.2"}
+                {selectedFlowPromptTab === "edit" ? "Fix & Pure Isolation Prompt v5.3" : "Full Builder Prompt v5.3"}
               </span>
             </div>
             <textarea

@@ -353,6 +353,40 @@ export async function POST(req: Request) {
     const effectivePersonaText = hasPresenter ? resolvedPersonaList.join(" + ") : "ไม่มีพรีเซนเตอร์ (เน้นสินค้าและบรรยากาศล้วน)";
     const effectiveEnvironmentText = resolvedEnvironmentList.join(" / ");
 
+    // Robust English Product Translation Helper to prevent Imagen from hallucinating watches/cars
+    const getProductEn = (pName: string, bName: string): string => {
+      const lower = `${pName} ${bName}`.toLowerCase();
+      const tags: string[] = [];
+      if (lower.includes("ข้าวโอ๊ต") || lower.includes("โอ๊ต")) tags.push("healthy oat grain cereal and organic oat foam beverage or product");
+      if (lower.includes("โฟม") || lower.includes("foam")) tags.push("velvety foaming cleanser bottle with rich whipped foam texture");
+      if (lower.includes("สบู่")) tags.push("artisan organic botanical soap bar");
+      if (lower.includes("เซรั่ม") || lower.includes("serum")) tags.push("luxury cosmetic dropper serum glass bottle");
+      if (lower.includes("ครีม") || lower.includes("cream")) tags.push("nourishing cosmetic skincare cream jar");
+      if (lower.includes("สกินแคร์") || lower.includes("skincare") || lower.includes("ผิว")) tags.push("premium skincare cosmetic package");
+      if (lower.includes("กาแฟ") || lower.includes("coffee")) tags.push("artisan brewed coffee in ceramic cup with rich crema");
+      if (lower.includes("ชา") || lower.includes("tea") || lower.includes("มัทฉะ")) tags.push("premium organic tea beverage in glass cup");
+      if (lower.includes("น้ำผลไม้") || lower.includes("juice")) tags.push("fresh cold-pressed fruit juice in clear glass bottle");
+      if (lower.includes("ขนม") || lower.includes("snack") || lower.includes("เบเกอรี่")) tags.push("gourmet artisan snack bakery package");
+      if (lower.includes("ปลาส้ม") || lower.includes("ปลา")) tags.push("golden crispy seasoned fried fish");
+      if (lower.includes("กะเพรา")) tags.push("spicy Thai basil stir-fry culinary dish");
+      if (lower.includes("สุขภาพ") || lower.includes("health")) tags.push("wellness organic healthy lifestyle packaging");
+      
+      if (tags.length > 0) return tags.join(", ");
+      return `${bName || "Brand"} commercial product package, sleek modern minimalist bottle or packaging with organic branding`;
+    };
+
+    const getEnvironmentEn = (envList: string[]): string => {
+      const lower = envList.join(" ").toLowerCase();
+      if (lower.includes("สตูดิโอ") || lower.includes("studio")) return "modern minimalist commercial studio set with soft diffused key light and gentle atmospheric haze";
+      if (lower.includes("ครัว") || lower.includes("kitchen")) return "warm modern kitchen with natural morning sunlight and oak countertops";
+      if (lower.includes("สตรีท") || lower.includes("street") || lower.includes("เมือง")) return "vibrant urban city lifestyle street backdrop in natural golden daylight";
+      if (lower.includes("สวน") || lower.includes("ธรรมชาติ") || lower.includes("ป่า")) return "serene botanical garden background with lush greenery and soft bokeh";
+      return "clean contemporary commercial studio setting with elegant softbox lighting";
+    };
+
+    const effectiveProductEn = getProductEn(productName, brand);
+    const effectiveEnvironmentEn = getEnvironmentEn(resolvedEnvironmentList);
+
     // Gender styling (Domain Aware)
     const genderEn = isDinosaurOrWildlife
       ? (presenterGender === "female"
@@ -1509,11 +1543,22 @@ export async function POST(req: Request) {
             ? autoMasterPool
             : STORYBOARD_8_PANEL_COMMERCIAL.panels.map((p, idx) => {
             const angleObj = THAI_CAMERA_ANGLES_36[idx % THAI_CAMERA_ANGLES_36.length];
+            const panelBeatsEn = [
+              "Cinematic hero establishing shot introducing the packaging of the product on a sleek modern podium, soft studio backlight",
+              "Medium close-up showcasing the detailed packaging, premium typography, and natural ingredients",
+              "Dynamic close-up capturing rich sensory texture, silky smooth consistency, and fresh natural essence",
+              "Breathtaking macro focus on the product texture, sparkling micro-droplets, rich velvety foam and pristine lighting",
+              "Delightful commercial presentation showing effortless application, healthy revitalizing feel, and radiant glow",
+              "Artistic overhead flat-lay composition showing the product elegantly framed by fresh natural botanical elements",
+              "Dramatic hero angle revealing the complete satisfying result, glistening reflections, and effortless healthy perfection",
+              "Iconic master commercial packshot of the product standing prominently center-frame under warm golden rim light"
+            ];
+            const beatDescEn = panelBeatsEn[idx % panelBeatsEn.length];
             return {
               type: p.name,
               camera: idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide",
-              motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} naturally performing ${actionPrompts} with relaxed charisma.` : "Heroic product showcase."} Real-world physical dynamics, rigid geometry, zero morphing. 24fps.`,
-              prompt: `Photorealistic 8K commercial panel ${idx + 1} [${p.name}]. ${angleObj.promptKeyword}. ${p.detail} of ${productName} in ${effectiveEnvironmentText}. ${hasPresenter ? `${genderEn} with ${actionPrompts}.` : "Premium showcase."} --ar ${aspectRatio}`,
+              motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} naturally presenting ${effectiveProductEn} with relaxed charisma.` : `Heroic commercial showcase of ${effectiveProductEn}.`} Real-world physical dynamics, rigid geometry, zero morphing. 24fps.`,
+              prompt: `Photorealistic 8K commercial panel ${idx + 1} [${p.name}]. ${angleObj.promptKeyword}. ${beatDescEn} featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Pure commercial product cinematography, 8K ultra detail, tack-sharp focus, zero in-image text. --ar ${aspectRatio}`,
               voice: idx === 0
                 ? `เริ่มต้นสัมผัสความพิเศษของ ${productName} ไปด้วยกัน`
                 : idx === 3
@@ -1537,7 +1582,7 @@ export async function POST(req: Request) {
         shotType: "วันเทคมาสเตอร์ช็อต (One-Take Epic Master Shot)",
         cameraMovement: "Continuous Seamless Steadicam Tracking with Dynamic Orbit",
         motionPrompt: `Photorealistic 8K image-to-video. Continuous seamless steadicam tracking shot. Subject and environment obey real-world Newtonian physical dynamics with natural motion blur. No morphing, rigid object geometry, authentic fluid/steam physics. 24fps.`,
-        visualPromptEn: `Photorealistic 8K cinematic commercial one-take. ${productName} in ${effectiveEnvironmentText}. Seamless fluid steadicam tracking starting from wide establishing, smoothly transitioning into intimate medium shot of ${hasPresenter ? `${genderEn} with ${actionPrompts}` : "hero product showcase"}, culminating in heroic brand lockup. ARRI Alexa LF grading, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
+        visualPromptEn: `Photorealistic 8K cinematic commercial one-take. ${effectiveProductEn} in ${effectiveEnvironmentEn}. Seamless fluid steadicam tracking starting from wide establishing, smoothly transitioning into intimate medium shot of ${hasPresenter ? `${genderEn} with ${actionPrompts}` : `hero commercial packshot of ${effectiveProductEn}`}, culminating in heroic brand lockup. ARRI Alexa LF grading, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
         onScreenTextTh: userCustomTexts[0] || (isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
         textPosition: "Top Center (Headline)",
         thaiVoiceover: isDinosaurOrWildlife
