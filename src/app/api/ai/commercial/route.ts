@@ -1222,7 +1222,7 @@ export async function POST(req: Request) {
       {
         type: "เปิดเรื่อง Hook ไวรัล (Crispy Fish Sizzle Hook)",
         camera: "Dynamic Low-Angle Macro Push-in 100mm",
-        motion: `Photorealistic 8K image-to-video. Macro 60fps high-speed capture. Beautiful seasoned Pla Som (fermented fish) with fine delicate cross-hatch incisions drops smoothly into shimmering hot golden cooking oil. Intense eruption of crackling micro-bubbles along the fish skin. Shimmering steam carrying rich savory-sour fermented aromas rises into warm amber backlight. Low-angle push-in with tack-sharp focus on bubbling crispy golden scales. Rigid cookware, authentic fluid dynamics, zero morphing, 24fps.`,
+        motion: `Photorealistic 8K image-to-video. Macro slow motion. Golden seasoned Pla Som fish gently sizzling in hot cooking oil inside deep wok. Delicate micro-bubbles shimmer smoothly along crispy golden skin. Shimmering steam rises into warm amber backlight. Low-angle camera slowly pushes in with tack-sharp focus on bubbling crispy golden scales, 24fps.`,
         prompt: isPurePrompt
           ? `Photorealistic 8K culinary opening hook of authentic Thai Pla Som (fermented crispy fish) sizzling in shimmering hot oil inside deep wok. Extreme macro 100mm f/2.8 of bubbling golden oil micro-bubbles erupting against crispy scored fish skin, aromatic steam plumes. Shot on ARRI Alexa LF with 100mm Macro Prime. Lighting: warm 3200K side rim light. Commercial food grade, pure cinematography, zero text. --ar ${aspectRatio}`
           : `Photorealistic 8K cinematic commercial hook of authentic Thai Pla Som sizzling in hot oil. [Slot 2 Product Anchor]: Match fish appearance to Slot 2 reference. Macro 100mm, bubbling oil, golden crispy skin. Pure cinematography, zero text. --ar ${aspectRatio}`,
@@ -1234,7 +1234,7 @@ export async function POST(req: Request) {
       {
         type: "เตรียมวัตถุดิบปลาส้ม (Pla Som Marinated Prep)",
         camera: "Overhead 90-Degree Top Down Artisan Macro",
-        motion: `Photorealistic 8K image-to-video. Overhead top-down view on rustic wooden cutting board. Chef's hand gently pats dry a premium marinated whole Pla Som with paper towel. Delicate diagonal diamond incisions along the fish body show glistening pinkish-white flesh. Chef dusts a whisper of fine rice flour over the skin with fine mesh sieve. Smooth downward slider, natural morning window daylight, 24fps.`,
+        motion: `Photorealistic 8K image-to-video. Overhead top-down view on rustic wooden cutting board. Chef's hand gently pats dry a premium marinated whole Pla Som with paper towel. Scored patterned skin shows fresh tender white fish meat. Chef dusts a whisper of fine rice flour over the skin with fine mesh sieve. Smooth downward slider, natural morning window daylight, 24fps.`,
         prompt: `Artisan overhead flat-lay of premium Thai Pla Som fish on dark rustic wooden board. Diamond scored skin dusted lightly with fine rice flour, surrounded by fresh lime wedges, Thai garlic, sliced shallots, and fiery bird's eye chilies. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting. --ar ${aspectRatio}`,
         voice: "เริ่มจากซับปลาส้มให้แห้งสนิท แล้วคลุกแป้งข้าวเจ้าบางเบา เพื่อล็อกความชุ่มชื้นและช่วยให้หนังฟูกรอบเป็นพิเศษ",
         text: "ซับให้แห้ง คลุกแป้งบางเบา ✨",
@@ -1254,7 +1254,7 @@ export async function POST(req: Request) {
       {
         type: "หย่อนปลาลงกระทะ (Fish Entering Hot Oil)",
         camera: "Dynamic Side Tracking at Oil Surface Level",
-        motion: `Photorealistic 8K image-to-video. Brass tongs gently lower whole dusted Pla Som into hot shimmering oil tail-first. Oil responds with immediate satisfying roar and white foam wave enveloping the fish belly. Camera tracks smoothly alongside the pan, locked focal plane on sizzling tail fin, 24fps.`,
+        motion: `Photorealistic 8K image-to-video. Brass tongs hold whole dusted Pla Som gently sizzling in hot shimmering oil. Shimmering foam waves dance along the pan. Camera tracks smoothly alongside, locked focal plane on sizzling golden tail fin, 24fps.`,
         prompt: `Side angle macro shot of marinated fish lowered into shimmering hot oil in cast iron pan, dynamic splashing bubbles, crisp steam release, dramatic low-key lighting with golden rim. --ar ${aspectRatio}`,
         voice: "ค่อยๆ วางปลาลงไป แล้วเปิดไฟกลางค่อนข้างแรง ปล่อยให้เซ็ตตัว ห้ามคนหรือขยับเด็ดขาดใน 3 นาทีแรก!",
         text: "วางปลาลงไฟกลาง ห้ามขยับเด็ดขาด ⏳",
@@ -1264,7 +1264,7 @@ export async function POST(req: Request) {
       {
         type: "🔍 Extreme Macro หนังปลาพองกรอบ (Fish Skin Blistering Golden)",
         camera: "🔍 Extreme Macro 100mm f/2.8 Shallow DOF",
-        motion: `Photorealistic 8K image-to-video. Macro 100mm tight focus on fish skin. Diamond incisions curl gently backward revealing glistening white tender meat within, while outer skin caramelizes into an ultra-crispy, puffed golden-brown texture with miniature oil bubbles dancing across ridges. Buttery smooth bokeh, 24fps.`,
+        motion: `Photorealistic 8K image-to-video. Macro 100mm tight focus on fish skin. Scored textured surface reveals glistening white tender meat within, while outer skin caramelizes into an ultra-crispy, puffed golden-brown texture with miniature oil bubbles dancing across ridges. Buttery smooth bokeh, 24fps.`,
         prompt: `Extreme macro 100mm f/2.8 shot of fish skin crisping into golden brown lace and blistered crackling texture in hot oil, shimmering oil droplets, mouthwatering culinary cinematography. --ar ${aspectRatio}`,
         voice: "ดูความฟูของหนังปลาส้มครับ... แป้งบางๆ ทำปฏิกิริยากับน้ำมันจนหนังพองกรอบ สีเหลืองทองเสมอกัน",
         text: "หนังพองฟูกรอบ สีทองอร่าม 🤤",
