@@ -1,0 +1,114 @@
+=== GOOGLE FLOW 3.0 MASTER PRODUCTION DIRECTIVE ===
+CAMPAIGN: ปลาส้มทอด หนังกรอบฟู ไม่ติดกระทะ (PK Food & Kitchen)
+TOTAL RUNTIME: 30 SECONDS | EXACT SHOT COUNT: 10 SHOTS (AVG 3.0s / SHOT)
+PACING STYLE: Standard Commercial (มาตรฐานโฆษณา)
+PRODUCTION MODE: ✨ PURE PROMPT-TO-VIDEO (100% PROMPT-DRIVEN / ZERO IMAGE UPLOADS REQUIRED)
+PRODUCTION SPECS: Aspect Ratio 9:16, Style Cinematic Food Commercial, ARRI Alexa LF commercial grading, 8K photorealism.
+[SUBJECT SPEC]: Character looks, styling, and expressions are fully embedded in each visual prompt.
+[PRODUCT / SCENE SPEC]: Detailed ingredients, textures, cooking states, and materials are fully specified in each visual prompt.
+ENVIRONMENT: ห้องครัวสไตล์สแกนดิเนเวียน ไม้โอ๊คอบอุ่น เคาน์เตอร์หินอ่อนสีขาว / แสงแดดธรรมชาติส่องกระทบผิวกระทะและเครื่องครัวพรีเมียม
+
+CRITICAL GOOGLE VEO 2 PHYSICAL MOTION & ANTI-MORPHING RULES:
+1. RIGID BODY & ANATOMICAL INTEGRITY: Utensils (woks, spatulas, spoons, knives, mortars), human hands, and cookware must maintain solid rigid structure throughout the shot. Zero melting, zero rubbery distortion, zero floating phantom objects.
+2. CHOREOGRAPHED PHYSICAL ACTIONS: Execute the specific physical interactions defined in "- Camera & Physical Motion (Veo 2)" for each shot (e.g. hand firmly gripping wok handle, spatula flipping meat, hot oil micro-bubbles popping, sauce flash-vaporizing into billowing steam, spoon piercing yolk with realistic liquid viscosity).
+3. STABLE CINEMATIC CAMERA: Camera motion must maintain a locked focal plane at 24fps with natural motion blur, shallow depth of field, and zero erratic jitter.
+
+CRITICAL PRODUCTION RULE FOR GOOGLE FLOW (PURE PROMPT MODE):
+1. ZERO IMAGE UPLOADS REQUIRED: Do NOT wait for, require, or block on 'Add Presenter' or 'Add Product' image inputs. Proceed directly with text-to-video generation.
+2. STANDALONE VISUAL SPECIFICATIONS: Every shot below contains comprehensive, self-contained descriptions for textures, cooking state, camera lenses (Cooke Anamorphic /i 85mm T2.3 prime lens, shallow depth of field, creamy circular bokeh), and lighting (dramatic culinary chiaroscuro rim lighting, glowing amber gas burner flares, soft diffuse natural fill, translucent rising steam plumes).
+3. TOTAL CLIP RUNTIME MUST BE EXACTLY 30 SECONDS WITH EXACTLY 10 SHOTS (FROM SHOT 1 TO SHOT 10).
+4. ADHERE STRICTLY TO THE SPECIFIED TIMECODE, DURATION, VISUAL PROMPT, THAI VOICEOVER, AND PHYSICAL MOTION BELOW.
+
+STRICT AUDIO & VISUAL ANTI-DISTORTION CONSTRAINTS:
+1. ZERO IN-IMAGE TEXT: Do NOT render, draw, or burn Thai characters, English subtitles, or watermarks directly into the video frames. All visual frames must be 100% clean photographic cinematography. Broken Thai glyphs in visual pixels are strictly forbidden.
+2. THAI VOICEOVER IS SPOKEN AUDIO ONLY: All Thai text scripts specified below are exclusively for Spoken Voiceover Audio (TTS) and external caption tracks.
+3. NARRATIVE DIALOGUE COHESION: The voiceover lines are structured as a seamless conversational story arc. Speak each line naturally matching modern Thai creator cadence.
+
+--- SHOT-BY-SHOT BLUEPRINT & LOCKED THAI VOICEOVERS (10 SHOTS) ---
+[SHOT 1] ช็อต 01: เปิดเรื่อง (Viral Hook) | Timecode: 00:00 - 00:02.4 (2.4s)
+- Duration: 2.4s
+- On-Screen Text (TH): "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟"
+- Text Position: Top Headline
+- Thai Voiceover Script: "เคยเจอปัญหาทอดปลาส้มแล้วเนื้อเละติดกระทะไหม? วันนี้เรามีเคล็ดลับทอดปลาส้มให้หนังกรอบฟู เนื้อในนุ่มฉ่ำ ไม่เละ 100%!"
+- Visual Prompt (EN): Photorealistic 8K culinary opening hook of authentic Thai Pla Som (fermented crispy fish) sizzling in shimmering hot oil inside deep wok. Extreme macro 100mm f/2.8 of bubbling golden oil micro-bubbles erupting against crispy scored fish skin, aromatic steam plumes. Shot on ARRI Alexa LF with 100mm Macro Prime. Lighting: warm 3200K side rim light. Commercial food grade, pure cinematography, zero text. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Macro 60fps high-speed capture. Beautiful seasoned Pla Som (fermented fish) with fine delicate cross-hatch incisions drops smoothly into shimmering hot golden cooking oil. Intense eruption of crackling micro-bubbles along the fish skin. Shimmering steam carrying rich savory-sour fermented aromas rises into warm amber backlight. Low-angle push-in with tack-sharp focus on bubbling crispy golden scales. Rigid cookware, authentic fluid dynamics, zero morphing, 24fps.
+
+[SHOT 2] ช็อต 02: เตรียมวัตถุดิบปลาส้ม (Pla Som Marinated Prep) | Timecode: 00:02.4 - 00:05.3 (2.9s)
+- Duration: 2.9s
+- On-Screen Text (TH): "ซับให้แห้ง คลุกแป้งบางเบา ✨"
+- Text Position: Lower Third
+- Thai Voiceover Script: "เริ่มจากซับปลาส้มให้แห้งสนิท แล้วคลุกแป้งข้าวเจ้าบางเบา เพื่อล็อกความชุ่มชื้นและช่วยให้หนังฟูกรอบเป็นพิเศษ"
+- Visual Prompt (EN): Artisan overhead flat-lay of premium Thai Pla Som fish on dark rustic wooden board. Diamond scored skin dusted lightly with fine rice flour, surrounded by fresh lime wedges, Thai garlic, sliced shallots, and fiery bird's eye chilies. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Overhead top-down view on rustic wooden cutting board. Chef's hand gently pats dry a premium marinated whole Pla Som with paper towel. Delicate diagonal diamond incisions along the fish body show glistening pinkish-white flesh. Chef dusts a whisper of fine rice flour over the skin with fine mesh sieve. Smooth downward slider, natural morning window daylight, 24fps.
+
+[SHOT 3] ช็อต 03: 🔍 Extreme Macro เช็กความร้อนน้ำมัน (Testing Oil Temperature) | Timecode: 00:05.3 - 00:08.3 (3s)
+- Duration: 3s
+- On-Screen Text (TH): "เช็กความร้อน: ฟองปุดพร้อมทอด! 🔥"
+- Text Position: Lower Third
+- Thai Voiceover Script: "เคล็ดลับคือน้ำมันต้องร้อนพอดี ใช้ตะเกียบจุ่มลงไปถ้ามีฟองปุดขึ้นมา แปลว่าพร้อมทอดแล้วครับ"
+- Visual Prompt (EN): Extreme macro 100mm f/2.8 of wooden chopstick tip touching hot frying oil, micro-bubbles fizzing rapidly around wood, shimmering heat haze, professional kitchen lighting. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Extreme macro close-up of wooden chopstick dipped into center of wok oil. Tiny energetic micro-bubbles immediately fizz and pop vigorously around tip of chopstick, indicating perfect medium-high frying temperature. Steam shimmers across golden oil surface, 24fps.
+
+[SHOT 4] ช็อต 04: หย่อนปลาลงกระทะ (Fish Entering Hot Oil) | Timecode: 00:08.3 - 00:11.4 (3.1s)
+- Duration: 3.1s
+- On-Screen Text (TH): "วางปลาลงไฟกลาง ห้ามขยับเด็ดขาด ⏳"
+- Text Position: Center Punchy
+- Thai Voiceover Script: "ค่อยๆ วางปลาลงไป แล้วเปิดไฟกลางค่อนข้างแรง ปล่อยให้เซ็ตตัว ห้ามคนหรือขยับเด็ดขาดใน 3 นาทีแรก!"
+- Visual Prompt (EN): Side angle macro shot of marinated fish lowered into shimmering hot oil in cast iron pan, dynamic splashing bubbles, crisp steam release, dramatic low-key lighting with golden rim. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Brass tongs gently lower whole dusted Pla Som into hot shimmering oil tail-first. Oil responds with immediate satisfying roar and white foam wave enveloping the fish belly. Camera tracks smoothly alongside the pan, locked focal plane on sizzling tail fin, 24fps.
+
+[SHOT 5] ช็อต 05: 🔍 Extreme Macro หนังปลาพองกรอบ (Fish Skin Blistering Golden) | Timecode: 00:11.4 - 00:14.5 (3.1s)
+- Duration: 3.1s
+- On-Screen Text (TH): "หนังพองฟูกรอบ สีทองอร่าม 🤤"
+- Text Position: Lower Third
+- Thai Voiceover Script: "ดูความฟูของหนังปลาส้มครับ... แป้งบางๆ ทำปฏิกิริยากับน้ำมันจนหนังพองกรอบ สีเหลืองทองเสมอกัน"
+- Visual Prompt (EN): Extreme macro 100mm f/2.8 shot of fish skin crisping into golden brown lace and blistered crackling texture in hot oil, shimmering oil droplets, mouthwatering culinary cinematography. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Macro 100mm tight focus on fish skin. Diamond incisions curl gently backward revealing glistening white tender meat within, while outer skin caramelizes into an ultra-crispy, puffed golden-brown texture with miniature oil bubbles dancing across ridges. Buttery smooth bokeh, 24fps.
+
+[SHOT 6] ช็อต 06: พลิกกลับด้านปลาสีทองอร่าม (The Master Golden Flip) | Timecode: 00:14.5 - 00:17.6 (3.1s)
+- Duration: 3.1s
+- On-Screen Text (TH): "พลิกแค่ครั้งเดียว หนังไม่ติดกระทะ! 🏆"
+- Text Position: Center Punchy
+- Thai Voiceover Script: "พลิกแค่ครั้งเดียวพอ! หนังปลาอีกด้านเหลืองกรอบสวยงาม ไม่หลุด ไม่ติดกระทะแม้แต่น้อย"
+- Visual Prompt (EN): Dynamic culinary shot of chef flipping whole crispy fried fish in wok with spatula, revealing perfectly browned, crispy golden skin, steam swirling upwards, commercial warm kitchen glow. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Chef smoothly slides wide stainless spatula under fish, gracefully lifting and turning whole Pla Som over in one confident motion. Revealing underside fried to breathtaking uniform golden-brown crunchiness. Sizzling oil drains in shimmering rivulets. Zero splashing distortion, 24fps.
+
+[SHOT 7] ช็อต 07: เจียวเครื่องเคียงสมุนไพร (Crisping Shallots & Garlic Garnish) | Timecode: 00:17.6 - 00:20.7 (3.1s)
+- Duration: 3.1s
+- On-Screen Text (TH): "เจียวเครื่องเคียง หอมแดง & พริกกระเทียม 🧄"
+- Text Position: Lower Third
+- Thai Voiceover Script: "เจียวกระเทียมไทย หอมแดง และพริกขี้หนูสวนลงไปในน้ำมันรอบๆ ดึงกลิ่นหอมสมุนไพรคลุมทั่วตัวปลา"
+- Visual Prompt (EN): Close-up 85mm of sliced shallots, garlic, and fresh chilies sizzling into golden crispy garnish in pan alongside fried fish, fragrant steam, vibrant food commercial lighting. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. High-angle close-up of sliced Thai shallots, crushed garlic, and fresh red chilies thrown into hot oil around fish. Aromatics flash-fry into crispy amber-gold crisps within seconds, releasing savory fragrance through translucent steam, 24fps.
+
+[SHOT 8] ช็อต 08: 💡 B-Roll ตักปลาขึ้นสะเด็ดน้ำมัน (Resting on Wire Rack) | Timecode: 00:20.7 - 00:23.7 (3s)
+- Duration: 3s
+- On-Screen Text (TH): "พักสะเด็ดน้ำมัน หนังกรอบนานไม่อมน้ำมัน ✨"
+- Text Position: Lower Third
+- Thai Voiceover Script: "ตักขึ้นพักบนตะแกรงสะเด็ดน้ำมัน หนังปลาจะเซ็ตตัวกรอบนานขึ้น ไม่อมน้ำมัน"
+- Visual Prompt (EN): Cinematic B-roll of steaming golden crispy fried fish resting on stainless steel wire rack, excess oil dripping away, backlit by warm golden hour sunlight, artisan kitchen background. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Chef lifts golden crispy Pla Som with brass skimmer onto stainless wire resting rack. Shimmering oil droplets fall cleanly through wire grid. Evening golden sunbeam illuminates delicate steam rising from crispy skin, 24fps.
+
+[SHOT 9] ช็อต 09: 📐 Kinetic Crash Zoom โรยเครื่องสมุนไพรไม่อั้น (Garnish Waterfall) | Timecode: 00:23.7 - 00:26.6 (2.9s)
+- Duration: 2.9s
+- On-Screen Text (TH): "โรยเครื่องเคียงล้นๆ หอมกรอบสะใจ 🌶️"
+- Text Position: Center Punchy
+- Thai Voiceover Script: "โรยเครื่องเคียงกระเทียมเจียวและพริกทอดลงไปแบบจุใจ เพิ่มมิติรสชาติและสัมผัสความกรอบ"
+- Visual Prompt (EN): Kinetic crash zoom of crispy fried golden garlic and chili flakes showered generously over hot crispy fried fish, high speed 60fps, dynamic motion blur, commercial food grading. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Fast snap zoom as chef's fingers shower mountain of crispy fried garlic, translucent golden shallots, and spicy red-green chilies across top of fried Pla Som. Crisp aromatics settle with light crunching sound, 24fps.
+
+[SHOT 10] ช็อต 10: เผยผลลัพธ์ & CTA | Timecode: 00:26.6 - 00:30 (3.4s)
+- Duration: 3.4s
+- On-Screen Text (TH): "เสียงกรอบสะท้าน! เนื้อในนุ่มฉ่ำ 🥢"
+- Text Position: Top Center
+- Thai Voiceover Script: "ฟังเสียงความกรอบนะครับ... ข้างนอกกรอบสะท้าน แต่ข้างในเนื้อปลาขาวฟูนุ่มฉ่ำ รสเปรี้ยวกลมกล่อมแท้ๆ"
+- Visual Prompt (EN): Extreme macro 100mm f/2.8 of chopsticks breaking through ultra-crispy golden fish skin, revealing tender steaming moist flaky white fish meat inside, visible steam, shallow DOF. --ar 9:16
+- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Extreme macro close-up. Wooden chopsticks gently press down on middle of fish. Outer skin cracks with crisp audible acoustic snap. Thick, flaky white fish meat separates easily, glistening with natural savory juices, pure white steam wafting outward, 24fps.
+
+--- ON-SCREEN THAI TEXT & TYPOGRAPHY OVERLAY DIRECTIVE ---
+1. ON-SCREEN TEXT RENDERING: Display the specified 'On-Screen Text (TH)' for each shot as clean, stylish on-screen text graphics (Modern Thai font, bold, crisp, with subtle drop shadow or frosted glass pill container for 100% legibility over video).
+2. POSITIONING: Render text at the specified [Position] tag (Top Headline / Lower Third / Bottom Center CTA) perfectly timed with scene cuts.
+
+--- TWO-STAGE EXECUTION DIRECTIVE ---
+STAGE 1 (Keyframe Stills): Generate all 10 photographic still images first. Review subject facial consistency and product accuracy. Use Face Correction prompt if any face is distorted.
+STAGE 2 (Video Animation): After human approval of all 10 keyframes, animate each frame into video clips using the '- Camera & Physical Motion (Veo 2)' directives above.

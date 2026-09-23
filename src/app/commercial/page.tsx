@@ -58,100 +58,187 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL BUG FIX (ZERO UNCAUGHT CRASH) & LUXURY UI/UX REDESIGN (v4.9 Studio Edition):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX & PREMIUM UI OVERHAUL — PK STUDIO v5.0 (Reliable Veo Edition):
 
-The tool currently crashes with "⚠️ Uncaught" and the user requested: "Flow เจนไม่ได้ และอยากออกแบบให้สวยงามด้วย ให้องค์ประกอบมันสวยงามถูกต้อง ไม่รก สมส่วน"
+ปัญหาปัจจุบัน: วิดีโอ Veo เจนไม่สำเร็จ ติด Retry ค้าง, English prompt รกตา, Stepper ขึ้นเขียวก่อนจริง
+แก้ทั้งหมดตามนี้:
 
-Fix the crash immediately and redesign the interface to be clean, proportional, and luxurious:
+### 1. 🔴 FIX VIDEO GENERATION FAILURE (สำคัญที่สุด):
+ปัญหา: Veo API มี Rate Limit — ส่งถี่เกินจะ reject ทำให้วิดีโอเจนไม่ได้
+แก้ไข:
+A) SEQUENTIAL ONLY — ห้ามเจนวิดีโอพร้อมกันเด็ดขาด ต้องทำทีละช็อตตามลำดับ
+B) LONG DELAY — รอ **10 วินาที** ระหว่างแต่ละช็อต (ไม่ใช่ 3 วินาที!) โดยโชว์ countdown:
+   "⏳ พักเซิร์ฟเวอร์ 10... 9... 8... (ป้องกัน Rate Limit)"
+C) EXPONENTIAL BACKOFF RETRY — ถ้าช็อตใดล้มเหลว:
+   - ครั้งที่ 1: รอ 15 วินาที แล้วลองใหม่
+   - ครั้งที่ 2: รอ 30 วินาที แล้วลองใหม่  
+   - ครั้งที่ 3: รอ 60 วินาที แล้วลองใหม่
+   - ครั้งที่ 4: รอ 120 วินาที (2 นาที) แล้วลองใหม่
+   - ครั้งที่ 5: หยุด แสดงปุ่ม [🔁 ลองใหม่ด้วยตนเอง] สีส้ม
+   * ระหว่าง retry ให้โชว์ countdown ขนาดใหญ่บนการ์ด:
+     "🔄 Retry #2 — รอ 30s... 29... 28..."
+   * ห้ามนับ retry ข้ามช็อต (แต่ละช็อตนับ retry แยกกัน)
+D) CONTINUE ON FAIL — ถ้าช็อตหนึ่งล้มเหลวครบ 5 ครั้ง ให้ข้ามไปทำช็อตถัดไป ไม่หยุดทั้งหมด
+E) COOLDOWN BUTTON — เพิ่มปุ่ม "⏸️ หยุดพัก 60 วินาที" ที่ header เพื่อให้ผู้ใช้กด cooldown เซิร์ฟเวอร์ก่อน retry ช็อตที่ล้มเหลว
 
-### 1. ELIMINATE THE "Uncaught" CRASH (100% TRY-CATCH & NULL-SAFETY):
-- Wrap EVERY event handler and async function (handleStart, parseShots, generateKeyframes, generateVideo, reRoll) in safe try-catch blocks:
-  try { ... } catch (err) { console.error("Safe caught:", err); setErrorMessage("เกิดข้อผิดพลาด กรุณากดลองใหม่"); }
-- Never access properties on undefined (use optional chaining '?.' and default fallbacks: shot?.visualPromptEn || '', shot?.sceneNumber || index + 1).
-- Safe initial states: shots = [], isGeneratingStills = false, isGeneratingVideos = false, activeStep = 1, currentGeneratingId = null.
-- Remove any un-memoized useEffect or unmanaged setInterval tickers that cause infinite re-renders or unhandled rejections.
+### 2. 🟢 FIX STEPPER (ห้ามขึ้นเขียวก่อนสำเร็จจริง):
+State Machine ที่ถูกต้อง:
+- Step 1 สคริปต์: 
+  * ⬜ ยังไม่เริ่ม (สีเทา)
+  * 🟡 กำลังแยกช็อต (สีเหลือง pulse)
+  * ✅ สำเร็จ (สีเขียว) — เฉพาะเมื่อ shots.length > 0 เท่านั้น!
+- Step 2 ภาพ 8K:
+  * ⬜ ยังไม่เริ่ม (สีเทา) — ตอนยังไม่กดเจน
+  * 🟡 กำลังเจนภาพ (สีเหลือง pulse + "กำลังสร้าง X/Y")
+  * ✅ สำเร็จ (สีเขียว) — เฉพาะเมื่อ ทุกช็อตมี imageUrl !== null
+- Step 3 วิดีโอ:
+  * ⬜ ยังไม่เริ่ม (สีเทา) — ค่าเริ่มต้น! ห้ามเป็นสีเขียว!
+  * 🟣 กำลังเจนวิดีโอ (สีม่วง pulse + "ช็อต X/Y")
+  * 🟠 บางช็อตล้มเหลว (สีส้ม + "สำเร็จ X/Y, ล้มเหลว Z")
+  * ✅ สำเร็จ (สีเขียว) — เฉพาะเมื่อ ทุกช็อตมี videoUrl !== null ทั้งหมด 100%!
 
-### 2. LUXURY & BALANCED UI/UX REDESIGN (สวยงาม สมส่วน ไม่รกตา):
-Aesthetic: Dark Modern Luxury Creative Studio (Deep Charcoal #0d0f17, Card #161924, Subtle Glass Borders rgba(255,255,255,0.08), Vibrant Purple & Emerald Accents).
+### 3. ✨ PREMIUM CARD DESIGN (สวยงาม ไม่รก สมส่วน):
+A) CARD STRUCTURE — แต่ละการ์ดมีส่วนเรียงจากบนลงล่าง:
+   1. Media Frame (rounded-2xl, aspect-video or aspect-[9/16]):
+      - Top-Left badge: "ช็อต 01" (bg-black/60 backdrop-blur text-white text-xs px-2.5 py-1 rounded-lg)
+      - Top-Right badge: "3.1s · 9:16" (bg-purple-600/80 text-white text-xs px-2.5 py-1 rounded-lg)
+      - Center: ภาพ 8K หรือ <video controls loop autoPlay playsInline muted />
+      - Bottom-Center: Thai subtitle pill (bg-black/70 backdrop-blur-md text-white text-xs px-4 py-1.5 rounded-full border border-white/10)
+      - Overlay States:
+        * กำลังเจนภาพ: Shimmer skeleton + "🖼️ กำลังสร้างภาพ..."
+        * กำลังเจนวิดีโอ: Blur overlay + spinner + "🎬 Veo กำลังเจน..."
+        * Retry: Amber overlay + countdown "🔄 Retry #2 — 28s..."
+        * สำเร็จ: ไม่มี overlay
+   2. Content Section (p-4):
+      - Shot Title: font-bold text-white text-sm (e.g. "ช็อต 01: เคล็ดลับทอดปลาส้ม")
+      - Voiceover: bg-white/5 rounded-xl p-3 with 🔊 icon, Thai text, text-zinc-300 text-xs
+      - English Prompt: **ต้องซ่อน** ไว้ใน <details> ที่ปิดอยู่เสมอ:
+        <details style="margin-top:6px;font-size:10.5px;color:#888;cursor:pointer">
+          <summary style="color:#aaa">🔍 ดู Visual Prompt (EN)</summary>
+          <div style="margin-top:4px;padding:8px;background:rgba(0,0,0,0.4);border-radius:8px;border:1px solid rgba(255,255,255,0.05);font-family:monospace;font-size:10px;line-height:1.5;color:#bbb">{prompt}</div>
+        </details>
+   3. Action Bar (flex gap-2 p-3 border-t border-white/5):
+      - [🎨 เจนภาพใหม่] — bg-zinc-700 hover:bg-zinc-600 text-white rounded-xl px-3 py-2 text-xs
+      - [🎬 เจนเป็นวิดีโอ] — bg-purple-600 hover:bg-purple-500 text-white rounded-xl px-3 py-2 text-xs
+      - ถ้าล้มเหลว: [⚠️ ลองใหม่] — bg-amber-600 hover:bg-amber-500 text-white rounded-xl px-3 py-2 text-xs
 
-Layout Structure:
-1. HEADER BAR:
-   - Left: 🎬 PK COMMERCIAL STUDIO v4.9 (Pro Edition) with live status indicator.
-   - Center: Sleek 3-Step Stepper:
-     [ 1. สคริปต์ ] ➔ [ 2. ภาพคีย์เฟรม 8K ] ➔ [ 3. วิดีโอ VEO ]
-     * Step 3 MUST remain neutral/gray during keyframe stage! Never show green check until all videos are done.
-   - Right: Primary Master CTA:
-     <button className="bg-purple-600 hover:bg-purple-500 font-bold px-5 py-2.5 rounded-xl text-white shadow-lg flex items-center gap-2">
-       🎬 เจนวิดีโอทุกฉากพร้อมกัน (Batch Generate)
-     </button>
+B) RESPONSIVE GRID:
+   - Desktop: grid-cols-3 gap-5
+   - Tablet: grid-cols-2 gap-4
+   - Mobile: grid-cols-1 gap-4
 
-2. LEFT PANEL (Compact Directive & Controls):
-   - Clean directive textarea with syntax line count.
-   - One-click [✨ โหลดสคริปต์ปลาส้มตัวอย่าง (Load Demo)] helper button if empty.
-   - Big Emerald Action Button: [🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K (Start)]
-   - Reassurance tag: "✨ โหมด Prompt ล้วน 100% (ไม่ต้องอัปโหลดรูปภาพ)"
+C) HEADER BAR:
+   - Left: "🎬 PK STUDIO v5.0" + status pill
+   - Center: 3-Step Stepper (ตาม state machine ข้อ 2)
+   - Right: "🎬 เจนวิดีโอทุกฉากพร้อมกัน" button (bg-purple-600) + "⏸️ พักเซิร์ฟเวอร์ 60s" button (bg-amber-600)
 
-3. RIGHT GALLERY (Proportional & Elegant Shot Cards):
-   - Display cards in a clean responsive grid (3-column on wide screens).
-   - Card Media Viewport (9:16 or 16:9):
-     * Sharp rounded-xl frame with smooth dark inner shadow.
-     * Top-Left: Minimalist tag \`ช็อต 01\` (Top-Left).
-     * Top-Right: Duration pill \`2.4s · 9:16\` (Top-Right).
-     * Center: Image or Video player (<video src="..." controls loop autoPlay playsInline />).
-     * Bottom-Center: Thai on-screen subtitle pill centered over dark frosted glass:
-       (backdrop-blur-md bg-black/70 text-white font-medium text-xs px-3.5 py-1 rounded-full border border-white/10).
-   - Card Content (Purge Clutter):
-     * Shot Title: Bold white Thai title (e.g. \`ช็อต 01: เคล็ดลับทอดปลาส้ม\`).
-     * Voiceover: Dialogue box with speaker icon \`🔊 "เคยเจอปัญหาทอดปลาส้ม..."\`
-     * CRITICAL CLUTTER FIX: HIDE the giant English prompt inside a neat collapsible toggle:
-       <details className="text-[11px] text-zinc-400 mt-1 cursor-pointer">
-         <summary className="hover:text-zinc-200">🔍 ดู Prompt ภาษาอังกฤษ (Visual Prompt)</summary>
-         <p className="mt-1 p-2 bg-black/40 rounded border border-white/5 font-mono text-[10.5px] leading-relaxed text-zinc-300">{shot.visualPromptEn}</p>
-       </details>
-       (This prevents walls of English text from crowding the card!)
-   - Card Action Bar (Neat Bottom Row):
-     * [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)] (Purple button)
-     * [🔄 เจนภาพใหม่] (Zinc button)
-     * If failed: [⚠️ เซิร์ฟเวอร์หน่วง — 🔁 กดลองใหม่] (Amber/Red button)
+### 4. 🛡️ ZERO-CRASH SAFETY:
+- ทุก async function ต้อง try-catch: handleStart, parseShots, generateKeyframe, generateVideo, batchGenerate, retryVideo
+- ทุก object access ต้อง optional chaining: shot?.imageUrl, shot?.videoUrl, shot?.title || 'Untitled'
+- ไม่มี unhandled Promise rejection
+- Safe state defaults: shots=[], error=null, retryCount={}
+- ทุก setInterval/setTimeout ต้อง clearInterval/clearTimeout ใน cleanup
 
-### 3. RELIABLE VIDEO GENERATION & RETRY:
-- Sequential Generation: Process videos one by one with a 3-second delay between scenes to prevent API 429 rate limit.
-- Safe Error Handling: If a video fails, mark that card as 'error', display the retry button, and continue processing remaining scenes.
-- Manual Retry: Clicking [🔁 กดลองใหม่] retries that specific scene cleanly.
+### 5. 📋 SCRIPT PARSER:
+- รองรับ [SHOT N], [ช็อต N], [SCENE N], Shot N:, ช็อตที่ N
+- ถ้า parse ไม่ได้ให้แสดง error message สุภาพ ห้าม crash
+- ข้อความที่ไม่ใช่ shot header ให้ข้ามไป ไม่ throw error`;
 
-### 4. FORGIVING SCRIPT PARSER:
-- Accept both [SHOT N], [ช็อต N], and [SCENE N] flexibly.
-- Never throw an error on unrecognized preamble text.`;
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.0 (Reliable Veo Edition)" — a production-grade 2-stage video production tool with guaranteed video generation reliability, exponential backoff retry, accurate step tracking, and premium dark UI.
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build a production-grade 2-Stage Commercial Video Studio tool named "PK Commercial Video Studio v4.9 (Luxury Pro Studio)" with an ultra-modern Dark Glassmorphism aesthetic, 100% null-checks and try-catch safety (zero uncaught errors), clean proportional layout without cluttered text, 1-click batch video rendering, and individual video triggers:
+## ARCHITECTURE OVERVIEW:
+Stage 1: User pastes Master Directive → parse shots → generate 8K keyframe images (one per shot)
+Stage 2: Convert keyframe images to Veo video clips (sequential, with rate limit protection)
 
-### 1. ALWAYS VISIBLE PRIMARY DUAL ACTIONS & ZERO REQUIRED IMAGES:
-1. Primary Stage 1 Trigger:
-   - Left Sidebar: Vibrant emerald button "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" under the Directive Textarea.
-   - Helper Button: [✨ โหลดสคริปต์ปลาส้มตัวอย่าง] if textarea is empty.
-   - 100% Pure Prompt Mode: No mandatory face/product image uploads required.
-2. Primary Stage 2 Trigger (1-Click Batch Video):
-   - In the gallery header: Vibrant purple button "🎬 เจนวิดีโอทุกฉากพร้อมกัน (Batch Generate)".
-   - Automatically processes all shots sequentially with 3-second throttle delay between scenes to prevent rate limits.
-   - Per-shot video button on each card: [🎬 แปลงฉากนี้เป็นวิดีโอ (Veo)].
+## 1. VIDEO GENERATION — RATE LIMIT PROTECTION (CRITICAL):
+This is the #1 priority. Veo API has strict rate limits. Without proper protection, videos will fail.
 
-### 2. STRICT & ACCURATE 3-STEP STEPPER:
-- Step 1: [ 1. สคริปต์ ] - Green checkmark ONLY after script regex parses all shots.
-- Step 2: [ 2. ภาพคีย์เฟรม 8K ] - Pulsing amber during diffusion -> Green checkmark ONLY when all keyframe stills are done.
-- Step 3: [ 3. วิดีโอ VEO ] - MUST NOT turn green prematurely! Muted gray during Stage 1 -> Pulsing purple while generating videos -> Red/Amber tag if retry needed -> Green checkmark ONLY when 100% of video clips finish!
+A) SEQUENTIAL PROCESSING ONLY:
+   - Generate videos ONE AT A TIME, never parallel
+   - After each successful video: wait 10 seconds before starting the next
+   - Show live countdown on screen: "⏳ พักเซิร์ฟเวอร์ 10... 9... 8..."
 
-### 3. LUXURY, PROPORTIONAL & UNCLUTTERED CARD DESIGN:
-- Responsive cards with 9:16 or 16:9 media viewport.
-- Phase 1: Crisp 8K Keyframe still.
-- Phase 2: Built-in HTML5 video player with loop and controls.
-- Bottom-Center: Thai on-screen subtitle pill (backdrop-blur-md bg-black/70 text-white px-3.5 py-1 rounded-full text-xs font-medium border border-white/10).
-- Thai Voiceover dialogue card with speaker icon.
-- Clutter-free: English visual prompts are collapsed inside <details><summary>🔍 ดู Prompt ภาษาอังกฤษ</summary></details> so cards remain sleek and beautiful.
+B) EXPONENTIAL BACKOFF RETRY (per shot):
+   - On failure: retry with increasing delays: 15s → 30s → 60s → 120s → give up
+   - Max 5 retry attempts per shot
+   - Show retry countdown overlay on the failing card: "🔄 Retry #2 — รอ 30s... 29... 28..."
+   - Each shot has independent retry counter (don't share between shots)
 
-### 4. 100% SAFE CODING (ZERO UNCAUGHT CRASHES):
-- All async actions wrapped in try/catch.
-- Defend every object access with optional chaining ?. and default fallbacks.
-- Safe sequential execution with clean error state per shot.`;
+C) CONTINUE ON FAILURE:
+   - If a shot fails all 5 retries, SKIP it and move to the next shot
+   - Mark failed shots with amber badge, not blocking the pipeline
+   - User can manually retry failed shots later with the [⚠️ ลองใหม่] button
+
+D) COOLDOWN BUTTON:
+   - Add "⏸️ หยุดพักเซิร์ฟเวอร์ 60 วินาที" button in header
+   - When clicked: pause all generation for 60s with countdown, then auto-resume
+   - Purpose: let user manually cool down the API if they see many failures
+
+## 2. STRICT 3-STEP STEPPER (STATE MACHINE):
+Each step has exactly these visual states:
+- INACTIVE: Gray circle + gray text (not started)
+- ACTIVE: Pulsing colored ring + bold text (currently processing)
+- WARNING: Amber circle + "X/Y สำเร็จ" (partial failures)
+- COMPLETE: Green circle with white checkmark (100% done)
+
+Rules:
+- Step 1 (สคริปต์): COMPLETE only when shots.length > 0 after parsing
+- Step 2 (ภาพ 8K): COMPLETE only when EVERY shot has imageUrl !== null
+- Step 3 (วิดีโอ VEO): 
+  * Starts as INACTIVE (gray) — NEVER green by default!
+  * ACTIVE (purple pulse) during generation
+  * WARNING (amber) if some shots failed
+  * COMPLETE (green) ONLY when ALL shots have videoUrl !== null
+
+## 3. PREMIUM DARK UI DESIGN:
+Theme: Deep space black (#0a0c14) with glass cards (#12151f), purple (#8b5cf6) & emerald (#10b981) accents.
+
+A) TOP HEADER BAR:
+   - Left: "🎬 PK STUDIO v5.0" logo + live status pill
+   - Center: 3-Step Stepper (following state machine above)
+   - Right: Batch controls:
+     * "🎬 เจนวิดีโอทุกฉาก" (purple CTA button)
+     * "⏸️ พักเซิร์ฟเวอร์ 60s" (amber button, shows countdown when active)
+
+B) LEFT SIDEBAR:
+   - Directive textarea (dark, with line numbers)
+   - [✨ โหลดตัวอย่างปลาส้ม] demo loader button
+   - [🚀 เริ่มวิเคราะห์ & ผลิตภาพ 8K] emerald CTA button
+   - "โหมด Prompt ล้วน 100%" reassurance label
+
+C) SHOT CARDS (responsive grid: 3-col desktop, 2-col tablet, 1-col mobile):
+   Each card structure top-to-bottom:
+   1. MEDIA FRAME (rounded-2xl, relative):
+      - Top-left: "ช็อต 01" badge (bg-black/60 backdrop-blur, white text)
+      - Top-right: "3.1s · 9:16" duration badge (bg-purple-600/80)
+      - Center: 8K image or <video controls loop autoPlay playsInline muted />
+      - Bottom-center: Thai subtitle pill (bg-black/70 backdrop-blur-md, rounded-full)
+      - OVERLAY STATES:
+        * Generating image: shimmer skeleton + "🖼️ กำลังสร้างภาพ..."
+        * Generating video: blur + spinner + "🎬 Veo กำลังเจน..."
+        * Retrying: amber overlay + big countdown "🔄 Retry #N — XXs..."
+        * Cooling down: blue overlay + "⏳ พักเซิร์ฟเวอร์ XXs..."
+   2. CONTENT (p-4):
+      - Title: bold white text (ช็อต 01: ชื่อฉาก)
+      - Voiceover: 🔊 Thai dialogue in subtle bg-white/5 box
+      - English prompt: MUST be hidden in collapsed <details>:
+        <details><summary>🔍 ดู Visual Prompt (EN)</summary><div>{prompt}</div></details>
+   3. ACTION BAR (flex, border-t):
+      - [🎨 เจนภาพใหม่] zinc button
+      - [🎬 เจนเป็นวิดีโอ] purple button
+      - If failed: [⚠️ ลองใหม่] amber button (replaces purple)
+
+## 4. ZERO-CRASH SAFETY:
+- Every async function: try { ... } catch(e) { console.error(e); showError("เกิดข้อผิดพลาด กรุณาลองใหม่"); }
+- Every property access: shot?.imageUrl, shot?.videoUrl, shot?.title || ''
+- Safe defaults: shots=[], error=null, isGenerating=false
+- All timers (setInterval/setTimeout) must be cleared on unmount
+- No unhandled Promise rejections ever
+
+## 5. FLEXIBLE SCRIPT PARSER:
+- Accept: [SHOT N], [ช็อต N], [SCENE N], "Shot N:", "ช็อตที่ N"
+- Gracefully skip unrecognized text (never throw)
+- Show friendly Thai error if zero shots parsed`;
 
 export default function CommercialStudioPage() {
   return (
@@ -1389,7 +1476,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v4.8 Auto-Retry Studio")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.0 Reliable Veo Edition")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1400,7 +1487,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v4.8 Auto-Retry Studio)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.0 Reliable Veo Edition)</span>
                 </>
               )}
             </button>
@@ -1455,7 +1542,7 @@ function CommercialStudioContent() {
                 </button>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                {selectedFlowPromptTab === "edit" ? "Fix & Auto-Retry Prompt v4.8" : "Full Builder Prompt v4.8"}
+                {selectedFlowPromptTab === "edit" ? "Fix & Reliable Veo Prompt v5.0" : "Full Builder Prompt v5.0"}
               </span>
             </div>
             <textarea
