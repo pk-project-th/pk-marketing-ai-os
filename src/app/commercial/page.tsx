@@ -58,31 +58,38 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: ZERO OLD STATE LEAKAGE & STRICT PRODUCT ANCHOR — PK STUDIO v5.3 (Pure Project Isolation):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: UNIVERSAL TOPIC LOCK & ZERO CROSS-TOPIC LEAKAGE — PK STUDIO v5.4:
 
-ปัญหาปัจจุบัน:
-1. มีภาพเก่า (เช่น นาฬิกา/รถ) หรือ mock data จากประวัติเก่าติดค้างมาปนกับโปรเจกต์ใหม่
-2. เมื่อเจนสินค้าใหม่ (เช่น ข้าวโอ๊ต) ถ้าไม่มีการล้าง State เก่า หรือถ้า Prompt เป็นคำกว้างๆ (เช่น "Premium showcase") ระบบจะสุ่มวาดนาฬิกาหรูแทน!
+ปัญหาปัจจุบันที่ต้องแก้ไขอย่างเด็ดขาด:
+1. ข้อมูลเก่าหรือภาพจากโปรเจกต์เดิม (เช่น นาฬิกา, รถยนต์, สินค้าเก่า) ติดค้างมาปนกับโปรเจกต์ใหม่
+2. เมื่อสั่งเจนเรื่องใดก็ตาม (เช่น สั่งเรื่อง "ข้าวโอ๊ต" หรือ "สอนว่ายน้ำ"):
+   - ถ้าระบบไม่มี Topic Lock หรือ Prompt สั้น AI จะสุ่มวาดนาฬิกาหรู/กระเป๋าแบรนด์เนม/รถยนต์แทน
+   - กฎเหล็ก: สั่งเรื่องไหน ต้องมีแต่เรื่องนั้น 100% ห้ามมีสิ่งของอื่นที่ไม่เกี่ยวข้องปนมาเด็ดขาด!
+     * สั่ง "ปลาส้ม" ➔ ต้องมีแต่เรื่องปลา สมุนไพร ทอดในกระทะ
+     * สั่ง "ข้าวโอ๊ต" ➔ ต้องมีแต่ชามข้าวโอ๊ต โฟมนมโอ๊ต ผลเบอร์รี่ อาหารเช้าคลีน (ห้ามมีนาฬิกาเด็ดขาด)
+     * สั่ง "สอนว่ายน้ำ" ➔ ต้องมีแต่สระว่ายน้ำ โค้ชสอนว่ายน้ำ โฟมเตะขา แว่นตาว่ายน้ำ (ห้ามมีปลา ห้ามมีนาฬิกา)
 
-แก้ไขทั้งหมดอย่างเด็ดขาดตามนี้:
+แก้ไขระบบทั้งหมดตาม 5 ข้อนี้:
 
-### 1. 🗑️ TOTAL HARD RESET & ZERO STATE RETENTION (ห้ามมีข้อมูลเก่าปนเด็ดขาด):
-- เมื่อผู้ใช้กดปุ่ม "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" หรือวางสคริปต์ใหม่:
-  * ทำการ HARD RESET ล้างข้อมูลเก่าทิ้งทั้งหมด 100%:
+### 1. 🎯 UNIVERSAL TOPIC LOCK (ล็อกหัวข้อ 100% ป้องกันภาพเพี้ยน):
+- แยกอ่านชื่อหัวข้อจากบรรทัด "CAMPAIGN: [ชื่อหัวข้อ]" ด้านบนสุดของ Directive เสมอ
+- ในทุกครั้งที่สั่งเจนภาพ (Keyframe Generation):
+  * บังคับใส่ Topic Prefix กำกับเสมอ:
+    "[TOPIC LOCK: Campaign Subject] Cinematic commercial scene strictly focused on [Campaign Subject]..."
+  * บังคับใส่ Negative Constraint ท้าย Prompt เสมอ:
+    ", zero watches, zero luxury cars, zero handbags, zero jewelry, zero unrelated items, pure topic cinematography"
+- ห้ามใช้คำกว้างๆ ลอยๆ เช่น "modern luxury studio", "podium packshot", "premium showcase" เด็ดขาด เพราะเป็นคำที่ทำให้ Imagen วาดนาฬิกาหรู!
+
+### 2. 🗑️ ABSOLUTE HARD RESET (ล้างข้อมูลเก่า 100% ทุกครั้งที่เริ่มใหม่):
+- เมื่อผู้ใช้กดปุ่ม "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" หรือวางสคริปต์ Directive ใหม่:
+  * ทำการ WIPE State เก่าทิ้งทันที:
     setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
-  * ห้าม Merge หรือเก็บภาพ/วิดีโอจากรันก่อนหน้าไว้เด็ดขาด ทุกโปรเจกต์ต้องเริ่มจากจอขาวสะอาด (Clean Slate)
-  * ห้ามมี Initial State ที่เป็น mock data ของนาฬิกาหรือรถยนต์ใดๆ ทั้งสิ้น
-- เพิ่มปุ่ม "🗑️ ล้างประวัติ & เริ่มโปรเจกต์ใหม่ (Hard Reset)" ไว้ข้างช่องใส่สคริปต์ เพื่อให้กดเคลียร์ทุกอย่างได้ทันทีในคลิกเดียว
+  * ห้าม Merge หรือเก็บภาพ/วิดีโอจาก Session ก่อนหน้าไว้เด็ดขาด ทุกโปรเจกต์ต้องเริ่มจาก Clean Slate เสมอ
+  * ห้ามใส่ mock data หรือ dummy shots ที่มีรูปนาฬิกาหรือรถยนต์ใน Initial State
+- เพิ่มปุ่ม "🗑️ ล้างโปรเจกต์เดิม & เริ่มใหม่ (Hard Reset)" เด่นชัดข้างช่องกรอก Directive
 
-### 2. 🎯 STRICT PRODUCT ANCHOR (ป้องกันการวาดนาฬิกา/รถยนต์ผิดสินค้า):
-- อ่านชื่อแคมเปญจากบรรทัด "CAMPAIGN: [ชื่อสินค้า]" ด้านบนสุดเสมอ
-- ทุกช็อตต้องผูกกับ [ชื่อสินค้า] นั้นๆ เท่านั้น!
-- ห้ามใช้ Prompt ลอยๆ เช่น "Cinematic luxury commercial" หรือ "Premium showcase" เพราะจะทำให้ AI สุ่มวาดนาฬิกาหรู
-- หาก Visual Prompt ช็อตใดสั้นหรือไม่สมบูรณ์ ให้เติมชื่อสินค้าเข้าไปเสมอ:
-  "[Campaign Product], professional 8K commercial product packshot, clean studio lighting, zero watches, zero cars"
-
-### 3. 🛡️ SMART PROMPT SANITIZER & ADAPTIVE FALLBACK (แก้ปัญหาวิดีโอติด Retry):
-A) SANITIZE BEFORE SENDING TO VEO:
+### 3. 🛡️ SMART PROMPT SANITIZER & ADAPTIVE VEO RETRY:
+A) SANITIZE BEFORE SENDING TO VEO (กันคำโดนแบน):
    - แปลง "incisions" ➔ "scored pattern"
    - แปลง "eruption" ➔ "gentle sizzling"
    - แปลง "flesh" ➔ "tender meat"
@@ -90,36 +97,45 @@ A) SANITIZE BEFORE SENDING TO VEO:
 B) ADAPTIVE FALLBACK ON RETRY (ห้ามส่ง Prompt เดิมซ้ำเมื่อล้มเหลว!):
    - รอบที่ 1: ส่ง Motion Prompt ปกติ
    - รอบที่ 2 (Retry #1): เปลี่ยนเป็น Simplified Safe Prompt อัตโนมัติ:
-     "Cinematic slow motion. Camera slowly pushes in. Sizzling golden cooking oil with gentle steam, warm ambient lighting, 24fps."
+     "Cinematic slow motion. Camera slowly pushes in. Natural movement with gentle atmosphere, realistic lighting, 24fps."
    - รอบที่ 3 (Retry #2): เปลี่ยนเป็น Minimal Universal Prompt:
-     "Smooth cinematic slow motion camera push-in, gentle natural movement, realistic lighting, 24fps."
+     "Smooth cinematic slow motion camera push-in, natural gentle movement, 24fps."
 C) INLINE EDIT: มีปุ่ม "✏️ แก้ไข Prompt" บนการ์ดให้แก้ไขเองได้
 
 ### 4. ⏱️ SEQUENTIAL QUEUE & 3-STEP STEPPER:
 - เจนวิดีโอทีละช็อต (Sequential Only) ดีเลย์ 10 วินาทีพร้อมนับถอยหลัง
 - ปุ่ม "⏸️ พักเซิร์ฟเวอร์ 60s" สำหรับ cooldown
-- Step 1 สคริปต์ ➔ Step 2 ภาพ 8K ➔ Step 3 วิดีโอ (เริ่มต้นเป็นสีเทา ห้ามเขียวก่อนจริง)`;
+- Step 1 สคริปต์ ➔ Step 2 ภาพ 8K ➔ Step 3 วิดีโอ (เริ่มต้นเป็นสีเทา ห้ามเขียวก่อนจริง)
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.3 (Pure Project Isolation & Safe Veo Edition)" — a production-grade 2-stage video production tool with 100% project isolation, total hard reset (zero state leakage from previous campaigns), strict product anchoring (zero unwanted watches/cars), and reliable Veo video rendering.
+### 5. 💎 ULTRA-CLEAN UI:
+- Dark Glassmorphism, การ์ดแสดงหัวข้อภาษาไทยชัดเจน
+- Collapsible <details><summary>🔍 ดู Prompt ภาษาอังกฤษ & Motion</summary>...</details>`;
 
-## 1. TOTAL PROJECT HARD RESET & ZERO PREVIOUS STATE (CRITICAL):
-- Whenever a user clicks "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" or pastes a new Master Directive:
-  * COMPLETELY WIPE ALL STATE: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
-  * NEVER retain cached images, old shots, or previous project history. Each run is 100% ISOLATED.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.4 (Universal Topic Lock & Zero Cross-Topic Leakage Edition)" — a production-grade 2-stage video production tool with 100% topic adherence, total project isolation, and zero cross-topic leakage.
+
+## 1. UNIVERSAL TOPIC LOCK (ZERO WRISTWATCHES / ZERO UNRELATED OBJECTS):
+- Extract the core campaign subject from "CAMPAIGN: [Topic Name]" in the Master Directive header.
+- STRICT TOPIC ENFORCEMENT: Every generated image must strictly depict ONLY the active topic:
+  * If CAMPAIGN is "ข้าวโอ๊ต" (Oats) -> ONLY oatmeal bowl, oat milk foam, fresh berries, wholesome breakfast.
+  * If CAMPAIGN is "สอนว่ายน้ำ" (Swimming) -> ONLY swimming pool, swim coach, kickboard, freestyle stroke.
+  * If CAMPAIGN is "ปลาส้ม" (Crispy Fish) -> ONLY crispy fish, wok, fresh herbs, aromatic steam.
+- In every image prompt, append safety negative constraints:
+  ", zero watches, zero luxury cars, zero handbags, zero jewelry, zero unrelated objects"
+- NEVER use generic prompt phrases like "modern luxury studio podium" which trick Imagen into drawing luxury watches.
+
+## 2. ABSOLUTE HARD RESET & ZERO PREVIOUS STATE RETENTION:
+- When clicking "🚀 1. เริ่มวิเคราะห์ & ผลิตภาพ 8K" or pasting a new Master Directive:
+  * COMPLETELY CLEAR ALL STATE: setShots([]); setGeneratedMedia({}); setVideoUrls({}); setRetryCount({}); setError(null);
+  * ZERO LEAKAGE: Never retain cached images, old shots, or previous project history. Each run is 100% ISOLATED.
   * ZERO DEFAULT SHOTS: Never pre-populate mock cards with luxury watches, cars, or dummy data.
-  * Add a visible "🗑️ ล้างข้อมูลและเริ่มใหม่ (Clean Reset)" button next to the textarea.
-
-## 2. STRICT PRODUCT ANCHOR (ZERO WATCHES / ZERO CARS):
-- Extract the product name from "CAMPAIGN: [Product]" in the directive header.
-- Every keyframe generation MUST be explicitly anchored to this extracted product.
-- Never use generic fallback prompts like "Cinematic luxury commercial" or "Premium showcase" which cause Imagen to hallucinate luxury watches or cars.
+  * Provide a prominent "🗑️ ล้างข้อมูลและเริ่มใหม่ (Clean Reset)" button next to the input area.
 
 ## 3. RELIABLE VEO VIDEO GENERATION (ADAPTIVE FALLBACK):
 - Sequential generation only (one shot at a time) with 10-second delay between shots and live countdown.
 - Auto-sanitize prompts before sending to Veo (strip "incisions", "eruption", "flesh", "drops into").
 - Adaptive fallback on retry:
   * Attempt 1: Full motion prompt.
-  * Attempt 2 (Retry #1): Simplified Safe Prompt ("Cinematic macro close-up. Camera slowly pushes in. Sizzling golden cooking oil with delicate steam, 24fps.").
+  * Attempt 2 (Retry #1): Simplified Safe Prompt ("Cinematic slow motion. Camera slowly pushes in. Natural movement with gentle atmosphere, realistic lighting, 24fps.").
   * Attempt 3 (Retry #2): Minimal Universal Prompt ("Smooth cinematic slow motion camera push-in, natural gentle movement, 24fps.").
 - Inline editing: [✏️ แก้ไข Prompt] button on each card.
 - Header Cooldown Button: "⏸️ หยุดพัก 60 วินาที".
@@ -1371,7 +1387,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.3 Pure Project Isolation Edition")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.4 Universal Topic Lock Edition")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1382,7 +1398,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.3 Pure Isolation)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.4 Topic Lock)</span>
                 </>
               )}
             </button>
@@ -1437,7 +1453,7 @@ function CommercialStudioContent() {
                 </button>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">
-                {selectedFlowPromptTab === "edit" ? "Fix & Pure Isolation Prompt v5.3" : "Full Builder Prompt v5.3"}
+                {selectedFlowPromptTab === "edit" ? "Fix & Topic Lock Prompt v5.4" : "Full Builder Prompt v5.4"}
               </span>
             </div>
             <textarea

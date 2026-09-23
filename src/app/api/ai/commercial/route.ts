@@ -169,86 +169,128 @@ export async function POST(req: Request) {
 
     const combinedStr = `${brand} ${productName} ${productPrice}`.toLowerCase();
 
-    // Specific Domain Detections (Strictly Separated & Accurate)
+    // Specific Domain Detections (Strictly Separated & Topic-Isolated)
+    const isSwimming =
+      combinedStr.includes("ว่ายน้ำ") ||
+      combinedStr.includes("ว่าย") ||
+      combinedStr.includes("swim") ||
+      combinedStr.includes("swimming") ||
+      combinedStr.includes("สระว่ายน้ำ") ||
+      combinedStr.includes("pool") ||
+      combinedStr.includes("สอนว่ายน้ำ");
+
+    const isOatOrBreakfast =
+      !isSwimming &&
+      (combinedStr.includes("ข้าวโอ๊ต") ||
+       combinedStr.includes("โอ๊ต") ||
+       combinedStr.includes("oat") ||
+       combinedStr.includes("oatmeal") ||
+       combinedStr.includes("ซีเรียล") ||
+       combinedStr.includes("cereal") ||
+       combinedStr.includes("กราโนล่า") ||
+       combinedStr.includes("granola") ||
+       combinedStr.includes("อาหารเช้า") ||
+       combinedStr.includes("breakfast") ||
+       (combinedStr.includes("โฟม") && (combinedStr.includes("สุขภาพ") || combinedStr.includes("กิน") || combinedStr.includes("ดื่ม") || combinedStr.includes("นม") || combinedStr.includes("แก้ว"))));
+
     const isFishOrPlaSom =
-      combinedStr.includes("ปลาส้ม") ||
-      combinedStr.includes("ปลา") ||
-      combinedStr.includes("fish") ||
-      combinedStr.includes("ทอดปลา") ||
-      combinedStr.includes("ปลากรอบ") ||
-      combinedStr.includes("ซีฟู้ด");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("ปลาส้ม") ||
+       combinedStr.includes("ปลา") ||
+       combinedStr.includes("fish") ||
+       combinedStr.includes("ทอดปลา") ||
+       combinedStr.includes("ปลากรอบ") ||
+       combinedStr.includes("ซีฟู้ด"));
 
     const isPadGaprao =
+      !isSwimming &&
+      !isOatOrBreakfast &&
       !isFishOrPlaSom &&
       (combinedStr.includes("กะเพรา") ||
        combinedStr.includes("gaprao") ||
        combinedStr.includes("ใบกะเพรา"));
 
     const isCooking =
-      isFishOrPlaSom ||
-      isPadGaprao ||
-      combinedStr.includes("อาหาร") ||
-      combinedStr.includes("ผัด") ||
-      combinedStr.includes("ไข่ดาว") ||
-      combinedStr.includes("ทำอาหาร") ||
-      combinedStr.includes("ครัว") ||
-      combinedStr.includes("สูตร") ||
-      combinedStr.includes("หมูสับ") ||
-      combinedStr.includes("เนื้อ") ||
-      combinedStr.includes("พริก") ||
-      combinedStr.includes("กระเทียม") ||
-      combinedStr.includes("cooking") ||
-      combinedStr.includes("คั่ว") ||
-      combinedStr.includes("กระทะ") ||
-      combinedStr.includes("ต้ม") ||
-      combinedStr.includes("ทอด") ||
-      combinedStr.includes("แกง") ||
-      combinedStr.includes("ของกิน") ||
-      combinedStr.includes("จานเด็ด") ||
-      combinedStr.includes("เมนู") ||
-      combinedStr.includes("อร่อย");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (isFishOrPlaSom ||
+       isPadGaprao ||
+       combinedStr.includes("อาหาร") ||
+       combinedStr.includes("ผัด") ||
+       combinedStr.includes("ไข่ดาว") ||
+       combinedStr.includes("ทำอาหาร") ||
+       combinedStr.includes("ครัว") ||
+       combinedStr.includes("สูตร") ||
+       combinedStr.includes("หมูสับ") ||
+       combinedStr.includes("เนื้อ") ||
+       combinedStr.includes("พริก") ||
+       combinedStr.includes("กระเทียม") ||
+       combinedStr.includes("cooking") ||
+       combinedStr.includes("คั่ว") ||
+       combinedStr.includes("กระทะ") ||
+       combinedStr.includes("ต้ม") ||
+       combinedStr.includes("ทอด") ||
+       combinedStr.includes("แกง") ||
+       combinedStr.includes("ของกิน") ||
+       combinedStr.includes("จานเด็ด") ||
+       combinedStr.includes("เมนู") ||
+       combinedStr.includes("อร่อย"));
 
     const isGraduation =
-      combinedStr.includes("รับปริญญา") ||
-      combinedStr.includes("ชุดครุย") ||
-      combinedStr.includes("บัณฑิต");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("รับปริญญา") ||
+       combinedStr.includes("ชุดครุย") ||
+       combinedStr.includes("บัณฑิต"));
 
     const isTemple =
-      combinedStr.includes("วัด") ||
-      combinedStr.includes("ทำบุญ") ||
-      combinedStr.includes("ไหว้พระ") ||
-      combinedStr.includes("สายมู") ||
-      combinedStr.includes("พระธาตุ") ||
-      combinedStr.includes("อาราม") ||
-      combinedStr.includes("พุทธ");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("วัด") ||
+       combinedStr.includes("ทำบุญ") ||
+       combinedStr.includes("ไหว้พระ") ||
+       combinedStr.includes("สายมู") ||
+       combinedStr.includes("พระธาตุ") ||
+       combinedStr.includes("อาราม") ||
+       combinedStr.includes("พุทธ"));
 
     const isDinosaurOrWildlife =
-      combinedStr.includes("ไดโนเสาร์") ||
-      combinedStr.includes("dinosaur") ||
-      combinedStr.includes("จูราสสิก") ||
-      combinedStr.includes("jurassic") ||
-      combinedStr.includes("ป่าดึกดำบรรพ์") ||
-      combinedStr.includes("สัตว์โลก") ||
-      combinedStr.includes("ป่าลึก") ||
-      combinedStr.includes("wildlife") ||
-      combinedStr.includes("สารคดี") ||
-      combinedStr.includes("documentary") ||
-      combinedStr.includes("prehistoric") ||
-      combinedStr.includes("สัตว์ป่า") ||
-      combinedStr.includes("บรรพชีวิน") ||
-      combinedStr.includes("ไดโน") ||
-      combinedStr.includes("dino");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("ไดโนเสาร์") ||
+       combinedStr.includes("dinosaur") ||
+       combinedStr.includes("จูราสสิก") ||
+       combinedStr.includes("jurassic") ||
+       combinedStr.includes("ป่าดึกดำบรรพ์") ||
+       combinedStr.includes("สัตว์โลก") ||
+       combinedStr.includes("ป่าลึก") ||
+       combinedStr.includes("wildlife") ||
+       combinedStr.includes("สารคดี") ||
+       combinedStr.includes("documentary") ||
+       combinedStr.includes("prehistoric") ||
+       combinedStr.includes("สัตว์ป่า") ||
+       combinedStr.includes("บรรพชีวิน") ||
+       combinedStr.includes("ไดโน") ||
+       combinedStr.includes("dino"));
 
     const isAuto =
-      combinedStr.includes("mazda") ||
-      combinedStr.includes("byd") ||
-      combinedStr.includes("รถ") ||
-      combinedStr.includes("car") ||
-      combinedStr.includes("ev");
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("mazda") ||
+       combinedStr.includes("byd") ||
+       combinedStr.includes("รถ") ||
+       combinedStr.includes("car") ||
+       combinedStr.includes("ev"));
 
-    const isFishing = combinedStr.includes("fishing") || combinedStr.includes("ตกปลา");
+    const isFishing =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("fishing") || combinedStr.includes("ตกปลา"));
 
     const isTravel =
+      !isSwimming &&
+      !isOatOrBreakfast &&
       !isCooking &&
       !isGraduation &&
       !isTemple &&
@@ -274,7 +316,17 @@ export async function POST(req: Request) {
         : [presenterStyle];
 
       if (autoPersona) {
-        if (isDinosaurOrWildlife) {
+        if (isSwimming) {
+          resolvedPersonaList = [
+            "ครูสอนว่ายน้ำมืออาชีพ ยิ้มแย้ม สดใส สวมชุดว่ายน้ำสปอร์ตมิดชิด (Certified Swim Coach)",
+            "ผู้ฝึกว่ายน้ำเริ่มต้น มุ่งมั่น มั่นใจ สวมแว่นตาว่ายน้ำและหมวกซิลิโคน"
+          ];
+        } else if (isOatOrBreakfast) {
+          resolvedPersonaList = [
+            "ผู้เชี่ยวชาญด้านโภชนาการและสุขภาพ ลุคสดใส คลีน สุขภาพดี (Healthy Nutritionist)",
+            "คนรักสุขภาพรุ่นใหม่ สดใส สนุกกับการทำอาหารเช้า 5 นาที"
+          ];
+        } else if (isDinosaurOrWildlife) {
           resolvedPersonaList = ["นักสำรวจสารคดีสัตว์โลก & นักบรรพชีวินวิทยา (National Geographic Safari Explorer)", "ผู้สังเกตการณ์สัตว์ป่าดึกดำบรรพ์ (Khaki Safari Gear)"];
         } else if (isGraduation) {
           resolvedPersonaList = ["บัณฑิตสาวสดใส (ชุดครุย/ชุดขาวมินิมอล)", "ช่างภาพสายคอนเทนต์ (ฟีลอบอุ่น)", "ลุคธรรมชาติ Clean Korean Tone"];
@@ -299,7 +351,19 @@ export async function POST(req: Request) {
       : [environment];
 
     if (autoEnvironment) {
-      if (isDinosaurOrWildlife) {
+      if (isSwimming) {
+        resolvedEnvironmentList = [
+          "สระว่ายน้ำมาตรฐานโอลิมปิกกลางแจ้ง แสงแดดสะท้อนผิวน้ำสีฟ้าครามระยิบระยับ",
+          "สระว่ายน้ำรีสอร์ตหรู ลู่ว่ายน้ำใสสะอาด ปลอดโปร่ง",
+          "ริมขอบสระว่ายน้ำ พร้อมโฟมฝึกว่ายน้ำ (Kickboard) และอุปกรณ์ฝึกซ้อม"
+        ];
+      } else if (isOatOrBreakfast) {
+        resolvedEnvironmentList = [
+          "โต๊ะอาหารเช้าสไตล์สแกนดิเนเวียน แสงแดดเช้าอุ่นๆ ถ้วยข้าวโอ๊ตท็อปปิ้งผลไม้สดและแก้วนมโอ๊ต",
+          "ห้องครัวโมเดิร์นคลีนโทนไม้อบอุ่น พร้อมโหลแก้วข้าวโอ๊ตออร์แกนิกและผลเบอร์รี่สด",
+          "มุมทานอาหารเช้าริมหน้าต่างบานใหญ่ แสงธรรมชาติส่องกระทบละมุนตา"
+        ];
+      } else if (isDinosaurOrWildlife) {
         resolvedEnvironmentList = [
           "ป่าดึกดำบรรพ์ยุคจูราสสิก แสงแดดส่องทะลุยอดไม้สูง ต้นเฟิร์นโบราณยักษ์ หมอกยามเช้าลอยเหนือน้ำ",
           "หุบเขาไดโนเสาร์ ลำธารน้ำตกใสสะอาด พืชพรรณยุคโบราณ ดินชื้นธรรมชาติ",
@@ -357,38 +421,100 @@ export async function POST(req: Request) {
     const getProductEn = (pName: string, bName: string): string => {
       const lower = `${pName} ${bName}`.toLowerCase();
       const tags: string[] = [];
-      if (lower.includes("ข้าวโอ๊ต") || lower.includes("โอ๊ต")) tags.push("healthy oat grain cereal and organic oat foam beverage or product");
-      if (lower.includes("โฟม") || lower.includes("foam")) tags.push("velvety foaming cleanser bottle with rich whipped foam texture");
-      if (lower.includes("สบู่")) tags.push("artisan organic botanical soap bar");
-      if (lower.includes("เซรั่ม") || lower.includes("serum")) tags.push("luxury cosmetic dropper serum glass bottle");
-      if (lower.includes("ครีม") || lower.includes("cream")) tags.push("nourishing cosmetic skincare cream jar");
-      if (lower.includes("สกินแคร์") || lower.includes("skincare") || lower.includes("ผิว")) tags.push("premium skincare cosmetic package");
+
+      // 1. Swimming & Aquatic
+      if (lower.includes("ว่ายน้ำ") || lower.includes("ว่าย") || lower.includes("swim") || lower.includes("สระว่ายน้ำ") || lower.includes("pool")) {
+        tags.push("professional swimming lessons, poolside training session with kickboard, swim coach, and swimming goggles in clear pool");
+      }
+
+      // 2. Oats, Cereal & Healthy Breakfast Foam
+      if (lower.includes("ข้าวโอ๊ต") || lower.includes("โอ๊ต") || lower.includes("oat") || lower.includes("ซีเรียล") || lower.includes("cereal") || lower.includes("กราโนล่า") || lower.includes("granola")) {
+        tags.push("wholesome organic rolled oats breakfast bowl with creamy velvety oat milk foam, fresh blueberries and raw honey");
+      }
+      if (lower.includes("โฟม") || lower.includes("foam")) {
+        if (lower.includes("สุขภาพ") || lower.includes("โอ๊ต") || lower.includes("ดื่ม") || lower.includes("กิน") || lower.includes("นม") || lower.includes("แก้ว")) {
+          if (!tags.some(t => t.includes("foam"))) {
+            tags.push("rich velvety whipped oat milk froth and healthy nutrient foam in glass cup");
+          }
+        } else if (!lower.includes("ว่ายน้ำ") && !lower.includes("swim")) {
+          tags.push("velvety foaming cleanser bottle with rich whipped foam texture");
+        }
+      }
+
+      // 3. Fish & Seafood
+      if (lower.includes("ปลาส้ม") || lower.includes("ปลา") || lower.includes("fish")) {
+        tags.push("golden crispy seasoned fried fish garnished with fried shallots, garlic, and fresh chilies");
+      }
+
+      // 4. Pad Gaprao & Thai Cuisine
+      if (lower.includes("กะเพรา") || lower.includes("gaprao")) {
+        tags.push("authentic spicy Thai holy basil stir-fry dish with crispy lace fried egg over jasmine rice");
+      }
+
+      // 5. General Beverages & Food
       if (lower.includes("กาแฟ") || lower.includes("coffee")) tags.push("artisan brewed coffee in ceramic cup with rich crema");
       if (lower.includes("ชา") || lower.includes("tea") || lower.includes("มัทฉะ")) tags.push("premium organic tea beverage in glass cup");
       if (lower.includes("น้ำผลไม้") || lower.includes("juice")) tags.push("fresh cold-pressed fruit juice in clear glass bottle");
       if (lower.includes("ขนม") || lower.includes("snack") || lower.includes("เบเกอรี่")) tags.push("gourmet artisan snack bakery package");
-      if (lower.includes("ปลาส้ม") || lower.includes("ปลา")) tags.push("golden crispy seasoned fried fish");
-      if (lower.includes("กะเพรา")) tags.push("spicy Thai basil stir-fry culinary dish");
-      if (lower.includes("สุขภาพ") || lower.includes("health")) tags.push("wellness organic healthy lifestyle packaging");
-      
+      if (lower.includes("อาหาร") || lower.includes("ทำอาหาร") || lower.includes("ครัว")) tags.push("delicious freshly prepared culinary dish");
+
+      // 6. Skincare & Personal Care
+      if (lower.includes("สบู่")) tags.push("artisan organic botanical soap bar");
+      if (lower.includes("เซรั่ม") || lower.includes("serum")) tags.push("cosmetic dropper serum bottle");
+      if (lower.includes("ครีม") || lower.includes("cream")) tags.push("nourishing cosmetic skincare cream jar");
+      if (lower.includes("สกินแคร์") || lower.includes("skincare") || lower.includes("ผิว")) tags.push("premium skincare cosmetic package");
+
+      // 7. General Health & Fitness
+      if (lower.includes("สุขภาพ") || lower.includes("health")) {
+        if (tags.length === 0) tags.push("wellness organic healthy lifestyle product");
+      }
+      if (lower.includes("ออกกำลังกาย") || lower.includes("ฟิตเนส") || lower.includes("gym")) tags.push("modern athletic fitness training and active lifestyle");
+      if (lower.includes("โยคะ") || lower.includes("yoga")) tags.push("serene yoga practice and mindful wellness");
+
+      // 8. Household Services & Living
+      if (lower.includes("แอร์") || lower.includes("air condition")) tags.push("modern air conditioner unit servicing and indoor maintenance");
+      if (lower.includes("ทำความสะอาด") || lower.includes("แม่บ้าน") || lower.includes("cleaning")) tags.push("professional home cleaning service in tidy modern living space");
+      if (lower.includes("สุนัข") || lower.includes("แมว") || lower.includes("สัตว์เลี้ยง") || lower.includes("pet")) tags.push("gentle pet care grooming and happy domestic pet");
+
       if (tags.length > 0) return tags.join(", ");
-      return `${bName || "Brand"} commercial product package, sleek modern minimalist bottle or packaging with organic branding`;
+
+      // Clean topic fallback - sanitize and guarantee 100% pure English without Thai characters
+      const hasThai = /[\u0E00-\u0E7F]/.test(pName + " " + bName);
+      if (hasThai) {
+        return "commercial product demonstration and authentic lifestyle presentation";
+      }
+      const sanitizedName = (pName || bName || "commercial subject").trim();
+      return `commercial demonstration of ${sanitizedName}`;
     };
 
     const getEnvironmentEn = (envList: string[]): string => {
       const lower = envList.join(" ").toLowerCase();
-      if (lower.includes("สตูดิโอ") || lower.includes("studio")) return "modern minimalist commercial studio set with soft diffused key light and gentle atmospheric haze";
-      if (lower.includes("ครัว") || lower.includes("kitchen")) return "warm modern kitchen with natural morning sunlight and oak countertops";
+      if (lower.includes("ว่ายน้ำ") || lower.includes("swim") || lower.includes("สระ")) return "crystal-clear turquoise outdoor swimming pool with bright sunlight and sparkling water reflections";
+      if (lower.includes("ข้าวโอ๊ต") || lower.includes("oat") || lower.includes("อาหารเช้า") || lower.includes("breakfast")) return "cozy sunlit Scandinavian breakfast table with warm morning daylight and rustic oak wood surface";
+      if (lower.includes("สตูดิโอ") || lower.includes("studio")) return "modern minimalist commercial studio set with soft diffused key light and clean backdrop";
+      if (lower.includes("ครัว") || lower.includes("kitchen")) return "warm modern kitchen with natural morning sunlight and clean countertops";
       if (lower.includes("สตรีท") || lower.includes("street") || lower.includes("เมือง")) return "vibrant urban city lifestyle street backdrop in natural golden daylight";
       if (lower.includes("สวน") || lower.includes("ธรรมชาติ") || lower.includes("ป่า")) return "serene botanical garden background with lush greenery and soft bokeh";
-      return "clean contemporary commercial studio setting with elegant softbox lighting";
+      return "clean contemporary commercial studio setting with soft natural daylight, zero watches, zero cars";
     };
 
     const effectiveProductEn = getProductEn(productName, brand);
     const effectiveEnvironmentEn = getEnvironmentEn(resolvedEnvironmentList);
 
     // Gender styling (Domain Aware)
-    const genderEn = isDinosaurOrWildlife
+    const genderEn = isSwimming
+      ? (presenterGender === "female"
+          ? "certified Asian female professional swim coach (24-27 y/o) in athletic sporty swimwear with coach whistle and kickboard"
+          : presenterGender === "male"
+            ? "certified Asian male professional swim coach (26-29 y/o) in athletic sporty swimwear with coach whistle and kickboard"
+            : "professional swim coach and enthusiastic student duo at poolside")
+      : isOatOrBreakfast
+      ? (presenterGender === "female"
+          ? "radiant healthy Asian woman (24-27 y/o) in cozy linen morning wear, natural glowing skin"
+          : presenterGender === "male"
+            ? "fit energetic Asian man (26-29 y/o) in relaxed morning casual attire"
+            : "cheerful healthy lifestyle breakfast creator duo")
+      : isDinosaurOrWildlife
       ? (presenterGender === "female"
           ? "courageous Asian female wildlife explorer (25-28 y/o) in khaki safari expedition gear with binoculars"
           : presenterGender === "male"
@@ -427,7 +553,19 @@ export async function POST(req: Request) {
     const isPurePrompt = referenceMode === "pure_prompt";
 
     // Domain-Specific Camera Lens & Lighting Atmosphere for Pure Prompt Generation
-    const domainCameraSpecs = isDinosaurOrWildlife
+    const domainCameraSpecs = isSwimming
+      ? {
+          lens: "ARRI Alexa LF with 35mm Prime and Underwater 50mm f/1.8 lens, high-speed 60fps for crisp water droplets and fluid physics",
+          lighting: "bright natural morning sunlight casting shimmering aquatic caustics across turquoise pool water, crisp specular glints on water droplets",
+          grading: "crisp aquatic cyan and azure film grade, glowing healthy sun-kissed skin tones, 8K photorealism"
+        }
+      : isOatOrBreakfast
+      ? {
+          lens: "Cooke S4/i 100mm Macro Prime and 50mm Prime lens, shallow depth of field, creamy circular bokeh",
+          lighting: "warm golden morning sunlight streaming through kitchen window, soft translucent steam rising from warm oat bowl",
+          grading: "warm organic artisan commercial grading, rich golden oat grains, deep berry reds, pristine creamy white foam, 8K ultra photorealistic"
+        }
+      : isDinosaurOrWildlife
       ? {
           lens: "RED Monstro 8K with Canon CN-E 30-300mm Cinema Zoom lens, BBC Earth & National Geographic wildlife documentary cinematography",
           lighting: "volumetric morning god rays piercing through dense prehistoric rainforest canopy, glistening dew on giant ferns, ethereal humid mist",
@@ -465,8 +603,8 @@ export async function POST(req: Request) {
         }
       : {
           lens: "Cinema Prime 50mm f/1.8 lens, clean commercial framing, shallow depth of field",
-          lighting: "studio three-point commercial lighting, clean softbox key, subtle accent hair light",
-          grading: "clean modern luxury commercial grade, 8K photorealism"
+          lighting: "clean soft natural three-point commercial lighting, subtle rim light",
+          grading: "natural commercial film grade, true-to-life colors, 8K photorealism"
         };
 
     // 1. AI REFERENCE ASSET RECOMMENDATIONS
@@ -1522,13 +1660,353 @@ export async function POST(req: Request) {
       }
     ];
 
-// ==========================================
+    // ==========================================
+    // SWIMMING LESSONS & AQUATIC MASTER POOL (16 FULL DIVERSE SHOTS - 100% ACCURATE)
+    // ==========================================
+    const swimmingMasterPool16 = [
+      {
+        type: "เปิดเรื่อง Hook คลาสว่ายน้ำ (Viral Swimming Lesson Hook)",
+        camera: "Dynamic Low-Angle Water Surface Push-in 35mm",
+        motion: `Photorealistic 8K image-to-video. Camera pushes in smoothly inches above crystal-clear turquoise swimming pool. Professional swim coach in sporty swimwear kneels poolside with warm encouraging gesture and whistle. Sunlight sparkles across water ripples with natural caustic illumination, 24fps.`,
+        prompt: isPurePrompt
+          ? `Cinematic 8K opening hook at crystal-clear turquoise swimming pool. Bright morning daylight dancing across sparkling water caustics. Professional swim coach in sleek athletic swimwear kneeling poolside, extending hand warmly to camera with encouraging smile. Water droplets frozen mid-air, ARRI Alexa LF, 35mm Prime, pure cinematography, zero text. --ar ${aspectRatio}`
+          : `Cinematic 8K opening hook at crystal-clear swimming pool. [Slot 1 Coach Anchor]: Match coach to Slot 1 reference. Bright daylight, turquoise water ripples, encouraging smile, zero text. --ar ${aspectRatio}`,
+        voice: "ว่ายน้ำไม่เป็น กลัวจม หายใจไม่ทัน? วันนี้เรามีเคล็ดลับง่ายๆ ที่จะทำให้คุณว่ายน้ำเป็นและมั่นใจได้ตั้งแต่ชั่วโมงแรก!",
+        text: "ว่ายน้ำไม่เป็น กลัวจม? ว่ายเป็นใน 1 ชม.! 🏊‍♂️",
+        textPos: "Top Headline",
+        sfx: "Refreshing pool splash whoosh, uplifting sports chime."
+      },
+      {
+        type: "วอร์มอัพและปรับการหายใจริมสระ (Poolside Breathing Technique Warmup)",
+        camera: "Medium Eye-Level 50mm Prime",
+        motion: `Photorealistic 8K image-to-video. Coach demonstrates rhythmic breathing poolside: inhaling calmly through mouth, exhaling continuous tiny bubbles into water surface. Swimmer nods with bright confidence, realistic human movement, zero facial distortion, 24fps.`,
+        prompt: `Medium eye-level shot poolside in crisp morning light. Professional swim coach demonstrating rhythmic breathing technique at edge of turquoise swimming pool. Clear lane dividers, sparkling blue water. ARRI Alexa LF, 50mm Prime. --ar ${aspectRatio}`,
+        voice: "เริ่มจากพื้นฐานสำคัญที่สุด คือการควบคุมลมหายใจ เป่าลมในน้ำแล้วเงยหน้าฮุบอากาศอย่างผ่อนคลาย",
+        text: "สเต็ป 1: ควบคุมลมหายใจ ไม่สำลักน้ำ 🫁",
+        textPos: "Lower Third",
+        sfx: "Rhythmic breathing bubbles, gentle pool lap foley."
+      },
+      {
+        type: "ฝึกเตะขาด้วยโฟมลอยตัว (Kickboard Flutter Kick Practice)",
+        camera: "Low-Angle Water Level Tracking 50mm",
+        motion: `Photorealistic 8K image-to-video. Swimmer holds bright kickboard with straight arms, executing rhythmic flutter kicks from hips. A stream of sparkling white bubbles and frothy water churns behind pointed toes. Camera tracks smoothly at water level, 24fps.`,
+        prompt: `Dynamic water-level tracking shot of swimmer holding bright kickboard executing continuous flutter kicks in azure pool lane. Sparkling white water froth trailing behind feet, vibrant morning sun, high-speed shutter photography. --ar ${aspectRatio}`,
+        voice: "ใช้โฟมฝึกเตะขา ส่งแรงจากสะโพกไม่ใช่หัวเข่า ปลายเท้าเหยียดตรง ขาจะลอยน้ำได้แบบไม่ต้องออกแรงเยอะ",
+        text: "สเต็ป 2: เตะขาจากสะโพก ลอยตัวง่าย ✨",
+        textPos: "Center Punchy",
+        sfx: "Continuous energetic flutter splash, upbeat rhythm."
+      },
+      {
+        type: "🔍 ใต้น้ำ Extreme Macro ท่าสโตรกแขน (Underwater Arm Stroke Technique)",
+        camera: "🔍 Underwater 4K Macro 35mm Housing",
+        motion: `Photorealistic 8K image-to-video. Underwater camera tracks swimmer's arm slicing into water at clean 45-degree angle. Palm catches and pulls water backward with efficient hydrodynamics. Sparkling air bubble trails wrap around forearm, 24fps.`,
+        prompt: `Extreme macro underwater shot of swimmer's hand entering crystal clear turquoise pool water, fingertips slicing surface cleanly, hydrodynamic pull phase with micro-bubble vortex trails. ARRI Alexa LF underwater housing. --ar ${aspectRatio}`,
+        voice: "สังเกตการวาดแขนใต้น้ำครับ ปลายนิ้วชิด กวักน้ำเต็มฝ่ามือ ดึงตัวพุ่งไปข้างหน้าได้อย่างทรงพลัง",
+        text: "สเต็ป 3: วาดแขนดึงน้ำ ส่งตัวพุ่งไปข้างหน้า 🌊",
+        textPos: "Lower Third",
+        sfx: "Resonant underwater whoosh, muffled bubbling glide."
+      },
+      {
+        type: "การเอียงหน้าหายใจแบบฟรีสไตล์ (Freestyle Side Breathing Rhythm)",
+        camera: "Dynamic Side-Angle Split Level Water Surface",
+        motion: `Photorealistic 8K image-to-video. Split-level half-underwater half-above-water shot. Swimmer rolls head smoothly to the side to take quick relaxed breath while ear stays resting on water surface. Goggles glisten with water drops, 24fps.`,
+        prompt: `Split-level water surface shot of swimmer taking relaxed side breath during freestyle stroke. Glistening goggles, smooth water surface tension, ear resting in water, crisp morning pool lighting. --ar ${aspectRatio}`,
+        voice: "จังหวะหายใจ ให้เอียงคอแค่ครึ่งเดียว หูแนบชิดผิวน้ำ จะไม่เสียสมดุลและไม่เหนื่อยเร็ว",
+        text: "เอียงหน้าหายใจ ไม่เสียแรง 💨",
+        textPos: "Center Punchy",
+        sfx: "Crisp splash, quick clean breath intake, water rush."
+      },
+      {
+        type: "โค้ชคอยดูแลใกล้ชิด (Personalized Coach Support & Encouragement)",
+        camera: "Medium Two-Shot 50mm Prime",
+        motion: `Photorealistic 8K image-to-video. Dedicated swim coach stands in shallow lane right beside adult or child swimmer, offering gentle physical support under abdomen and giving positive thumbs up. Reassuring safe atmosphere, 24fps.`,
+        prompt: `Warm inspiring two-shot of swim coach guiding swimmer in shallow lane of modern aquatic center. Coach smiling encouragingly with thumbs up, swimmer feeling confident and secure. Soft diffuse daylight. --ar ${aspectRatio}`,
+        voice: "เรียนกับเรา ปลอดภัย 100% มีโค้ชคอยประกบดูแลอย่างใกล้ชิด แก้ไขท่าแบบตัวต่อตัว",
+        text: "ดูแลใกล้ชิดรายบุคคล ปลอดภัย 100% 🛡️",
+        textPos: "Lower Third",
+        sfx: "Encouraging whistle chirp, cheering water splash, warm melody."
+      },
+      {
+        type: "ว่ายฉลุยข้ามลู่ว่ายน้ำอย่างมั่นใจ (Effortless Lap Swimming Glide)",
+        camera: "High-Angle Drone Orbit 45-Degree",
+        motion: `Photorealistic 8K image-to-video. Camera cranes smoothly along swimming lane following swimmer's fluid continuous motion. Water caustics illuminate pool floor, effortless hydrodynamic momentum, 24fps.`,
+        prompt: `High-angle 45-degree cinematic crane shot of swimmer gliding gracefully through center swimming lane with symmetrical freestyle strokes. Pristine turquoise water, sunlight reflecting off ripples. --ar ${aspectRatio}`,
+        voice: "จากคนที่ไม่กล้าลงน้ำ วันนี้สามารถว่ายน้ำข้ามสระได้อย่างคล่องแคล่ว สง่างาม และปลอดภัย",
+        text: "ว่ายน้ำเป็นได้อย่างมั่นใจและสง่างาม 🥇",
+        textPos: "Center Punchy",
+        sfx: "Smooth water slicing glide sound, outdoor pool ambiance."
+      },
+      {
+        type: "เผยผลลัพธ์ & Call to Action (Poolside Victory High-Five & CTA)",
+        camera: "Centered Master Poolside Pullback",
+        motion: `Photorealistic 8K image-to-video. Heroic pullback. Swimmer rests at pool edge, pushing goggles up onto forehead, face glowing with joy, high-fiving the smiling coach. Camera glides back settling into stable hero frame, 24fps.`,
+        prompt: `Heroic commercial pullback at sunlit outdoor pool deck. Swimmer and coach high-fiving triumphantly at pool edge, water droplets glistening on shoulders. Clean modern aquatic center, pure cinematography, zero text. --ar ${aspectRatio}`,
+        voice: "อยากว่ายน้ำเป็นแบบนี้ ทักแชตจองคอร์สทดลองเรียนวันนี้ รับโปรพิเศษทันที กดเซฟคลิปนี้ไว้เลยครับ!",
+        text: "ทักแชตจองคลาสว่ายน้ำด่วน! 🏊‍♀️✨",
+        textPos: "Bottom Center CTA",
+        sfx: "High-five slap, triumphant sports crescendo, energetic brand chime."
+      },
+      {
+        type: "🔍 Extreme Macro ปรับแว่นตาว่ายน้ำ (Swim Goggles & Silicone Cap Macro)",
+        camera: "🔍 Extreme Macro 100mm f/2.8",
+        motion: `Photorealistic 8K image-to-video. Macro 100mm focus on swimmer adjusting sleek mirrored swim goggles. Crisp water beads bead up on tinted lens, silicone strap snaps comfortably into place, eyes showing calm determination, 24fps.`,
+        prompt: `Macro 100mm f/2.8 of swimmer adjusting anti-fog mirrored swim goggles, crystalline water droplets on lens, tack-sharp eye focus, bright morning sunlight. --ar ${aspectRatio}`,
+        voice: "อุปกรณ์พร้อม จิตใจพร้อม การฝึกว่ายน้ำอย่างถูกวิธีเริ่มต้นจากความพร้อมและความมั่นใจ",
+        text: "อุปกรณ์พร้อม ใจพร้อม ลุย! 🥽",
+        textPos: "Lower Third",
+        sfx: "Silicone snap, gentle water bead drip."
+      },
+      {
+        type: "ท่าเตรียมกระโดดออกสตาร์ท (Starting Block Stance & Streamline Entry)",
+        camera: "Low-Angle Heroic Push 35mm",
+        motion: `Photorealistic 8K image-to-video. Swimmer takes focused athletic stance on poolside starting block, muscles poised. Swimmer dives smoothly into water with clean aerodynamic spear entry creating minimal splash, 24fps.`,
+        prompt: `Low-angle athletic composition of swimmer on competitive starting block, diving smoothly into crystal clear turquoise pool with clean streamlined entry. ARRI Alexa LF, 35mm Prime. --ar ${aspectRatio}`,
+        voice: "ฝึกการพุ่งตัวแบบสตรีมไลน์ ลดแรงต้านของน้ำ ช่วยให้เคลื่อนที่ไปข้างหน้าได้เร็วและนุ่มนวลที่สุด",
+        text: "ท่าสตรีมไลน์ ลดแรงต้าน พุ่งตัวเร็ว ⚡",
+        textPos: "Center Punchy",
+        sfx: "Starting beep tone, clean streamlined water dive slice."
+      },
+      {
+        type: "ฝึกว่ายท่ากรรเชียงผ่อนคลาย (Relaxed Backstroke Rotation Drill)",
+        camera: "Overhead Top-Down 90-Degree Tracking",
+        motion: `Photorealistic 8K image-to-video. Overhead camera tracks swimmer floating effortlessly on back in lane, rotating shoulders smoothly with continuous flutter kicks. Turquoise ripples fan outward in mesmerizing symmetry, 24fps.`,
+        prompt: `Overhead top-down 90-degree shot of swimmer practicing backstroke in sunlit pool lane. Symmetrical arm recovery, face comfortably above water, sparkling ripples fanning out. --ar ${aspectRatio}`,
+        voice: "ท่ากรรเชียงช่วยผ่อนคลายกล้ามเนื้อ หายใจได้อิสระตลอดเวลา เหมาะมากสำหรับผู้ที่ยังกลัวการจมน้ำ",
+        text: "ท่ากรรเชียง ผ่อนคลาย หายใจสบาย 🌤️",
+        textPos: "Lower Third",
+        sfx: "Gentle rhythmic backstroke splash, peaceful water lap."
+      },
+      {
+        type: "ฝึกการลอยตัวพยุงตัวในน้ำลึก (Deep Water Treading & Safety Technique)",
+        camera: "Medium Eye-Level Water Surface Glide",
+        motion: `Photorealistic 8K image-to-video. Swimmer treads water calmly in deep end using circular eggbeater kicks, head comfortably above water surface, smiling at coach with relaxed breathing, 24fps.`,
+        prompt: `Eye-level shot in deep pool lane. Confident swimmer demonstrating relaxed water treading technique, staying afloat effortlessly with calm breathing and smile. Professional lighting. --ar ${aspectRatio}`,
+        voice: "เทคนิคการลอยตัวพยุงตัวในน้ำลึก หัวใจสำคัญของความปลอดภัยทางน้ำที่ทุกคนต้องมีติดตัว",
+        text: "ทักษะเอาชีวิตรอด ลอยตัวในน้ำลึก 🛟",
+        textPos: "Center Punchy",
+        sfx: "Calm continuous water tread swirl, gentle breathing."
+      },
+      {
+        type: "ถีบตัวพุ่งออกจากผนังสระ (Wall Push-Off Streamline Torpedo Glide)",
+        camera: "Underwater Lateral Slider 50mm",
+        motion: `Photorealistic 8K image-to-video. Swimmer bends knees against tiled pool wall, pushing off forcefully in tight streamline position. Gliding underwater like a torpedo through shimmering blue light rays, 24fps.`,
+        prompt: `Underwater lateral tracking shot of swimmer pushing off pool wall in tight streamline torpedo pose, gliding swiftly through shimmering light beams in turquoise pool. --ar ${aspectRatio}`,
+        voice: "ถีบตัวออกจากขอบสระ ลอยตัวพุ่งไปข้างหน้าโดยไม่ต้องออกแรงว่าย ใช้พลังส่งจากขาอย่างเต็มที่",
+        text: "ถีบผนังพุ่งตัว ลอยไกลไร้แรงต้าน 🚀",
+        textPos: "Lower Third",
+        sfx: "Deep underwater thrust surge, smooth aquatic glide."
+      },
+      {
+        type: "รอยยิ้มใต้น้ำมั่นใจไร้กังวล (Confident Underwater Smile in Crystal Water)",
+        camera: "Underwater Intimate Portrait 50mm",
+        motion: `Photorealistic 8K image-to-video. Intimate underwater portrait. Swimmer opens eyes behind goggles, smiling authentically at camera with thumbs up, completely relaxed surrounded by crystalline bubbles, 24fps.`,
+        prompt: `Cinematic underwater portrait of smiling swimmer in goggles giving confident thumbs up. Crystal turquoise water, dancing sunlight caustics, radiant happy expression. --ar ${aspectRatio}`,
+        voice: "ความกลัวน้ำหายไป แทนที่ด้วยความสุขและความมั่นใจที่ได้ปลดล็อกทักษะใหม่ในชีวิต",
+        text: "ปลดล็อกความมั่นใจ มีความสุขกับสายน้ำ 💙",
+        textPos: "Center Punchy",
+        sfx: "Light musical water chime, peaceful aquatic ambience."
+      },
+      {
+        type: "พักจิบน้ำซับตัวริมขอบสระ (Poolside Towel Dry & Refreshing Hydration)",
+        camera: "Medium Slow Slider 50mm Backlight Glow",
+        motion: `Photorealistic 8K image-to-video. Swimmer sits comfortably on wooden poolside lounge chair, draping soft clean towel over shoulders and taking refreshing sip from water bottle, glowing with accomplishment, 24fps.`,
+        prompt: `Medium cinematic shot of swimmer resting poolside on clean wooden lounger with plush towel, drinking water in warm golden sun. Healthy athletic lifestyle commercial grade. --ar ${aspectRatio}`,
+        voice: "หลังจบคลาส รู้สึกสดชื่น มีพลัง ร่างกายได้ออกกำลังกายแบบฟูลบอดี้โดยไม่มีแรงกระแทก",
+        text: "สดชื่น ฟูลบอดี้ สุขภาพดีเต็มร้อย 💧",
+        textPos: "Lower Third",
+        sfx: "Gentle towel rustle, water bottle click, pleasant acoustic."
+      },
+      {
+        type: "เฉลิมฉลองความสำเร็จคลาสว่ายน้ำ (Swimming Academy Graduation Splash Finale)",
+        camera: "Centered Master Horizon Pullback 35mm",
+        motion: `Photorealistic 8K image-to-video. Master celebratory pullback. Coach and students gather poolside in high spirits, raising arms in victory splash under bright blue sky. Stable composition for booking graphics, 24fps.`,
+        prompt: `Grand finale master shot of swim coach and smiling students celebrating poolside with joyful water splash under bright sunlit sky. Modern luxury pool facility, pure cinematography, zero text. --ar ${aspectRatio}`,
+        voice: "เปลี่ยนความกลัวเป็นความภูมิใจ เริ่มต้นเรียนว่ายน้ำกับครูผู้เชี่ยวชาญวันนี้ ทักแชตรับสิทธิ์ทดลองเรียนฟรีทันที!",
+        text: "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊‍♂️✨",
+        textPos: "Bottom Center CTA",
+        sfx: "Triumphant energetic fanfare crescendo, joyful cheer splash."
+      }
+    ];
+
+    // ==========================================
+    // OATS & HEALTHY BREAKFAST FOAM MASTER POOL (16 FULL DIVERSE SHOTS - 100% ACCURATE)
+    // ==========================================
+    const oatMasterPool16 = [
+      {
+        type: "เปิดเรื่อง Hook อาหารเช้า 5 นาที (Wholesome Oat & Velvety Foam Hook)",
+        camera: "Dynamic Low-Angle Macro Push-in 100mm",
+        motion: `Photorealistic 8K image-to-video. Macro slow motion. Creamy rolled oats in dark ceramic bowl, topped with luscious velvety oat milk micro-foam. A translucent drizzle of golden honey slowly cascades across fresh plump blueberries. Delicate warm morning steam rises into sunlight as camera pushes in smoothly, 24fps.`,
+        prompt: isPurePrompt
+          ? `Mouthwatering 8K opening hook of wholesome organic rolled oats breakfast bowl with thick velvety oat milk foam crown, fresh blueberries, sliced bananas, and golden raw honey drizzle. Steaming gently on rustic oak table under warm 5500K morning sunlight. Shot on ARRI Alexa LF, 100mm Macro Prime, pure cinematography, zero text. --ar ${aspectRatio}`
+          : `Mouthwatering 8K commercial hook of wholesome oat breakfast bowl with velvety foam. [Slot 2 Product Anchor]: Match bowl presentation to Slot 2 reference. Macro 100mm, honey drizzle, fresh berries, pure cinematography, zero text. --ar ${aspectRatio}`,
+        voice: "เช้าที่เร่งรีบแต่ยังอยากได้สุขภาพดี? เมนูข้าวโอ๊ตโฟมสุขภาพ 5 นาที ชามนี้ตอบโจทย์ทั้งความอร่อยและคุณประโยชน์เต็มร้อย!",
+        text: "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣",
+        textPos: "Top Headline",
+        sfx: "Warm morning acoustic guitar swell, gentle ceramic bowl clink."
+      },
+      {
+        type: "เทนมโอ๊ตปั่นโฟมเนื้อนุ่ม (Pouring Velvety Oat Foam)",
+        camera: "High-Angle 60-Degree Macro Slider 85mm",
+        motion: `Photorealistic 8K image-to-video. High-angle macro slider. Thick velvety frothed oat milk foam pours smoothly from glass pitcher, pooling into rich cloud-like layers atop soaked rolled oats. Real fluid viscosity, zero morphing, 24fps.`,
+        prompt: `Macro close-up of thick velvety steamed oat milk foam pouring from glass frother pitcher into clear glass cup over organic rolled oats. Silky micro-bubbles, warm morning sunbeams, artisan Scandinavian kitchen counter. --ar ${aspectRatio}`,
+        voice: "เริ่มจากเทนมโอ๊ตที่ตีจนขึ้นโฟมนุ่มละมุน ให้สัมผัสฟองนุ่มฟูแบบครีมมี่ ย่อยง่าย สบายท้อง",
+        text: "โฟมนมโอ๊ตนุ่มฟู ครีมมี่ 5 นาที 🥛",
+        textPos: "Lower Third",
+        sfx: "Rich foamy liquid pour sound, gentle bubbling hiss."
+      },
+      {
+        type: "โรยผลเบอร์รี่สดและเมล็ดเจีย (Superfood Berry & Chia Waterfall)",
+        camera: "Top-Down 90-Degree Artisan Flat-Lay",
+        motion: `Photorealistic 8K image-to-video. Top-down slow motion. Plump dark blueberries, ruby raspberries, and organic chia seeds fall delicately onto thick white oat foam, resting gently on surface tension. Water dewdrops glisten on berries, 24fps.`,
+        prompt: `Artisan overhead flat-lay of dark ceramic breakfast bowl. Fresh blueberries, raspberries, and chia seeds sprinkled gracefully across snowy white oat foam. Dark rustic wooden board, soft natural morning daylight. --ar ${aspectRatio}`,
+        voice: "ท็อปปิ้งด้วยเบอร์รี่สดและเมล็ดเจีย เพิ่มสารต้านอนุมูลอิสระและโอเมก้า 3 เติมพลังสมองรับวันใหม่",
+        text: "ท็อปปิ้งเบอร์รี่สด & เมล็ดเจีย 🫐",
+        textPos: "Center Punchy",
+        sfx: "Gentle fruit landing rustle, light wooden bowl tap."
+      },
+      {
+        type: "🔍 Extreme Macro ช้อนตักโฟมข้าวโอ๊ตเนื้อเนียน (The Velvet Spoon Scoop)",
+        camera: "🔍 Extreme Macro 100mm f/2.8 Shallow DOF",
+        motion: `Photorealistic 8K image-to-video. Macro slow motion. A gold dessert spoon scoops gently through thick foam layer, lifting rich creamy oat mixture with honey trail stretching and snapping back with authentic fluid elasticity, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 shot of gold dessert spoon lifting a rich spoonful of creamy rolled oats and thick velvety foam. Honey glaze glistening, micro-texture details, tack-sharp focus, creamy bokeh. --ar ${aspectRatio}`,
+        voice: "ดูเนื้อโฟมที่เนียนนุ่มละลายในปาก... ข้าวโอ๊ตอุดมด้วยเบต้ากลูแคน ช่วยให้อิ่มนาน คุมระดับน้ำตาลได้ดีเยี่ยม",
+        text: "เนื้อนุ่มละลายในปาก อิ่มนาน 🍯",
+        textPos: "Lower Third",
+        sfx: "Soft creamy spoon scoop sound, delicate morning chime."
+      },
+      {
+        type: "ชิมคำแรกสดชื่นฟิน (First Bite Morning Energy Boost)",
+        camera: "Medium Portrait 85mm Prime Soft Bokeh",
+        motion: `Photorealistic 8K image-to-video. Presenter in cozy linen morning wear takes delicious spoonful, eyes lighting up with genuine satisfaction and refreshed energy, smiling warmly at camera, natural posture, 24fps.`,
+        prompt: `Cinematic warm commercial portrait of healthy Asian woman savoring a spoonful of wholesome oatmeal in sunlit breakfast nook. Radiant candid smile, glowing healthy skin, natural morning daylight. --ar ${aspectRatio}`,
+        voice: "คำแรกที่ทานคือฟินมาก ได้ทั้งความหอมมันของข้าวโอ๊ตและความสดชื่นของผลไม้ ไม่ใส่น้ำตาลทรายเพิ่มเลย",
+        text: "อร่อย สดชื่น พลังงานเต็มเปี่ยม ☀️",
+        textPos: "Center Punchy",
+        sfx: "Satisfied smile chime, cheerful acoustic rhythm."
+      },
+      {
+        type: "💡 B-Roll เมล็ดข้าวโอ๊ตเต็มเมล็ดออร์แกนิก (Organic Whole Grain Oats)",
+        camera: "💡 B-Roll Slow Slider 50mm Backlight Glow",
+        motion: `Photorealistic 8K image-to-video. Slow slider glide. Golden organic oat flakes cascade smoothly from small rustic burlap sack onto clean wooden surface alongside golden wheat ears, dust motes dancing in sunbeams, 24fps.`,
+        prompt: `Cinematic B-roll of raw golden rolled oat flakes spilling gently from small burlap sack onto oak tabletop. Warm morning sunbeam backlight, tack-sharp grain texture, organic wholesome aesthetic. --ar ${aspectRatio}`,
+        voice: "เลือกใช้ข้าวโอ๊ตเต็มเมล็ด คัดสรรเกรดพรีเมียม ใยอาหารสูง ปราศจากสารแต่งกลิ่นหรือสารกันเสีย",
+        text: "ข้าวโอ๊ตเต็มเมล็ด ไฟเบอร์สูง 100% 🌾",
+        textPos: "Lower Third",
+        sfx: "Dry grain rustle cascade, warm airy ambient hum."
+      },
+      {
+        type: "เปรียบเทียบความสะดวก 5 นาที (Fast 5-Minute Morning Routine)",
+        camera: "Kinetic Split-Focus Slider 35mm",
+        motion: `Photorealistic 8K image-to-video. Kinetic camera glide highlighting effortless quick preparation. Steam curls gracefully from warm bowl alongside a clear glass jar of prepared overnight oats, pristine and ready to enjoy, 24fps.`,
+        prompt: `Clean modern kitchen setting. Glass jar meal prep of overnight oats and warm breakfast bowl side by side on oak counter, morning window light, minimalist Scandinavian aesthetic. --ar ${aspectRatio}`,
+        voice: "เตรียมง่ายใน 5 นาที จะทำเป็นมื้อเช้าแบบอุ่น หรือ Overnight Oats แช่เย็นไว้ทานพกไปทำงานก็สะดวกสุดๆ",
+        text: "ทำง่ายใน 5 นาที พกไปทำงานก็สะดวก ⏰",
+        textPos: "Lower Third",
+        sfx: "Crisp clock chime, breezy modern transition swoosh."
+      },
+      {
+        type: "เผยผลลัพธ์ & Call to Action (Heroic Breakfast Packshot & CTA)",
+        camera: "Centered Master Breakfast Table Pullback",
+        motion: `Photorealistic 8K image-to-video. Centered master pullback shot. Complete healthy oat breakfast arrangement bathed in gorgeous morning daylight. Soft steam drifts upward, camera settles into stable hero frame with clean negative space, 24fps.`,
+        prompt: `Heroic master commercial presentation of complete oat breakfast set on dark oak table: ceramic bowl with berries and foam, tall glass of iced oat latte, jar of rolled oats. Warm morning golden sunlight, steam drifting, pure cinematography, zero text. --ar ${aspectRatio}`,
+        voice: "เซฟเมนูข้าวโอ๊ตโฟมสุขภาพนี้ไว้ลองทำตามดูนะครับ หรือแชร์ให้เพื่อนสายสุขภาพ กดติดตามไว้เพื่อสูตรคลีนดีๆ ทุกวัน!",
+        text: "เซฟสูตรไว้ทำตาม กดติดตามด่วน! 🥣✨",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature bright melodic crescendo, triumphant morning chime."
+      },
+      {
+        type: "🔍 Extreme Macro โรยผงซินนามอนหอมกรุ่น (Artisan Cinnamon Dusting Macro)",
+        camera: "🔍 Extreme Macro 100mm f/2.8",
+        motion: `Photorealistic 8K image-to-video. Extreme macro of wooden spice shaker dusting fine fragrant cinnamon powder over creamy white oat foam. Micro-particles settle gracefully into foam surface, catching warm sunbeam glints, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of fine cinnamon powder gently dusting atop velvety white oat foam, golden spice particles settling softly, warm breakfast commercial lighting. --ar ${aspectRatio}`,
+        voice: "โรยผงซินนามอนเบาๆ เพิ่มความหอมละมุนและช่วยกระตุ้นการเผาผลาญในร่างกาย",
+        text: "โรยซินนามอน หอมละมุน กระตุ้นเผาผลาญ 🍂",
+        textPos: "Lower Third",
+        sfx: "Delicate spice sifting rustle, warm chime."
+      },
+      {
+        type: "คนนมโอ๊ตด้วยช้อนไม้ (Gentle Wooden Spoon Swirl)",
+        camera: "Overhead 45-Degree Close-Up 50mm",
+        motion: `Photorealistic 8K image-to-video. Hand holding carved artisan wooden spoon swirls thick oat milk and soaked oats in rhythmic circular motion. Luscious cream swirls merge smoothly with golden honey rivulets, 24fps.`,
+        prompt: `Overhead 45-degree macro of wooden spoon gently swirling thick creamy oat milk and soaked rolled oats in dark ceramic bowl, luscious velvety marble pattern, soft morning sunlight. --ar ${aspectRatio}`,
+        voice: "คนเบาๆ ให้เข้ากัน เนื้อสัมผัสเข้มข้น หอมมันกลมกล่อมจากธรรมชาติ 100%",
+        text: "คนเบาๆ เข้มข้น หอมมันธรรมชาติ 🥣",
+        textPos: "Center Punchy",
+        sfx: "Soft creamy liquid swirl, gentle wooden spoon foley."
+      },
+      {
+        type: "🔍 Extreme Macro ผลบลูเบอร์รี่สดฉ่ำ (Macro Juicy Blueberry Texture)",
+        camera: "🔍 Extreme Macro 100mm f/2.8 Dewdrop Focus",
+        motion: `Photorealistic 8K image-to-video. Macro 100mm focus on cluster of deep indigo blueberries resting on white foam. Glistening micro-dewdrops on taut skin, reflecting bright morning window light, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of fresh indigo blueberries coated in delicate natural frost and glistening dewdrops, resting on snowy white oat froth. Pure food cinematography. --ar ${aspectRatio}`,
+        voice: "ความสดใหม่ของผลเบอร์รี่ ให้รสเปรี้ยวอมหวานตัดกับความนุ่มมันของข้าวโอ๊ตได้อย่างลงตัวที่สุด",
+        text: "เบอร์รี่สดฉ่ำ เปรี้ยวหวานลงตัว 🍇",
+        textPos: "Lower Third",
+        sfx: "Delicate crisp water drop pop, bright acoustic ping."
+      },
+      {
+        type: "หั่นกล้วยหอมทองสดใหม่ (Fresh Banana Slices on Bamboo Board)",
+        camera: "Kinetic Side Angle 45-Degree 50mm",
+        motion: `Photorealistic 8K image-to-video. Small chef knife cleanly slices ripe golden banana on bamboo board into uniform circular coins. Hand gracefully fans out banana slices onto oat bowl, 24fps.`,
+        prompt: `Close-up culinary shot of knife slicing fresh ripe banana on bamboo cutting board, slices neatly fanned atop ceramic breakfast bowl. Morning sun, clean kitchen aesthetic. --ar ${aspectRatio}`,
+        voice: "เติมโพแทสเซียมและพลังงานสะอาดด้วยกล้วยหอมทอง อิ่มสบายท้องตลอดช่วงเช้า",
+        text: "กล้วยหอมทอง พลังงานสะอาด อิ่มนาน 🍌",
+        textPos: "Center Punchy",
+        sfx: "Crisp knife cutting board taps, soft fruit placement."
+      },
+      {
+        type: "คุณค่าสารอาหารเบต้ากลูแคน (High Fiber & Beta-Glucan Nutrition)",
+        camera: "💡 B-Roll Smooth Push In with 85mm Bokeh",
+        motion: `Photorealistic 8K image-to-video. Camera pushes in smoothly toward glass container of whole oats surrounded by raw honey dipper, fresh berries, and green botanical leaves. Clean healthy wellness mood, 24fps.`,
+        prompt: `Artisan commercial showcase of organic raw oat flakes in clear glass jar beside raw honey jar and fresh mint sprig. Warm morning illumination, ARRI Alexa LF, 85mm Prime. --ar ${aspectRatio}`,
+        voice: "เบต้ากลูแคนในข้าวโอ๊ตมีงานวิจัยรับรองว่าช่วยลดคอเลสเตอรอลและเสริมภูมิต้านทาน",
+        text: "ใยอาหารเบต้ากลูแคน ดีต่อหัวใจ 💖",
+        textPos: "Lower Third",
+        sfx: "Warm resonance swell, uplifting acoustic chord."
+      },
+      {
+        type: "โหลแก้วพกพาสะดวก Overnight Oats (Portable Glass Mason Jar On-The-Go)",
+        camera: "Dynamic Steadicam Glide 35mm",
+        motion: `Photorealistic 8K image-to-video. Stylish Asian presenter in office attire takes portable sealed glass jar of overnight oats from refrigerator, smiling with ready-to-go confidence, 24fps.`,
+        prompt: `Cinematic lifestyle commercial shot. Young professional woman in smart casual attire taking portable mason jar of layered overnight oats from modern refrigerator, bright morning kitchen. --ar ${aspectRatio}`,
+        voice: "วันไหนไม่มีเวลา แค่พกโหลนี้ติดตัวไปทานที่ทำงาน ก็ได้มื้อเช้าคลีนๆ แบบมืออาชีพแล้วครับ",
+        text: "พกไปทานที่ทำงาน มื้อเช้าคลีนๆ ทุกวัน 💼",
+        textPos: "Center Punchy",
+        sfx: "Fridge door smooth suction latch, confident footsteps."
+      },
+      {
+        type: "จิบกาแฟโอ๊ตฟองนุ่มริมระเบียง (Sipping Oat Foam Latte on Sunlit Balcony)",
+        camera: "Slow Slider In 50mm Prime",
+        motion: `Photorealistic 8K image-to-video. Presenter sits on sunlit apartment balcony surrounded by green potted plants, holding clear glass cup of oat foam latte, taking relaxing sip with blissful expression, 24fps.`,
+        prompt: `Atmospheric commercial shot of person relaxing on sunny green balcony, holding glass cup of iced oat latte with thick foam layer. Morning breeze, gentle bokeh, radiant natural skin tone. --ar ${aspectRatio}`,
+        voice: "หรือจะจับคู่กับกาแฟเติมนมโอ๊ตฟองนุ่ม เริ่มต้นวันใหม่อย่างสดชื่น ผ่อนคลาย และมีสมาธิ",
+        text: "กาแฟนมโอ๊ตฟองนุ่ม สดชื่นรับวันใหม่ ☕",
+        textPos: "Lower Third",
+        sfx: "Gentle morning birds chirp, light glass clink, relaxing ambient."
+      },
+      {
+        type: "เฉลิมฉลองสุขภาพดีรับวันใหม่ (Wholesome Morning Wellness Finale)",
+        camera: "Centered Master Brand Pullback",
+        motion: `Photorealistic 8K image-to-video. Centered master pullback. Presenter smiles warmly holding completed oat bowl with two hands, morning sunlight haloing around hair. Clean composition with space for closing graphic, 24fps.`,
+        prompt: `Grand finale heroic commercial presentation. Radiant Asian woman holding ceramic breakfast bowl of creamy oats and berries with warm welcoming smile. Sunlit Scandinavian interior, pure cinematography, zero text. --ar ${aspectRatio}`,
+        voice: "ดูแลสุขภาพตัวเองได้ง่ายๆ เริ่มต้นที่มื้อเช้าชามนี้ กดบันทึกคลิปนี้ไว้ แล้วมาสร้างสุขภาพดีไปด้วยกันนะครับ!",
+        text: "เริ่มสุขภาพดีวันนี้ กดบันทึกคลิปด่วน! 🌟",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature triumphant melodic crescendo, bright acoustic chord."
+      }
+    ];
+
+    // ==========================================
     // BASE POOL SELECTION (DOMAIN-AWARE & SCALE-AWARE)
     // ==========================================
     const activePool = isDinosaurOrWildlife
       ? (resolvedCount <= 8 ? dinosaurMasterPool16.slice(0, 8) : dinosaurMasterPool16)
       : isFishOrPlaSom
       ? (resolvedCount <= 8 ? plaSomMasterPool16.slice(0, 8) : plaSomMasterPool16)
+      : isSwimming
+      ? (resolvedCount <= 8 ? swimmingMasterPool16.slice(0, 8) : swimmingMasterPool16)
+      : isOatOrBreakfast
+      ? (resolvedCount <= 8 ? oatMasterPool16.slice(0, 8) : oatMasterPool16)
       : isPadGaprao
       ? (resolvedCount <= 8 ? cookingMasterPool8 : generalCookingMasterPool16)
       : isCooking
@@ -1536,39 +2014,39 @@ export async function POST(req: Request) {
       : isGraduation
       ? graduationMasterPool
       : isTemple
-        ? templeMasterPool
-        : isTravel
-          ? travelMasterPool
-          : isAuto
-            ? autoMasterPool
-            : STORYBOARD_8_PANEL_COMMERCIAL.panels.map((p, idx) => {
-            const angleObj = THAI_CAMERA_ANGLES_36[idx % THAI_CAMERA_ANGLES_36.length];
-            const panelBeatsEn = [
-              "Cinematic hero establishing shot introducing the packaging of the product on a sleek modern podium, soft studio backlight",
-              "Medium close-up showcasing the detailed packaging, premium typography, and natural ingredients",
-              "Dynamic close-up capturing rich sensory texture, silky smooth consistency, and fresh natural essence",
-              "Breathtaking macro focus on the product texture, sparkling micro-droplets, rich velvety foam and pristine lighting",
-              "Delightful commercial presentation showing effortless application, healthy revitalizing feel, and radiant glow",
-              "Artistic overhead flat-lay composition showing the product elegantly framed by fresh natural botanical elements",
-              "Dramatic hero angle revealing the complete satisfying result, glistening reflections, and effortless healthy perfection",
-              "Iconic master commercial packshot of the product standing prominently center-frame under warm golden rim light"
-            ];
-            const beatDescEn = panelBeatsEn[idx % panelBeatsEn.length];
-            return {
-              type: p.name,
-              camera: idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide",
-              motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} naturally presenting ${effectiveProductEn} with relaxed charisma.` : `Heroic commercial showcase of ${effectiveProductEn}.`} Real-world physical dynamics, rigid geometry, zero morphing. 24fps.`,
-              prompt: `Photorealistic 8K commercial panel ${idx + 1} [${p.name}]. ${angleObj.promptKeyword}. ${beatDescEn} featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Pure commercial product cinematography, 8K ultra detail, tack-sharp focus, zero in-image text. --ar ${aspectRatio}`,
-              voice: idx === 0
-                ? `เริ่มต้นสัมผัสความพิเศษของ ${productName} ไปด้วยกัน`
-                : idx === 3
-                  ? `จุดเปลี่ยนสำคัญ ที่ทำให้ ${productName} แตกต่างจากสิ่งอื่น`
-                  : idx === 7
-                    ? `พร้อมให้คุณได้สัมผัสแล้ววันนี้! ${productPrice} ทักข้อความจองสิทธิ์ด่วน`
-                    : `ความประทับใจในสเต็ปที่ ${idx + 1} ของ ${productName}`,
-              sfx: idx === 7 ? "Triumphant brand sonic chime" : "Cinematic atmospheric soundscape."
-            };
-          });
+      ? templeMasterPool
+      : isTravel
+      ? travelMasterPool
+      : isAuto
+      ? autoMasterPool
+      : STORYBOARD_8_PANEL_COMMERCIAL.panels.map((p, idx) => {
+          const angleObj = THAI_CAMERA_ANGLES_36[idx % THAI_CAMERA_ANGLES_36.length];
+          const panelBeatsEn = [
+            "Cinematic opening hook introducing the main subject and setting the mood",
+            "Medium close-up focusing directly on key highlights and fine craftsmanship",
+            "Dynamic action shot showcasing active performance and effortless functionality",
+            "Extreme macro detail revealing rich textures, pristine quality, and sleek contours",
+            "Engaging lifestyle perspective highlighting user delight and authentic satisfaction",
+            "Artistic composition showcasing natural elegance and beautiful atmospheric balance",
+            "Dynamic demonstration capturing effortless excellence and premium finish",
+            "Iconic master commercial showcase under warm cinematic lighting"
+          ];
+          const beatDescEn = panelBeatsEn[idx % panelBeatsEn.length];
+          return {
+            type: p.name,
+            camera: idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide",
+            motion: `Photorealistic 8K image-to-video. Camera executes ${idx % 2 === 0 ? "Smooth Forward Tracking Shot" : "Subtle 360 Orbit Glide"}. ${hasPresenter ? `${genderEn} naturally presenting ${effectiveProductEn} with relaxed charisma.` : `Heroic commercial showcase of ${effectiveProductEn}.`} Real-world physical dynamics, rigid geometry, zero morphing. 24fps.`,
+            prompt: `Photorealistic 8K commercial scene ${idx + 1}. ${angleObj.promptKeyword}. ${beatDescEn} featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Pure commercial cinematography, 8K ultra detail, tack-sharp focus, strictly focused on ${effectiveProductEn}, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+            voice: idx === 0
+              ? `เริ่มต้นสัมผัสความพิเศษของ ${productName} ไปด้วยกัน`
+              : idx === 3
+                ? `จุดเปลี่ยนสำคัญ ที่ทำให้ ${productName} แตกต่างจากสิ่งอื่น`
+                : idx === 7
+                  ? `พร้อมให้คุณได้สัมผัสแล้ววันนี้! ${productPrice} ทักข้อความจองสิทธิ์ด่วน`
+                  : `ความประทับใจในสเต็ปที่ ${idx + 1} ของ ${productName}`,
+            sfx: idx === 7 ? "Triumphant brand sonic chime" : "Cinematic atmospheric soundscape."
+          };
+        });
 
     // Build exactly `resolvedCount` scenes
     if (resolvedCount === 1) {
@@ -1583,9 +2061,13 @@ export async function POST(req: Request) {
         cameraMovement: "Continuous Seamless Steadicam Tracking with Dynamic Orbit",
         motionPrompt: `Photorealistic 8K image-to-video. Continuous seamless steadicam tracking shot. Subject and environment obey real-world Newtonian physical dynamics with natural motion blur. No morphing, rigid object geometry, authentic fluid/steam physics. 24fps.`,
         visualPromptEn: `Photorealistic 8K cinematic commercial one-take. ${effectiveProductEn} in ${effectiveEnvironmentEn}. Seamless fluid steadicam tracking starting from wide establishing, smoothly transitioning into intimate medium shot of ${hasPresenter ? `${genderEn} with ${actionPrompts}` : `hero commercial packshot of ${effectiveProductEn}`}, culminating in heroic brand lockup. ARRI Alexa LF grading, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
-        onScreenTextTh: userCustomTexts[0] || (isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
+        onScreenTextTh: userCustomTexts[0] || (isSwimming ? "เทคนิคว่ายน้ำเป็นใน 1 ชม.! 🏊‍♂️" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣" : isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
         textPosition: "Top Center (Headline)",
-        thaiVoiceover: isDinosaurOrWildlife
+        thaiVoiceover: isSwimming
+          ? "ว่ายน้ำไม่เป็น กลัวจม? วันนี้เรามีเคล็ดลับง่ายๆ ให้คุณว่ายเป็นและมั่นใจได้ใน 1 ชั่วโมง เซฟคลิปนี้ไว้เลย แล้วทักแชตเริ่มเรียนได้เลยครับ!"
+          : isOatOrBreakfast
+          ? "เมนูข้าวโอ๊ตโฟมสุขภาพ 5 นาที ทำง่าย อร่อย อิ่มนาน สุขภาพดีครบถ้วน เซฟสูตรนี้ไว้ทำตาม แล้วกดติดตามกันได้เลยครับ!"
+          : isDinosaurOrWildlife
           ? "สำรวจความรักและความอ่อนโยนของไดโนเสาร์ในป่าลึก เซฟคลิปนี้ไว้แล้วแชร์ให้เพื่อนๆ รู้กันนะครับ!"
           : isFishOrPlaSom
           ? "เคล็ดลับทอดปลาส้มให้หนังกรอบฟู เนื้อในนุ่มฉ่ำ ไม่ติดกระทะ เซฟสูตรนี้ไว้ทำตาม แล้วกดติดตามกันได้เลยครับ!"
@@ -1621,7 +2103,7 @@ export async function POST(req: Request) {
         cameraMovement: shot1.camera,
         motionPrompt: (shot1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || "พิกัดลับที่ไม่ควรพลาด ✨",
+        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || (isSwimming ? "ว่ายน้ำเป็นง่ายกว่าที่คิด 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : "พิกัดลับที่ไม่ควรพลาด ✨"),
         textPosition: (shot1 as any).textPos || "Top Headline",
         thaiVoiceover: shot1.voice,
         audioSfx: shot1.sfx,
@@ -1637,7 +2119,7 @@ export async function POST(req: Request) {
         cameraMovement: shot2.camera,
         motionPrompt: (shot2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || "เซฟคลิปไว้แล้วทักแชตด่วน 📸",
+        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
         textPosition: (shot2 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: shot2.voice,
         audioSfx: shot2.sfx,
@@ -1662,7 +2144,7 @@ export async function POST(req: Request) {
         cameraMovement: s1.camera,
         motionPrompt: (s1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
         textPosition: (s1 as any).textPos || "Top Headline",
         thaiVoiceover: s1.voice,
         audioSfx: s1.sfx,
@@ -1678,7 +2160,7 @@ export async function POST(req: Request) {
         cameraMovement: s2.camera,
         motionPrompt: (s2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || "สัมผัสประสบการณ์เหนือระดับ 💎",
+        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
         textPosition: "Lower Third",
         thaiVoiceover: s2.voice,
         audioSfx: s2.sfx,
@@ -1694,7 +2176,7 @@ export async function POST(req: Request) {
         cameraMovement: s3.camera,
         motionPrompt: (s3 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s3.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s3.prompt,
-        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || "เซฟพิกัดตามรอยด่วน! 📸",
+        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
         textPosition: (s3 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: s3.voice,
         audioSfx: s3.sfx,
@@ -1727,17 +2209,25 @@ export async function POST(req: Request) {
           ];
           const chosenMovement = cameraMovements[i % cameraMovements.length];
 
-          const dynamicMotion = isCooking
+          const dynamicMotion = isSwimming
+            ? `Photorealistic 8K image-to-video. ${chosenMovement}. Fluid aquatic action in crystal-clear swimming pool. Swimmer or coach executing smooth swimming technique, sparkling water ripples and splash droplets obeying real fluid dynamics, 24fps.`
+            : isOatOrBreakfast
+            ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome breakfast preparation with creamy oat foam, fresh berries, and warm morning steam rising in soft daylight. Rigid tableware geometry, zero morphing, 24fps.`
+            : isCooking
             ? `Photorealistic 8K image-to-video. ${currentAngle.promptKeyword}. Authentic culinary action: chef smoothly works with cookware, tossing ingredients or adjusting heat, natural sizzling steam plumes rising into soft key light. Spatula and wok maintain rigid physical geometry, zero morphing, realistic fluid and heat dynamics, 24fps.`
-            : `Photorealistic 8K image-to-video. Camera executes ${chosenMovement} (${currentAngle.en}). ${hasPresenter ? `${genderEn} styled in ${effectivePersonaText}, naturally performing ${actionItem.en} with relaxed charisma, authentic eye contact, natural posture and breathing.` : `Heroic commercial showcase of ${productName} in ${effectiveEnvironmentText}.`} Strict Newtonian physical dynamics, rigid object geometry, photorealistic lighting bounce, zero morphing or warping. 24fps.`;
+            : `Photorealistic 8K image-to-video. Camera executes ${chosenMovement} (${currentAngle.en}). Authentic real-world physical dynamics featuring ${effectiveProductEn} in ${effectiveEnvironmentEn}. Strict Newtonian physical dynamics, rigid object geometry, photorealistic lighting bounce, zero morphing or warping. 24fps.`;
 
           baseScene = {
             type: `${currentAngle.th}`,
             camera: `${chosenMovement} (${currentAngle.en})`,
             motion: dynamicMotion,
-            prompt: `Photorealistic 8K cinematic commercial shot ${i + 1}. ${currentAngle.promptKeyword}. Capturing ${productName} in ${effectiveEnvironmentText}. ${hasPresenter ? `${genderEn} styled in ${effectivePersonaText}, ${actionItem.en} with natural charisma.` : "High-end product showcase."} ARRI Alexa LF commercial grading. --ar ${aspectRatio}`,
+            prompt: `Photorealistic 8K cinematic commercial shot ${i + 1}. ${currentAngle.promptKeyword}. Capturing ${effectiveProductEn} in ${effectiveEnvironmentEn}. ARRI Alexa LF commercial grading, pure cinematography, strictly focused on ${effectiveProductEn}, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
             voice: i === resolvedCount - 1
-              ? (isDinosaurOrWildlife
+              ? (isSwimming
+                  ? "เซฟคลิปนี้ไว้เลย แล้วทักแชตจองคอร์สทดลองเรียนว่ายน้ำ รับสิทธิ์พิเศษทันทีครับ!"
+                  : isOatOrBreakfast
+                  ? "เซฟสูตรข้าวโอ๊ตโฟมสุขภาพนี้ไว้ทำตาม แล้วกดติดตามเพื่อเมนูคลีนอร่อยๆ ทุกวันนะครับ!"
+                  : isDinosaurOrWildlife
                   ? "เซฟคลิปสารคดีนี้ไว้เลย แล้วแชร์ให้เพื่อนๆ ได้สัมผัสความมหัศจรรย์ของไดโนเสาร์ในป่าลึกไปด้วยกันครับ!"
                   : isCooking
                   ? "เซฟสูตรนี้ไว้ทำตามกันได้เลย แล้วกดติดตามไว้ เมนูเด็ดต่อไปรอคุณอยู่ครับ!"
