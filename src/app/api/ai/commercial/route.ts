@@ -193,9 +193,35 @@ export async function POST(req: Request) {
        combinedStr.includes("breakfast") ||
        (combinedStr.includes("โฟม") && (combinedStr.includes("สุขภาพ") || combinedStr.includes("กิน") || combinedStr.includes("ดื่ม") || combinedStr.includes("นม") || combinedStr.includes("แก้ว"))));
 
+    const isCleanFood =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("คลีน") ||
+       combinedStr.includes("อาหารคลีน") ||
+       combinedStr.includes("clean food") ||
+       combinedStr.includes("clean eating") ||
+       combinedStr.includes("healthy food") ||
+       combinedStr.includes("salad") ||
+       combinedStr.includes("สลัด") ||
+       combinedStr.includes("อกไก่") ||
+       combinedStr.includes("ลดน้ำหนัก") ||
+       combinedStr.includes("คุมน้ำหนัก") ||
+       combinedStr.includes("คุมอาหาร") ||
+       combinedStr.includes("meal prep") ||
+       combinedStr.includes("กล่องข้าว") ||
+       combinedStr.includes("อาหารสุขภาพ") ||
+       combinedStr.includes("กินคลีน") ||
+       combinedStr.includes("ไดเอต") ||
+       combinedStr.includes("diet") ||
+       combinedStr.includes("ไขมันต่ำ") ||
+       combinedStr.includes("แคลอรี่") ||
+       combinedStr.includes("คีโต") ||
+       combinedStr.includes("keto"));
+
     const isFishOrPlaSom =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("ปลาส้ม") ||
        combinedStr.includes("ปลา") ||
        combinedStr.includes("fish") ||
@@ -206,6 +232,7 @@ export async function POST(req: Request) {
     const isPadGaprao =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       !isFishOrPlaSom &&
       (combinedStr.includes("กะเพรา") ||
        combinedStr.includes("gaprao") ||
@@ -214,6 +241,7 @@ export async function POST(req: Request) {
     const isCooking =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (isFishOrPlaSom ||
        isPadGaprao ||
        combinedStr.includes("อาหาร") ||
@@ -240,6 +268,7 @@ export async function POST(req: Request) {
     const isGraduation =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("รับปริญญา") ||
        combinedStr.includes("ชุดครุย") ||
        combinedStr.includes("บัณฑิต"));
@@ -247,6 +276,7 @@ export async function POST(req: Request) {
     const isTemple =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("วัด") ||
        combinedStr.includes("ทำบุญ") ||
        combinedStr.includes("ไหว้พระ") ||
@@ -258,6 +288,7 @@ export async function POST(req: Request) {
     const isDinosaurOrWildlife =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("ไดโนเสาร์") ||
        combinedStr.includes("dinosaur") ||
        combinedStr.includes("จูราสสิก") ||
@@ -277,6 +308,7 @@ export async function POST(req: Request) {
     const isAuto =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("mazda") ||
        combinedStr.includes("byd") ||
        combinedStr.includes("รถ") ||
@@ -286,11 +318,13 @@ export async function POST(req: Request) {
     const isFishing =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       (combinedStr.includes("fishing") || combinedStr.includes("ตกปลา"));
 
     const isTravel =
       !isSwimming &&
       !isOatOrBreakfast &&
+      !isCleanFood &&
       !isCooking &&
       !isGraduation &&
       !isTemple &&
@@ -320,6 +354,11 @@ export async function POST(req: Request) {
           resolvedPersonaList = [
             "ครูสอนว่ายน้ำมืออาชีพ ยิ้มแย้ม สดใส สวมชุดว่ายน้ำสปอร์ตมิดชิด (Certified Swim Coach)",
             "ผู้ฝึกว่ายน้ำเริ่มต้น มุ่งมั่น มั่นใจ สวมแว่นตาว่ายน้ำและหมวกซิลิโคน"
+          ];
+        } else if (isCleanFood) {
+          resolvedPersonaList = [
+            "เทรนเนอร์ & นักกำหนดอาหารรุ่นใหม่ สุขภาพดี ลุคแอคทีฟสดใส (Healthy Nutritionist & Fitness Coach)",
+            "คนรักสุขภาพสายเฮลท์ตี้ สนุกกับการจัดกล่อง Meal Prep คุมแคลอรี่"
           ];
         } else if (isOatOrBreakfast) {
           resolvedPersonaList = [
@@ -356,6 +395,12 @@ export async function POST(req: Request) {
           "สระว่ายน้ำมาตรฐานโอลิมปิกกลางแจ้ง แสงแดดสะท้อนผิวน้ำสีฟ้าครามระยิบระยับ",
           "สระว่ายน้ำรีสอร์ตหรู ลู่ว่ายน้ำใสสะอาด ปลอดโปร่ง",
           "ริมขอบสระว่ายน้ำ พร้อมโฟมฝึกว่ายน้ำ (Kickboard) และอุปกรณ์ฝึกซ้อม"
+        ];
+      } else if (isCleanFood) {
+        resolvedEnvironmentList = [
+          "เคาน์เตอร์ครัวโมเดิร์นคลีนสไตล์สแกนดิเนเวียน แสงธรรมชาติอบอุ่น วัตถุดิบผักสดและอกไก่ย่างหั่นชิ้นสวยงาม",
+          "มุมทานอาหารมินิมอล พร้อมกล่องแก้ว Meal Prep จัดเรียงสารอาหารครบ 5 หมู่สีสันสดใส",
+          "โต๊ะอาหารไม้โอ๊คสว่าง แสงแดดยามเช้าส่องกระทบสลัดโบวล์และแก้วน้ำอินฟิวส์สมุนไพร"
         ];
       } else if (isOatOrBreakfast) {
         resolvedEnvironmentList = [
@@ -427,7 +472,12 @@ export async function POST(req: Request) {
         tags.push("professional swimming lessons, poolside training session with kickboard, swim coach, and swimming goggles in clear pool");
       }
 
-      // 2. Oats, Cereal & Healthy Breakfast Foam
+      // 2. Clean Food & Healthy Meal Prep (Strictly Food - Zero Watches)
+      if (isCleanFood || lower.includes("คลีน") || lower.includes("อาหารคลีน") || lower.includes("clean food") || lower.includes("clean eating") || lower.includes("salad") || lower.includes("สลัด") || lower.includes("อกไก่") || lower.includes("meal prep") || lower.includes("กินคลีน")) {
+        tags.push("wholesome colorful clean eating meal prep dish with tender sliced grilled chicken breast, fresh avocado, ruby cherry tomatoes, steamed broccoli florets, and organic rainbow quinoa bowl");
+      }
+
+      // 3. Oats, Cereal & Healthy Breakfast Foam
       if (lower.includes("ข้าวโอ๊ต") || lower.includes("โอ๊ต") || lower.includes("oat") || lower.includes("ซีเรียล") || lower.includes("cereal") || lower.includes("กราโนล่า") || lower.includes("granola")) {
         tags.push("wholesome organic rolled oats breakfast bowl with creamy velvety oat milk foam, fresh blueberries and raw honey");
       }
@@ -441,22 +491,24 @@ export async function POST(req: Request) {
         }
       }
 
-      // 3. Fish & Seafood
+      // 4. Fish & Seafood
       if (lower.includes("ปลาส้ม") || lower.includes("ปลา") || lower.includes("fish")) {
         tags.push("golden crispy seasoned fried fish garnished with fried shallots, garlic, and fresh chilies");
       }
 
-      // 4. Pad Gaprao & Thai Cuisine
+      // 5. Pad Gaprao & Thai Cuisine
       if (lower.includes("กะเพรา") || lower.includes("gaprao")) {
         tags.push("authentic spicy Thai holy basil stir-fry dish with crispy lace fried egg over jasmine rice");
       }
 
-      // 5. General Beverages & Food
+      // 6. General Beverages & Food
       if (lower.includes("กาแฟ") || lower.includes("coffee")) tags.push("artisan brewed coffee in ceramic cup with rich crema");
       if (lower.includes("ชา") || lower.includes("tea") || lower.includes("มัทฉะ")) tags.push("premium organic tea beverage in glass cup");
       if (lower.includes("น้ำผลไม้") || lower.includes("juice")) tags.push("fresh cold-pressed fruit juice in clear glass bottle");
       if (lower.includes("ขนม") || lower.includes("snack") || lower.includes("เบเกอรี่")) tags.push("gourmet artisan snack bakery package");
-      if (lower.includes("อาหาร") || lower.includes("ทำอาหาร") || lower.includes("ครัว")) tags.push("delicious freshly prepared culinary dish");
+      if (lower.includes("อาหาร") || lower.includes("ทำอาหาร") || lower.includes("ครัว")) {
+        if (tags.length === 0) tags.push("delicious freshly prepared culinary dish");
+      }
 
       // 6. Skincare & Personal Care
       if (lower.includes("สบู่")) tags.push("artisan organic botanical soap bar");
@@ -490,6 +542,7 @@ export async function POST(req: Request) {
     const getEnvironmentEn = (envList: string[]): string => {
       const lower = envList.join(" ").toLowerCase();
       if (lower.includes("ว่ายน้ำ") || lower.includes("swim") || lower.includes("สระ")) return "crystal-clear turquoise outdoor swimming pool with bright sunlight and sparkling water reflections";
+      if (lower.includes("คลีน") || lower.includes("อาหารคลีน") || lower.includes("clean") || lower.includes("สลัด")) return "bright sunlit Scandinavian kitchen counter with fresh green herbs, extra virgin olive oil, and clean minimalist healthy living aesthetic";
       if (lower.includes("ข้าวโอ๊ต") || lower.includes("oat") || lower.includes("อาหารเช้า") || lower.includes("breakfast")) return "cozy sunlit Scandinavian breakfast table with warm morning daylight and rustic oak wood surface";
       if (lower.includes("สตูดิโอ") || lower.includes("studio")) return "modern minimalist commercial studio set with soft diffused key light and clean backdrop";
       if (lower.includes("ครัว") || lower.includes("kitchen")) return "warm modern kitchen with natural morning sunlight and clean countertops";
@@ -508,6 +561,12 @@ export async function POST(req: Request) {
           : presenterGender === "male"
             ? "certified Asian male professional swim coach (26-29 y/o) in athletic sporty swimwear with coach whistle and kickboard"
             : "professional swim coach and enthusiastic student duo at poolside")
+      : isCleanFood
+      ? (presenterGender === "female"
+          ? "fit healthy Asian fitness nutritionist woman (24-27 y/o) in clean stylish activewear, radiant natural skin"
+          : presenterGender === "male"
+            ? "fit athletic Asian man (25-28 y/o) in clean modern sporty casual attire"
+            : "healthy lifestyle fitness creator duo")
       : isOatOrBreakfast
       ? (presenterGender === "female"
           ? "radiant healthy Asian woman (24-27 y/o) in cozy linen morning wear, natural glowing skin"
@@ -558,6 +617,12 @@ export async function POST(req: Request) {
           lens: "ARRI Alexa LF with 35mm Prime and Underwater 50mm f/1.8 lens, high-speed 60fps for crisp water droplets and fluid physics",
           lighting: "bright natural morning sunlight casting shimmering aquatic caustics across turquoise pool water, crisp specular glints on water droplets",
           grading: "crisp aquatic cyan and azure film grade, glowing healthy sun-kissed skin tones, 8K photorealism"
+        }
+      : isCleanFood
+      ? {
+          lens: "Cooke S4/i 100mm Macro Prime and 50mm Prime lens, shallow depth of field, natural organic clarity",
+          lighting: "crisp airy natural morning window daylight, soft wrap-around key light, glistening water droplets on fresh greens, zero watches, zero cars",
+          grading: "crisp clean eating editorial commercial grading, vibrant emerald greens, rich ruby cherry tomatoes, pristine natural food tones, 8K ultra photorealistic"
         }
       : isOatOrBreakfast
       ? {
@@ -1140,8 +1205,8 @@ export async function POST(req: Request) {
       {
         type: "เปิดเรื่อง (Hero Vehicle Reveal)",
         camera: "Smooth Dynamic Tracking Push",
-        motion: `Photorealistic 8K image-to-video. Revealing ${productName} on high-end studio turntable. Softbox lights sweep across soul red metallic curves, LED signature lights ignite with sequential sweep. Anamorphic flare, 24fps.`,
-        prompt: `Photorealistic 8K cinematic commercial hook. Revealing ${productName} in ${effectiveEnvironmentText}. Soul red metallic paint reflecting studio softbox lights. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Revealing ${effectiveProductEn} on high-end studio turntable. Softbox lights sweep across soul red metallic curves, LED signature lights ignite with sequential sweep. Anamorphic flare, 24fps.`,
+        prompt: `Photorealistic 8K cinematic commercial hook. Revealing ${effectiveProductEn} in ${effectiveEnvironmentEn}. Soul red metallic paint reflecting studio softbox lights, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: `เมื่อนิยามแห่งยนตรกรรมพรีเมียม... สะท้อนตัวตนที่เหนือระดับของคุณ กับ ${productName}`,
         text: "THE NEW DEFINITION OF LUXURY ✨",
         textPos: "Top Headline",
@@ -1151,7 +1216,7 @@ export async function POST(req: Request) {
         type: "เตรียมพร้อม (Cockpit & Leather Craft)",
         camera: "Slow Slider through Cabin",
         motion: `Photorealistic 8K image-to-video. Slow slider through cabin interior. Hand gently traces over perforated Nappa leather seat stitching, dual digital screens animating to life with high-tech graphics, 24fps.`,
-        prompt: `Close-up interior of ${productName}. Luxurious Nappa leather seats with contrast stitching, digital instrument cluster activating. --ar ${aspectRatio}`,
+        prompt: `Close-up interior of ${effectiveProductEn}. Luxurious Nappa leather seats with contrast stitching, digital instrument cluster activating, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "ภายในห้องโดยสารที่ออกแบบอย่างประณีต สัมผัสความหรูหราในทุกรายละเอียด",
         text: "ห้องโดยสารพรีเมียม Nappa Leather 🛋️",
         textPos: "Lower Third",
@@ -1161,7 +1226,7 @@ export async function POST(req: Request) {
         type: "เริ่มลงมือ (Ignition & Steering)",
         camera: "Dynamic Macro Push",
         motion: `Photorealistic 8K image-to-video. Driver's finger presses illuminated engine start button, steering wheel leather grip, vehicle accelerating smoothly into illuminated tunnel, 24fps.`,
-        prompt: `Close-up of driver pressing push-start button, hands gripping leather-wrapped steering wheel, LED headlights illuminating dark tunnel. --ar ${aspectRatio}`,
+        prompt: `Close-up of driver pressing push-start button, hands gripping leather-wrapped steering wheel, LED headlights illuminating dark tunnel, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "พร้อมทะยานสู่ทุกจุดหมาย ด้วยพลังขับเคลื่อนอันเร้าใจและแม่นยำ",
         text: "เร้าใจทุกการสตาร์ท ⚡",
         textPos: "Center Punchy",
@@ -1170,8 +1235,8 @@ export async function POST(req: Request) {
       {
         type: "จุดเปลี่ยนสำคัญ (High-Speed Mountain Drive)",
         camera: "Car-to-Car Tracking Shot 60fps",
-        motion: `Photorealistic 8K image-to-video. High-speed car-to-car tracking shot of ${productName} cornering with poise on winding sunset mountain highway. Realistic tire grip on asphalt, glowing brake caliper, 24fps.`,
-        prompt: `High-speed dynamic tracking shot of ${productName} cornering gracefully on winding sunset mountain highway, tire grip, aerodynamic body lines. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. High-speed car-to-car tracking shot of ${effectiveProductEn} cornering with poise on winding sunset mountain highway. Realistic tire grip on asphalt, glowing brake caliper, 24fps.`,
+        prompt: `High-speed dynamic tracking shot of ${effectiveProductEn} cornering gracefully on winding sunset mountain highway, tire grip, aerodynamic body lines, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "สมรรถนะการควบคุมที่เหนือชั้น เข้าโค้งมั่นใจ เกาะถนนหนึบทุกจังหวะ",
         text: "สมรรถนะการเข้าโค้งระดับไฮเอนด์ 🏎️",
         textPos: "Lower Third",
@@ -1181,7 +1246,7 @@ export async function POST(req: Request) {
         type: "ความคืบหน้า (Smart Tech & Safety)",
         camera: "Macro POV Cockpit Angle",
         motion: `Photorealistic 8K image-to-video. Driver POV showing Heads-Up Display projecting glowing navigation graphics on windshield, smart blind-spot radar indicators, smooth lane change, 24fps.`,
-        prompt: `Driver perspective showing active Heads-Up Display projecting navigation on windshield, smart radar sensor graphics. --ar ${aspectRatio}`,
+        prompt: `Driver perspective showing active Heads-Up Display projecting navigation on windshield, smart radar sensor graphics, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "มั่นใจสูงสุดด้วยเทคโนโลยีความปลอดภัยอัจฉริยะ คอยปกป้องคุณตลอดเส้นทาง",
         text: "ระบบความปลอดภัยรอบคัน 360° 🛡️",
         textPos: "Lower Third",
@@ -1190,8 +1255,8 @@ export async function POST(req: Request) {
       {
         type: "มุมมองพิเศษ (360 Aero Silhouette)",
         camera: "360 Drone Orbit 90-degree",
-        motion: `Photorealistic 8K image-to-video. High-angle drone orbiting ${productName} parked on scenic mountain summit overlooking twilight city lights. Metallic paint reflecting city glow, anamorphic lens flare, 24fps.`,
-        prompt: `Dramatic drone shot orbiting ${productName} standing majestically on scenic mountain peak overlooking city lights at dusk. Anamorphic flare. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. High-angle drone orbiting ${effectiveProductEn} parked on scenic mountain summit overlooking twilight city lights. Metallic paint reflecting city glow, anamorphic lens flare, 24fps.`,
+        prompt: `Dramatic drone shot orbiting ${effectiveProductEn} standing majestically on scenic mountain peak overlooking city lights at dusk. Anamorphic flare, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "ดีไซน์สปอร์ตโฉบเฉี่ยว สะกดทุกสายตาตั้งแต่แรกเห็นจนถึงวินาทีสุดท้าย",
         text: "ดีไซน์สปอร์ตสะกดทุกสายตา 💎",
         textPos: "Top Center",
@@ -1201,7 +1266,7 @@ export async function POST(req: Request) {
         type: "ขั้นตอนสุดท้าย (Arrival & Executive Stance)",
         camera: "Steadicam Glide alongside Vehicle",
         motion: `Photorealistic 8K image-to-video. Steadicam glide. Driver in tailored suit opens vehicle door with solid mechanical latch thud, stepping out onto hotel driveway with confident stride, 24fps.`,
-        prompt: `Driver in tailored sharp suit stepping out of ${productName} in front of luxury hotel entrance, confident stride. --ar ${aspectRatio}`,
+        prompt: `Driver in tailored sharp suit stepping out of ${effectiveProductEn} in front of luxury hotel entrance, confident stride, pure cinematography, zero in-image text. --ar ${aspectRatio}`,
         voice: "ก้าวสู่ความสำเร็จในแบบคุณ เติมเต็มความภาคภูมิใจในทุกการเดินทาง",
         text: "ก้าวสู่ความสำเร็จในแบบคุณ 👑",
         textPos: "Center Punchy",
@@ -1210,8 +1275,8 @@ export async function POST(req: Request) {
       {
         type: "เผยผลลัพธ์ & ข้อเสนอพิเศษ (Grand Finale & Offer)",
         camera: "Centered Master Brand Pullback",
-        motion: `Photorealistic 8K image-to-video. Centered master pullback in luxury showroom. ${productName} with glowing LED lights on glossy epoxy floor, stable composition with ample space for promotional offer graphic, 24fps.`,
-        prompt: `Heroic master shot of ${productName} with glowing LED signature lights in luxury modern showroom, sleek reflections, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Centered master pullback in luxury showroom. ${effectiveProductEn} with glowing LED lights on glossy epoxy floor, stable composition with ample space for promotional offer graphic, 24fps.`,
+        prompt: `Heroic master shot of ${effectiveProductEn} with glowing LED signature lights in luxury modern showroom, sleek reflections, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
         voice: `เป็นเจ้าของ ${productName} วันนี้ ดอกเบี้ย 0% ฟรีประกันภัยชั้น 1 ทดลองขับได้แล้วที่โชว์รูมครับ!`,
         text: "ดอกเบี้ย 0% ฟรีประกันภัยชั้น 1 🚗",
         textPos: "Bottom Center CTA",
@@ -1567,8 +1632,8 @@ export async function POST(req: Request) {
       {
         type: `เปิดเรื่อง Hook ไวรัล (${productName})`,
         camera: "Dynamic Low-Angle Macro Push-in 100mm",
-        motion: `Photorealistic 8K image-to-video. Chef initiating preparation of ${productName}. Sizzling pan with shimmering oil, controlled burst of culinary steam catching warm golden backlight. Sizzle sound, focused push-in on main ingredients. 24fps.`,
-        prompt: `Master commercial culinary opening hook of ${productName}. Sizzling ingredients in seasoned cast-iron cookware, aromatic steam illuminated by warm 3200K key light. Shot on ARRI Alexa LF with 100mm Macro Prime. Commercial food grading, pure cinematography, zero text. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Chef initiating preparation of ${effectiveProductEn}. Sizzling pan with shimmering oil, controlled burst of culinary steam catching warm golden backlight. Sizzle sound, focused push-in on main ingredients. 24fps.`,
+        prompt: `Master commercial culinary opening hook of ${effectiveProductEn}. Sizzling ingredients in seasoned cast-iron cookware, aromatic steam illuminated by warm 3200K key light. Shot on ARRI Alexa LF with 100mm Macro Prime. Commercial food grading, pure cinematography, strictly focused on food dish, zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories. --ar ${aspectRatio}`,
         voice: `เคยสงสัยไหมครับ... เคล็ดลับทำ ${productName} ให้อร่อยเข้มข้นจนทุกคนติดใจ อยู่ที่ขั้นตอนไหน!`,
         text: `เคล็ดลับเด็ด ${productName} ✨`,
         textPos: "Top Headline",
@@ -1577,8 +1642,8 @@ export async function POST(req: Request) {
       {
         type: "เตรียมวัตถุดิบคุณภาพพรีเมียม (Raw Ingredients Prep)",
         camera: "Overhead 90-Degree Flat Lay 50mm",
-        motion: `Photorealistic 8K image-to-video. Overhead flat-lay on dark rustic timber surface. Chef gracefully arranging fresh premium ingredients for ${productName}. Dew droplets, natural organic color balance, 24fps.`,
-        prompt: `Artisan overhead flat-lay of fresh premium raw ingredients for ${productName} on rustic wooden board. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Overhead flat-lay on dark rustic timber surface. Chef gracefully arranging fresh premium ingredients for ${effectiveProductEn}. Dew droplets, natural organic color balance, 24fps.`,
+        prompt: `Artisan overhead flat-lay of fresh premium raw ingredients for ${effectiveProductEn} on rustic wooden board. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting, pure cinematography, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: `จุดเริ่มต้นของความอร่อย คือการคัดสรรวัตถุดิบที่สดใหม่และลงตัวที่สุดสำหรับ ${productName}`,
         text: "คัดสรรวัตถุดิบสดใหม่ คุณภาพพรีเมียม 🌿",
         textPos: "Lower Third",
@@ -1587,8 +1652,8 @@ export async function POST(req: Request) {
       {
         type: "🔍 Extreme Macro ปรุงรสเข้มข้น (Seasoning & Heat Reaction)",
         camera: "🔍 Extreme Macro 100mm f/2.8",
-        motion: `Photorealistic 8K image-to-video. Extreme macro of rich seasonings blending into ${productName}. Micro-bubbles bubbling actively, releasing aromatic vapor into backlight, 24fps.`,
-        prompt: `Extreme macro 100mm f/2.8 of rich culinary seasonings blending into ${productName}, simmering micro-bubbles, glistening savory oils, cinematic lighting. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Extreme macro of rich seasonings blending into ${effectiveProductEn}. Micro-bubbles bubbling actively, releasing aromatic vapor into backlight, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of rich culinary seasonings blending into ${effectiveProductEn}, simmering micro-bubbles, glistening savory oils, cinematic lighting, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: "ผสมผสานเครื่องปรุงสูตรลับเฉพาะ คลุกเคล้าให้ซึมลึกเข้าสู่ทุกอณู",
         text: "ปรุงรสสูตรเด็ด ซึมลึกเข้าเนื้อ 🍯",
         textPos: "Center Punchy",
@@ -1597,8 +1662,8 @@ export async function POST(req: Request) {
       {
         type: "เร่งไฟแรงดึงกลิ่นหอม (High Heat Searing Action)",
         camera: "Low-Angle Tracking across Pan",
-        motion: `Photorealistic 8K image-to-video. Cookware over roaring flame burner. Chef swiftly tossing and searing ${productName}, vapor swirling gracefully, 24fps.`,
-        prompt: `Dynamic low-angle action shot of ${productName} sizzling in hot cookware over flames, chef tossing ingredients, rising aromatic steam. ARRI Alexa LF, 35mm Prime. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Cookware over roaring flame burner. Chef swiftly tossing and searing ${effectiveProductEn}, vapor swirling gracefully, 24fps.`,
+        prompt: `Dynamic low-angle action shot of ${effectiveProductEn} sizzling in hot cookware over flames, chef tossing ingredients, rising aromatic steam. ARRI Alexa LF, 35mm Prime, pure cinematography, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: "คุมไฟอย่างแม่นยำ เพื่อล็อกรสชาติและความชุ่มฉ่ำให้อยู่ข้างใน",
         text: "คุมไฟแม่นยำ ล็อกความฉ่ำเต็มคำ 🔥",
         textPos: "Lower Third",
@@ -1608,7 +1673,7 @@ export async function POST(req: Request) {
         type: "💡 B-Roll บรรยากาศกลิ่นหอมฟุ้ง (Kitchen Atmosphere)",
         camera: "💡 B-Roll 50mm Backlit Golden Haze",
         motion: `Photorealistic 8K image-to-video. Atmospheric slow slider. Savory culinary smoke ribbons drift through warm sunbeams in rustic kitchen, 24fps.`,
-        prompt: `Cinematic B-roll cutaway of fragrant culinary steam ribbons drifting through golden sunbeams in kitchen, soft bokeh, nostalgic film atmosphere. --ar ${aspectRatio}`,
+        prompt: `Cinematic B-roll cutaway of fragrant culinary steam ribbons drifting through golden sunbeams in kitchen, soft bokeh, nostalgic film atmosphere, zero watches, zero cars, zero text. --ar ${aspectRatio}`,
         voice: "กลิ่นหอมฟุ้งแตะจมูกทันที บ่งบอกว่าความอร่อยใกล้พร้อมเสิร์ฟแล้วครับ",
         text: "กลิ่นหอมฟุ้ง ชวนน้ำลายสอ 🤤",
         textPos: "Lower Third",
@@ -1617,8 +1682,8 @@ export async function POST(req: Request) {
       {
         type: "📐 Kinetic Crash Zoom จัดจานสุดประณีต (Artisan Plating)",
         camera: "📐 Kinetic Crash Zoom 24mm-70mm",
-        motion: `Photorealistic 8K image-to-video. Snap zoom into artisan ceramic platter as ${productName} is beautifully arranged. Glistening textures, fresh garnishes placed with precision, 24fps.`,
-        prompt: `Kinetic crash zoom of ${productName} being elegantly plated on artisan ceramic dish, glistening savory gloss, macro focus. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Snap zoom into artisan ceramic platter as ${effectiveProductEn} is beautifully arranged. Glistening textures, fresh garnishes placed with precision, 24fps.`,
+        prompt: `Kinetic crash zoom of ${effectiveProductEn} being elegantly plated on artisan ceramic dish, glistening savory gloss, macro focus, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: `จัดจานอย่างประณีต เผยให้เห็นหน้าตาของ ${productName} ที่สวยงามน่าทานที่สุด`,
         text: `จัดเสิร์ฟ ${productName} พร้อมชิม 🍽️`,
         textPos: "Center Punchy",
@@ -1627,8 +1692,8 @@ export async function POST(req: Request) {
       {
         type: "🔍 Extreme Macro ซูมเจาะความฉ่ำ (Texture & Moisture Close-up)",
         camera: "🔍 Extreme Macro 100mm f/2.8",
-        motion: `Photorealistic 8K image-to-video. Extreme macro 100mm focus on glistening surface texture of ${productName}. Savory juices reflecting warm softbox highlights, steam rising softly, 24fps.`,
-        prompt: `Extreme macro 100mm f/2.8 shot of succulent glistening textures of ${productName}, mouthwatering moisture highlights, shallow DOF. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Extreme macro 100mm focus on glistening surface texture of ${effectiveProductEn}. Savory juices reflecting warm softbox highlights, steam rising softly, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 shot of succulent glistening textures of ${effectiveProductEn}, mouthwatering moisture highlights, shallow DOF, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: "ดูความฉ่ำและรายละเอียดของอาหารครับ ทุกคำการันตีความอร่อยระดับพรีเมียม",
         text: "สัมผัสความฉ่ำ ละมุนลิ้นทุกคำ ✨",
         textPos: "Top Center",
@@ -1638,9 +1703,9 @@ export async function POST(req: Request) {
         type: "ชิมคำแรกฟินเต็มคำ (First Bite Tasting Delight)",
         camera: "Medium Portrait 85mm Prime",
         motion: hasPresenter
-          ? `Photorealistic 8K image-to-video. ${genderEn} takes delicious bite of ${productName}, closing eyes in authentic satisfaction and smiling warmly at camera, 24fps.`
-          : `Photorealistic 8K image-to-video. Pristine dining showcase of ${productName} ready for tasting under soft restaurant spotlight, 24fps.`,
-        prompt: `Warm commercial portrait of person savoring delicious bite of ${productName}, authentic smile of culinary delight, cozy restaurant lighting. --ar ${aspectRatio}`,
+          ? `Photorealistic 8K image-to-video. ${genderEn} takes delicious bite of ${effectiveProductEn}, closing eyes in authentic satisfaction and smiling warmly at camera, 24fps.`
+          : `Photorealistic 8K image-to-video. Pristine dining showcase of ${effectiveProductEn} ready for tasting under soft restaurant spotlight, 24fps.`,
+        prompt: `Warm commercial portrait of person savoring delicious bite of ${effectiveProductEn}, authentic smile of culinary delight, cozy restaurant lighting, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: `คำแรกที่สัมผัส... รสชาติกลมกล่อมลงตัว ความอร่อยที่ทำเองที่บ้านก็ฟินได้เหมือนร้านดัง`,
         text: "ฟินตั้งแต่คำแรก อร่อยจนหยุดไม่ได้ 😋",
         textPos: "Lower Third",
@@ -1650,9 +1715,9 @@ export async function POST(req: Request) {
         type: "เผยผลลัพธ์ & Call to Action (Heroic Showcase & CTA)",
         camera: "Centered Master Culinary Pullback",
         motion: hasPresenter
-          ? `Photorealistic 8K image-to-video. Heroic pullback. ${genderEn} proudly holding plate of ${productName}, smiling with welcoming invite, 24fps.`
-          : `Photorealistic 8K image-to-video. Master presentation of ${productName} on wooden table with elegant styling, steam drifting, 24fps.`,
-        prompt: `Heroic 8K master culinary presentation of ${productName} on dark ceramic plate. Soft daylight and warm backlight, steam drifting. Pure cinematography, zero text. --ar ${aspectRatio}`,
+          ? `Photorealistic 8K image-to-video. Heroic pullback. ${genderEn} proudly holding plate of ${effectiveProductEn}, smiling with welcoming invite, 24fps.`
+          : `Photorealistic 8K image-to-video. Master presentation of ${effectiveProductEn} on wooden table with elegant styling, steam drifting, 24fps.`,
+        prompt: `Heroic 8K master culinary presentation of ${effectiveProductEn} on dark ceramic plate. Soft daylight and warm backlight, steam drifting. Pure cinematography, strictly focused on culinary plate, zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories. --ar ${aspectRatio}`,
         voice: `เซฟสูตร ${productName} นี้ไว้ลองทำตามดูนะครับ หรือแชร์ให้คนที่คุณรัก กดติดตามครัวเราไว้ได้เลยครับ!`,
         text: "เซฟสูตรกดติดตามด่วน! 🍽️",
         textPos: "Bottom Center CTA",
@@ -1997,6 +2062,178 @@ export async function POST(req: Request) {
     ];
 
     // ==========================================
+    // CLEAN FOOD & HEALTHY MEAL PREP MASTER POOL (16 FULL DIVERSE SHOTS - 100% PURE ENGLISH FOOD)
+    // ==========================================
+    const cleanFoodMasterPool16 = [
+      {
+        type: "เปิดเรื่อง Hook อาหารคลีน 7 วัน (Wholesome Clean Eating Hook)",
+        camera: "Dynamic Low-Angle Macro Push-in 100mm",
+        motion: `Photorealistic 8K image-to-video. Macro push-in on artisan ceramic meal prep bowl. Beautifully fanned grilled chicken breast slices, vibrant Hass avocado, ruby cherry tomatoes, and steamed emerald broccoli over organic quinoa. Gentle aromatic steam rises into golden morning window light, 24fps.`,
+        prompt: `Photorealistic 8K master commercial opening hook of wholesome clean eating meal prep dish. Perfectly sliced tender herb-grilled chicken breast, creamy Hass avocado slices, ruby heirloom cherry tomatoes, steamed emerald broccoli florets, and organic rainbow quinoa bowl. Crisp morning natural window light, ARRI Alexa LF with 100mm Macro Prime. Pure commercial food cinematography, vibrant natural colors, strictly focused on food dish, zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories. --ar ${aspectRatio}`,
+        voice: "อยากกินคลีนแต่กลัวจืด ชืด น่าเบื่อ? ลืมภาพอาหารคลีนแบบเดิมๆ ไปได้เลยครับ!",
+        text: "อาหารคลีนอร่อย ไม่จำเจ! 🥗",
+        textPos: "Top Headline",
+        sfx: "Light refreshing culinary whoosh, crisp kitchen chime."
+      },
+      {
+        type: "เตรียมวัตถุดิบสดออร์แกนิก (Fresh Organic Ingredients Flat Lay)",
+        camera: "Overhead 90-Degree Flat Lay 50mm",
+        motion: `Photorealistic 8K image-to-video. Overhead flat-lay on light Scandinavian wooden countertop. Chef gracefully arranging fresh organic vegetables and lean chicken breast. Glistening water droplets, vibrant emerald kale and ripe avocados, 24fps.`,
+        prompt: `Artisan overhead 90-degree flat-lay of vibrant fresh clean food ingredients on light birch kitchen countertop. Crisp kale leaves, ripe avocado halves with seed, colorful heirloom cherry tomatoes with water droplets, raw organic chicken breast fillets, and glass bottle of extra virgin olive oil. Soft natural morning daylight, 50mm Prime lens, pure commercial food styling, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "จุดเริ่มต้นของหุ่นดีและสุขภาพปัง คือวัตถุดิบสดใหม่จากธรรมชาติ 100% ปราศจากสารปรุงแต่ง",
+        text: "คัดสรรวัตถุดิบสด 100% 🌿",
+        textPos: "Lower Third",
+        sfx: "Rustling fresh organic greens, gentle wooden cutting board clink."
+      },
+      {
+        type: "ย่างอกไก่ชุ่มฉ่ำ ลายกริลล์สวย (Juicy Herb-Grilled Chicken Breast)",
+        camera: "🔍 Extreme Macro 100mm f/2.8 Sizzle Track",
+        motion: `Photorealistic 8K image-to-video. Extreme macro of lean chicken breast fillets searing gently on ridged cast-iron grill pan. Clear savory juices bubbling softly, golden grill marks forming, rising fragrant herbal steam, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of tender sliced chicken breast sizzling gently on seasoned grill pan with golden sear marks, glistening with natural juices and aromatic herbs like rosemary and thyme. Translucent savory steam rising in soft window light. Shot on Phantom Flex 4K, rich natural colors, pure cinematography, strictly focused on grilled meat, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ย่างอกไก่ด้วยไฟปานกลาง ล็อกความชุ่มฉ่ำ นุ่มละมุนลิ้น ไม่แห้งกระด้างแม้แต่น้อย",
+        text: "อกไก่ย่างนุ่มฉ่ำ ไม่แห้งกระด้าง 🍗",
+        textPos: "Center Punchy",
+        sfx: "Gentle culinary sizzle, aromatic steam whisper."
+      },
+      {
+        type: "หั่นอโวคาโดและผักสดฉ่ำน้ำ (Slicing Creamy Avocado & Fresh Greens)",
+        camera: "45-Degree High-Speed Slice Action",
+        motion: `Photorealistic 8K image-to-video. Close-up chef slicing ripe creamy Hass avocado into uniform fans on wooden block. Crisp cucumber slices and colorful bell peppers fan out neatly with micro water droplets, 24fps.`,
+        prompt: `Close-up culinary action of chef gently slicing ripe Hass avocado into perfect uniform fan slices on wooden board. Tack-sharp focus on creamy green texture, micro dew droplets on crisp cucumber slices and purple cabbage strips nearby. Soft side lighting, 85mm Prime lens, pure food commercial, zero in-image text, zero watches, zero cars, zero jewelry, zero bracelets. --ar ${aspectRatio}`,
+        voice: "ไขมันดีจากอโวคาโดสด ช่วยให้อิ่มนาน ลดคอเลสเตอรอล และเติมสารต้านอนุมูลอิสระให้ผิวสวย",
+        text: "ไขมันดีจากอโวคาโด อิ่มนาน ผิวใส 🥑",
+        textPos: "Lower Third",
+        sfx: "Crisp knife cutting through fresh vegetables, subtle kitchen ambience."
+      },
+      {
+        type: "ราดน้ำสลัดน้ำมันมะกอกและเลมอน (Drizzling Extra Virgin Olive Oil & Lemon Glaze)",
+        camera: "High-Speed 120fps Slow-Motion Pour",
+        motion: `Photorealistic 8K image-to-video. 120fps slow motion. Golden extra virgin olive oil and lemon vinaigrette pours in a glistening silky stream over crisp salad leaves and quinoa, splashing micro-droplets in warm backlighting, 24fps.`,
+        prompt: `High-speed 120fps slow-motion capture of golden extra virgin olive oil and fresh lemon juice drizzled in a glistening ribbon over fresh crisp garden salad and colorful quinoa bowl. Micro-droplets glistening in backlighting, shallow depth of field, pure cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เพิ่มความสดชื่นด้วยน้ำสลัดเลมอนและน้ำมันมะกอกบริสุทธิ์ ชูรสชาติอาหารคลีนให้กลมกล่อมทุกคำ",
+        text: "น้ำสลัดเลมอน สดชื่น แคลอรีต่ำ 🍋",
+        textPos: "Center Punchy",
+        sfx: "Silky liquid drizzle sound, refreshing water drop splash."
+      },
+      {
+        type: "จัดกล่อง Meal Prep 7 วัน (Portion-Controlled Meal Prep Containers)",
+        camera: "Smooth Tracking Slider 50mm",
+        motion: `Photorealistic 8K image-to-video. Smooth tracking slider along row of glass meal prep containers. Perfectly portioned lean proteins, complex carbs, and vibrant steamed vegetables arranged with colorful precision, 24fps.`,
+        prompt: `Smooth tracking slider shot of three eco-friendly glass meal prep containers neatly lined up on bright minimalist kitchen island. Each container perfectly portioned with sliced grilled chicken, rainbow quinoa, steamed broccoli, and baked sweet potato cubes. Crisp Scandinavian aesthetics, bright morning sunlight, pure food photography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "จัดสัดส่วนโปรตีน คาร์บเชิงซ้อน และผักไฟเบอร์สูงใส่กล่อง Meal Prep พร้อมทานได้ทั้งสัปดาห์",
+        text: "จัดกล่อง Meal Prep สะดวก คุมแคลเป๊ะ 🍱",
+        textPos: "Lower Third",
+        sfx: "Glass meal container snap, satisfying organized click."
+      },
+      {
+        type: "ชิมคำแรกฟิน อร่อยสุขภาพดี (First Bite Delight & Authentic Smile)",
+        camera: "Medium Portrait 85mm Prime",
+        motion: hasPresenter
+          ? `Photorealistic 8K image-to-video. ${genderEn} lifts forkful of colorful clean salad and tender chicken, taking a savory bite with genuine delight and beaming smile at camera, 24fps.`
+          : `Photorealistic 8K image-to-video. Elegant fork lifts appetizing bite of grilled chicken and avocado from bowl, soft restaurant spotlighting, 24fps.`,
+        prompt: `Warm commercial lifestyle portrait of person savoring a fresh colorful forkful of clean salad and tender chicken breast, expressing genuine joy and culinary delight. Soft natural kitchen interior daylight, beautiful bokeh, radiant healthy glowing skin, strictly focused on person enjoying healthy food, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "คำแรกที่ได้ชิม... รสชาติกลมกล่อมหอมละมุน กรุบกรอบสดชื่น อร่อยจนลืมไปเลยว่ากำลังกินคลีน!",
+        text: "อร่อยฟินเต็มคำ สุขภาพดีทุกมื้อ 😋",
+        textPos: "Top Center",
+        sfx: "Gentle fork clink, cheerful bright melodic chime."
+      },
+      {
+        type: "ไลฟ์สไตล์สุขภาพดีและคล่องตัว (Active Fit Lifestyle & Energy)",
+        camera: "Dynamic Low-Angle Glide",
+        motion: `Photorealistic 8K image-to-video. Fit Asian individual in clean sportswear enjoying wholesome meal in sunny modern dining room. Natural energy, radiant glow, clean aesthetic environment, 24fps.`,
+        prompt: `Energetic lifestyle commercial shot of fit Asian person enjoying healthy clean meal at sunlit modern dining table next to glass window overlooking green garden. Energetic posture, vibrant healthy complexion, clean minimalist interior, pure lifestyle commercial, zero in-image text, zero watches, zero cars, zero fashion accessories. --ar ${aspectRatio}`,
+        voice: "กินคลีนต่อเนื่องแค่ 7 วัน รู้สึกได้ทันทีว่าเบาสบายตัว มีพลังสดชื่นตลอดทั้งวัน",
+        text: "เบาสบายตัว มีพลังตลอดวัน ⚡",
+        textPos: "Lower Third",
+        sfx: "Upbeat positive acoustic strumming, refreshing morning breeze."
+      },
+      {
+        type: "เผยผลลัพธ์ & Call to Action (Heroic Meal Prep Packshot & CTA)",
+        camera: "Centered Master Culinary Pullback",
+        motion: hasPresenter
+          ? `Photorealistic 8K image-to-video. Centered master pullback. ${genderEn} proudly presents complete meal prep bowl on kitchen counter, smiling warmly with welcoming gesture, 24fps.`
+          : `Photorealistic 8K image-to-video. Centered master pullback showcasing complete colorful clean meal bowl on ceramic platter under soft commercial lighting, 24fps.`,
+        prompt: `Grand finale heroic commercial presentation. Complete vibrant clean meal prep bowl centered on light rustic ceramic platter. Sliced grilled chicken breast, creamy avocado, rainbow quinoa, cherry tomatoes, and steamed greens with rising gentle steam under soft commercial daylight. Clean composition with space for closing graphic, pure cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "อยากเริ่มต้นดูแลสุขภาพและหุ่นในฝัน เซฟคลิปนี้ไว้เลย แล้วทักแชตรับสูตรตารางอาหารคลีน 7 วันฟรีได้เลยครับ!",
+        text: "เซฟคลิปทักแชตรับตารางคลีนฟรี! 🥗",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature luxury brand crescendo, triumphant culinary chime."
+      },
+      {
+        type: "โบว์ลควินัวสีรุ้ง ซูเปอร์ฟู้ดพลังงานสะอาด (Rainbow Quinoa Superfood Bowl)",
+        camera: "360 Subtle Orbit Glide 50mm",
+        motion: `Photorealistic 8K image-to-video. Subtle 360 camera orbit around rainbow superfood bowl on white marble countertop. Fluffy tricolor quinoa topped with edamame, shredded purple cabbage, chia seeds, and diced ripe mango, 24fps.`,
+        prompt: `Subtle 360 orbit glide around a vibrant rainbow quinoa superfood bowl topped with edamame beans, chia seeds, diced mango, and shredded purple cabbage on white marble tabletop. Morning sunbeams, tack-sharp macro focus, pure culinary cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เติมคาร์โบไฮเดรตเชิงซ้อนด้วยควินัวออร์แกนิก ย่อยง่าย อิ่มนาน ไม่กระตุ้นน้ำตาลในเลือด",
+        text: "ควินัวซูเปอร์ฟู้ด อิ่มนาน น้ำตาลนิ่ง 🌾",
+        textPos: "Center Punchy",
+        sfx: "Smooth camera glide whoosh, light cereal seed rustle."
+      },
+      {
+        type: "แซลมอนย่างเกลือชมพูหอมกรุ่น (Pan-Seared Pink Salt Salmon Fillet)",
+        camera: "Low-Angle Macro Sizzle Track",
+        motion: `Photorealistic 8K image-to-video. Low-angle macro tracking shot. A thick cut of fresh Atlantic salmon fillet sizzling gently on skillet, crispy golden skin with pink Himalayan salt flakes, savory white steam drifting, 24fps.`,
+        prompt: `Mouthwatering macro 100mm shot of a fresh Atlantic salmon fillet seared to golden perfection in cast iron skillet, pink Himalayan salt crystals and freshly cracked black pepper shimmering on crispy skin. Translucent savory steam, ARRI Alexa LF grading, strictly focused on fish steak, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "สลับโปรตีนด้วยสเต๊กปลาแซลมอนย่างเกลือชมพู โอเมก้า 3 สูง บำรุงหัวใจและสมอง",
+        text: "แซลมอนย่างเกลือชมพู โอเมก้า 3 สูง 🐟",
+        textPos: "Lower Third",
+        sfx: "Gentle salmon sizzle on skillet, soft culinary tone."
+      },
+      {
+        type: "น้ำดีท็อกซ์ผลไม้ สดชื่นไร้น้ำตาล (Citrus Mint Infused Detox Water)",
+        camera: "Macro Ice & Droplet Refraction 100mm",
+        motion: `Photorealistic 8K image-to-video. Macro slider across condensation beads on tall glass pitcher. Crystal clear infused water with floating lemon wheels, cucumber ribbons, and fresh mint leaves catching sunbeams, 24fps.`,
+        prompt: `Extreme macro shot of condensation droplets glistening on tall glass tumbler filled with crystal-clear infused detox water, floating fresh lemon slices, crisp cucumber ribbons, and vibrant mint leaves. Shimmering sunlight refractions, pure refreshment, zero in-image text, zero watches, zero jewelry, zero cars. --ar ${aspectRatio}`,
+        voice: "จิบคู่กับน้ำหมักผลไม้สดชื่น เลมอน แตงกวา และใบสะระแหน่ เติมความชุ่มชื้น ล้างสารพิษ",
+        text: "ดีท็อกซ์วอเตอร์ สดชื่น ล้างสารพิษ 🍋",
+        textPos: "Lower Third",
+        sfx: "Cool ice cube clink against glass, refreshing water pour."
+      },
+      {
+        type: "สลัดเคลอกไก่ฉีกและอัลมอนด์ (Shredded Chicken & Crisp Kale Salad)",
+        camera: "Kinetic Snap Zoom into Bowl",
+        motion: `Photorealistic 8K image-to-video. Kinetic snap zoom into rustic wooden salad bowl. Tender shredded poached chicken breast tossed with dark green baby kale leaves, crunchy roasted almond flakes, and ruby pomegranate seeds, 24fps.`,
+        prompt: `Kinetic snap zoom into artisan wooden salad bowl filled with tossed baby kale leaves, tender shredded poached chicken breast, roasted sliced almonds, and pomegranate rubies. Tack-sharp macro detail, vibrant natural saturation, pure cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ผักเคลราชินีแห่งผักใบเขียว คลุกเคล้าอกไก่ฉีกและอัลมอนด์อบกรอบ เคี้ยวเพลิน ไฟเบอร์แน่น",
+        text: "สลัดเคลอกไก่ฉีก ไฟเบอร์แน่นเคี้ยวเพลิน 🥬",
+        textPos: "Center Punchy",
+        sfx: "Dynamic camera snap whoosh, fresh salad crunch."
+      },
+      {
+        type: "ซุปฟักทองครีมอัลมอนด์ ไร้นมวัว (Dairy-Free Creamy Pumpkin Soup)",
+        camera: "Slow Overhead Swirl & Garnish",
+        motion: `Photorealistic 8K image-to-video. Slow overhead swirl. Velvety golden-orange pumpkin soup in matte dark bowl. Swirling delicate ribbon of white coconut cream, sprinkled with roasted pumpkin seeds, warm steam rising, 24fps.`,
+        prompt: `Artisan slow overhead capture of a warm velvety golden-orange roasted pumpkin soup in dark stoneware bowl, drizzled with coconut cream swirl and roasted pumpkin seeds. Whisps of warm aromatic steam, cozy natural daylight, pure culinary styling, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ซุปฟักทองเนื้อเนียนนุ่ม ปราศจากนมวัวและเนย แคลอรีต่ำ อุ่นท้อง สบายไต",
+        text: "ซุปฟักทองคลีน อุ่นท้อง แคลต่ำ 🎃",
+        textPos: "Lower Third",
+        sfx: "Gentle soup steam whisper, comforting acoustic note."
+      },
+      {
+        type: "เปิดตู้เย็นโชว์กล่องคลีนเป็นระเบียบ (Organized Clean Meal Fridge Showcase)",
+        camera: "Smooth Dolly In into Refrigerator",
+        motion: `Photorealistic 8K image-to-video. Smooth dolly push into opened refrigerator door. Interior beautifully illuminated with clean white LED light, neatly stacked glass meal prep containers filled with colorful fresh healthy dishes, 24fps.`,
+        prompt: `Smooth camera dolly push into a pristine, well-lit modern refrigerator neatly organized with labeled glass meal prep containers filled with colorful fresh clean food dishes, crisp mason jars with salads, and fresh fruits. High-end modern appliance aesthetic, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เตรียมอาหารล่วงหน้าเปิดตู้เย็นก็พร้อมหยิบทานทันที หมดปัญหาคิดไม่ออกว่าจะกินอะไรดี",
+        text: "พร้อมหยิบทานทันที สุขภาพดีทุกวัน ❄️",
+        textPos: "Top Center",
+        sfx: "Clean refrigerator door opening whoosh, gentle hum."
+      },
+      {
+        type: "เฉลิมฉลองสุขภาพดี หุ่นเฟิร์มมั่นใจ (Celebrating Wholesome Healthy Living Finale)",
+        camera: "Centered Master Brand Pullback",
+        motion: hasPresenter
+          ? `Photorealistic 8K image-to-video. Centered master pullback. ${genderEn} stands proudly in bright sunlit modern kitchen, holding fresh colorful clean meal platter, radiant confident smile, 24fps.`
+          : `Photorealistic 8K image-to-video. Heroic master pullback of complete clean eating meal arrangement on light wood table under morning sunlight, 24fps.`,
+        prompt: `Grand finale triumphant lifestyle commercial presentation. Radiant healthy Asian nutritionist or fitness creator standing proudly in bright sunlit modern kitchen, holding a complete colorful clean meal plate with warm genuine smile. Pristine natural daylight, pure commercial cinematography, strictly focused on healthy lifestyle, zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories. --ar ${aspectRatio}`,
+        voice: "เริ่มต้นเปลี่ยนสุขภาพและรูปร่างที่ดีที่สุดของคุณตั้งแต่วันนี้ ทักแชตรับแพลนอาหารคลีน แล้วเริ่มไปด้วยกันนะครับ!",
+        text: "เริ่มสุขภาพดีวันนี้ ทักแชตเลย! 🌟",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature triumphant melodic crescendo, bright acoustic chord."
+      }
+    ];
+
+    // ==========================================
     // BASE POOL SELECTION (DOMAIN-AWARE & SCALE-AWARE)
     // ==========================================
     const activePool = isDinosaurOrWildlife
@@ -2005,6 +2242,8 @@ export async function POST(req: Request) {
       ? (resolvedCount <= 8 ? plaSomMasterPool16.slice(0, 8) : plaSomMasterPool16)
       : isSwimming
       ? (resolvedCount <= 8 ? swimmingMasterPool16.slice(0, 8) : swimmingMasterPool16)
+      : isCleanFood
+      ? (resolvedCount <= 8 ? cleanFoodMasterPool16.slice(0, 8) : cleanFoodMasterPool16)
       : isOatOrBreakfast
       ? (resolvedCount <= 8 ? oatMasterPool16.slice(0, 8) : oatMasterPool16)
       : isPadGaprao
@@ -2076,9 +2315,11 @@ export async function POST(req: Request) {
         cameraMovement: "Continuous Seamless Steadicam Tracking with Dynamic Orbit",
         motionPrompt: `Photorealistic 8K image-to-video. Continuous seamless steadicam tracking shot. Subject and environment obey real-world Newtonian physical dynamics with natural motion blur. No morphing, rigid object geometry, authentic fluid/steam physics. 24fps.`,
         visualPromptEn: `Photorealistic 8K cinematic commercial one-take. ${effectiveProductEn} in ${effectiveEnvironmentEn}. Seamless fluid steadicam tracking starting from wide establishing, smoothly transitioning into intimate medium shot of ${hasPresenter ? `${genderEn} with ${actionPrompts}` : `hero commercial packshot of ${effectiveProductEn}`}, culminating in heroic brand lockup. ARRI Alexa LF grading, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
-        onScreenTextTh: userCustomTexts[0] || (isSwimming ? "เทคนิคว่ายน้ำเป็นใน 1 ชม.! 🏊‍♂️" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣" : isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
+        onScreenTextTh: userCustomTexts[0] || (isCleanFood ? "แพลนอาหารคลีน 7 วัน สุขภาพดีหุ่นปัง! 🥗" : isSwimming ? "เทคนิคว่ายน้ำเป็นใน 1 ชม.! 🏊‍♂️" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣" : isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
         textPosition: "Top Center (Headline)",
-        thaiVoiceover: isSwimming
+        thaiVoiceover: isCleanFood
+          ? "อยากเริ่มกินคลีนแต่ไม่รู้จะเริ่มยังไง? วันนี้เราจัดเซตอาหารคลีนทำง่าย อร่อย อิ่มนาน หุ่นลีนกระชับ เซฟคลิปนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีนฟรีได้เลยครับ!"
+          : isSwimming
           ? "ว่ายน้ำไม่เป็น กลัวจม? วันนี้เรามีเคล็ดลับง่ายๆ ให้คุณว่ายเป็นและมั่นใจได้ใน 1 ชั่วโมง เซฟคลิปนี้ไว้เลย แล้วทักแชตเริ่มเรียนได้เลยครับ!"
           : isOatOrBreakfast
           ? "เมนูข้าวโอ๊ตโฟมสุขภาพ 5 นาที ทำง่าย อร่อย อิ่มนาน สุขภาพดีครบถ้วน เซฟสูตรนี้ไว้ทำตาม แล้วกดติดตามกันได้เลยครับ!"
@@ -2118,7 +2359,7 @@ export async function POST(req: Request) {
         cameraMovement: shot1.camera,
         motionPrompt: (shot1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || (isSwimming ? "ว่ายน้ำเป็นง่ายกว่าที่คิด 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : "พิกัดลับที่ไม่ควรพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || (isCleanFood ? "กินคลีนง่ายๆ หุ่นลีน 7 วัน 🥗" : isSwimming ? "ว่ายน้ำเป็นง่ายกว่าที่คิด 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : "พิกัดลับที่ไม่ควรพลาด ✨"),
         textPosition: (shot1 as any).textPos || "Top Headline",
         thaiVoiceover: shot1.voice,
         audioSfx: shot1.sfx,
@@ -2134,7 +2375,7 @@ export async function POST(req: Request) {
         cameraMovement: shot2.camera,
         motionPrompt: (shot2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
+        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isCleanFood ? "เซฟตารางอาหารคลีนด่วน 🥗" : isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
         textPosition: (shot2 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: shot2.voice,
         audioSfx: shot2.sfx,
@@ -2159,7 +2400,7 @@ export async function POST(req: Request) {
         cameraMovement: s1.camera,
         motionPrompt: (s1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
         textPosition: (s1 as any).textPos || "Top Headline",
         thaiVoiceover: s1.voice,
         audioSfx: s1.sfx,
@@ -2175,7 +2416,7 @@ export async function POST(req: Request) {
         cameraMovement: s2.camera,
         motionPrompt: (s2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
+        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
         textPosition: "Lower Third",
         thaiVoiceover: s2.voice,
         audioSfx: s2.sfx,
@@ -2191,7 +2432,7 @@ export async function POST(req: Request) {
         cameraMovement: s3.camera,
         motionPrompt: (s3 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s3.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s3.prompt,
-        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
+        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
         textPosition: (s3 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: s3.voice,
         audioSfx: s3.sfx,
@@ -2226,6 +2467,8 @@ export async function POST(req: Request) {
 
           const dynamicMotion = isSwimming
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Fluid aquatic action in crystal-clear swimming pool. Swimmer or coach executing smooth swimming technique, sparkling water ripples and splash droplets obeying real fluid dynamics, 24fps.`
+            : isCleanFood
+            ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome clean meal preparation with tender grilled chicken breast, fresh ripe avocado slices, organic rainbow quinoa, and crisp steamed greens in modern kitchen setting. Rigid meal prep container and bowl geometry, vibrant natural food colors, zero morphing, 24fps.`
             : isOatOrBreakfast
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome breakfast preparation with creamy oat foam, fresh berries, and warm morning steam rising in soft daylight. Rigid tableware geometry, zero morphing, 24fps.`
             : isCooking
@@ -2240,6 +2483,8 @@ export async function POST(req: Request) {
             voice: i === resolvedCount - 1
               ? (isSwimming
                   ? "เซฟคลิปนี้ไว้เลย แล้วทักแชตจองคอร์สทดลองเรียนว่ายน้ำ รับสิทธิ์พิเศษทันทีครับ!"
+                  : isCleanFood
+                  ? "เซฟตารางเมนูอาหารคลีนนี้ไว้เลย แล้วกดติดตามเพื่อสุขภาพดีและหุ่นลีนไปด้วยกันนะครับ!"
                   : isOatOrBreakfast
                   ? "เซฟสูตรข้าวโอ๊ตโฟมสุขภาพนี้ไว้ทำตาม แล้วกดติดตามเพื่อเมนูคลีนอร่อยๆ ทุกวันนะครับ!"
                   : isDinosaurOrWildlife

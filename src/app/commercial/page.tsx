@@ -62,10 +62,12 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: UNIVERSAL TOPIC LOCK & ZERO CROSS-
 
 ปัญหาสำคัญที่ต้องแก้ไขทันที:
 1. ❌ ลบปุ่ม "ตัวอย่าง OAT MILK" และปุ่ม Mock Data ออกจากหน้าจอ 100% ห้ามมีปุ่มตัวอย่างใดๆ ค้างอยู่เด็ดขาด! หน้านี้ต้องเป็น Universal Studio รองรับทุกสินค้า ไม่ผูกติดกับตัวอย่างใดๆ!
-2. ❌ แก้บักภาพเพี้ยนเป็นเครื่องชงกาแฟ/กาดริป/นาฬิกาหรู:
-   - สาเหตุแท้จริง: ตัวเครื่องมือเดิมดึงข้อความจากบรรทัด "- Camera & Physical Motion (Veo 2): Photorealistic 8K image-to-video. Camera executes Smooth Forward Tracking Shot. Heroic product showcase..." ไปส่งให้ Imagen เจนภาพ! ซึ่งข้อความนั้นไม่มีชื่อสินค้าเลย Imagen จึงวาดเครื่องชงกาแฟ กาดริป หรือนาฬิกาหรูออกมาแทน!
+2. ❌ แก้บักภาพเพี้ยนเป็นนาฬิกาข้อมือแฟชั่น/เครื่องชงกาแฟ/รถยนต์:
+   - สาเหตุแท้จริง: ตัวเครื่องมือเดิมดึงข้อความจาก Motion Prompt หรือไม่มี Topic Lock กำกับ ทำให้ Imagen ตีความไม่ออกและหลอนวาดนาฬิกาข้อมือแฟชั่นหรือสิ่งของหรูหราออกมาแทน!
+   - เมื่อผู้ใช้สั่ง "อาหารคลีน" (Clean Food / Healthy Eating) ภาพที่ได้ต้องเป็นอาหารคลีนแท้จริง 100% เช่น อกไก่ย่าง อโวคาโด ควินัว สลัดผัก กล่อง Meal Prep เท่านั้น! ห้ามหลอนวาดนาฬิกาข้อมือเด็ดขาด!
    - การแก้ไขเด็ดขาด:
      * ฟังก์ชันเจนภาพ (generateImage): ต้องใช้เฉพาะข้อความจาก "- Visual Prompt (EN): ..." เท่านั้น! ห้ามส่ง Motion Prompt ไปเจนรูปเด็ดขาด!
+     * พ่วงคำสั่ง Negative Prompt เสมอ: ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, zero unrelated objects"
      * ฟังก์ชันเจนวิดีโอ (generateVideo): ค่อยใช้ข้อความจาก "- Camera & Physical Motion (Veo 2): ..."
 3. ❌ หัวการ์ดแสดงผลเพี้ยน:
    - บนหัวการ์ดของแต่ละช็อต ให้แสดงชื่อช็อตภาษาไทย เช่น "ช็อต 01: เปิดเรื่อง (Viral Hook)" ห้ามเอาข้อความภาษาอังกฤษยาวๆ มาแสดงเป็นชื่อช็อต!
@@ -85,7 +87,7 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL FIX: UNIVERSAL TOPIC LOCK & ZERO CROSS-
 - เมื่อสั่งสร้างภาพ (generateImage):
   * ต้องดึงข้อความจาก "- Visual Prompt (EN): [ข้อความ]" เท่านั้น
   * เติม Topic Lock กำกับเสมอ:
-    "[TOPIC LOCK: Campaign Subject] " + visualPromptEn + ", zero in-image text, zero watches, zero cars, zero jewelry, zero unrelated items, pure topic cinematography"
+    "[TOPIC LOCK: Campaign Subject] " + visualPromptEn + ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, zero unrelated items, pure cinematography"
   * ห้ามส่งคำสั่ง Camera & Physical Motion ไปให้ฟังก์ชันสร้างภาพเด็ดขาด!
 
 ### 3. 🔍 REGEX PARSER ที่แม่นยำ 100%:
@@ -127,7 +129,7 @@ const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.5 
 
 ## 2. STRICT SEPARATION: VISUAL PROMPT VS MOTION PROMPT:
 - ROOT CAUSE OF HALLUCINATIONS: Never pass "- Camera & Physical Motion (Veo 2)" into the image generator!
-- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, pure topic cinematography".
+- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, pure topic cinematography". For Clean Food / Healthy Eating, strictly depict grilled chicken, avocado, greens, quinoa, meal prep containers — never wristwatches or luxury accessories!
 - generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
 
 ## 3. ROCK-SOLID PARSER REGEX:

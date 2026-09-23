@@ -259,8 +259,167 @@ async function runTests() {
     throw new Error("TEST 4 FAILED assertions.");
   }
 
+  // -------------------------------------------------------------
+  // TEST 5: อาหารคลีนเพื่อสุขภาพ 7 วัน (Clean Food, 16 scenes)
+  // -------------------------------------------------------------
+  console.log("\n[TEST 5] Testing 'อาหารคลีนเพื่อสุขภาพ 7 วัน' (16 scenes)...");
+  const cleanReq = new Request("http://localhost:3000/api/ai/commercial", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productName: "อาหารคลีนเพื่อสุขภาพ 7 วัน",
+      brand: "CleanFit Kitchen",
+      targetDuration: 45,
+      sceneCount: 16,
+      pacingStyle: "standard",
+      referenceMode: "pure_prompt",
+      hasPresenter: true,
+      presenterGender: "female"
+    })
+  });
+
+  const cleanRes = await POST(cleanReq as any);
+  const cleanData = await cleanRes.json();
+  if (!cleanData.success) throw new Error(`Test 5 Failed: ${cleanData.error}`);
+  const cleanScenes = cleanData.scenes || cleanData.data?.scenes;
+  console.log(`Generated ${cleanScenes.length} scenes for อาหารคลีน.`);
+  if (cleanScenes.length !== 16) throw new Error(`Expected 16 scenes, got ${cleanScenes.length}`);
+
+  let cleanPassed = true;
+  for (const scene of cleanScenes) {
+    const prompt = scene.visualPromptEn;
+    const lower = prompt.toLowerCase();
+
+    // Must contain food/clean eating terms
+    const hasFoodTerm =
+      lower.includes("chicken") ||
+      lower.includes("avocado") ||
+      lower.includes("quinoa") ||
+      lower.includes("salad") ||
+      lower.includes("meal prep") ||
+      lower.includes("clean") ||
+      lower.includes("broccoli") ||
+      lower.includes("kale") ||
+      lower.includes("salmon") ||
+      lower.includes("soup") ||
+      lower.includes("pumpkin") ||
+      lower.includes("detox") ||
+      lower.includes("water") ||
+      lower.includes("olive oil") ||
+      lower.includes("refrigerator") ||
+      lower.includes("healthy") ||
+      lower.includes("culinary");
+
+    if (!hasFoodTerm) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} does not mention clean food! Prompt: ${prompt}`);
+      cleanPassed = false;
+    }
+
+    // Must NOT contain Thai characters in prompt
+    if (thaiCharRegex.test(prompt)) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} contains Thai text! Prompt: ${prompt}`);
+      cleanPassed = false;
+    }
+
+    // Strip negative safety text before checking for banned luxury items
+    const subjectContent = lower
+      .replace(/zero watches/g, "")
+      .replace(/zero cars/g, "")
+      .replace(/zero jewelry/g, "")
+      .replace(/zero fashion accessories/g, "");
+
+    for (const b of bannedLuxuryWords) {
+      if (subjectContent.includes(b)) {
+        console.error(`FAIL: Scene ${scene.sceneNumber} depicts banned luxury item '${b}'! Prompt: ${prompt}`);
+        cleanPassed = false;
+      }
+    }
+
+    // Must NOT leak swimming or pla som
+    if (lower.includes("pla som") || lower.includes("swimming pool") || lower.includes("kickboard")) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} leaked other domains! Prompt: ${prompt}`);
+      cleanPassed = false;
+    }
+
+    // Must enforce safety negative constraint
+    if (!lower.includes("zero watches") || !lower.includes("zero cars")) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} missing safety negative constraint! Prompt: ${prompt}`);
+      cleanPassed = false;
+    }
+  }
+
+  if (cleanPassed) {
+    console.log(">>> TEST 5 PASSED: อาหารคลีน is 100% clean food/meal prep, zero watches, zero cars, zero Thai in visual prompt!");
+  } else {
+    throw new Error("TEST 5 FAILED assertions.");
+  }
+
+  // -------------------------------------------------------------
+  // TEST 6: ต้มยำกุ้งน้ำข้นสูตรโบราณ (General Cooking, 10 scenes)
+  // -------------------------------------------------------------
+  console.log("\n[TEST 6] Testing 'ต้มยำกุ้งน้ำข้นสูตรโบราณ' (10 scenes)...");
+  const cookingReq = new Request("http://localhost:3000/api/ai/commercial", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productName: "ต้มยำกุ้งน้ำข้นสูตรโบราณ",
+      brand: "ครัวคุณแม่",
+      targetDuration: 30,
+      sceneCount: 10,
+      pacingStyle: "standard",
+      referenceMode: "pure_prompt",
+      hasPresenter: true,
+      presenterGender: "female"
+    })
+  });
+
+  const cookingRes = await POST(cookingReq as any);
+  const cookingData = await cookingRes.json();
+  if (!cookingData.success) throw new Error(`Test 6 Failed: ${cookingData.error}`);
+  const cookingScenes = cookingData.scenes || cookingData.data?.scenes;
+  console.log(`Generated ${cookingScenes.length} scenes for ต้มยำกุ้ง.`);
+  if (cookingScenes.length !== 10) throw new Error(`Expected 10 scenes, got ${cookingScenes.length}`);
+
+  let cookingPassed = true;
+  for (const scene of cookingScenes) {
+    const prompt = scene.visualPromptEn;
+    const lower = prompt.toLowerCase();
+
+    // Must NOT contain Thai characters in prompt
+    if (thaiCharRegex.test(prompt)) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} contains Thai text! Prompt: ${prompt}`);
+      cookingPassed = false;
+    }
+
+    // Strip negative safety text before checking for banned luxury items
+    const subjectContent = lower
+      .replace(/zero watches/g, "")
+      .replace(/zero cars/g, "")
+      .replace(/zero jewelry/g, "")
+      .replace(/zero fashion accessories/g, "");
+
+    for (const b of bannedLuxuryWords) {
+      if (subjectContent.includes(b)) {
+        console.error(`FAIL: Scene ${scene.sceneNumber} depicts banned luxury item '${b}'! Prompt: ${prompt}`);
+        cookingPassed = false;
+      }
+    }
+
+    // Must NOT leak swimming or pla som or oats
+    if (lower.includes("pla som") || lower.includes("swimming pool") || lower.includes("kickboard") || lower.includes("rolled oats")) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} leaked other domains! Prompt: ${prompt}`);
+      cookingPassed = false;
+    }
+  }
+
+  if (cookingPassed) {
+    console.log(">>> TEST 6 PASSED: General cooking is 100% culinary, zero watches, zero cars, zero Thai in visual prompt!");
+  } else {
+    throw new Error("TEST 6 FAILED assertions.");
+  }
+
   console.log("\n==========================================");
-  console.log("ALL 4 TOPIC ISOLATION TESTS PASSED 100%!");
+  console.log("ALL 6 TOPIC ISOLATION & DOMAIN ACCURACY TESTS PASSED 100%!");
   console.log("==========================================");
 }
 
