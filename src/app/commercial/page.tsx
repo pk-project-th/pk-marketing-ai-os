@@ -58,39 +58,79 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK STUDIO v6.0 PRO — SPLIT PIPELINE & FULL FIELD EDITOR:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK STUDIO v6.2 PRO — COMPLETE 4-FIELD PARSER & ZERO-HANG VIDEO ENGINE:
 
-จากหลักฐานการใช้งานจริง ปัญหาหลัก 3 ข้อที่ต้องแก้ไขทันที:
-
-## ปัญหาที่ 1: ⚡ รูปภาพเจนได้แต่วิดีโอเจนไม่ได้
-- สาเหตุ: ระบบเดิมรวม Image + Video เป็น Pipeline เดียว เมื่อ Veo ปฏิเสธภาพ (Safety / Quota) ทั้งช็อตจะล้มเหลวทันที
-- แก้ไข: แยก Pipeline เป็น 2 ขั้นตอนอิสระ 100% (Two-Stage Split Pipeline):
-  1) ปุ่ม "🖼️ เจนรูปทั้งหมด (Batch Images)" → เรียก generateImage สำหรับทุกช็อตพร้อมกัน (Promise.allSettled) ไม่ยุ่งกับวิดีโอ
-  2) ปุ่ม "🎬 เจนวิดีโอทั้งหมด (Batch Videos)" → เรียก generateVideo สำหรับทุกช็อตที่มีรูปภาพแล้ว ถ้าช็อตไหนไม่มีรูปให้ fallback เป็น Text-to-Video อัตโนมัติ
-  3) ในแต่ละการ์ดช็อต มีปุ่ม:
-     - "🖼️ เจนรูปช็อตนี้" (เฉพาะรูปภาพ)
-     - "🎬 เจนวิดีโอช็อตนี้" (เฉพาะวิดีโอ จากรูปที่มีอยู่แล้ว หรือ Text-to-Video)
-     - "🎥 Text-to-Video" (บายพาสรูปภาพ สร้างวิดีโอจากข้อความโดยตรง)
-
-## ปัญหาที่ 2: ✏️ ฟิลด์แก้ไขไม่ตรงกับ OS (ต้อง Sync ทุกฟิลด์)
-- แก้ไข: Inline Editor ครบ 4 ฟิลด์เหมือน PK Marketing AI OS:
-  1) 📸 Visual Prompt (EN) — Prompt สร้างรูปภาพ
-  2) 🎬 Motion Prompt (EN) — Prompt สั่ง Camera & Veo
-  3) 🎙️ Thai Voiceover — เสียงพากย์ภาษาไทย
-  4) 📝 On-Screen Text (TH) — ข้อความบนจอภาษาไทย
-- ทุกฟิลด์ต้อง copy-paste ได้ทั้งจาก OS มา Flow และจาก Flow กลับ OS
-
-## ปัญหาที่ 3: 💥 "Expected object response with media fields" Crash
-- แก้ไข: Media Fields Armor ป้องกันทุกกรณี:
-  * const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : null;
-  * ถ้ามี cleanImg ➔ generateVideo({ image: cleanImg, prompt: motionPrompt })
-  * ถ้าไม่มี cleanImg ➔ ห้ามส่ง image: undefined เด็ดขาด! ➔ generateVideo({ prompt: (visualPrompt + '. ' + motionPrompt).trim() })
+แก้ไขปัญหา 3 ข้อตามที่ผู้ใช้พบในการใช้งานจริง:
+1. 🎙️ เสียงพากย์และ Motion ว่างเปล่า หรือเสียงพากย์ซ้ำกัน:
+   - ปัญหา: ตัว Parser เดิมไม่ได้ดึง "- Thai Voiceover Script:" และ "- Camera & Physical Motion (Veo 2):" ทำให้ช่องเสียงพากย์และโมชั่นกลายเป็นค่าว่าง (— ไม่กำหนดเสียงพากย์ —) และในกล่องแก้ไขไม่มีข้อความ
+   - แก้ไข: บังคับใช้ฟังก์ชัน parseCampaignScript ตามโค้ดที่ผ่านการทดสอบ 100% ดึงครบทุกฟิลด์ไม่มีตกหล่น
+2. 🎬 วิดีโอค้าง ไม่ดำเนินการต่อเมื่อบางรูปเจอปัญหา:
+   - ปัญหา: การเรนเดอร์หยุดค้างเมื่อ Veo ตีกลับด้วย "Expected object response with media fields"
+   - แก้ไข: ระบบ Auto-Fallback อัตโนมัติ: ถ้า Image-to-Video ติดปัญหา ให้สลับไปเรนเดอร์แบบ Text-to-Video ทันทีแบบไร้รอยต่อ และใช้ Promise.allSettled เพื่อให้ทุกช็อตรันจนจบ ไม่มีค้าง
+3. 🔄 ความสัมพันธ์ 1:1 ระหว่าง OS และ Flow:
+   - แต่ละช็อตต้องแสดงและแก้ไขได้ครบทั้ง 4 ฟิลด์ตรงกับ OS:
+     1) 📸 Visual Prompt (EN)
+     2) 🎬 Motion Prompt (EN)
+     3) 🎙️ เสียงพากย์ไทย (Thai Voiceover)
+     4) 📝 ข้อความบนจอ (On-Screen Text TH)
 
 ---
 
-แก้ไขโครงสร้างโค้ดทั้งหมดดังนี้:
+แก้ไขโครงสร้างโค้ดทั้งหมดตามนี้:
 
-### 1. 🗂️ SHOT STATE MANAGEMENT (แต่ละช็อตแยกสถานะอิสระ):
+### 1. 🔍 ฟังก์ชัน PARSER ดึงข้อมูล 4 ฟิลด์แบบสมบูรณ์ 100% (ห้ามแก้ Logic นี้):
+function parseCampaignScript(rawText: string) {
+  const parsedShots: any[] = [];
+  const shotRegex = /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=(?:\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|---\\s*[A-Z]|$))/gi;
+  let match;
+  while ((match = shotRegex.exec(rawText)) !== null) {
+    const shotNumber = parseInt(match[1], 10);
+    const shotTitle = match[2]?.trim() || ('ช็อต ' + shotNumber);
+    const chunk = match[4] || '';
+
+    // 1. Duration
+    const durMatch = chunk.match(/-\\s*Duration:\\s*([\\d.]+)/i);
+    const duration = durMatch ? parseFloat(durMatch[1]) : 3;
+
+    // 2. On-Screen Text (TH)
+    const textMatch = chunk.match(/-\\s*On-Screen Text(?:\\s*\\(TH\\))?:\\s*["“]?([^"”\\r\\n]+)["”]?/i);
+    const onScreenText = textMatch ? textMatch[1].trim() : '';
+
+    // 3. Thai Voiceover Script (ดึงเสียงพากย์เฉพาะของแต่ละฉาก ไม่ซ้ำกัน)
+    const voiceMatch = chunk.match(/-\\s*(?:Thai Voiceover Script|Voiceover(?:\\s*\\(TH\\))?|Voice):\\s*["“]?([^"”\\r\\n]+)["”]?/i);
+    const thaiVoiceover = voiceMatch ? voiceMatch[1].trim() : '';
+
+    // 4. Visual Prompt (EN)
+    const visualMatch = chunk.match(/-\\s*Visual Prompt(?:\\s*\\(EN\\))?:\\s*([^\\r\\n]+(?:\\r?\\n(?!-\\s*[A-Z])[^\\r\\n]+)*)/i);
+    const visualPrompt = visualMatch ? visualMatch[1].trim() : '';
+
+    // 5. Motion Prompt (EN) / Camera & Physical Motion
+    const motionMatch = chunk.match(/-\\s*(?:Camera & Physical Motion(?:\\s*\\(Veo 2\\))?|Motion Prompt(?:\\s*\\(EN\\))?|Camera & Movement|Motion):\\s*([^\\r\\n]+(?:\\r?\\n(?!-\\s*[A-Z])[^\\r\\n]+)*)/i);
+    const motionPrompt = motionMatch ? motionMatch[1].trim() : '';
+
+    parsedShots.push({
+      shotNumber,
+      shotTitle,
+      duration,
+      onScreenText,
+      thaiVoiceover,
+      visualPrompt,
+      motionPrompt
+    });
+  }
+  return parsedShots;
+}
+
+// เมื่อผู้ใช้วางสคริปต์ในช่อง Campaign Script:
+function handleScriptChange(text: string) {
+  setCampaignScript(text);
+  const parsed = parseCampaignScript(text);
+  if (parsed.length > 0) {
+    setShots(parsed);
+  }
+}
+
+### 2. 🗂️ SHOT STATE MANAGEMENT (แยกสถานะชัดเจน):
 const [shotStates, setShotStates] = useState<Record<string, {
   imgStatus: 'idle' | 'generating' | 'success' | 'error';
   vidStatus: 'idle' | 'generating' | 'success' | 'error';
@@ -100,8 +140,8 @@ const [shotStates, setShotStates] = useState<Record<string, {
   videoUrl?: string;
 }>>({});
 
-### 2. 🖼️ IMAGE GENERATION FUNCTIONS (แยกจาก Video 100%):
-async function generateSingleImage(shot: ShotItem) {
+### 3. 🖼️ IMAGE GENERATION (Stage 1):
+async function generateSingleImage(shot: any) {
   const shotId = String(shot.shotNumber);
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating', imgErrorMsg: undefined } }));
   try {
@@ -116,41 +156,41 @@ async function generateSingleImage(shot: ShotItem) {
 }
 
 async function generateAllImages() {
-  setCurrentProgress('🖼️ กำลังเจนรูปทั้งหมด...');
+  setCurrentProgress('🖼️ กำลังเจนรูปทั้งหมดพร้อมกัน...');
   await Promise.allSettled(shots.map(s => generateSingleImage(s)));
-  setCurrentProgress('✅ เจนรูปเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
+  setCurrentProgress('✅ เจนรูปเสร็จเรียบร้อย ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
 }
 
-### 3. 🎬 VIDEO GENERATION FUNCTIONS (แยกจาก Image 100% พร้อม AUTO FALLBACK):
-async function generateSingleVideo(shot: ShotItem, useTextOnly = false) {
+### 4. 🎬 VIDEO GENERATION (Stage 2 พร้อม ZERO-HANG AUTO-FALLBACK):
+async function generateSingleVideo(shot: any, useTextOnly = false) {
   const shotId = String(shot.shotNumber);
   const imgUrl = shotStates[shotId]?.imageUrl;
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'generating', vidErrorMsg: undefined } }));
 
-  // Sanitize prompts: strip --ar parameters and sensitive keywords like 'crash'
+  // Sanitize prompt: ลบ --ar และเปลี่ยนคำว่า crash เป็น rapid snap
   const cleanMotion = (shot.motionPrompt || shot.visualPrompt || '')
-    .replace(/--ar\s*\d+:\d+/gi, '')
-    .replace(/\bcrash\b/gi, 'rapid snap')
+    .replace(/--ar\\s*\\d+:\\d+/gi, '')
+    .replace(/\\bcrash\\b/gi, 'rapid snap')
     .trim();
   const cleanVisual = (shot.visualPrompt || '')
-    .replace(/--ar\s*\d+:\d+/gi, '')
-    .replace(/\bcrash\b/gi, 'dynamic')
+    .replace(/--ar\\s*\\d+:\\d+/gi, '')
+    .replace(/\\bcrash\\b/gi, 'dynamic')
     .trim();
   const combinedTextPrompt = (cleanVisual + '. ' + cleanMotion).trim();
 
   let result = null;
   const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && (imgUrl.startsWith('http') || imgUrl.startsWith('blob:') || imgUrl.startsWith('data:'))) ? imgUrl : null;
 
-  // STEP 1: ลอง Image-to-Video ก่อน (ถ้ามีรูปภาพ)
+  // STEP A: พยายามเรนเดอร์ Image-to-Video ก่อน (ถ้ามีรูป)
   if (cleanImg) {
     try {
       result = await generateVideo({ image: cleanImg, prompt: cleanMotion || combinedTextPrompt });
-    } catch (imgErr: any) {
+    } catch (imgErr) {
       console.warn('Image-to-Video failed, auto-falling back to Text-to-Video...', imgErr);
     }
   }
 
-  // STEP 2: Auto Fallback เป็น Text-to-Video อัตโนมัติ (แก้ปัญหา Expected object response with media fields เด็ดขาด)
+  // STEP B: Auto-Fallback เป็น Text-to-Video ทันทีอัตโนมัติ (แก้ปัญหา Expected object response with media fields)
   if (!result) {
     try {
       result = await generateVideo({ prompt: combinedTextPrompt });
@@ -160,175 +200,107 @@ async function generateSingleVideo(shot: ShotItem, useTextOnly = false) {
         [shotId]: {
           ...prev[shotId],
           vidStatus: 'error',
-          vidErrorMsg: 'Veo ประมวลผลไม่สำเร็จ กรุณากดปุ่ม ✏️ แก้ไข Prompt ให้สั้นลงแล้วกดลองใหม่'
+          vidErrorMsg: 'Veo ปฏิเสธคำสั่งนี้ กรุณากดปุ่ม ✏️ แก้ไข Prompt ให้กระชับขึ้น'
         }
       }));
-      return;
+      return; // สิ้นสุดช็อตนี้ ไม่บล็อกช็อตอื่น
     }
   }
 
   const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
   if (!url) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: 'ไม่ได้รับวิดีโอจากระบบ' } }));
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: 'ไม่ได้รับไฟล์วิดีโอจากระบบ' } }));
     return;
   }
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidErrorMsg: undefined } }));
 }
 
 async function generateAllVideos() {
-  setCurrentProgress('🎬 กำลังเจนวิดีโอทั้งหมด (พร้อมระบบ Auto-Fallback ป้องกัน Error)...');
+  setCurrentProgress('🎬 กำลังเจนวิดีโอทุกช็อตพร้อมกัน (มีระบบ Auto-Fallback อัตโนมัติ)...');
   await Promise.allSettled(shots.map(s => generateSingleVideo(s)));
-  setCurrentProgress('✅ เจนวิดีโอเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
+  setCurrentProgress('✅ สิ้นสุดการประมวลผลวิดีโอ');
 }
 
-### 4. ✏️ FULL 4-FIELD INLINE EDITOR (ตรงกับ OS ทุกฟิลด์):
-- State:
-  const [editingShotNumber, setEditingShotNumber] = useState<number | null>(null);
-  const [editFields, setEditFields] = useState<{ visualPrompt: string; motionPrompt: string; voiceover: string; onScreenText: string }>({ visualPrompt: '', motionPrompt: '', voiceover: '', onScreenText: '' });
+### 5. ✏️ FULL 4-FIELD INLINE EDITOR (ตรงกับ OS 100%):
+- เมื่อคลิกปุ่ม ✏️ บนการ์ดใดๆ ให้ดึงข้อมูลเดิมของช็อตนั้นขึ้นมาแสดงในกล่องแก้ไขครบทั้ง 4 ช่อง:
+  1) 📸 Visual Prompt (EN) — textarea
+  2) 🎬 Motion Prompt (EN) — textarea
+  3) 🎙️ เสียงพากย์ไทย (Thai Voiceover) — textarea
+  4) 📝 ข้อความบนจอ (On-Screen Text TH) — input text
+- ปุ่มควบคุมในกล่องแก้ไข:
+  * "✕ ยกเลิก"
+  * "💾 บันทึก" — บันทึกการแก้ไขลงใน shot data ทันที
+  * "⚡ บันทึก + เจนรูปใหม่" — บันทึกและเรียก generateSingleImage(shot)
 
-- เมื่อกดปุ่ม "✏️ แก้ไขช็อต N":
-  function handleStartEdit(shot: ShotItem) {
-    setEditingShotNumber(shot.shotNumber);
-    setEditFields({
-      visualPrompt: shot.visualPrompt || '',
-      motionPrompt: shot.motionPrompt || '',
-      voiceover: shot.thaiVoiceover || '',
-      onScreenText: shot.onScreenText || ''
-    });
-  }
-
-- เมื่อกดบันทึก:
-  function handleSaveEdit(shotNumber: number) {
-    setShots(prev => prev.map(s => s.shotNumber === shotNumber ? {
-      ...s,
-      visualPrompt: editFields.visualPrompt,
-      motionPrompt: editFields.motionPrompt,
-      thaiVoiceover: editFields.voiceover,
-      onScreenText: editFields.onScreenText
-    } : s));
-    setEditingShotNumber(null);
-  }
-
-- Inline Editor UI (เปิดใต้การ์ดแต่ละช็อต):
-  <div className="bg-slate-800/90 border border-emerald-500/30 p-4 rounded-xl space-y-3 text-xs backdrop-blur">
-    <div className="font-bold text-emerald-400 text-sm">✏️ แก้ไขช็อต {shot.shotNumber}</div>
-    <div>
-      <label className="font-semibold text-slate-300 text-xs">📸 Visual Prompt (EN):</label>
-      <textarea rows={3} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.visualPrompt} onChange={e => setEditFields(f => ({ ...f, visualPrompt: e.target.value }))} />
-    </div>
-    <div>
-      <label className="font-semibold text-slate-300 text-xs">🎬 Motion Prompt (EN):</label>
-      <textarea rows={2} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.motionPrompt} onChange={e => setEditFields(f => ({ ...f, motionPrompt: e.target.value }))} />
-    </div>
-    <div>
-      <label className="font-semibold text-slate-300 text-xs">🎙️ เสียงพากย์ไทย (Thai Voiceover):</label>
-      <textarea rows={2} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.voiceover} onChange={e => setEditFields(f => ({ ...f, voiceover: e.target.value }))} />
-    </div>
-    <div>
-      <label className="font-semibold text-slate-300 text-xs">📝 ข้อความบนจอ (On-Screen Text TH):</label>
-      <input type="text" className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.onScreenText} onChange={e => setEditFields(f => ({ ...f, onScreenText: e.target.value }))} />
-    </div>
-    <div className="flex gap-2 justify-end pt-1">
-      <button className="px-3 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-bold" onClick={() => setEditingShotNumber(null)}>✕ ยกเลิก</button>
-      <button className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold" onClick={() => handleSaveEdit(shot.shotNumber)}>💾 บันทึก</button>
-      <button className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold" onClick={() => { handleSaveEdit(shot.shotNumber); generateSingleImage(shot); }}>💾 บันทึก + เจนรูปใหม่</button>
-    </div>
+### 6. 🎴 SHOT CARD DISPLAY (แสดงครบ 4 ส่วนในทุกการ์ด):
+บนการ์ดแต่ละช็อต ให้แสดง:
+- หัวข้อช็อต + เวลา (Duration)
+- รูปภาพที่เจนได้ (ถ้ามี) พร้อม badge สถานะ 🟡/🟢/🔴
+- 🎙️ บล็อกเสียงพากย์ไทย (Thai Voiceover) เด่นชัด:
+  <div className="text-xs text-emerald-300 font-medium bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-800/40">
+    🎙️ {shot.thaiVoiceover || "— ไม่กำหนดเสียงพากย์ —"}
   </div>
+- 📝 ข้อความบนจอ (On-Screen Text TH):
+  <div className="text-xs text-indigo-300 font-bold bg-indigo-950/40 px-2.5 py-1.5 rounded-lg border border-indigo-800/40">
+    📝 {shot.onScreenText || "ข้อความบนจอ"}
+  </div>
+- ปุ่ม 4 ปุ่มด้านล่าง:
+  * [ 🖼️ เจนรูป ] — generateSingleImage(shot)
+  * [ 🎬 เจนวิดีโอ ] — generateSingleVideo(shot)
+  * [ ⚡ 🎥 TEXT-TO-VIDEO BYPASS ] — generateSingleVideo(shot, true)
+  * [ ✏️ แก้ไข ] — handleStartEdit(shot)
 
-### 5. 📊 HEADER CONTROL BAR (ปุ่มหลัก 4 ปุ่มเรียงแถวด้านบน):
-<div className="flex flex-wrap gap-2 justify-center py-3">
-  <button className="px-4 py-2 bg-emerald-600 text-white rounded-xl font-bold text-sm" onClick={generateAllImages}>🖼️ เจนรูปทั้งหมด</button>
-  <button className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm" onClick={generateAllVideos}>🎬 เจนวิดีโอทั้งหมด</button>
-  <button className="px-4 py-2 bg-slate-600 text-white rounded-xl font-bold text-sm" onClick={hardReset}>🗑️ ล้างข้อมูล</button>
+### 7. 📊 HEADER CONTROL BAR:
+<div className="flex flex-wrap gap-3 justify-center py-3">
+  <button className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md" onClick={generateAllImages}>🖼️ เจนรูปทั้งหมด</button>
+  <button className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-md" onClick={generateAllVideos}>🎬 เจนวิดีโอทั้งหมด</button>
+  <button className="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-bold text-sm" onClick={hardReset}>🗑️ ล้างข้อมูล</button>
 </div>
 
-### 6. 🎴 SHOT CARD LAYOUT (แต่ละช็อตแสดงข้อมูลครบ):
-ในแต่ละการ์ด ให้แสดง:
-- หัวข้อช็อต + ระยะเวลา
-- รูปภาพ (ถ้ามี) พร้อม status badge (🟡/🟢/🔴) แยกระหว่าง Image กับ Video
-- ข้อความบนจอ (On-Screen Text TH)
-- เสียงพากย์ (Thai Voiceover) — แสดงเป็นข้อความย่อใต้รูป
-- ปุ่ม 4 ปุ่มเรียงแถว:
-  * "🖼️ เจนรูป" — generateSingleImage(shot)
-  * "🎬 เจนวิดีโอ" — generateSingleVideo(shot)
-  * "🎥 Text-to-Video" — generateSingleVideo(shot, true)
-  * "✏️ แก้ไข" — handleStartEdit(shot)
+### 8. 🥣 UNIVERSAL TOPIC LOCK:
+- อาหารคลีน / ข้าวกล้องโบว์ล: ล็อก steaming brown rice, grilled chicken breast, avocado, soft-boiled egg, edamame, sesame dressing. ห้ามมีนาฬิกา รถยนต์ มีดเดี่ยว เครื่องปั่น!
+- ปลาส้ม / เมนูปลา: ล็อก golden crispy Pla Som, bubbling oil, lime, garlic, shallots, bird eye chilies.
+- ข้าวผัด: ล็อก zero avocado, zero salad dressing!`;
 
-### 7. 🥣 UNIVERSAL TOPIC LOCK:
-- ข้าวกล้อง / โบว์ล / อาหารคลีน: ล็อกเป็นอาหารสุขภาพระดับพรีเมียม (brown rice, grilled chicken, avocado, soft-boiled egg, edamame, sesame dressing). ห้ามมีนาฬิกา รถยนต์ มีดเดี่ยว เครื่องปั่น!
-- ข้าวผัด: ล็อก zero avocado, zero salad dressing!
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v6.2 Pro (4-Field Synchronized & Zero-Hang Pipeline Edition)" — a professional-grade video production tool featuring full 4-field synchronization with PK Marketing AI OS, rock-solid script parsing, zero-hang video engine with auto-fallback, and independent shot recovery.
 
-### 8. 🗑️ HARD RESET:
-function hardReset() { setShots([]); setShotStates({}); setEditingShotNumber(null); setCurrentProgress(''); }
-สคริปต์เริ่มต้นว่างเปล่า 100% ไม่มี Oat Milk หรือ Mock Data ค้างอยู่!`;
+## 1. ROCK-SOLID 4-FIELD SCRIPT PARSER:
+Implement the exact parseCampaignScript function:
+- Extracts shotNumber, shotTitle, durationSec
+- Extracts onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:"
+- Extracts thaiVoiceover from "- Thai Voiceover Script:" or "- Voiceover (TH):" or "- Voiceover:"
+- Extracts visualPrompt from "- Visual Prompt (EN):" or "- Visual Prompt:"
+- Extracts motionPrompt from "- Camera & Physical Motion (Veo 2):" or "- Camera & Movement:" or "- Motion Prompt:"
+- Fully parses both clean shots format and full Master Directive format without truncating.
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v6.0 Pro (Split Pipeline & Full Field Editor Edition)" — a professional-grade 2-stage video production tool with separate image/video batch controls, per-shot 4-field inline editing synchronized with PK Marketing AI OS, and bulletproof media-fields error defense.
+## 2. SYNCHRONIZED 4-FIELD SHOT DISPLAY & INLINE EDITOR:
+Every shot card and its inline editor (✏️) must display and edit ALL 4 core fields matching PK Marketing AI OS:
+1) 📸 Visual Prompt (EN)
+2) 🎬 Motion Prompt (EN)
+3) 🎙️ Thai Voiceover (เสียงพากย์ไทยเฉพาะของแต่ละฉาก)
+4) 📝 On-Screen Text (TH) (ข้อความบนจอ)
 
-## 1. TWO-STAGE SPLIT PIPELINE (Image & Video Separated):
-- Provide THREE main action buttons in the header bar:
-  1) "🖼️ เจนรูปทั้งหมด (Batch Images)": Runs generateImage for ALL shots simultaneously (Promise.allSettled). Only images, no videos.
-  2) "🎬 เจนวิดีโอทั้งหมด (Batch Videos)": Runs generateVideo for ALL shots that have images (image-to-video), or falls back to text-to-video for shots without images. Uses Promise.allSettled.
-  3) "🗑️ ล้างข้อมูล (Hard Reset)": Clears all shots, states, and editor.
+## 3. TWO-STAGE SPLIT PIPELINE (Zero-Hang Execution):
+Header contains 3 main action buttons:
+1) "🖼️ เจนรูปทั้งหมด": Batches generateImage for all shots simultaneously using Promise.allSettled.
+2) "🎬 เจนวิดีโอทั้งหมด": Batches generateVideo for all shots with automatic Text-to-Video fallback.
+3) "🗑️ ล้างข้อมูล": Hard resets all states.
 
-- On EACH shot card, provide FOUR individual action buttons:
-  * "🖼️ เจนรูป" — generateSingleImage(shot): generates only this shot's image
-  * "🎬 เจนวิดีโอ" — generateSingleVideo(shot): generates video from existing image, or text-to-video fallback
-  * "🎥 Text-to-Video" — generateSingleVideo(shot, true): bypasses image, creates video from text prompts directly
-  * "✏️ แก้ไข" — opens inline 4-field editor for this shot
+## 4. ZERO-HANG VIDEO ENGINE (Media Fields Armor):
+In generateSingleVideo:
+- Strip --ar \\d+:\\d+ flags and replace sensitive words like 'crash' with 'rapid snap'.
+- If image exists: try generateVideo({ image: cleanImg, prompt: motionPrompt }).
+- If Image-to-Video fails (e.g. "Expected object response with media fields"): DO NOT HANG! Automatically fall back to generateVideo({ prompt: combinedTextPrompt }).
+- If both fail, mark shot as error with a clear message and continue processing other shots.
+- Shot cards include a shortcut button: "[ ⚡ 🎥 TEXT-TO-VIDEO BYPASS ]".
 
-## 2. INDEPENDENT SHOT STATE (Image & Video tracked separately):
-- Each shot card has TWO independent status indicators:
-  * Image status: 🟡 Generating / 🟢 Ready / 🔴 Error (with specific error message)
-  * Video status: 🟡 Generating / 🟢 Ready / 🔴 Error (with specific error message)
-- State structure per shot:
-  { imgStatus, vidStatus, imgErrorMsg, vidErrorMsg, imageUrl, videoUrl }
+## 5. UNIVERSAL TOPIC ADHERENCE:
+- Brown rice bowl / clean food: wholesome healthy bowl (steaming brown rice, grilled chicken breast, avocado, soft-boiled egg, edamame, sesame dressing). Zero watches, zero cars, zero knives, zero juicers.
+- Pla Som / Crispy fish: authentic crispy fried Pla Som, golden scored skin, bubbling hot oil, fried garlic, shallots, bird's eye chilies.
+- Stir-fried rice: wok, rice, egg, chicken, scallions. Zero avocado, zero salad dressing.
 
-## 3. FULL 4-FIELD INLINE EDITOR (Synchronized with PK Marketing AI OS):
-- When user clicks "✏️ แก้ไข" on any shot, open an inline editor panel with EXACTLY 4 fields:
-  1) 📸 Visual Prompt (EN) — textarea 3 rows, monospace font
-  2) 🎬 Motion Prompt (EN) — textarea 2 rows, monospace font
-  3) 🎙️ Thai Voiceover (เสียงพากย์ไทย) — textarea 2 rows
-  4) 📝 On-Screen Text (TH) (ข้อความบนจอ) — single line input
-- These field names and format EXACTLY match PK Marketing AI OS, so users can copy-paste between both platforms seamlessly.
-- Provide 3 action buttons in the editor:
-  * "✕ ยกเลิก" — close editor without saving
-  * "💾 บันทึก" — save edits to shot data
-  * "💾 บันทึก + เจนรูปใหม่" — save edits AND regenerate image immediately
-
-## 4. SHOT CARD DISPLAY (Professional & Informative):
-Each shot card shows:
-- Shot number, title, and duration badge
-- Generated image (if available) with click-to-enlarge
-- On-Screen Text (TH) displayed below image
-- Thai Voiceover text displayed as a small quoted block
-- Image status badge (top-left corner)
-- Video status badge (top-right corner)
-- 4 action buttons at the bottom
-
-## 5. MEDIA FIELDS ARMOR (Zero Crash Guarantee):
-- Image generation: const cleanPrompt = visualPrompt.replace(/--ar.*$/gi,'').trim() + ', zero in-image text, zero watches, zero cars, zero jewelry';
-- Video generation with image: const cleanImg = (typeof url === 'string' && url.startsWith('http')) ? url : null;
-  * If cleanImg exists: generateVideo({ image: cleanImg, prompt: motionPrompt })
-  * If cleanImg is null: generateVideo({ prompt: (visualPrompt + '. ' + motionPrompt).trim() })
-  * NEVER pass image: undefined or image: null to generateVideo!
-
-## 6. UNIVERSAL TOPIC LOCK:
-- Clean food / brown rice bowl (ข้าวกล้อง / โบว์ล / อาหารคลีน): Lock to wholesome food imagery (brown rice, grilled chicken, avocado, soft-boiled egg, edamame, sesame dressing). Zero watches, zero cars, zero knives, zero juicers!
-- Stir-fried rice (ข้าวผัด): Lock to wok, rice, egg, chicken, scallions, lime, cucumber. Zero avocado, zero salad dressing!
-
-## 7. ROCK-SOLID PARSER REGEX:
-/\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi
-Parse fields:
-- visualPrompt from "- Visual Prompt (EN):" or "- Visual Prompt:"
-- motionPrompt from "- Camera & Physical Motion (Veo 2):" or "- Camera & Movement:" or "- Motion Prompt:"
-- thaiVoiceover from "- Thai Voiceover Script:" or "- Voiceover (TH):" or "- Voiceover:"
-- onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:"
-- duration from "- Duration: [N]s"
-
-## 8. ABSOLUTE BAN ON MOCK DATA:
-- NO sample buttons, NO Oat Milk demos, NO pre-filled data.
-- Campaign Script textarea starts 100% empty.
-- Clean "🗑️ ล้างข้อมูล" button to wipe everything in 1 click.`;
+## 6. CLEAN START:
+- Textarea starts 100% empty. No mock Oat Milk buttons or pre-filled dummy data.`;
 
 export default function CommercialStudioPage() {
   return (
@@ -375,7 +347,7 @@ function CommercialStudioContent() {
   const [masterDirectiveV3, setMasterDirectiveV3] = useState<string>("");
   const [scenes, setScenes] = useState<SceneData[]>([]);
   const [referenceGuides, setReferenceGuides] = useState<ReferenceAssetGuide[]>([]);
-  const [activePipelineTab, setActivePipelineTab] = useState<"phase1_stills" | "phase2_motion" | "all">("phase1_stills");
+  const [activePipelineTab, setActivePipelineTab] = useState<"phase1_stills" | "phase2_motion" | "all">("all");
 
   // Scene Inline Editing & Re-roll State
   const [editingSceneId, setEditingSceneId] = useState<string | null>(null);
