@@ -236,7 +236,17 @@ export async function POST(req: Request) {
        ((combinedStr.includes("โฮมเมด") || combinedStr.includes("homemade")) &&
         (combinedStr.includes("ข้าว") || combinedStr.includes("อาหาร") || combinedStr.includes("สุขภาพ") || combinedStr.includes("สลัด"))));
 
+    const isFriedRice =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      (combinedStr.includes("ข้าวผัด") ||
+       combinedStr.includes("ผัดข้าว") ||
+       combinedStr.includes("fried rice") ||
+       combinedStr.includes("ข้าวกล้องผัด") ||
+       (combinedStr.includes("ผัด") && (combinedStr.includes("ข้าว") || combinedStr.includes("ซีอิ๊ว") || combinedStr.includes("กระเทียม") || combinedStr.includes("คลีน"))));
+
     const isRiceBowl =
+      !isFriedRice &&
       isCleanFood &&
       (combinedStr.includes("ข้าว") ||
        combinedStr.includes("โบว์ล") ||
@@ -388,6 +398,11 @@ export async function POST(req: Request) {
             "ครูสอนว่ายน้ำมืออาชีพ ยิ้มแย้ม สดใส สวมชุดว่ายน้ำสปอร์ตมิดชิด (Certified Swim Coach)",
             "ผู้ฝึกว่ายน้ำเริ่มต้น มุ่งมั่น มั่นใจ สวมแว่นตาว่ายน้ำและหมวกซิลิโคน"
           ];
+        } else if (isFriedRice) {
+          resolvedPersonaList = [
+            "เชฟโฮมเมดสายสุขภาพ รังสรรค์เมนูข้าวกล้องผัดเพื่อสุขภาพ กลิ่นหอมกระทะเหล็ก (Healthy Culinary Wok Chef)",
+            "คนรักสุขภาพที่ชอบทำอาหารทานเอง เน้นเมนูอร่อย ไม่อ้วน หอมกลิ่นกระทะ"
+          ];
         } else if (isCleanFood) {
           resolvedPersonaList = [
             "เทรนเนอร์ & นักกำหนดอาหารรุ่นใหม่ สุขภาพดี ลุคแอคทีฟสดใส (Healthy Nutritionist & Fitness Coach)",
@@ -428,6 +443,12 @@ export async function POST(req: Request) {
           "สระว่ายน้ำมาตรฐานโอลิมปิกกลางแจ้ง แสงแดดสะท้อนผิวน้ำสีฟ้าครามระยิบระยับ",
           "สระว่ายน้ำรีสอร์ตหรู ลู่ว่ายน้ำใสสะอาด ปลอดโปร่ง",
           "ริมขอบสระว่ายน้ำ พร้อมโฟมฝึกว่ายน้ำ (Kickboard) และอุปกรณ์ฝึกซ้อม"
+        ];
+      } else if (isFriedRice) {
+        resolvedEnvironmentList = [
+          "เคาน์เตอร์ครัวโมเดิร์น กระทะเหล็กหล่อร้อนระอุ ควันหอมฉุย เม็ดข้าวกล้องผัดซีอิ๊วสีทองสวยงาม",
+          "มุมโต๊ะอาหารไม้ธรรมชาติ แสงเช้าอุ่นๆ เคียงด้วยแตงกวาซอย มะนาวสดผ่าซีก และแก้วชาเขียวไม่หวาน",
+          "ครัวสไตล์มินิมอล วัตถุดิบข้าวกล้องหุงแห้ง อกไก่หั่นเต๋า ไข่ไก่สด และต้นหอมซอยเตรียมพร้อมผัด"
         ];
       } else if (isCleanFood) {
         resolvedEnvironmentList = [
@@ -505,8 +526,19 @@ export async function POST(req: Request) {
         tags.push("professional swimming lessons, poolside training session with kickboard, swim coach, and swimming goggles in clear pool");
       }
 
-      // 2. Clean Food, Healthy Meal Prep & Rice/Grain Bowls (Strictly Food - Zero Watches)
+      // 2. Stir-Fried Brown Rice (Wok Stir-Fry, Zero Avocado)
       if (
+        isFriedRice ||
+        lower.includes("ข้าวผัด") ||
+        lower.includes("ผัดข้าว") ||
+        lower.includes("fried rice") ||
+        lower.includes("ข้าวกล้องผัด") ||
+        (lower.includes("ผัด") && (lower.includes("ข้าว") || lower.includes("ซีอิ๊ว")))
+      ) {
+        tags.push(
+          "authentic healthy stir-fried brown rice with low-sodium dark soy sauce, tender sliced chicken, scrambled egg, green spring onions, sliced cucumbers, and fresh lime wedge in seasoned hot wok, zero avocado, zero salad dressing"
+        );
+      } else if (
         isCleanFood ||
         lower.includes("คลีน") ||
         lower.includes("อาหารคลีน") ||
@@ -646,6 +678,12 @@ export async function POST(req: Request) {
           : presenterGender === "male"
             ? "certified Asian male professional swim coach (26-29 y/o) in athletic sporty swimwear with coach whistle and kickboard"
             : "professional swim coach and enthusiastic student duo at poolside")
+      : isFriedRice
+      ? (presenterGender === "female"
+          ? "talented Asian female healthy chef/creator (24-27 y/o) in clean modern minimalist apron"
+          : presenterGender === "male"
+            ? "talented Asian male healthy chef/creator (25-28 y/o) in clean stylish chef apron"
+            : "healthy culinary food creator duo")
       : isCleanFood
       ? (presenterGender === "female"
           ? "fit healthy Asian fitness nutritionist woman (24-27 y/o) in clean stylish activewear, radiant natural skin"
@@ -702,6 +740,12 @@ export async function POST(req: Request) {
           lens: "ARRI Alexa LF with 35mm Prime and Underwater 50mm f/1.8 lens, high-speed 60fps for crisp water droplets and fluid physics",
           lighting: "bright natural morning sunlight casting shimmering aquatic caustics across turquoise pool water, crisp specular glints on water droplets",
           grading: "crisp aquatic cyan and azure film grade, glowing healthy sun-kissed skin tones, 8K photorealism"
+        }
+      : isFriedRice
+      ? {
+          lens: "Cooke Anamorphic /i 85mm T2.3 and 100mm Macro Prime, shallow depth of field, sizzling wok action clarity",
+          lighting: "warm golden culinary side key light, soft wok flame reflections, translucent aromatic steam plumes catching amber backlight, zero watches, zero cars",
+          grading: "rich warm cinematic food commercial grading, deep savory soy hues, golden seared grains, crisp green scallions, vibrant yellow lime, 8K photorealism"
         }
       : isCleanFood
       ? {
@@ -2147,6 +2191,112 @@ export async function POST(req: Request) {
     ];
 
     // ==========================================
+    // STIR-FRIED BROWN RICE / FRIED RICE MASTER POOL (10 FULL WOK SHOTS - ZERO AVOCADO - 100% PURE CULINARY)
+    // ==========================================
+    const friedRiceMasterPool10 = [
+      {
+        type: "เปิดเรื่อง Hook ข้าวกล้องผัดซีอิ๊วคลีนหอมกระทะ (Master Wok Toss & Sizzle Hook)",
+        camera: "Dynamic Low-Angle Macro Push-in 100mm",
+        motion: `Photorealistic 8K image-to-video. Macro push-in on seasoned hot wok. Chef deftly tosses warm fluffy brown rice coated in savory dark soy sauce. Individual glistening grains bounce in mid-air with scrambled egg ribbons and tender sliced chicken, enveloped in fragrant translucent wok steam, 24fps.`,
+        prompt: `Photorealistic 8K master commercial opening hook of healthy stir-fried brown rice with low-sodium dark soy sauce in a seasoned cast-iron wok. Glistening whole-grain brown rice grains tossing in mid-air with golden scrambled egg ribbons, sliced chicken breast, and bright green scallions. Rising fragrant translucent steam illuminated by warm 3200K side backlight. Cooke S4/i 100mm Macro Prime. Pure culinary cinematography, strictly focused on wok stir-fry food dish, zero avocado, zero salad, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry, zero bracelets. --ar ${aspectRatio}`,
+        voice: "เบื่อไหมกับข้าวผัดมันเยิ้ม? เปลี่ยนมาทำ 'ข้าวกล้องผัดซีอิ๊วคลีน' หอมกลิ่นกระทะ โซเดียมต่ำ อิ่มนาน ไม่อ้วนแน่นอน!",
+        text: "ข้าวกล้องผัดซีอิ๊วคลีน หอมกลิ่นกระทะ! 🍳🔥",
+        textPos: "Top Headline",
+        sfx: "Roaring wok burner flame, sizzling stir-fry toss foley, crisp energetic whoosh."
+      },
+      {
+        type: "ข้าวกล้องอินทรีย์หุงแห้งเม็ดร่วน สุกกำลังดี (Fluffy Dry Cooked Brown Rice Prep)",
+        camera: "Extreme Macro 100mm Steam Drift",
+        motion: `Photorealistic 8K image-to-video. Extreme macro slow glide across steaming wooden bowl of cooked brown rice grains. Grains are dry, fluffy, and separate, glistening under soft morning light with translucent steam rising, 24fps.`,
+        prompt: `Extreme macro 100mm culinary shot of warm cooked brown rice grains in rustic wooden prep bowl. Each whole grain perfectly intact, firm, dry, and fluffy, ready for stir-frying. Soft wisps of aromatic steam rising into warm side daylight. Tack-sharp focus on textured rice grains, pure food cinematography, zero avocado, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เคล็ดลับสำคัญคือใช้ข้าวกล้องหุงแห้งเม็ดร่วน ไม่อมน้ำ ผัดแล้วเม็ดสวย ไม่แฉะติดกระทะ",
+        text: "ข้าวกล้องเม็ดร่วน ผัดแล้วไม่แฉะ 🌾",
+        textPos: "Lower Third",
+        sfx: "Gentle warm steam whisper, comforting grain texture sound."
+      },
+      {
+        type: "เจียวกระเทียมสับและผัดไข่ไก่สด (Sizzling Minced Garlic & Scrambled Egg)",
+        camera: "🔍 Extreme Macro 100mm f/2.8 Sizzle Track",
+        motion: `Photorealistic 8K image-to-video. Extreme macro of minced golden garlic sizzling gently in a teaspoon of rice bran oil on wok bottom. A fresh egg is cracked directly into the wok, whites bubbling softly and yolk spreading into golden scrambled ribbons, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of finely minced garlic sizzling gently in hot wok, fragrant golden aroma. Fresh farm egg cracked into the wok, sizzling whites bubbling into delicate lace with vibrant golden yolk being gently scrambled with wooden spatula. Shot on Phantom Flex 4K, warm culinary lighting, pure food cinematography, zero avocado, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เจียวกระเทียมสับด้วยน้ำมันมะพร้าวหรือรำข้าวแค่ 1 ช้อนชา ตามด้วยไข่ไก่สด ผัดจนหอมฟุ้ง",
+        text: "เจียวกระเทียม & ผัดไข่หอมๆ 🧄🥚",
+        textPos: "Center Punchy",
+        sfx: "Crisp garlic sizzle, gentle egg bubbling in hot wok."
+      },
+      {
+        type: "ผัดอกไก่หั่นเต๋าชุ่มฉ่ำ ลีนโปรตีนสูง (Sautéing Diced Lean Chicken Breast)",
+        camera: "Low-Angle 45-Degree Sizzle Track 85mm",
+        motion: `Photorealistic 8K image-to-video. Low-angle tracking shot. Bite-sized diced lean chicken breast cutlets seared quickly in the hot wok. Glistening natural savory juices lock inside as edges turn light golden, 24fps.`,
+        prompt: `Mouthwatering close-up of diced tender lean chicken breast sizzling in seasoned cast-iron wok with minced garlic and cracked black pepper. Edges searing golden brown while staying extraordinarily juicy, fragrant steam swirling upward. Cooke Anamorphic 85mm Prime, ARRI Alexa LF grading, strictly focused on wok cooking, zero avocado, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ใส่อกไก่หั่นเต๋า โปรตีนลีนสูง ผัดด้วยไฟแรงให้สุกพอดี เนื้อจะนุ่มฉ่ำ ไม่แห้งกระด้าง",
+        text: "อกไก่เต๋า นุ่มฉ่ำ โปรตีนลีนสูง 🍗",
+        textPos: "Center Punchy",
+        sfx: "Energetic wok sizzle, wooden spatula stir-fry scrape."
+      },
+      {
+        type: "ราดซีอิ๊วดำสูตรลดโซเดียมขอบกระทะ (Sizzling Low-Sodium Soy Sauce Rim Pour)",
+        camera: "High-Speed 120fps Slow-Motion Pour",
+        motion: `Photorealistic 8K image-to-video. 120fps high-speed capture. Dark savory low-sodium soy sauce drizzled against the scorching hot wok rim, instantly caramelizing into dancing micro-bubbles and releasing a fragrant smoky cloud over the tossing brown rice, 24fps.`,
+        prompt: `High-speed 120fps slow-motion capture of low-sodium dark soy sauce drizzling against the sizzling hot rim of a seasoned wok. Sauce instantly sizzles and vaporizes into savory caramelizing bubbles and aromatic smoke, coating glistening brown rice grains. Rich amber backlighting, shallow depth of field, pure commercial culinary cinematography, zero avocado, zero salad, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เทคนิคเด็ดคือราดซีอิ๊วขอบกระทะ ให้ความร้อนดึงกลิ่นไหม้หอมกรุ่น สไตล์ผัดซีอิ๊วโบราณ แต่โซเดียมต่ำ!",
+        text: "ราดซีอิ๊วขอบกระทะ หอมกลิ่นคั่วกระทะ 🥢",
+        textPos: "Center Punchy",
+        sfx: "Loud explosive sizzle as sauce hits wok rim, rising steam hiss."
+      },
+      {
+        type: "สะบัดกระทะไฟลุกอ่อนๆ เคลือบเม็ดข้าวสีทอง (Wok Tossing Action & Scallion Scatter)",
+        camera: "Dynamic Low-Angle Kinetic Wok Flip",
+        motion: `Photorealistic 8K image-to-video. Dynamic low-angle shot. Chef flips the wok vigorously, sending warm savory brown rice, diced chicken, and bright chopped scallions flying in a smooth parabolic arc through rising culinary vapor, 24fps.`,
+        prompt: `Dynamic low-angle culinary action shot. Seasoned iron wok being tossed rhythmically, sending glossy caramelized brown rice grains, egg fragments, and vibrant green chopped scallions flying in an elegant arc against warm atmospheric kitchen lighting. Tack-sharp focus on mid-air rice grains, zero avocado, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เร่งไฟแรงสะบัดกระทะอย่างรวดเร็ว โรยต้นหอมซอย ให้ซีอิ๊วและกลิ่นกระทะเคลือบข้าวทุกเม็ดอย่างทั่วถึง",
+        text: "สะบัดไฟแรง เม็ดข้าวเคลือบซอสทั่วถึง 🔥",
+        textPos: "Lower Third",
+        sfx: "Rhythmic metal wok toss clatter, flame burner roar, scallion sizzle."
+      },
+      {
+        type: "บีบมะนาวสดฉ่ำน้ำลงบนข้าวผัดร้อนๆ (Squeezing Fresh Lime Wedge Slow-Mo)",
+        camera: "Extreme Macro 100mm Slow Motion 60fps",
+        motion: `Photorealistic 8K image-to-video. 60fps slow motion. Fresh jade-green lime wedge gently squeezed over steaming fried rice. Translucent citrus juice droplets explode in mid-air and mist over glossy hot rice grains, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 shot of a fresh juicy lime wedge being gently squeezed above steaming stir-fried brown rice. Citrus droplets bursting and glistening as they land on hot savory rice grains, micro-steam reacting, warm side morning window daylight, pure culinary food porn, zero avocado, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "บีบมะนาวสดลงไปตัดรส... กรดซิตริกจะช่วยชูรสซีอิ๊วให้กลมกล่อม มีมิติ และสดชื่นขึ้นทันที",
+        text: "บีบมะนาวสด กลมกล่อมตัดเลี่ยน 🍋",
+        textPos: "Center Punchy",
+        sfx: "Crisp lime squeeze pop, micro-droplets sizzling on hot food."
+      },
+      {
+        type: "จัดเสิร์ฟเคียงแตงกวาซอยและพริกน้ำปลาคลีน (Artisan Plating with Crisp Cucumber Slices)",
+        camera: "Overhead 45-Degree Artisan Plating 50mm",
+        motion: `Photorealistic 8K image-to-video. 45-degree angle. Steaming aromatic brown rice scooped cleanly onto modern rustic matte black ceramic dish, garnished with crisp cucumber slices and lime wedge on the side, 24fps.`,
+        prompt: `Artisan overhead 45-degree presentation of piping-hot stir-fried brown rice served on dark textured ceramic plate, accompanied by crisp cucumber slices, fresh lime wedge, and a tiny ramekin of bird's eye chili in light tamari. Delicate rising steam, warm minimalist dining setting, pure food styling, zero avocado, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ตักใส่จาน เคียงด้วยแตงกวากรอบๆ มื้อนี้ไฟเบอร์สูง โปรตีนแน่น แคลอรี่เบา สบายท้อง",
+        text: "เคียงแตงกวาสด แคลต่ำ โปรตีนสูง 🥒",
+        textPos: "Lower Third",
+        sfx: "Ceramic plate placement clink, delicate fork sound."
+      },
+      {
+        type: "ตักชิมคำแรก ควันกรุ่น อร่อยเข้มข้น (First Spoonful Savoring & Pure Deliciousness)",
+        camera: "Medium Close-up 85mm Prime Bokeh",
+        motion: `Photorealistic 8K image-to-video. A clean spoon lifts a generous steaming bite of savory brown rice, egg, and tender chicken directly toward camera. Soft warm kitchen daylight, delicate steam swirling, 24fps.`,
+        prompt: `Warm commercial culinary close-up. Spoon lifting a generous steaming mouthful of fragrant stir-fried brown rice with juicy chicken and scrambled egg. Glistening low-sodium soy glaze, steam drifting toward camera, beautiful creamy background bokeh, strictly focused on food presentation, zero avocado, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ตักคำแรกเข้าไป... หอมกลิ่นคั่วกระทะ เม็ดข้าวนุ่มหนึบ รสชาติกลมกล่อมเข้มข้น อร่อยจนลืมไปเลยว่านี่คือเมนูคลีน!",
+        text: "อร่อยเข้มข้น หอมกระทะทุกคำ 😋",
+        textPos: "Top Center",
+        sfx: "Gentle spoon clink, cheerful bright melodic chime."
+      },
+      {
+        type: "สรุปสูตร & ปิดท้าย Call to Action (Heroic Fried Rice Packshot & Final CTA)",
+        camera: "Centered Master Culinary Pullback",
+        motion: `Photorealistic 8K image-to-video. Centered master pullback showcasing complete plate of steaming healthy stir-fried brown rice on dining table next to iced unsweetened green tea, warm golden lighting, 24fps.`,
+        prompt: `Grand finale heroic commercial packshot. The complete glistening plate of healthy stir-fried brown rice with dark soy sauce, lime wedge, and cucumber slices centered on rustic linen dining table. Translucent steam rising gracefully under warm 3200K key light, elegant centered composition, strictly focused on culinary plate, zero avocado, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "อยากได้สูตรเมนูคลีนทำง่าย อร่อยไม่อ้วนแบบนี้ เซฟคลิปนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีน 7 วันฟรีได้เลยครับ!",
+        text: "เซฟสูตรทักแชตรับตารางคลีนฟรี! 🍳✨",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature triumphant culinary chime, uplifting acoustic finale."
+      }
+    ];
+
+    // ==========================================
     // RICE BOWL & GRAIN BOWL MASTER POOL (16 FULL DIVERSE SHOTS - 100% PURE ENGLISH FOOD)
     // ==========================================
     const riceBowlMasterPool16 = [
@@ -2493,6 +2643,8 @@ export async function POST(req: Request) {
       ? (resolvedCount <= 8 ? plaSomMasterPool16.slice(0, 8) : plaSomMasterPool16)
       : isSwimming
       ? (resolvedCount <= 8 ? swimmingMasterPool16.slice(0, 8) : swimmingMasterPool16)
+      : isFriedRice
+      ? (resolvedCount <= 8 ? friedRiceMasterPool10.slice(0, 8) : friedRiceMasterPool10)
       : isRiceBowl
       ? (resolvedCount <= 8 ? riceBowlMasterPool16.slice(0, 8) : riceBowlMasterPool16)
       : isCleanFood
@@ -2630,7 +2782,7 @@ export async function POST(req: Request) {
         cameraMovement: shot2.camera,
         motionPrompt: (shot2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isRiceBowl ? "เซฟสูตรข้าวกล้องโบว์ลด่วน 🥗" : isCleanFood ? "เซฟตารางอาหารคลีนด่วน 🥗" : isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
+        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isFriedRice ? "เซฟสูตรข้าวกล้องผัดคลีนด่วน 🍳" : isRiceBowl ? "เซฟสูตรข้าวกล้องโบว์ลด่วน 🥗" : isCleanFood ? "เซฟตารางอาหารคลีนด่วน 🥗" : isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
         textPosition: (shot2 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: shot2.voice,
         audioSfx: shot2.sfx,
@@ -2655,7 +2807,7 @@ export async function POST(req: Request) {
         cameraMovement: s1.camera,
         motionPrompt: (s1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isRiceBowl ? "เบื่ออาหารคลีนจืดๆ ไหม? 🥗" : isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isFriedRice ? "ข้าวกล้องผัดซีอิ๊วคลีน ไม่อ้วน! 🍳" : isRiceBowl ? "เบื่ออาหารคลีนจืดๆ ไหม? 🥗" : isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
         textPosition: (s1 as any).textPos || "Top Headline",
         thaiVoiceover: s1.voice,
         audioSfx: s1.sfx,
@@ -2671,7 +2823,7 @@ export async function POST(req: Request) {
         cameraMovement: s2.camera,
         motionPrompt: (s2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isRiceBowl ? "ข้าวกล้องนุ่ม ไก่ฉ่ำ ไข่เยิ้ม 🥑" : isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
+        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isFriedRice ? "หอมกลิ่นกระทะ โซเดียมต่ำ ไก่นุ่มฉ่ำ 🔥" : isRiceBowl ? "ข้าวกล้องนุ่ม ไก่ฉ่ำ ไข่เยิ้ม 🥑" : isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
         textPosition: "Lower Third",
         thaiVoiceover: s2.voice,
         audioSfx: s2.sfx,
@@ -2687,7 +2839,7 @@ export async function POST(req: Request) {
         cameraMovement: s3.camera,
         motionPrompt: (s3 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s3.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s3.prompt,
-        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isRiceBowl ? "เซฟสูตรทักแชตรับแพลนฟรี! 🥗" : isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
+        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isFriedRice ? "เซฟสูตรทักแชตรับตารางคลีนฟรี! 🍳" : isRiceBowl ? "เซฟสูตรทักแชตรับแพลนฟรี! 🥗" : isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
         textPosition: (s3 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: s3.voice,
         audioSfx: s3.sfx,
@@ -2722,6 +2874,8 @@ export async function POST(req: Request) {
 
           const dynamicMotion = isSwimming
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Fluid aquatic action in crystal-clear swimming pool. Swimmer or coach executing smooth swimming technique, sparkling water ripples and splash droplets obeying real fluid dynamics, 24fps.`
+            : isFriedRice
+            ? `Photorealistic 8K image-to-video. ${chosenMovement}. Stir-fried brown rice preparation in hot seasoned wok with low-sodium dark soy sauce, tender sliced chicken, scrambled egg, and fresh green scallions. Spatula and wok maintain rigid physical geometry, translucent savory steam plumes rising into soft key light, zero morphing, zero avocado, 24fps.`
             : isRiceBowl
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome homemade brown rice bowl preparation with steaming warm brown rice, tender sliced grilled chicken breast, fresh ripe avocado, runny soft-boiled egg, and crisp vegetables in rustic ceramic tableware. Rigid bowl geometry, vibrant natural food colors, zero morphing, 24fps.`
             : isCleanFood
@@ -2740,6 +2894,8 @@ export async function POST(req: Request) {
             voice: i === resolvedCount - 1
               ? (isSwimming
                   ? "เซฟคลิปนี้ไว้เลย แล้วทักแชตจองคอร์สทดลองเรียนว่ายน้ำ รับสิทธิ์พิเศษทันทีครับ!"
+                  : isFriedRice
+                  ? "เซฟสูตรข้าวกล้องผัดซีอิ๊วคลีนนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีน 7 วันฟรีได้เลยครับ!"
                   : isRiceBowl
                   ? "เซฟสูตรข้าวกล้องโบว์ลนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีน 7 วันฟรีได้เลยครับ!"
                   : isCleanFood

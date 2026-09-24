@@ -58,116 +58,199 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: PARALLEL VIDEO RENDERING & ERROR DIAGNOSTICS & EDITABLE PROMPTS — PK STUDIO v5.6 PRO:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: AUTO-HEAL VIDEO RENDERING & INLINE PROMPT EDITOR & UNIVERSAL TOPIC SYNC — PK STUDIO v5.7 PRO:
 
-ปัญหาสำคัญที่ต้องแก้ไขทันที:
-1. ❌ เลิกใช้คิวเจนวิดีโอแบบรันทีละฉาก (Sequential Queue) ที่ถ้าช็อตแรกค้าง ทุกช็อตจะหยุดรอหมด!
-   - สาเหตุที่เจอ: ช็อต 1 เกิด Retry หรือติด Error ทำให้ระบบวนลูปไม่ปล่อยให้ช็อต 2-10 ได้เริ่มเลย ผู้ใช้ไม่รู้ว่าช็อตไหนได้หรือไม่ได้เพราะอะไร
-   - การแก้ไขเด็ดขาด: เปลี่ยนเป็น **PARALLEL / SIMULTANEOUS BATCH GENERATION**
-     * เมื่อคลิกปุ่ม "🎬 สร้างวิดีโอทุกฉาก" ให้ระบบสั่งเจนวิดีโอทุกช็อตพร้อมกันทันที (Parallel Execution ผ่าน Promise.allSettled)
-     * แต่ละการ์ดแยกสถานะเป็นอิสระต่อกัน (Independent State per Card)
-     * ช็อตไหนเสร็จ ให้แสดงวิดีโอพร้อมเล่นทันที!
-     * ช็อตไหนไม่ผ่าน ให้แสดงแถบสีแดง ❌ ชัดเจน พร้อมข้อความ error ภาษาไทยว่าติดปัญหาอะไร (เช่น "ภาพมีรายละเอียดไม่พอสำหรับ Veo 2 / คำสั่งเคลื่อนไหวติดเกณฑ์ความปลอดภัย") โดยช็อตอื่นๆ จะยังคงเจนต่อไปได้จนเสร็จสมบูรณ์ ไม่มีการถูกบล็อกเด็ดขาด!
-2. 🔄 เพิ่มปุ่ม "🔄 ลองใหม่เฉพาะช็อตนี้" (Retry Single Shot) บนทุกการ์ด:
-   - ผู้ใช้สามารถกดลองใหม่เฉพาะช็อตที่ขึ้นสีแดงได้ทันทีในคลิกเดียว โดยไม่ต้องรันช็อตอื่นซ้ำให้เสียเวลา
-3. ✏️ เพิ่มฟังก์ชัน "✏️ แก้ไข Prompt เฉพาะช็อตนี้" (Inline Prompt Editor):
-   - มีปุ่ม "✏️ แก้ไข Prompt" บนการ์ดทุกช็อต เมื่อคลิกจะมีช่องให้แก้ไข Visual Prompt (EN) หรือ Motion Prompt (EN) ของช็อตนั้นได้ทันที เมื่อแก้เสร็จกด "💾 บันทึกและเจนใหม่" จะเรนเดอร์เฉพาะช็อตนั้นทันที
-4. 🎯 UNIVERSAL TOPIC LOCK ป้องกันภาพเพี้ยนเป็นนาฬิกา/รถยนต์/อุปกรณ์ครัวแปลกๆ:
-   - ฟังก์ชันเจนภาพ (generateImage): ต้องใช้เฉพาะข้อความจาก "- Visual Prompt (EN): ..." เท่านั้น! ห้ามส่ง Motion Prompt ไปเจนรูปเด็ดขาด!
-   - พ่วงคำสั่งกำกับเสมอ: "[TOPIC LOCK: Campaign Subject] " + visualPromptEn + ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, zero unrelated items, pure cinematography"
-   - ถ้าแคมเปญเป็นเรื่อง อาหารคลีน หรือ ข้าวกล้องโบว์ล (Clean Food / Brown Rice Bowl) ภาพต้องเป็นอาหารคลีนแท้จริง 100% (ข้าวกล้อง, อกไก่ย่าง, อโวคาโด, ไข่ต้มเยิ้ม, สลัดผัก) ห้ามหลอนวาดนาฬิกาข้อมือ หรืออุปกรณ์ที่ไม่เกี่ยวข้องเด็ดขาด!
-5. 🗑️ ลบปุ่มตัวอย่าง "OAT MILK" และ Mock Data ทั้งหมดออกจากจอ 100% ช่องสคริปต์เริ่มต้นด้วยความว่างเปล่าเสมอ
+ปัญหาสำคัญที่ต้องแก้ไขทันทีจากหลักฐานการใช้งานจริง:
+1. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด:
+   - สาเหตุที่แท้จริง: Google Flow พยายามเรียก generateVideo({ image: imgUrl, prompt: ... }) ทั้งๆ ที่ช็อตนั้นยังไม่มีภาพ หรือสร้างภาพ (generateImage) ไม่สำเร็จ ทำให้ imgUrl เป็น undefined ส่งผลให้ SDK ภายในของ Google Flow พังและพ่น error "Expected object response with media fields"
+   - พอผู้ใช้กด "🔄 ลองใหม่เฉพาะช็อตนี้" ระบบก็กลับไปเรียก generateVideo ซ้ำบนรูปที่ไม่มีอยู่เดิม จึงพังซ้ำทันที!
+   - การแก้ไขระดับโครงสร้าง (Auto-Heal Dual Stage):
+     * ในทุกฟังก์ชันที่สร้างวิดีโอ (ทั้ง "🎬 สร้างวิดีโอทุกฉาก" และ "🔄 ลองใหม่"): ต้องตรวจสอบก่อนเสมอว่ามี imgUrl หรือไม่!
+     * หากไม่มีรูปภาพ (ภาพยังไม่ถูกสร้างหรือ error มาก่อน): ให้ระบบสั่ง **Auto-Generate Image ทันทีโดยอัตโนมัติ** ก่อน แล้วนำรูปภาพที่ได้มาส่งต่อเข้า Veo 2 เพื่อเรนเดอร์วิดีโอทันทีอย่างราบรื่น ไม่มีสะดุด!
+     * บนการ์ดแต่ละช็อต ให้มีปุ่มแยกชัดเจน:
+       - 🖼️ สร้างรูปใหม่ (Regen Image Only)
+       - 🎬 สร้างวิดีโอใหม่ (Regen Video Only)
+       - 🔄 ลองใหม่ทั้งช็อต (รูป+วิดีโอ) (Full Auto-Heal)
+
+2. ✏️ แก้ไขปุ่มดินสอ / INLINE PROMPT EDITOR ที่กดไม่ได้หรือแก้ไขไม่ติด:
+   - ต้องสร้าง State สำหรับเปิดแก้ไขแต่ละช็อตอย่างแท้จริง:
+     const [editingShotNumber, setEditingShotNumber] = useState<number | null>(null);
+     const [editVisualPrompt, setEditVisualPrompt] = useState<string>('');
+     const [editMotionPrompt, setEditMotionPrompt] = useState<string>('');
+   - เมื่อคลิกปุ่ม "✏️ แก้ไข Prompt": เปิดกล่องข้อความ Textarea 2 ช่อง:
+     1) [Visual Prompt (EN)]: สำหรับเจนรูปภาพ
+     2) [Motion Prompt (EN)]: สำหรับคำสั่งเคลื่อนไหว Veo 2
+   - มีปุ่ม "💾 บันทึกและเจนใหม่" (อัปเดต state ของช็อตนั้น และสั่งเรนเดอร์ทันที) และปุ่ม "✕ ยกเลิก"
+   - โครงสร้างและชื่อช่องตรงกับหน้า OS 100% ทำให้ผู้ใช้สามารถก้อปปี้ข้อความจาก OS มาวางได้ทันทีอย่างไร้รอยต่อ!
+
+3. 🍳 UNIVERSAL TOPIC LOCK: ข้าวกล้องผัด / ผัดซีอิ๊ว ห้ามมีอโวคาโดเด็ดขาด (ZERO AVOCADO):
+   - หากสคริปต์เป็นเรื่อง "ข้าวกล้องผัด" หรือ "ผัดซีอิ๊ว" หรือมีคำว่า "ผัด":
+     * Visual Prompt และ Imagen ต้องเน้นที่: กระทะเหล็กหล่อ, ข้าวกล้องเม็ดร่วนสีทองเคลือบซีอิ๊ว, เนื้อไก่หั่นเต๋า, ไข่ขยี้สีทอง, ต้นหอมซอย, มะนาวผ่าซีก, แตงกวาซอย
+     * บังคับพ่วง Negative Prompt เสมอ: ", zero avocado, zero salad leaves, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry, pure food cinematography"
+     * ห้ามใส่ภาพอโวคาโด หรือ สลัดโบว์ล เด็ดขาด!
+
+4. ⚡ 100% PARALLEL BATCH EXECUTION:
+   - ทุกช็อตเรนเดอร์คู่ขนาน (Promise.allSettled) ช็อตไหนผ่าน เล่นได้ทันที ช็อตไหนติดปัญหา แสดง Error สีแดงชัดเจน ไม่บล็อกช็อตอื่น!
+
+5. 🗑️ HARD RESET:
+   - สคริปต์เริ่มต้นด้วยความว่างเปล่า 100% ไม่มีปุ่ม Oat Milk หรือตัวอย่าง Mock Data ใดๆ ค้างอยู่!
 
 แก้ไขโครงสร้างโค้ดตาม 5 ขั้นตอนนี้:
 
-### 1. ⚡ PARALLEL VEO GENERATION & INDEPENDENT PER-CARD STATE:
+### 1. ⚡ AUTO-HEAL PARALLEL VEO GENERATION & INDEPENDENT STATE:
 - เก็บ State แยกแต่ละช็อตอย่างชัดเจน:
   const [shotStates, setShotStates] = useState<Record<string, {
     status: 'idle' | 'generating' | 'success' | 'error';
+    step?: 'image' | 'video';
     errorMsg?: string;
     videoUrl?: string;
     imageUrl?: string;
   }>>({});
-- ฟังก์ชัน "🎬 สร้างวิดีโอทุกฉาก" (Parallel Mode):
-  async function generateAllVideosParallel() {
-    const promises = shots.map(async (shot) => {
-      const shotId = String(shot.shotNumber);
-      const imgUrl = shotStates[shotId]?.imageUrl || shot.imageUrl;
-      if (!imgUrl) return;
 
+- ฟังก์ชันเรนเดอร์เดี่ยวพร้อมระบบ Auto-Heal (renderSingleShot):
+  async function renderSingleShot(shot: ShotItem, forceRegenImage = false) {
+    const shotId = String(shot.shotNumber);
+    let imgUrl = shotStates[shotId]?.imageUrl || shot.imageUrl;
+
+    // STEP 1: ตรวจสอบรูปภาพ หากไม่มีหรือถูกบังคับ ให้เจนรูปภาพก่อนเสมอ!
+    if (!imgUrl || forceRegenImage) {
       setShotStates(prev => ({
         ...prev,
-        [shotId]: { ...prev[shotId], status: 'generating', errorMsg: undefined }
+        [shotId]: { ...prev[shotId], status: 'generating', step: 'image', errorMsg: undefined }
       }));
-
       try {
-        const videoResult = await generateVideo({
-          image: imgUrl,
-          prompt: shot.motionPrompt || shot.visualPrompt
+        const imageResult = await generateImage({
+          prompt: shot.visualPrompt + ', zero in-image text, zero watches, zero cars, zero jewelry, pure cinematography'
         });
+        imgUrl = imageResult;
         setShotStates(prev => ({
           ...prev,
-          [shotId]: { ...prev[shotId], status: 'success', videoUrl: videoResult }
+          [shotId]: { ...prev[shotId], imageUrl: imgUrl }
         }));
-      } catch (err: any) {
+      } catch (imgErr: any) {
         setShotStates(prev => ({
           ...prev,
-          [shotId]: {
-            ...prev[shotId],
-            status: 'error',
-            errorMsg: err?.message || 'วิดีโอไม่ผ่านเกณฑ์ Veo 2 กรุณากดแก้ไข Prompt หรือลองใหม่'
-          }
+          [shotId]: { ...prev[shotId], status: 'error', step: 'image', errorMsg: 'สร้างรูปภาพไม่สำเร็จ: ' + (imgErr?.message || 'ภาพไม่ผ่านเกณฑ์ความปลอดภัย') }
         }));
+        return;
       }
-    });
+    }
 
+    // STEP 2: เมื่อมีรูปภาพแน่นอนแล้ว สั่งเรนเดอร์วิดีโอ Veo 2
+    setShotStates(prev => ({
+      ...prev,
+      [shotId]: { ...prev[shotId], status: 'generating', step: 'video', errorMsg: undefined }
+    }));
+    try {
+      const videoResult = await generateVideo({
+        image: imgUrl,
+        prompt: shot.motionPrompt || shot.visualPrompt
+      });
+      setShotStates(prev => ({
+        ...prev,
+        [shotId]: { ...prev[shotId], status: 'success', videoUrl: videoResult, errorMsg: undefined }
+      }));
+    } catch (vidErr: any) {
+      setShotStates(prev => ({
+        ...prev,
+        [shotId]: {
+          ...prev[shotId],
+          status: 'error',
+          step: 'video',
+          errorMsg: vidErr?.message || 'วิดีโอไม่ผ่านเกณฑ์ Veo 2 กรุณากดแก้ไข Prompt หรือลองใหม่'
+        }
+      }));
+    }
+  }
+
+- ฟังก์ชัน "🎬 สร้างวิดีโอทุกฉาก" (Parallel Auto-Heal Mode):
+  async function generateAllVideosParallel() {
+    const promises = shots.map(shot => renderSingleShot(shot, false));
     await Promise.allSettled(promises);
   }
 
-### 2. 🔄 RETRY & ✏️ INLINE EDITING PER CARD:
-- ในแต่ละการ์ดช็อต:
-  * ถ้าสถานะเป็น 'error': แสดงกล่องแจ้งเตือนสีแดง:
-    <div className="bg-red-500/20 border border-red-500/50 p-2.5 rounded-xl text-xs text-red-200">
-      <div className="font-bold">❌ สร้างวิดีโอไม่สำเร็จ:</div>
-      <div>{shotState.errorMsg}</div>
-    </div>
-  * ปุ่มการทำงานใต้การ์ด:
-    - ปุ่ม "🔄 ลองใหม่เฉพาะช็อตนี้" (เรียก generateVideo เฉพาะช็อตนี้)
-    - ปุ่ม "✏️ แก้ไข Prompt" (เปิด Textarea ให้แก้ไข prompt ช็อตนี้ได้อิสระ)
+### 2. ✏️ WORKING INLINE EDITOR & RETRY BUTTONS PER CARD:
+- State สำหรับเปิดกล่องแก้ไข:
+  const [editingShotNumber, setEditingShotNumber] = useState<number | null>(null);
+  const [editVisualPrompt, setEditVisualPrompt] = useState<string>('');
+  const [editMotionPrompt, setEditMotionPrompt] = useState<string>('');
 
-### 3. 🎯 TOPIC LOCK & STRICT PROMPT ROUTING:
-- generateImage: ส่งเฉพาะ shot.visualPrompt พร้อม [TOPIC LOCK: Campaign Title]
-- generateVideo: ส่ง shot.motionPrompt
+- ฟังก์ชันเริ่มแก้ไข:
+  function handleStartEdit(shot: ShotItem) {
+    setEditingShotNumber(shot.shotNumber);
+    setEditVisualPrompt(shot.visualPrompt);
+    setEditMotionPrompt(shot.motionPrompt || '');
+  }
+
+- ฟังก์ชันบันทึกและเรนเดอร์ใหม่:
+  async function handleSaveAndRerender(shotNumber: number) {
+    const updatedShots = shots.map(s => s.shotNumber === shotNumber ? { ...s, visualPrompt: editVisualPrompt, motionPrompt: editMotionPrompt } : s);
+    setShots(updatedShots);
+    setEditingShotNumber(null);
+    const target = updatedShots.find(s => s.shotNumber === shotNumber);
+    if (target) {
+      await renderSingleShot(target, true);
+    }
+  }
+
+- ในแต่ละการ์ดช็อต:
+  * ถ้ากำลังแก้ไข (editingShotNumber === shot.shotNumber):
+    <div className="bg-amber-50/90 border border-amber-300 p-3 rounded-xl space-y-2 text-xs">
+      <div className="font-bold text-amber-900">✏️ แก้ไข Prompt ช็อต {shot.shotNumber}:</div>
+      <div>
+        <label className="font-semibold text-slate-700">Visual Prompt (EN):</label>
+        <textarea rows={2} className="w-full p-2 border rounded font-mono text-[11px]" value={editVisualPrompt} onChange={e => setEditVisualPrompt(e.target.value)} />
+      </div>
+      <div>
+        <label className="font-semibold text-slate-700">Motion Prompt (EN):</label>
+        <textarea rows={2} className="w-full p-2 border rounded font-mono text-[11px]" value={editMotionPrompt} onChange={e => setEditMotionPrompt(e.target.value)} />
+      </div>
+      <div className="flex gap-2 justify-end">
+        <button className="px-3 py-1 bg-slate-200 text-slate-700 rounded font-bold" onClick={() => setEditingShotNumber(null)}>✕ ยกเลิก</button>
+        <button className="px-3 py-1 bg-indigo-600 text-white rounded font-bold" onClick={() => handleSaveAndRerender(shot.shotNumber)}>💾 บันทึกและเจนใหม่</button>
+      </div>
+    </div>
+  * ปุ่มการทำงานใต้การ์ด (ตอนปกติ):
+    - ปุ่ม "🔄 ลองใหม่ทั้งช็อต" (เรียก renderSingleShot(shot, true))
+    - ปุ่ม "✏️ แก้ไข Prompt" (เรียก handleStartEdit(shot))
+
+### 3. 🎯 UNIVERSAL TOPIC LOCK:
+- สคริปต์อาหารคลีนที่เป็น "ผัด / ข้าวผัด": ต้องล็อกห้ามมี avocado หรือ salad dressing เด็ดขาด!
+- generateImage: ส่งเฉพาะ shot.visualPrompt พร้อม TOPIC LOCK
 
 ### 4. 🔍 REGEX PARSER ที่แม่นยำ 100%:
 const shotRegex = /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi;
-แยก shotNumber, shotTitle, duration, onScreenText, thaiVoiceover, visualPrompt, motionPrompt ให้ถูกต้องครบถ้วน
 
 ### 5. 🗑️ HARD RESET:
-- ล้างค่าทั้งหมด setShots([]); setShotStates({}); setError(null); เมื่อกดปุ่มล้างข้อมูล`;
+- setShots([]); setShotStates({}); setEditingShotNumber(null);`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.6 Pro (Parallel Veo Generation & Diagnostics Edition)" — a production-grade 2-stage video production tool with 100% parallel video generation, per-shot error diagnostics, inline prompt editing, and absolute topic adherence.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.7 Pro (Auto-Heal Veo & Synchronized Editor Edition)" — a production-grade 2-stage video production tool with 100% parallel auto-healing video generation, per-shot error diagnostics, inline prompt editing, and absolute topic adherence.
 
-## 1. PARALLEL / SIMULTANEOUS BATCH GENERATION:
+## 1. AUTO-HEAL PARALLEL BATCH GENERATION:
 - When user clicks "🎬 สร้างวิดีโอทุกฉาก", trigger video generation for ALL shots concurrently using Promise.allSettled.
-- DO NOT use a blocking sequential loop that halts when Shot 1 fails!
-- Every shot card manages its own state: status ('idle' | 'generating' | 'success' | 'error'), errorMsg, videoUrl, imageUrl.
+- PRE-FLIGHT IMAGE CHECK: If shot.imageUrl is missing or undefined, automatically call generateImage first, save the resulting imageUrl, and immediately proceed to generateVideo!
+- NEVER pass undefined image to generateVideo (prevents "Expected object response with media fields" crash)!
+- Every shot card manages its own state: status ('idle' | 'generating' | 'success' | 'error'), step ('image' | 'video'), errorMsg, videoUrl, imageUrl.
 - Completed shots display their ready-to-play video immediately.
 - Failed shots display an explicit red error box with the error reason, without blocking remaining shots.
 
-## 2. PER-CARD RETRY & INLINE PROMPT EDITING:
+## 2. PER-CARD RETRY & WORKING INLINE PROMPT EDITING:
 - On every shot card, provide:
-  * "🔄 ลองใหม่เฉพาะช็อตนี้" (Retry Single Shot): triggers generation only for this shot.
-  * "✏️ แก้ไข Prompt": opens an inline editor to adjust Visual Prompt or Motion Prompt, with a "💾 บันทึกและเจนใหม่" button.
+  * "🔄 ลองใหม่ทั้งช็อต" (Full Auto-Heal): generates image first if needed, then renders video.
+  * "✏️ แก้ไข Prompt": opens a clean inline editor modal with two textareas:
+    1) Visual Prompt (EN)
+    2) Motion Prompt (EN)
+    With "💾 บันทึกและเจนใหม่" and "✕ ยกเลิก" buttons.
+- Fully synchronized with PK Marketing AI OS layout so users can easily copy-paste prompts between platforms.
 
-## 3. STRICT SEPARATION: VISUAL PROMPT VS MOTION PROMPT:
-- ROOT CAUSE OF HALLUCINATIONS: Never pass "- Camera & Physical Motion (Veo 2)" into the image generator!
-- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, pure topic cinematography". For Clean Food / Brown Rice Bowl, strictly depict grilled chicken, brown rice, avocado, soft-boiled runny egg, edamame, meal prep bowls — never wristwatches or luxury accessories!
+## 3. STRICT SEPARATION & UNIVERSAL TOPIC LOCK:
+- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, pure topic cinematography".
+- If the topic is stir-fried rice (ข้าวผัด / ข้าวกล้องผัด), strictly depict hot wok, brown rice, egg, chicken, scallions, lime, cucumber. MANDATORY CONSTRAINT: "zero avocado, zero salad, zero salad dressing"!
 - generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
 
 ## 4. ABSOLUTE BAN ON MOCK / SAMPLE BUTTONS:
 - DO NOT render any sample buttons like "ตัวอย่าง OAT MILK", "Sample Script", etc.
-- The CAMPAIGN SCRIPT textarea must start 100% empty and clean, waiting for user input.
+- The CAMPAIGN SCRIPT textarea must start 100% empty and clean.
 - Provide a clean "🗑️ ล้างข้อมูล (Hard Reset)" button next to the input area to wipe all state in 1 click.
 
 ## 5. ROCK-SOLID PARSER REGEX:
@@ -1407,17 +1490,17 @@ function CommercialStudioContent() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-200">
-                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.6 PRO STUDIO)
+                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.7 PRO STUDIO)
                 </span>
                 <span className="text-xs font-bold text-slate-600">
-                  ⚡ สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Veo) · แยกสถานะชัดเจน · แก้ไข Prompt อิสระ · ล็อกอาหารคลีน 100%
+                  ⚡ Auto-Heal รูปภาพก่อนวิดีโอ · กล่องแก้ Prompt อิสระสัมพันธ์กับ OS · ล็อกเมนูผัดไร้อโวคาโด 100%
                 </span>
               </div>
               <h2 className="text-base font-black text-slate-900 tracking-tight mt-1">
                 คำสั่งแก้และอัปเกรด Google Flow Tool (นำไปวางในแท็บ [แก้ไข] ของ Flow)
               </h2>
               <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
-                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v5.6 Pro)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>อัปเกรดระบบเป็น Parallel Batch Generation สร้างวิดีโอพร้อมกันทุกช็อต ไม่ติดค้างที่ช็อตแรก พร้อมแสดง Error ชัดเจน และมีปุ่มแก้ไข Prompt รายช็อต</strong> ทันที!
+                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>อัปเกรดระบบเป็น Auto-Heal Parallel Generation สร้างรูปก่อนวิดีโออัตโนมัติ ไม่เจอ Media Fields Crash และมีกล่องแก้ไข Prompt รายช็อตสัมพันธ์กับ OS</strong> ทันที!
               </p>
             </div>
           </div>
@@ -1441,7 +1524,7 @@ function CommercialStudioContent() {
               <span>กดคัดลอกคำสั่งแก้</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              กดปุ่มสีเขียว <strong>"📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.6 Pro)"</strong> ด้านล่างนี้
+              กดปุ่มสีเขียว <strong>"📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro)"</strong> ด้านล่างนี้
             </p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
@@ -1481,7 +1564,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Copy className="w-4 h-4 text-teal-200" />
-                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.6 Pro Parallel) — แนะนำ</span>
+                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro Auto-Heal) — แนะนำ</span>
                 </>
               )}
             </button>
@@ -1489,7 +1572,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.6 Pro")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.7 Pro")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1500,7 +1583,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.6 Pro Rebuild)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.7 Pro Rebuild)</span>
                 </>
               )}
             </button>
