@@ -227,8 +227,10 @@ function CommercialStudioContent() {
   const [referenceGuides, setReferenceGuides] = useState<ReferenceAssetGuide[]>([]);
   const [activePipelineTab, setActivePipelineTab] = useState<"phase1_stills" | "phase2_motion" | "all">("phase1_stills");
 
-  // Scene Inline Editing State
+  // Scene Inline Editing & Re-roll State
   const [editingSceneId, setEditingSceneId] = useState<string | null>(null);
+  const [rerollingSceneId, setRerollingSceneId] = useState<string | null>(null);
+  const [rerollSeeds, setRerollSeeds] = useState<Record<string, number>>({});
   const [editForm, setEditForm] = useState<{
     thaiVoiceover: string;
     onScreenTextTh: string;
@@ -469,6 +471,22 @@ function CommercialStudioContent() {
     ) {
       nextAdStyle = "Cinematic Wildlife Documentary";
       nextHasPresenter = false; // Pure wildlife focus
+    } else if (
+      ideaText.includes("ข้าวกล้อง") ||
+      ideaText.includes("ไรซ์เบอร์รี่") ||
+      ideaText.includes("โบว์ล") ||
+      ideaText.includes("โบว์ลิ่ง") ||
+      ideaText.includes("โบล") ||
+      ideaText.includes("bowl") ||
+      ideaText.includes("grain bowl") ||
+      ideaText.includes("คลีน") ||
+      ideaText.includes("อาหารคลีน") ||
+      ideaText.includes("clean food") ||
+      ideaText.includes("สลัด") ||
+      ideaText.includes("meal prep")
+    ) {
+      nextAdStyle = "Cinematic Food & Wholesome Lifestyle";
+      nextHasPresenter = false;
     } else if (ideaText.includes("กะเพรา") || ideaText.includes("อาหาร") || ideaText.includes("ผัด") || ideaText.includes("cooking")) {
       nextAdStyle = "Cinematic Culinary";
       nextHasPresenter = false;
@@ -524,7 +542,7 @@ function CommercialStudioContent() {
     if (dur <= 8) return 4;
     if (dur <= 16) return 6;
     if (dur <= 25) return 8;
-    if (dur <= 35) return 12; // 30s default is 12 rich multi-shot scenes
+    if (dur <= 35) return 10; // 30s default is 10 perfect commercial scenes (3.0s each) for viral food & product reels
     if (dur <= 50) return 16;
     if (dur <= 70) return 20;
     return Math.min(30, Math.max(12, Math.round(dur / 2.5)));
@@ -625,6 +643,26 @@ function CommercialStudioContent() {
     });
   };
 
+  // Helper to sync updated scenes to Master Directive
+  const syncMasterDirectiveWithScenes = (updatedScenes: SceneData[]) => {
+    const updatedDirectives = updatedScenes.map(s => 
+      `[SHOT ${s.sceneNumber}] ${s.shotType} | Timecode: ${s.timecode}\n- Duration: ${s.durationSec}s\n- On-Screen Text (TH): "${s.onScreenTextTh}"\n- Text Position: ${s.textPosition || "Lower Third"}\n- Thai Voiceover Script: "${s.thaiVoiceover}"\n- Visual Prompt (EN): ${s.visualPromptEn.replace(/[\`"]/g, "'")}\n- Camera & Physical Motion (Veo 2): ${s.motionPrompt || s.cameraMovement}`
+    ).join("\n\n");
+
+    if (masterDirectiveV3) {
+      const blueprintHeader = "--- SHOT-BY-SHOT BLUEPRINT & LOCKED THAI VOICEOVERS";
+      const onScreenHeader = "--- ON-SCREEN THAI TEXT & TYPOGRAPHY OVERLAY DIRECTIVE ---";
+      const idx1 = masterDirectiveV3.indexOf(blueprintHeader);
+      const idx2 = masterDirectiveV3.indexOf(onScreenHeader);
+      if (idx1 !== -1 && idx2 !== -1) {
+        const headerEnd = masterDirectiveV3.indexOf("\n", idx1);
+        const headerPart = masterDirectiveV3.slice(0, headerEnd + 1);
+        const footerPart = masterDirectiveV3.slice(idx2);
+        setMasterDirectiveV3(`${headerPart}\n${updatedDirectives}\n\n${footerPart}`);
+      }
+    }
+  };
+
   // Save Scene Edits & Update Master Directive
   const handleSaveScene = (sceneId: string) => {
     const updatedScenes = scenes.map(s => {
@@ -643,25 +681,60 @@ function CommercialStudioContent() {
     });
     setScenes(updatedScenes);
     setEditingSceneId(null);
-
-    // Rebuild shot directives formatted
-    const updatedDirectives = updatedScenes.map(s => 
-      `[SHOT ${s.sceneNumber}] ${s.shotType} | Timecode: ${s.timecode}\n- Duration: ${s.durationSec}s\n- On-Screen Text (TH): "${s.onScreenTextTh}"\n- Text Position: ${s.textPosition || "Lower Third"}\n- Thai Voiceover Script: "${s.thaiVoiceover}"\n- Visual Prompt (EN): ${s.visualPromptEn.replace(/[\`"]/g, "'")}\n- Camera & Physical Motion (Veo 2): ${s.motionPrompt || s.cameraMovement}`
-    ).join("\n\n");
-
-    if (masterDirectiveV3) {
-      const blueprintHeader = "--- SHOT-BY-SHOT BLUEPRINT & LOCKED THAI VOICEOVERS";
-      const onScreenHeader = "--- ON-SCREEN THAI TEXT & TYPOGRAPHY OVERLAY DIRECTIVE ---";
-      const idx1 = masterDirectiveV3.indexOf(blueprintHeader);
-      const idx2 = masterDirectiveV3.indexOf(onScreenHeader);
-      if (idx1 !== -1 && idx2 !== -1) {
-        const headerEnd = masterDirectiveV3.indexOf("\n", idx1);
-        const headerPart = masterDirectiveV3.slice(0, headerEnd + 1);
-        const footerPart = masterDirectiveV3.slice(idx2);
-        setMasterDirectiveV3(`${headerPart}\n${updatedDirectives}\n\n${footerPart}`);
-      }
-    }
+    syncMasterDirectiveWithScenes(updatedScenes);
     showToast("✓ บันทึกการแก้ไขฉากและอัปเดต Master Directive สำเร็จ!");
+  };
+
+  // Re-roll prompt for a single scene while strictly preserving narrative continuity
+  const handleRerollScenePrompt = async (targetScene: SceneData) => {
+    const currentSeed = (rerollSeeds[targetScene.id] || 0) + 1;
+    setRerollSeeds(prev => ({ ...prev, [targetScene.id]: currentSeed }));
+    setRerollingSceneId(targetScene.id);
+
+    try {
+      const res = await fetch("/api/ai/commercial/reroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scene: targetScene,
+          allScenes: scenes,
+          productName,
+          brand: selectedIdea?.brand_name || activeBrand,
+          aspectRatio,
+          adStyle,
+          variationSeed: currentSeed
+        })
+      });
+
+      const data = await res.json();
+      if (data.success && data.scene) {
+        const newScene = data.scene;
+        const updatedScenes = scenes.map(s => s.id === targetScene.id ? newScene : s);
+        setScenes(updatedScenes);
+        syncMasterDirectiveWithScenes(updatedScenes);
+
+        // If currently editing this scene, update editForm as well
+        if (editingSceneId === targetScene.id) {
+          setEditForm({
+            thaiVoiceover: newScene.thaiVoiceover,
+            onScreenTextTh: newScene.onScreenTextTh,
+            textPosition: newScene.textPosition,
+            visualPromptEn: newScene.visualPromptEn,
+            cameraMovement: newScene.cameraMovement,
+            motionPrompt: newScene.motionPrompt || ""
+          });
+        }
+
+        showToast(`✨ สร้าง Prompt ทางเลือกใหม่สำหรับช็อต ${targetScene.sceneNumber} สำเร็จ! (รักษาเนื้อเรื่องเดิม 100%)`);
+      } else {
+        showToast("ไม่สามารถสร้าง Prompt ทางเลือกได้ กรุณาลองใหม่อีกครั้ง");
+      }
+    } catch (err) {
+      console.error("Re-roll scene prompt failed:", err);
+      showToast("เกิดข้อผิดพลาดในการสร้าง Prompt ทางเลือก");
+    } finally {
+      setRerollingSceneId(null);
+    }
   };
 
   // Reference Mode Change
@@ -1745,15 +1818,37 @@ function CommercialStudioContent() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10.5px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-semibold max-w-[140px] truncate flex items-center gap-1" title={scene.cameraMovement}>
+                    <span className="text-[10.5px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-semibold max-w-[140px] truncate hidden sm:flex items-center gap-1" title={scene.cameraMovement}>
                       <Camera className="w-3 h-3 text-slate-400 shrink-0" />
                       {scene.cameraMovement}
                     </span>
+
+                    {/* Re-roll Alternative Prompt for this scene */}
+                    <button
+                      type="button"
+                      disabled={rerollingSceneId === scene.id}
+                      onClick={() => handleRerollScenePrompt(scene)}
+                      className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-amber-800 hover:text-white bg-amber-50 hover:bg-amber-600 border border-amber-200 hover:border-amber-600 cursor-pointer flex items-center gap-1.5 transition-all duration-200 disabled:opacity-50"
+                      title="สร้าง Prompt ทางเลือกใหม่สำหรับฉากนี้ โดยรักษาเนื้อเรื่องและเชื่อมกับฉากอื่นตามปกติ"
+                    >
+                      {rerollingSceneId === scene.id ? (
+                        <>
+                          <RefreshCw className="w-3 h-3 animate-spin text-amber-600" />
+                          <span className="hidden sm:inline">กำลังคิด...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3 h-3 text-amber-500" />
+                          <span>✨ เจนใหม่</span>
+                        </>
+                      )}
+                    </button>
+
                     {editingSceneId === scene.id ? (
                       <button
                         type="button"
                         onClick={() => setEditingSceneId(null)}
-                        className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 cursor-pointer transition-colors"
+                        className="px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 cursor-pointer transition-colors"
                       >
                         ✕ ยกเลิก
                       </button>
@@ -1772,15 +1867,32 @@ function CommercialStudioContent() {
                 {/* CARD BODY: EDIT MODE VS VIEW MODE */}
                 {editingSceneId === scene.id ? (
                   <div className="space-y-4 p-5 bg-gradient-to-br from-amber-50/60 to-orange-50/30 rounded-xl border border-amber-200/80 text-xs">
-                    <div className="font-bold text-amber-950 flex items-center justify-between">
+                    <div className="font-bold text-amber-950 flex flex-wrap items-center justify-between gap-2">
                       <span className="flex items-center gap-2 text-[13px]">
                         <Wand2 className="w-4 h-4 text-amber-600" />
                         แก้ไขช็อต {scene.sceneNumber}
                       </span>
-                      <span className="text-[10px] text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg font-mono font-bold flex items-center gap-1">
-                        <RefreshCw className="w-3 h-3" />
-                        อัปเดตทันที
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          disabled={rerollingSceneId === scene.id}
+                          onClick={() => handleRerollScenePrompt(scene)}
+                          className="text-[11px] text-amber-900 bg-amber-200/80 hover:bg-amber-300 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-50"
+                          title="สร้าง Prompt ทางเลือกใหม่สำหรับช็อตนี้ โดยรักษาเนื้อเรื่องและเชื่อมกับฉากอื่น"
+                        >
+                          {rerollingSceneId === scene.id ? (
+                            <>
+                              <RefreshCw className="w-3 h-3 animate-spin text-amber-700" />
+                              <span>กำลังคิด Prompt ทางเลือกใหม่...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+                              <span>✨ สุ่ม Prompt ทางเลือกใหม่ (คงเรื่องเดิม)</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Edit On-Screen Text */}
@@ -1958,14 +2070,30 @@ function CommercialStudioContent() {
                             </div>
                             Visual Prompt (EN)
                           </span>
-                          <button
-                            type="button"
-                            onClick={() => copyToClipboard(scene.visualPromptEn, `visual-${scene.id}`, "Visual Prompt")}
-                            className="text-[11px] text-slate-600 hover:text-white hover:bg-slate-700 font-bold px-3 py-1 rounded-lg border border-slate-200 hover:border-slate-700 cursor-pointer transition-all duration-200 flex items-center gap-1.5"
-                          >
-                            {copiedKey === `visual-${scene.id}` ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                            {copiedKey === `visual-${scene.id}` ? "คัดลอกแล้ว!" : "คัดลอก Prompt"}
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              disabled={rerollingSceneId === scene.id}
+                              onClick={() => handleRerollScenePrompt(scene)}
+                              className="text-[11px] text-amber-700 hover:text-white hover:bg-amber-600 font-bold px-2.5 py-1 rounded-lg border border-amber-200 hover:border-amber-600 cursor-pointer transition-all duration-200 flex items-center gap-1 disabled:opacity-50"
+                              title="สร้าง Prompt ทางเลือกใหม่สำหรับภาพนี้ โดยรักษาเรื่องเดิม"
+                            >
+                              {rerollingSceneId === scene.id ? (
+                                <RefreshCw className="w-3 h-3 animate-spin text-amber-600" />
+                              ) : (
+                                <Sparkles className="w-3 h-3 text-amber-500" />
+                              )}
+                              <span>สุ่มมุมมองใหม่</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => copyToClipboard(scene.visualPromptEn, `visual-${scene.id}`, "Visual Prompt")}
+                              className="text-[11px] text-slate-600 hover:text-white hover:bg-slate-700 font-bold px-3 py-1 rounded-lg border border-slate-200 hover:border-slate-700 cursor-pointer transition-all duration-200 flex items-center gap-1.5"
+                            >
+                              {copiedKey === `visual-${scene.id}` ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                              {copiedKey === `visual-${scene.id}` ? "คัดลอกแล้ว!" : "คัดลอก Prompt"}
+                            </button>
+                          </div>
                         </div>
                         <p className="font-mono text-[12px] text-slate-700 leading-relaxed select-all pl-8">
                           {scene.visualPromptEn}

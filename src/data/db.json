@@ -1841,6 +1841,18 @@
   "workflow_runs": [],
   "ai_generations": [
     {
+      "id": "gen-1790221015460",
+      "model": "Built-in Zero-Quota Engine",
+      "workflow": "commercial_reroll_scene",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_ms": 2,
+      "status": "SUCCESS",
+      "cost_usd": 0,
+      "timestamp": "2026-09-24T03:36:55.460Z"
+    },
+    {
       "id": "gen-1789975578940",
       "model": "Groq Cloud (openai/gpt-oss-120b)",
       "workflow": "Idea Agent (ChatGPT)",
