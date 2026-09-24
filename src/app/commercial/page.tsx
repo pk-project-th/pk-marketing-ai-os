@@ -58,29 +58,21 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA FIELDS ARMOR & INLINE EDITOR — PK STUDIO v5.8 PRO:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: PARALLEL TURBO BATCH & INDEPENDENT SHOT RECOVERY & INLINE EDITOR — PK STUDIO v5.9 PRO:
 
 ปัญหาสำคัญที่ต้องแก้ไขทันทีจากหลักฐานการใช้งานจริง:
-1. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด (100% BULLETPROOF):
-   - สาเหตุที่แท้จริง:
-     1) การส่งคำสั่งสร้างวิดีโอพร้อมกัน 10 ช็อต (Parallel) ทำให้ชน Rate Limit ของ Google Flow Veo API ส่งผลให้เซิร์ฟเวอร์ตีกลับด้วย Response ที่ไม่มีฟิลด์ Media ทำให้ระบบแครชทุกช็อตพร้อมกัน
-     2) การส่งค่า image: undefined หรือส่ง Object รูปภาพที่ผิดโครงสร้างเข้าไปใน generateVideo SDK ของ Google Flow จะแครชทันที
-   - การแก้ไขเด็ดขาดระดับโครงสร้าง (Media Fields Armor):
-     A) SAFE SEQUENTIAL QUEUE: ห้ามรัน Veo พร้อมกัน 10 ช็อตเด็ดขาด! ให้รันทีละช็อตตามลำดับ (Sequential Loop) และเว้นระยะ Cooldown 3 วินาทีระหว่างช็อต พร้อมแสดงข้อความ "กำลังสร้างช็อต X/Y... กรุณารอสักครู่"
-     B) DUAL-MODE FALLBACK (Image-to-Video หรือ Text-to-Video อัตโนมัติ):
-        - ตรวจสอบ URL รูปภาพ: const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || imgUrl?.media?.[0]?.url || null);
-        - ถ้ามี cleanImg ที่ถูกต้อง ➔ เรียก generateVideo({ image: cleanImg, prompt: motionPrompt })
-        - ถ้าไม่มี cleanImg หรือสร้างภาพไม่สำเร็จ ➔ ห้ามส่ง image: undefined เด็ดขาด! ให้เปลี่ยนเป็น Text-to-Video อัตโนมัติทันที: เรียก generateVideo({ prompt: (shot.visualPrompt + '. ' + shot.motionPrompt).trim() })
-        - วิธีนี้จะทำให้ Veo เรนเดอร์วิดีโอสำเร็จทุกช็อต 100% ไม่มีทางเจอ "Expected object response with media fields" อีกต่อไป!
+1. 🚀 ปลดล็อกคิวค้างด้วย PARALLEL TURBO GENERATION (ให้เจนพร้อมกันทุกช็อต ไม่ติดค้าง):
+   - ปัญหาเดิม: รันทีละช็อต (Sequential Loop) เมื่อช็อตที่ 1 ติด RETRY หรือ Veo ปฏิเสธ ทำให้คิวค้าง ช็อต 2-10 ไม่ได้เริ่มเลย!
+   - การแก้ไขระดับโครงสร้าง:
+     A) PARALLEL TURBO MODE (Promise.allSettled): สั่งเรนเดอร์วิดีโอทุกช็อตพร้อมกันทันที! ช็อตไหนผ่านเสร็จเลย ช็อตไหนติดปัญหาจะขึ้นสถานะ Error ชัดเจน ไม่ดึงช็อตอื่นให้ช้า
+     B) INDEPENDENT ERROR REPORTING: แต่ละการ์ดรายงานสถานะอิสระ (🟡 กำลังสร้าง, 🟢 สำเร็จ, 🔴 มีข้อผิดพลาด พร้อมบอกสาเหตุ เช่น Veo Safety Rejection, Image Error)
+     C) มีปุ่ม "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)" เป็นปุ่มหลัก และปุ่ม "🛡️ ทยอยสร้างทีละช็อต" เป็นทางเลือกสำรอง
 
-2. 📋 UNIVERSAL SCRIPT PARSER (รองรับทุกฟอร์แมต ทั้งจาก OS และจากแชต):
-   - Parser ต้องฉลาดและยืดหยุ่น:
-     * รองรับหัวข้อช็อตทั้ง [SHOT N], [SCENE N], [ช็อต N], Shot N:
-     * ดึง Visual Prompt จาก "- Visual Prompt (EN):" หรือ "- Visual Prompt:" หรือ "Visual Prompt:"
-     * ดึง Motion Prompt จาก "- Camera & Physical Motion (Veo 2):" หรือ "- Camera & Movement:" หรือ "- Motion Prompt:"
-     * ดึง เสียงพากย์ จาก "- Thai Voiceover Script:" หรือ "- Voiceover (TH):" หรือ "- Voiceover:"
-     * ดึง ข้อความบนจอ จาก "- On-Screen Text (TH):" หรือ "- On-Screen Text:"
-     * ดึง เวลา จาก "- Duration: [N]s"
+2. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด (100% BULLETPROOF):
+   - ตรวจสอบ URL รูปภาพ: const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || imgUrl?.media?.[0]?.url || null);
+   - ถ้ามี cleanImg ที่ถูกต้อง ➔ เรียก generateVideo({ image: cleanImg, prompt: motionPrompt })
+   - ถ้าไม่มี cleanImg หรือภาพมีปัญหา ➔ ห้ามส่ง image: undefined เด็ดขาด! ให้เปลี่ยนเป็น Text-to-Video อัตโนมัติทันที: เรียก generateVideo({ prompt: (shot.visualPrompt + '. ' + shot.motionPrompt).trim() })
+   - บนการ์ดที่เจอปัญหา มีปุ่มทางลัด "🎥 ลองสร้างด้วย Text-to-Video" บายพาสรูปภาพได้ทันที
 
 3. ✏️ WORKING INLINE PROMPT EDITOR & INDIVIDUAL RETRY (ใช้งานได้จริง 100%):
    - มีปุ่ม "✏️ แก้ไข Prompt" บนทุกการ์ดช็อต
@@ -88,19 +80,18 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
      1) Visual Prompt (EN) สำหรับสร้างภาพ
      2) Motion Prompt (EN) สำหรับสั่งมุมกล้อง Veo
    - มีปุ่ม "💾 บันทึกและเจนใหม่" (สั่งเรนเดอร์เฉพาะช็อตนี้แบบเดี่ยวทันที) และ "✕ ยกเลิก"
-   - มีปุ่ม "🔄 ลองใหม่ช็อตนี้" บนการ์ดที่ติดขัด
+   - มีปุ่ม "🔄 ลองใหม่เฉพาะช็อตนี้" บนการ์ดที่ติดขัด ไม่ต้องเริ่มใหม่ทั้งหมด
 
-4. 🍳 UNIVERSAL TOPIC LOCK เมนูผัด (ZERO AVOCADO):
-   - หากสคริปต์เป็นเมนู "ข้าวผัด" หรือ "ข้าวกล้องผัด" หรือมีคำว่า "ผัด":
-     * ห้ามใส่อโวคาโด ห้ามใส่สลัดเด็ดขาด (Enforce: zero avocado, zero salad, zero salad dressing)
-     * ล็อกเป็นข้าวกล้องผัดกระทะร้อนฉ่า หอมซีอิ๊วดำ อกไก่นุ่ม ไข่ร่วน ต้นหอม มะนาว แตงกวา
+4. 🥣 UNIVERSAL TOPIC LOCK:
+   - เมนูข้าวกล้อง / ข้าวกล้องโบว์ล / อาหารคลีน: ล็อกเป็นอาหารเพื่อสุขภาพระดับพรีเมียม (Steaming brown rice, grilled chicken breast, avocado, runny soft-boiled egg, edamame, roasted sesame dressing). ห้ามมีนาฬิกา, รถยนต์, มีดเดี่ยว, เครื่องปั่น หรืออุปกรณ์แปลกปลอมเด็ดขาด!
+   - เมนูผัด / ข้าวผัด: ห้ามมี avocado หรือ salad dressing เด็ดขาด!
 
 5. 🗑️ HARD RESET:
    - สคริปต์เริ่มต้นด้วยความว่างเปล่า 100% ไม่มีปุ่ม Oat Milk หรือตัวอย่าง Mock Data ใดๆ ค้างอยู่!
 
 แก้ไขโครงสร้างโค้ดตาม 5 ขั้นตอนนี้:
 
-### 1. 🛡️ SAFE SEQUENTIAL QUEUE & MEDIA FIELDS ARMOR:
+### 1. 🚀 PARALLEL & INDEPENDENT SHOT STATE:
 - เก็บ State แยกแต่ละช็อตอย่างชัดเจน:
   const [shotStates, setShotStates] = useState<Record<string, {
     status: 'idle' | 'generating' | 'success' | 'error';
@@ -112,25 +103,25 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
   const [currentProgress, setCurrentProgress] = useState<string>('');
 
 - ฟังก์ชันเรนเดอร์เดี่ยวปลอดภัย (renderSingleShot):
-  async function renderSingleShot(shot: ShotItem, forceRegen = false) {
+  async function renderSingleShot(shot: ShotItem, forceRegen = false, useTextOnly = false) {
     const shotId = String(shot.shotNumber);
     let imgUrl = shotStates[shotId]?.imageUrl || shot.imageUrl;
 
-    // STEP 1: พยายามสร้างภาพนิ่งก่อน
-    if (!imgUrl || forceRegen) {
+    // STEP 1: พยายามสร้างภาพนิ่งก่อน (เว้นแต่บังคับ Text-to-Video)
+    if (!useTextOnly && (!imgUrl || forceRegen)) {
       setShotStates(prev => ({
         ...prev,
         [shotId]: { ...prev[shotId], status: 'generating', step: 'image', errorMsg: undefined }
       }));
       try {
-        const cleanPrompt = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim() + ', zero in-image text, zero watches, zero cars, pure cinematography';
+        const cleanPrompt = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim() + ', zero in-image text, zero watches, zero cars, zero jewelry, pure culinary cinematography';
         const imageResult = await generateImage({ prompt: cleanPrompt, aspectRatio: '9:16' });
         imgUrl = typeof imageResult === 'string' ? imageResult : (imageResult?.url || imageResult?.media?.[0]?.url || imageResult);
         setShotStates(prev => ({
           ...prev,
           [shotId]: { ...prev[shotId], imageUrl: typeof imgUrl === 'string' ? imgUrl : undefined }
         }));
-      } catch (imgErr) {
+      } catch (imgErr: any) {
         console.warn('Image generation warning, will use text-to-video fallback:', imgErr);
       }
     }
@@ -141,7 +132,7 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
       [shotId]: { ...prev[shotId], status: 'generating', step: 'video', errorMsg: undefined }
     }));
     try {
-      const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || null);
+      const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || null);
       let videoResult;
       if (cleanImg) {
         videoResult = await generateVideo({
@@ -155,6 +146,7 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
         });
       }
       const vidUrl = typeof videoResult === 'string' ? videoResult : (videoResult?.url || videoResult?.media?.[0]?.url || videoResult);
+      if (!vidUrl) throw new Error('ไม่ได้รับไฟล์วิดีโอจากระบบ (Empty video response)');
       setShotStates(prev => ({
         ...prev,
         [shotId]: { ...prev[shotId], status: 'success', videoUrl: vidUrl, errorMsg: undefined }
@@ -166,20 +158,26 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
           ...prev[shotId],
           status: 'error',
           step: 'video',
-          errorMsg: vidErr?.message || 'วิดีโอสร้างไม่สำเร็จ กรุณากดแก้ไข Prompt หรือลองใหม่'
+          errorMsg: vidErr?.message || 'วิดีโอสร้างไม่สำเร็จ (Veo ปฏิเสธภาพหรือติดโควตา กรุณากดแก้ไข Prompt หรือกด Text-to-Video)'
         }
       }));
     }
   }
 
-- ฟังก์ชัน "🎬 สร้างวิดีโอทุกฉาก" (Sequential Queue with Rate-Limit Guard):
+- ฟังก์ชัน "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo Mode)":
+  async function generateAllVideosParallel() {
+    setCurrentProgress('กำลังสร้างวิดีโอทุกช็อตพร้อมกัน (Parallel Turbo)... กรุณารอสักครู่');
+    await Promise.allSettled(shots.map(s => renderSingleShot(s, false)));
+    setCurrentProgress('เสร็จสิ้นการประมวลผล ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
+  }
+
+- ฟังก์ชัน "🛡️ ทยอยสร้างทีละช็อต (Sequential Queue)":
   async function generateAllVideosSequential() {
     for (let i = 0; i < shots.length; i++) {
       setCurrentProgress('กำลังสร้างช็อต ' + (i + 1) + '/' + shots.length + '...');
       await renderSingleShot(shots[i], false);
       if (i < shots.length - 1) {
-        setCurrentProgress('พักคูลดาวน์ 3 วินาทีเพื่อความเสถียร...');
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise(r => setTimeout(r, 2000));
       }
     }
     setCurrentProgress('');
@@ -210,40 +208,27 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA 
   }
 
 - ในแต่ละการ์ดช็อต:
-  * ถ้ากำลังแก้ไข (editingShotNumber === shot.shotNumber):
-    <div className="bg-amber-50/90 border border-amber-300 p-3 rounded-xl space-y-2 text-xs">
-      <div className="font-bold text-amber-900">✏️ แก้ไข Prompt ช็อต {shot.shotNumber}:</div>
-      <div>
-        <label className="font-semibold text-slate-700">Visual Prompt (EN):</label>
-        <textarea rows={2} className="w-full p-2 border rounded font-mono text-[11px]" value={editVisualPrompt} onChange={e => setEditVisualPrompt(e.target.value)} />
-      </div>
-      <div>
-        <label className="font-semibold text-slate-700">Motion Prompt (EN):</label>
-        <textarea rows={2} className="w-full p-2 border rounded font-mono text-[11px]" value={editMotionPrompt} onChange={e => setEditMotionPrompt(e.target.value)} />
-      </div>
-      <div className="flex gap-2 justify-end">
-        <button className="px-3 py-1 bg-slate-200 text-slate-700 rounded font-bold" onClick={() => setEditingShotNumber(null)}>✕ ยกเลิก</button>
-        <button className="px-3 py-1 bg-indigo-600 text-white rounded font-bold" onClick={() => handleSaveAndRerender(shot.shotNumber)}>💾 บันทึกและเจนใหม่</button>
-      </div>
-    </div>
-  * ปุ่มการทำงานใต้การ์ด (ตอนปกติ):
-    - ปุ่ม "🔄 ลองใหม่ทั้งช็อต" (เรียก renderSingleShot(shot, true))
-    - ปุ่ม "✏️ แก้ไข Prompt" (เรียก handleStartEdit(shot))
+  * ถ้าสถานะ error: แสดงกล่องแดงเตือนชัดเจน พร้อมปุ่ม:
+    - ✏️ แก้ไข Prompt
+    - 🔄 ลองใหม่เฉพาะช็อตนี้
+    - 🎥 เจนด้วย Text-to-Video ทันที (renderSingleShot(shot, true, true))
+  * ปุ่มด้านบน:
+    - ปุ่มหลักสีม่วง/น้ำเงิน: "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)"
+    - ปุ่มรองสีเทา: "🛡️ ทยอยสร้างทีละช็อต (Sequential)"
 
-### 3. 🎯 UNIVERSAL TOPIC LOCK:
-- สคริปต์อาหารคลีนที่เป็น "ผัด / ข้าวผัด": ต้องล็อกห้ามมี avocado หรือ salad dressing เด็ดขาด!
-
-### 4. 🔍 REGEX PARSER ยืดหยุ่น 100%:
+### 3. 🔍 REGEX PARSER ยืดหยุ่น 100%:
 const shotRegex = /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi;
 
-### 5. 🗑️ HARD RESET:
+### 4. 🗑️ HARD RESET:
 - setShots([]); setShotStates({}); setEditingShotNumber(null);`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.8 Pro (Safe Sequential Queue & Media Fields Armor Edition)" — a production-grade 2-stage video production tool with safe sequential execution, rate-limit protection, media-fields error defense, inline prompt editing, and absolute topic adherence.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.9 Pro (Parallel Turbo & Independent Recovery Edition)" — a production-grade 2-stage video production tool with simultaneous multi-shot execution, rate-limit protection, media-fields error defense, inline prompt editing, and absolute topic adherence.
 
-## 1. SAFE SEQUENTIAL BATCH GENERATION (PREVENTS RATE-LIMIT CRASH):
-- When user clicks "🎬 สร้างวิดีโอทุกฉาก", trigger video generation SEQUENTIALLY one shot at a time (NOT all at once) with a 3-second delay between shots.
-- Display a progress indicator: "กำลังสร้างช็อต X/Y...".
+## 1. PARALLEL TURBO BATCH GENERATION (SIMULTANEOUS NON-BLOCKING):
+- Provide two execution buttons in the header:
+  1) Primary "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)": Dispatches all shots simultaneously using Promise.allSettled. If shot 1 errors or delays, shots 2-10 generate freely without blocking!
+  2) Secondary "🛡️ ทยอยสร้างทีละช็อต (Sequential Queue)": Runs one by one with 2s cooldown for strict rate limits.
+- Progress indicator shows real-time status.
 - PREVENT "Expected object response with media fields" ERROR:
   * Extract clean image URL safely.
   * If image is available, pass { image: cleanImg, prompt: motionPrompt }.
@@ -253,7 +238,8 @@ const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.8 
 
 ## 2. PER-CARD RETRY & WORKING INLINE PROMPT EDITING:
 - On every shot card, provide:
-  * "🔄 ลองใหม่ทั้งช็อต" (Safe Retry): regenerates image/video safely.
+  * "🔄 ลองใหม่เฉพาะช็อตนี้" (Safe Retry): regenerates image/video safely for this single card.
+  * "🎥 แปลงด้วย Text-to-Video": bypasses image immediately if Veo rejects the image.
   * "✏️ แก้ไข Prompt": opens a clean inline editor modal with two textareas:
     1) Visual Prompt (EN)
     2) Motion Prompt (EN)
@@ -262,6 +248,7 @@ const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.8 
 
 ## 3. STRICT SEPARATION & UNIVERSAL TOPIC LOCK:
 - generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, pure cinematography".
+- If the topic is clean food / brown rice bowl (ข้าวกล้อง / ข้าวกล้องโบว์ล / อาหารคลีน), strictly depict steaming wholesome brown rice, grilled chicken breast, Hass avocado, runny soft-boiled egg, edamame, sesame dressing. Zero watches, zero cars, zero knives/juicers!
 - If the topic is stir-fried rice (ข้าวผัด / ข้าวกล้องผัด), strictly depict hot wok, brown rice, egg, chicken, scallions, lime, cucumber. MANDATORY CONSTRAINT: "zero avocado, zero salad, zero salad dressing"!
 - generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
 
