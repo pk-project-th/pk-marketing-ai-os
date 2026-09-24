@@ -1954,6 +1954,31 @@ function CommercialStudioContent() {
           </div>
         </div>
 
+        {/* Banner Link to AI Video Studio */}
+        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-4 text-white shadow-md shadow-blue-500/15 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+              <Film className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <div className="text-sm font-bold flex items-center gap-2">
+                <span>🎬 ต้องการสร้างวิดีโออัตโนมัติ 100% โดยไม่ต้องพึ่ง Flow Tool?</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/25 text-white font-mono">VEO 3.1</span>
+              </div>
+              <p className="text-xs text-white/80 mt-0.5">
+                ใช้ระบบ AI Video Studio ที่เชื่อมต่อกับ Google Flow Extension ในเครื่องคุณโดยตรง เรนเดอร์ครบ 3 ฉากพร้อมรวมคลิป Final MP4
+              </p>
+            </div>
+          </div>
+          <Link
+            href={`/studio?topic=${encodeURIComponent(productName ? `${productName} ${adStyle || ""}`.trim() : "คลิปวิดีโอภาพยนตร์")}`}
+            className="px-4 py-2.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-xs shadow-md shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>เปิด AI Video Studio →</span>
+          </Link>
+        </div>
+
         {/* Dynamic Scene Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {scenes.map((scene, sceneIdx) => {
@@ -2314,19 +2339,40 @@ function CommercialStudioContent() {
                       </div>
                     )}
 
-                    {/* Face Correction Prompt Button */}
-                    <div className="pt-1.5 flex items-center justify-end">
+                    {/* Detail & Face Correction Prompt Button + Direct Video Studio Link */}
+                    <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 mt-2">
+                      <Link
+                        href={`/studio?topic=${encodeURIComponent(`${scene.visualPromptEn}. ${scene.motionPrompt || ""}`.trim())}`}
+                        className="text-[11px] font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        title="ส่งเฉพาะฉากนี้ไปเรนเดอร์วิดีโออัตโนมัติใน AI Video Studio"
+                      >
+                        <Play className="w-3 h-3 fill-current text-blue-600" />
+                        <span>🎬 ส่งฉากนี้ไปเจนวิดีโอ (AI Studio)</span>
+                      </Link>
+
                       <button
                         type="button"
                         onClick={() => {
-                          const fix = `Portrait of same subject from Slot 1 reference photo, symmetrical face, natural skin texture, sharp clear eyes, photorealistic 8k, fix distorted facial features --ar ${aspectRatio}`;
-                          copyToClipboard(fix, `facefix-${scene.id}`, "คำสั่งแก้ใบหน้า");
+                          const isHumanSubject = referenceMode === "with_images" || /portrait|model|person|man|woman|face/i.test(scene.visualPromptEn);
+                          const fix = isHumanSubject
+                            ? `Portrait of same subject from Slot 1 reference photo, symmetrical face, natural skin texture, sharp clear eyes, photorealistic 8k, fix distorted facial features --ar ${aspectRatio}`
+                            : `${scene.visualPromptEn}, photorealistic 8k, sharp focus, natural textures, perfect lighting, zero distortion, high fidelity --ar ${aspectRatio}`;
+                          copyToClipboard(fix, `facefix-${scene.id}`, isHumanSubject ? "คำสั่งแก้ใบหน้า" : "คำสั่งปรับแก้รายละเอียด");
                         }}
-                        className="text-[11px] font-bold text-slate-500 hover:text-purple-700 hover:bg-purple-50 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-purple-300 transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
-                        title="ใช้เมื่อภาพใน Google Flow มีใบหน้าเพี้ยนหรือไม่ตรง"
+                        className="text-[11px] font-bold text-slate-600 hover:text-purple-700 hover:bg-purple-50 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-purple-300 transition-all flex items-center gap-1.5 cursor-pointer"
+                        title="คัดลอกคำสั่งสำหรับปรับแก้รายละเอียดหรือใบหน้าที่เพี้ยนใน Google Flow"
                       >
-                        {copiedKey === `facefix-${scene.id}` ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <RefreshCw className="w-3.5 h-3.5 text-slate-400" />}
-                        <span>{copiedKey === `facefix-${scene.id}` ? "คัดลอกคำสั่งแก้หน้าแล้ว" : "🔄 แก้ใบหน้า (Face Correction)"}</span>
+                        {copiedKey === `facefix-${scene.id}` ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            <span className="text-emerald-700">✓ คัดลอก Prompt ปรับแก้แล้ว</span>
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+                            <span>คัดลอก Prompt ปรับแก้ภาพ (Fix Prompt)</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

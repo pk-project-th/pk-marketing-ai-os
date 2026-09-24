@@ -231,6 +231,24 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
               <LayoutDashboard className="w-4 h-4 text-slate-600" />
               <span>Dashboard (ภาพรวม)</span>
             </Link>
+
+            <Link
+              href="/studio"
+              onClick={onCloseMobile}
+              className={`flex items-center justify-between px-3 py-2 mt-1 rounded-xl text-xs font-medium border transition-all ${
+                pathname === "/studio"
+                  ? "bg-blue-50 text-blue-800 border-blue-200 font-bold shadow-luxury-sm"
+                  : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Video className="w-4 h-4 text-blue-600" />
+                <span className="font-semibold">AI Video Studio (Veo 3.1)</span>
+              </div>
+              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200">
+                AUTO
+              </span>
+            </Link>
           </div>
 
           {/* CREATE — 5 GLOBAL WORKFLOW STAGES */}

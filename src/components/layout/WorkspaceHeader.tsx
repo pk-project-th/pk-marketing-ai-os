@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, Sparkles, Search, Bell, ShieldCheck, Globe, RotateCw, CheckCircle2 } from "lucide-react";
+import { Menu, Sparkles, Search, Bell, ShieldCheck, Globe, RotateCw, CheckCircle2, Film } from "lucide-react";
 import { useBrand } from "@/context/BrandContext";
 import { AICommandBar } from "@/components/ui/AICommandBar";
 
@@ -80,6 +80,17 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenMobile }
               ⌘K
             </kbd>
           </button>
+
+          {/* Quick AI Video Studio Button */}
+          <Link
+            href="/studio"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-sm shadow-blue-500/25 transition-all active:scale-95 cursor-pointer shrink-0"
+            title="เปิดสตูดิโอสร้างวิดีโออัตโนมัติ (Google Veo 3.1 & FlowKit)"
+          >
+            <Film className="w-3.5 h-3.5 fill-current" />
+            <span className="hidden sm:inline">🎬 AI Video Studio (Veo 3.1)</span>
+            <span className="sm:hidden">🎬 Video</span>
+          </Link>
         </div>
 
         {/* Center: Global Background Task Pill */}
