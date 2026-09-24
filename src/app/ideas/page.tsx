@@ -225,7 +225,27 @@ export default function IdeaGeneratorPage() {
   const [videoLayoutMode, setVideoLayoutMode] = useState<string>("auto");
   const [customVideoSceneCount, setCustomVideoSceneCount] = useState<string>("");
 
-  const [ideas, setIdeas] = useState<ContentIdea[]>([]);
+  const [ideas, setIdeas] = useState<ContentIdea[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("pk_ideas_library_v2");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+    }
+    return [];
+  });
+
+  // Auto-save ideas to localStorage whenever ideas state changes
+  useEffect(() => {
+    if (typeof window === "undefined" || !ideas) return;
+    try {
+      localStorage.setItem("pk_ideas_library_v2", JSON.stringify(ideas));
+    } catch (e) {}
+  }, [ideas]);
+
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedScriptId, setCopiedScriptId] = useState<string | null>(null);
@@ -255,7 +275,17 @@ export default function IdeaGeneratorPage() {
                 const res = await fetch("/api/ai/ideas");
                 const data = await res.json();
                 if (data.ideas && data.ideas.length > 0) {
-                  setIdeas(data.ideas);
+                  setIdeas(prev => {
+                    const localMap = new Map(prev.map(i => [i.id, i]));
+                    for (const sIdea of data.ideas) {
+                      if (!localMap.has(sIdea.id)) localMap.set(sIdea.id, sIdea);
+                    }
+                    const combined = Array.from(localMap.values());
+                    try {
+                      localStorage.setItem("pk_ideas_library_v2", JSON.stringify(combined));
+                    } catch (e) {}
+                    return combined;
+                  });
                   const currentTaskStr = localStorage.getItem("pk_active_ideas_generation_task");
                   const currentTask = currentTaskStr ? JSON.parse(currentTaskStr) : null;
                   if (!currentTask?.isGenerating || attempts >= 20) {
@@ -296,13 +326,53 @@ export default function IdeaGeneratorPage() {
 
   const fetchIdeas = async () => {
     try {
+      // 1. Immediately read from localStorage so user never experiences data loss on refresh
+      let localList: ContentIdea[] = [];
+      if (typeof window !== "undefined") {
+        try {
+          const saved = localStorage.getItem("pk_ideas_library_v2");
+          if (saved) {
+            localList = JSON.parse(saved);
+            if (Array.isArray(localList) && localList.length > 0) {
+              setIdeas(localList);
+            }
+          }
+        } catch (e) {}
+      }
+
+      // 2. Fetch from server and merge seamlessly
       const res = await fetch("/api/ai/ideas");
       const data = await res.json();
-      if (data.ideas) {
-        setIdeas(data.ideas);
+      if (data.ideas && Array.isArray(data.ideas)) {
+        const localIdMap = new Map(localList.map(i => [i.id, i]));
+        const merged = [...localList];
+        const serverIdSet = new Set(data.ideas.map((i: ContentIdea) => i.id));
+        
+        for (const sIdea of data.ideas) {
+          if (!localIdMap.has(sIdea.id)) {
+            merged.push(sIdea);
+          }
+        }
+
+        // If local has ideas that server database lost (e.g. Render restart/deploy), sync back to server in background
+        const ideasMissingOnServer = localList.filter(i => !serverIdSet.has(i.id));
+        if (ideasMissingOnServer.length > 0) {
+          fetch("/api/ai/ideas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ syncIdeas: ideasMissingOnServer })
+          }).catch(err => console.warn("Background idea sync to server failed:", err));
+        }
+
+        setIdeas(merged);
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem("pk_ideas_library_v2", JSON.stringify(merged));
+          } catch (e) {}
+        }
       }
     } catch (e) {
-      console.error(e);
+      console.error("fetchIdeas error:", e);
     }
   };
 

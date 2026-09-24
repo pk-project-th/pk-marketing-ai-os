@@ -524,12 +524,34 @@ function CommercialStudioContent() {
 
   const fetchIdeas = async () => {
     try {
+      let combinedIdeas: ContentIdea[] = [];
+      if (typeof window !== "undefined") {
+        try {
+          const localStr = localStorage.getItem("pk_ideas_library_v2");
+          if (localStr) {
+            const localList: ContentIdea[] = JSON.parse(localStr);
+            if (Array.isArray(localList)) {
+              combinedIdeas = [...localList];
+            }
+          }
+        } catch (e) {}
+      }
+
       const res = await fetch("/api/ai/ideas");
       const data = await res.json();
-      if (data.ideas && data.ideas.length > 0) {
-        setAvailableIdeas(data.ideas);
+      if (data.ideas && Array.isArray(data.ideas)) {
+        const localIdSet = new Set(combinedIdeas.map(i => i.id));
+        for (const sIdea of data.ideas) {
+          if (!localIdSet.has(sIdea.id)) {
+            combinedIdeas.push(sIdea);
+          }
+        }
+      }
+
+      if (combinedIdeas.length > 0) {
+        setAvailableIdeas(combinedIdeas);
         if (targetIdParam) {
-          const match = data.ideas.find((i: ContentIdea) => i.id === targetIdParam);
+          const match = combinedIdeas.find((i: ContentIdea) => i.id === targetIdParam);
           if (match) {
             applyIdea(match, true);
             return;
@@ -538,14 +560,14 @@ function CommercialStudioContent() {
         // Default to first accepted or first idea if no draft
         const draftStr = localStorage.getItem("pk_commercial_clean_v3");
         if (!draftStr) {
-          const defaultIdea = data.ideas.find((i: ContentIdea) => i.status === "ACCEPTED") || data.ideas[0];
+          const defaultIdea = combinedIdeas.find((i: ContentIdea) => i.status === "ACCEPTED") || combinedIdeas[0];
           if (defaultIdea) {
             applyIdea(defaultIdea, true);
           }
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error("fetchIdeas error in commercial:", e);
     }
   };
 

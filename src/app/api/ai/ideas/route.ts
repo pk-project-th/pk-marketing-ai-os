@@ -26,6 +26,13 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+
+    // Support client-to-server idea synchronization
+    if (body.syncIdeas && Array.isArray(body.syncIdeas)) {
+      const saved = db.saveIdeas(body.syncIdeas);
+      return NextResponse.json({ success: true, count: saved.length, ideas: saved });
+    }
+
     const generated = await generateContentIdeas(body);
     const failoverMeta = getLastFailoverMeta();
     

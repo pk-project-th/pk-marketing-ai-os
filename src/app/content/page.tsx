@@ -164,11 +164,33 @@ function ContentStudioContent() {
 
   const fetchAcceptedIdeas = async () => {
     try {
+      let combinedIdeas: ContentIdea[] = [];
+      if (typeof window !== "undefined") {
+        try {
+          const localStr = localStorage.getItem("pk_ideas_library_v2");
+          if (localStr) {
+            const localList: ContentIdea[] = JSON.parse(localStr);
+            if (Array.isArray(localList)) {
+              combinedIdeas = [...localList];
+            }
+          }
+        } catch (e) {}
+      }
+
       const res = await fetch("/api/ai/ideas");
       const data = await res.json();
-      if (data.ideas && data.ideas.length > 0) {
-        const accepted = data.ideas.filter((i: ContentIdea) => i.status === "ACCEPTED");
-        const listToUse = accepted.length > 0 ? accepted : data.ideas;
+      if (data.ideas && Array.isArray(data.ideas)) {
+        const localIdSet = new Set(combinedIdeas.map(i => i.id));
+        for (const sIdea of data.ideas) {
+          if (!localIdSet.has(sIdea.id)) {
+            combinedIdeas.push(sIdea);
+          }
+        }
+      }
+
+      if (combinedIdeas.length > 0) {
+        const accepted = combinedIdeas.filter((i: ContentIdea) => i.status === "ACCEPTED");
+        const listToUse = accepted.length > 0 ? accepted : combinedIdeas;
         setAcceptedIdeas(listToUse);
 
         let initial = listToUse[0];
@@ -186,7 +208,7 @@ function ContentStudioContent() {
         handleSelectIdea(initial);
       }
     } catch (e) {
-      console.error(e);
+      console.error("fetchAcceptedIdeas error:", e);
     }
   };
 
