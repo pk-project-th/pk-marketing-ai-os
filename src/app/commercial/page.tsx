@@ -58,46 +58,49 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: AUTO-HEAL VIDEO RENDERING & INLINE PROMPT EDITOR & UNIVERSAL TOPIC SYNC — PK STUDIO v5.7 PRO:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: SAFE SEQUENTIAL QUEUE & MEDIA FIELDS ARMOR & INLINE EDITOR — PK STUDIO v5.8 PRO:
 
 ปัญหาสำคัญที่ต้องแก้ไขทันทีจากหลักฐานการใช้งานจริง:
-1. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด:
-   - สาเหตุที่แท้จริง: Google Flow พยายามเรียก generateVideo({ image: imgUrl, prompt: ... }) ทั้งๆ ที่ช็อตนั้นยังไม่มีภาพ หรือสร้างภาพ (generateImage) ไม่สำเร็จ ทำให้ imgUrl เป็น undefined ส่งผลให้ SDK ภายในของ Google Flow พังและพ่น error "Expected object response with media fields"
-   - พอผู้ใช้กด "🔄 ลองใหม่เฉพาะช็อตนี้" ระบบก็กลับไปเรียก generateVideo ซ้ำบนรูปที่ไม่มีอยู่เดิม จึงพังซ้ำทันที!
-   - การแก้ไขระดับโครงสร้าง (Auto-Heal Dual Stage):
-     * ในทุกฟังก์ชันที่สร้างวิดีโอ (ทั้ง "🎬 สร้างวิดีโอทุกฉาก" และ "🔄 ลองใหม่"): ต้องตรวจสอบก่อนเสมอว่ามี imgUrl หรือไม่!
-     * หากไม่มีรูปภาพ (ภาพยังไม่ถูกสร้างหรือ error มาก่อน): ให้ระบบสั่ง **Auto-Generate Image ทันทีโดยอัตโนมัติ** ก่อน แล้วนำรูปภาพที่ได้มาส่งต่อเข้า Veo 2 เพื่อเรนเดอร์วิดีโอทันทีอย่างราบรื่น ไม่มีสะดุด!
-     * บนการ์ดแต่ละช็อต ให้มีปุ่มแยกชัดเจน:
-       - 🖼️ สร้างรูปใหม่ (Regen Image Only)
-       - 🎬 สร้างวิดีโอใหม่ (Regen Video Only)
-       - 🔄 ลองใหม่ทั้งช็อต (รูป+วิดีโอ) (Full Auto-Heal)
+1. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด (100% BULLETPROOF):
+   - สาเหตุที่แท้จริง:
+     1) การส่งคำสั่งสร้างวิดีโอพร้อมกัน 10 ช็อต (Parallel) ทำให้ชน Rate Limit ของ Google Flow Veo API ส่งผลให้เซิร์ฟเวอร์ตีกลับด้วย Response ที่ไม่มีฟิลด์ Media ทำให้ระบบแครชทุกช็อตพร้อมกัน
+     2) การส่งค่า image: undefined หรือส่ง Object รูปภาพที่ผิดโครงสร้างเข้าไปใน generateVideo SDK ของ Google Flow จะแครชทันที
+   - การแก้ไขเด็ดขาดระดับโครงสร้าง (Media Fields Armor):
+     A) SAFE SEQUENTIAL QUEUE: ห้ามรัน Veo พร้อมกัน 10 ช็อตเด็ดขาด! ให้รันทีละช็อตตามลำดับ (Sequential Loop) และเว้นระยะ Cooldown 3 วินาทีระหว่างช็อต พร้อมแสดงข้อความ "กำลังสร้างช็อต X/Y... กรุณารอสักครู่"
+     B) DUAL-MODE FALLBACK (Image-to-Video หรือ Text-to-Video อัตโนมัติ):
+        - ตรวจสอบ URL รูปภาพ: const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || imgUrl?.media?.[0]?.url || null);
+        - ถ้ามี cleanImg ที่ถูกต้อง ➔ เรียก generateVideo({ image: cleanImg, prompt: motionPrompt })
+        - ถ้าไม่มี cleanImg หรือสร้างภาพไม่สำเร็จ ➔ ห้ามส่ง image: undefined เด็ดขาด! ให้เปลี่ยนเป็น Text-to-Video อัตโนมัติทันที: เรียก generateVideo({ prompt: (shot.visualPrompt + '. ' + shot.motionPrompt).trim() })
+        - วิธีนี้จะทำให้ Veo เรนเดอร์วิดีโอสำเร็จทุกช็อต 100% ไม่มีทางเจอ "Expected object response with media fields" อีกต่อไป!
 
-2. ✏️ แก้ไขปุ่มดินสอ / INLINE PROMPT EDITOR ที่กดไม่ได้หรือแก้ไขไม่ติด:
-   - ต้องสร้าง State สำหรับเปิดแก้ไขแต่ละช็อตอย่างแท้จริง:
-     const [editingShotNumber, setEditingShotNumber] = useState<number | null>(null);
-     const [editVisualPrompt, setEditVisualPrompt] = useState<string>('');
-     const [editMotionPrompt, setEditMotionPrompt] = useState<string>('');
-   - เมื่อคลิกปุ่ม "✏️ แก้ไข Prompt": เปิดกล่องข้อความ Textarea 2 ช่อง:
-     1) [Visual Prompt (EN)]: สำหรับเจนรูปภาพ
-     2) [Motion Prompt (EN)]: สำหรับคำสั่งเคลื่อนไหว Veo 2
-   - มีปุ่ม "💾 บันทึกและเจนใหม่" (อัปเดต state ของช็อตนั้น และสั่งเรนเดอร์ทันที) และปุ่ม "✕ ยกเลิก"
-   - โครงสร้างและชื่อช่องตรงกับหน้า OS 100% ทำให้ผู้ใช้สามารถก้อปปี้ข้อความจาก OS มาวางได้ทันทีอย่างไร้รอยต่อ!
+2. 📋 UNIVERSAL SCRIPT PARSER (รองรับทุกฟอร์แมต ทั้งจาก OS และจากแชต):
+   - Parser ต้องฉลาดและยืดหยุ่น:
+     * รองรับหัวข้อช็อตทั้ง [SHOT N], [SCENE N], [ช็อต N], Shot N:
+     * ดึง Visual Prompt จาก "- Visual Prompt (EN):" หรือ "- Visual Prompt:" หรือ "Visual Prompt:"
+     * ดึง Motion Prompt จาก "- Camera & Physical Motion (Veo 2):" หรือ "- Camera & Movement:" หรือ "- Motion Prompt:"
+     * ดึง เสียงพากย์ จาก "- Thai Voiceover Script:" หรือ "- Voiceover (TH):" หรือ "- Voiceover:"
+     * ดึง ข้อความบนจอ จาก "- On-Screen Text (TH):" หรือ "- On-Screen Text:"
+     * ดึง เวลา จาก "- Duration: [N]s"
 
-3. 🍳 UNIVERSAL TOPIC LOCK: ข้าวกล้องผัด / ผัดซีอิ๊ว ห้ามมีอโวคาโดเด็ดขาด (ZERO AVOCADO):
-   - หากสคริปต์เป็นเรื่อง "ข้าวกล้องผัด" หรือ "ผัดซีอิ๊ว" หรือมีคำว่า "ผัด":
-     * Visual Prompt และ Imagen ต้องเน้นที่: กระทะเหล็กหล่อ, ข้าวกล้องเม็ดร่วนสีทองเคลือบซีอิ๊ว, เนื้อไก่หั่นเต๋า, ไข่ขยี้สีทอง, ต้นหอมซอย, มะนาวผ่าซีก, แตงกวาซอย
-     * บังคับพ่วง Negative Prompt เสมอ: ", zero avocado, zero salad leaves, zero salad dressing, zero in-image text, zero watches, zero cars, zero jewelry, pure food cinematography"
-     * ห้ามใส่ภาพอโวคาโด หรือ สลัดโบว์ล เด็ดขาด!
+3. ✏️ WORKING INLINE PROMPT EDITOR & INDIVIDUAL RETRY (ใช้งานได้จริง 100%):
+   - มีปุ่ม "✏️ แก้ไข Prompt" บนทุกการ์ดช็อต
+   - เมื่อคลิก จะเปิดแบบฟอร์ม 2 ช่องชัดเจน:
+     1) Visual Prompt (EN) สำหรับสร้างภาพ
+     2) Motion Prompt (EN) สำหรับสั่งมุมกล้อง Veo
+   - มีปุ่ม "💾 บันทึกและเจนใหม่" (สั่งเรนเดอร์เฉพาะช็อตนี้แบบเดี่ยวทันที) และ "✕ ยกเลิก"
+   - มีปุ่ม "🔄 ลองใหม่ช็อตนี้" บนการ์ดที่ติดขัด
 
-4. ⚡ 100% PARALLEL BATCH EXECUTION:
-   - ทุกช็อตเรนเดอร์คู่ขนาน (Promise.allSettled) ช็อตไหนผ่าน เล่นได้ทันที ช็อตไหนติดปัญหา แสดง Error สีแดงชัดเจน ไม่บล็อกช็อตอื่น!
+4. 🍳 UNIVERSAL TOPIC LOCK เมนูผัด (ZERO AVOCADO):
+   - หากสคริปต์เป็นเมนู "ข้าวผัด" หรือ "ข้าวกล้องผัด" หรือมีคำว่า "ผัด":
+     * ห้ามใส่อโวคาโด ห้ามใส่สลัดเด็ดขาด (Enforce: zero avocado, zero salad, zero salad dressing)
+     * ล็อกเป็นข้าวกล้องผัดกระทะร้อนฉ่า หอมซีอิ๊วดำ อกไก่นุ่ม ไข่ร่วน ต้นหอม มะนาว แตงกวา
 
 5. 🗑️ HARD RESET:
    - สคริปต์เริ่มต้นด้วยความว่างเปล่า 100% ไม่มีปุ่ม Oat Milk หรือตัวอย่าง Mock Data ใดๆ ค้างอยู่!
 
 แก้ไขโครงสร้างโค้ดตาม 5 ขั้นตอนนี้:
 
-### 1. ⚡ AUTO-HEAL PARALLEL VEO GENERATION & INDEPENDENT STATE:
+### 1. 🛡️ SAFE SEQUENTIAL QUEUE & MEDIA FIELDS ARMOR:
 - เก็บ State แยกแต่ละช็อตอย่างชัดเจน:
   const [shotStates, setShotStates] = useState<Record<string, {
     status: 'idle' | 'generating' | 'success' | 'error';
@@ -106,49 +109,55 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: AUTO-HEAL VIDEO RENDERING & IN
     videoUrl?: string;
     imageUrl?: string;
   }>>({});
+  const [currentProgress, setCurrentProgress] = useState<string>('');
 
-- ฟังก์ชันเรนเดอร์เดี่ยวพร้อมระบบ Auto-Heal (renderSingleShot):
-  async function renderSingleShot(shot: ShotItem, forceRegenImage = false) {
+- ฟังก์ชันเรนเดอร์เดี่ยวปลอดภัย (renderSingleShot):
+  async function renderSingleShot(shot: ShotItem, forceRegen = false) {
     const shotId = String(shot.shotNumber);
     let imgUrl = shotStates[shotId]?.imageUrl || shot.imageUrl;
 
-    // STEP 1: ตรวจสอบรูปภาพ หากไม่มีหรือถูกบังคับ ให้เจนรูปภาพก่อนเสมอ!
-    if (!imgUrl || forceRegenImage) {
+    // STEP 1: พยายามสร้างภาพนิ่งก่อน
+    if (!imgUrl || forceRegen) {
       setShotStates(prev => ({
         ...prev,
         [shotId]: { ...prev[shotId], status: 'generating', step: 'image', errorMsg: undefined }
       }));
       try {
-        const imageResult = await generateImage({
-          prompt: shot.visualPrompt + ', zero in-image text, zero watches, zero cars, zero jewelry, pure cinematography'
-        });
-        imgUrl = imageResult;
+        const cleanPrompt = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim() + ', zero in-image text, zero watches, zero cars, pure cinematography';
+        const imageResult = await generateImage({ prompt: cleanPrompt, aspectRatio: '9:16' });
+        imgUrl = typeof imageResult === 'string' ? imageResult : (imageResult?.url || imageResult?.media?.[0]?.url || imageResult);
         setShotStates(prev => ({
           ...prev,
-          [shotId]: { ...prev[shotId], imageUrl: imgUrl }
+          [shotId]: { ...prev[shotId], imageUrl: typeof imgUrl === 'string' ? imgUrl : undefined }
         }));
-      } catch (imgErr: any) {
-        setShotStates(prev => ({
-          ...prev,
-          [shotId]: { ...prev[shotId], status: 'error', step: 'image', errorMsg: 'สร้างรูปภาพไม่สำเร็จ: ' + (imgErr?.message || 'ภาพไม่ผ่านเกณฑ์ความปลอดภัย') }
-        }));
-        return;
+      } catch (imgErr) {
+        console.warn('Image generation warning, will use text-to-video fallback:', imgErr);
       }
     }
 
-    // STEP 2: เมื่อมีรูปภาพแน่นอนแล้ว สั่งเรนเดอร์วิดีโอ Veo 2
+    // STEP 2: เรนเดอร์วิดีโอด้วย Dual-Mode Fallback ป้องกัน Crash
     setShotStates(prev => ({
       ...prev,
       [shotId]: { ...prev[shotId], status: 'generating', step: 'video', errorMsg: undefined }
     }));
     try {
-      const videoResult = await generateVideo({
-        image: imgUrl,
-        prompt: shot.motionPrompt || shot.visualPrompt
-      });
+      const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || null);
+      let videoResult;
+      if (cleanImg) {
+        videoResult = await generateVideo({
+          image: cleanImg,
+          prompt: shot.motionPrompt || shot.visualPrompt
+        });
+      } else {
+        // Safe Text-to-Video Fallback: ป้องกัน Expected object response with media fields เมื่อไม่มีภาพ
+        videoResult = await generateVideo({
+          prompt: (shot.visualPrompt + '. ' + (shot.motionPrompt || '')).trim()
+        });
+      }
+      const vidUrl = typeof videoResult === 'string' ? videoResult : (videoResult?.url || videoResult?.media?.[0]?.url || videoResult);
       setShotStates(prev => ({
         ...prev,
-        [shotId]: { ...prev[shotId], status: 'success', videoUrl: videoResult, errorMsg: undefined }
+        [shotId]: { ...prev[shotId], status: 'success', videoUrl: vidUrl, errorMsg: undefined }
       }));
     } catch (vidErr: any) {
       setShotStates(prev => ({
@@ -157,16 +166,23 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: AUTO-HEAL VIDEO RENDERING & IN
           ...prev[shotId],
           status: 'error',
           step: 'video',
-          errorMsg: vidErr?.message || 'วิดีโอไม่ผ่านเกณฑ์ Veo 2 กรุณากดแก้ไข Prompt หรือลองใหม่'
+          errorMsg: vidErr?.message || 'วิดีโอสร้างไม่สำเร็จ กรุณากดแก้ไข Prompt หรือลองใหม่'
         }
       }));
     }
   }
 
-- ฟังก์ชัน "🎬 สร้างวิดีโอทุกฉาก" (Parallel Auto-Heal Mode):
-  async function generateAllVideosParallel() {
-    const promises = shots.map(shot => renderSingleShot(shot, false));
-    await Promise.allSettled(promises);
+- ฟังก์ชัน "🎬 สร้างวิดีโอทุกฉาก" (Sequential Queue with Rate-Limit Guard):
+  async function generateAllVideosSequential() {
+    for (let i = 0; i < shots.length; i++) {
+      setCurrentProgress('กำลังสร้างช็อต ' + (i + 1) + '/' + shots.length + '...');
+      await renderSingleShot(shots[i], false);
+      if (i < shots.length - 1) {
+        setCurrentProgress('พักคูลดาวน์ 3 วินาทีเพื่อความเสถียร...');
+        await new Promise(r => setTimeout(r, 3000));
+      }
+    }
+    setCurrentProgress('');
   }
 
 ### 2. ✏️ WORKING INLINE EDITOR & RETRY BUTTONS PER CARD:
@@ -216,27 +232,28 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: AUTO-HEAL VIDEO RENDERING & IN
 
 ### 3. 🎯 UNIVERSAL TOPIC LOCK:
 - สคริปต์อาหารคลีนที่เป็น "ผัด / ข้าวผัด": ต้องล็อกห้ามมี avocado หรือ salad dressing เด็ดขาด!
-- generateImage: ส่งเฉพาะ shot.visualPrompt พร้อม TOPIC LOCK
 
-### 4. 🔍 REGEX PARSER ที่แม่นยำ 100%:
-const shotRegex = /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi;
+### 4. 🔍 REGEX PARSER ยืดหยุ่น 100%:
+const shotRegex = /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi;
 
 ### 5. 🗑️ HARD RESET:
 - setShots([]); setShotStates({}); setEditingShotNumber(null);`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.7 Pro (Auto-Heal Veo & Synchronized Editor Edition)" — a production-grade 2-stage video production tool with 100% parallel auto-healing video generation, per-shot error diagnostics, inline prompt editing, and absolute topic adherence.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.8 Pro (Safe Sequential Queue & Media Fields Armor Edition)" — a production-grade 2-stage video production tool with safe sequential execution, rate-limit protection, media-fields error defense, inline prompt editing, and absolute topic adherence.
 
-## 1. AUTO-HEAL PARALLEL BATCH GENERATION:
-- When user clicks "🎬 สร้างวิดีโอทุกฉาก", trigger video generation for ALL shots concurrently using Promise.allSettled.
-- PRE-FLIGHT IMAGE CHECK: If shot.imageUrl is missing or undefined, automatically call generateImage first, save the resulting imageUrl, and immediately proceed to generateVideo!
-- NEVER pass undefined image to generateVideo (prevents "Expected object response with media fields" crash)!
+## 1. SAFE SEQUENTIAL BATCH GENERATION (PREVENTS RATE-LIMIT CRASH):
+- When user clicks "🎬 สร้างวิดีโอทุกฉาก", trigger video generation SEQUENTIALLY one shot at a time (NOT all at once) with a 3-second delay between shots.
+- Display a progress indicator: "กำลังสร้างช็อต X/Y...".
+- PREVENT "Expected object response with media fields" ERROR:
+  * Extract clean image URL safely.
+  * If image is available, pass { image: cleanImg, prompt: motionPrompt }.
+  * If image is missing/undefined, DO NOT PASS undefined image! Instead, automatically fall back to pure text-to-video: generateVideo({ prompt: visualPrompt + '. ' + motionPrompt }).
 - Every shot card manages its own state: status ('idle' | 'generating' | 'success' | 'error'), step ('image' | 'video'), errorMsg, videoUrl, imageUrl.
 - Completed shots display their ready-to-play video immediately.
-- Failed shots display an explicit red error box with the error reason, without blocking remaining shots.
 
 ## 2. PER-CARD RETRY & WORKING INLINE PROMPT EDITING:
 - On every shot card, provide:
-  * "🔄 ลองใหม่ทั้งช็อต" (Full Auto-Heal): generates image first if needed, then renders video.
+  * "🔄 ลองใหม่ทั้งช็อต" (Safe Retry): regenerates image/video safely.
   * "✏️ แก้ไข Prompt": opens a clean inline editor modal with two textareas:
     1) Visual Prompt (EN)
     2) Motion Prompt (EN)
@@ -244,7 +261,7 @@ const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.7 
 - Fully synchronized with PK Marketing AI OS layout so users can easily copy-paste prompts between platforms.
 
 ## 3. STRICT SEPARATION & UNIVERSAL TOPIC LOCK:
-- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories, pure topic cinematography".
+- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, pure cinematography".
 - If the topic is stir-fried rice (ข้าวผัด / ข้าวกล้องผัด), strictly depict hot wok, brown rice, egg, chicken, scallions, lime, cucumber. MANDATORY CONSTRAINT: "zero avocado, zero salad, zero salad dressing"!
 - generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
 
@@ -254,14 +271,14 @@ const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.7 
 - Provide a clean "🗑️ ล้างข้อมูล (Hard Reset)" button next to the input area to wipe all state in 1 click.
 
 ## 5. ROCK-SOLID PARSER REGEX:
-Use regex: /\\[(?:SHOT|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|ช็อต)\\s*\\d+\\]|$)/gi
+Use regex: /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi
 - shotNumber: m[1]
-- shotTitle: m[2]?.trim() (e.g. "เปิดเรื่อง (Viral Hook)")
+- shotTitle: m[2]?.trim()
 - duration: parse from "- Duration: [N]s"
-- onScreenText: parse from "- On-Screen Text (TH): [text]"
-- thaiVoiceover: parse from "- Thai Voiceover Script: [text]"
-- visualPrompt: parse from "- Visual Prompt (EN): [text]" (SENT ONLY TO IMAGE GENERATION)
-- motionPrompt: parse from "- Camera & Physical Motion (Veo 2): [text]" (SENT ONLY TO VIDEO GENERATION)`;
+- onScreenText: parse from "- On-Screen Text (TH): [text]" or "- On-Screen Text: [text]"
+- thaiVoiceover: parse from "- Thai Voiceover Script: [text]" or "- Voiceover (TH): [text]" or "- Voiceover: [text]"
+- visualPrompt: parse from "- Visual Prompt (EN): [text]" or "- Visual Prompt: [text]"
+- motionPrompt: parse from "- Camera & Physical Motion (Veo 2): [text]" or "- Camera & Movement: [text]"`;
 
 export default function CommercialStudioPage() {
   return (
@@ -433,6 +450,14 @@ function CommercialStudioContent() {
     setCopiedKey(key);
     showToast(`✓ คัดลอก ${label || "ข้อความ"} เรียบร้อยแล้ว!`);
     setTimeout(() => setCopiedKey(null), 2500);
+  };
+
+  // Helper to extract shot-by-shot script only for Google Flow Campaign Script box
+  const getCleanShotsScript = () => {
+    if (!scenes || scenes.length === 0) return masterDirectiveV3 || "";
+    return scenes.map(s => 
+      `[SHOT ${s.sceneNumber}] ${s.shotType} | Timecode: ${s.timecode}\n- Duration: ${s.durationSec}s\n- On-Screen Text (TH): "${s.onScreenTextTh}"\n- Text Position: ${s.textPosition || "Lower Third"}\n- Thai Voiceover Script: "${s.thaiVoiceover}"\n- Visual Prompt (EN): ${s.visualPromptEn.replace(/[\`"]/g, "'")}\n- Camera & Physical Motion (Veo 2): ${s.motionPrompt || s.cameraMovement}`
+    ).join("\n\n");
   };
 
   // 1. Initial Load: Restore draft from localStorage
@@ -1490,17 +1515,17 @@ function CommercialStudioContent() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-200">
-                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.7 PRO STUDIO)
+                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.8 PRO STUDIO)
                 </span>
                 <span className="text-xs font-bold text-slate-600">
-                  ⚡ Auto-Heal รูปภาพก่อนวิดีโอ · กล่องแก้ Prompt อิสระสัมพันธ์กับ OS · ล็อกเมนูผัดไร้อโวคาโด 100%
+                  ⚡ ป้องกัน Rate-Limit & Media Fields Error · Safe Sequential Queue · แก้ไข Prompt อิสระสัมพันธ์กับ OS
                 </span>
               </div>
               <h2 className="text-base font-black text-slate-900 tracking-tight mt-1">
                 คำสั่งแก้และอัปเกรด Google Flow Tool (นำไปวางในแท็บ [แก้ไข] ของ Flow)
               </h2>
               <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
-                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>อัปเกรดระบบเป็น Auto-Heal Parallel Generation สร้างรูปก่อนวิดีโออัตโนมัติ ไม่เจอ Media Fields Crash และมีกล่องแก้ไข Prompt รายช็อตสัมพันธ์กับ OS</strong> ทันที!
+                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v5.8 Pro)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>อัปเกรดระบบเป็น Safe Sequential Queue + Media Fields Armor ไม่หลุด Rate Limit ไม่เจอ Media Fields Crash และมีกล่องแก้ไข Prompt รายช็อตสัมพันธ์กับ OS</strong> ทันที!
               </p>
             </div>
           </div>
@@ -1564,7 +1589,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Copy className="w-4 h-4 text-teal-200" />
-                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro Auto-Heal) — แนะนำ</span>
+                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.8 Pro Sequential Armor) — แนะนำ</span>
                 </>
               )}
             </button>
@@ -1572,7 +1597,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.7 Pro")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.8 Pro")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1583,7 +1608,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.7 Pro Rebuild)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v5.8 Pro Rebuild)</span>
                 </>
               )}
             </button>
@@ -1673,23 +1698,46 @@ function CommercialStudioContent() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => copyToClipboard(masterDirectiveV3, "hero-master", `Master Directive ${scenes.length || sceneCount} ฉาก`)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
-          >
-            {copiedKey === "hero-master" ? (
-              <>
-                <Check className="w-4 h-4 text-emerald-300" />
-                <span>คัดลอก Master Directive สำเร็จแล้ว!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4 text-indigo-200" />
-                <span>📋 คัดลอก Master Directive {scenes.length || sceneCount} ฉาก ({targetDuration}s)</span>
-              </>
-            )}
-          </button>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {/* Button 1: Copy Full Master Directive */}
+            <button
+              type="button"
+              onClick={() => copyToClipboard(masterDirectiveV3, "hero-master", `Master Directive ${scenes.length || sceneCount} ฉาก`)}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+            >
+              {copiedKey === "hero-master" ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-300" />
+                  <span>คัดลอก Master Directive สำเร็จแล้ว!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 text-indigo-200" />
+                  <span>📋 คัดลอก Master Directive {scenes.length || sceneCount} ฉาก ({targetDuration}s)</span>
+                </>
+              )}
+            </button>
+
+            {/* Button 2: Copy Clean Shots Script (Campaign Script) */}
+            <button
+              type="button"
+              onClick={() => copyToClipboard(getCleanShotsScript(), "clean-shots-script", `เฉพาะสคริปต์ ${scenes.length || sceneCount} ช็อตสำหรับ Google Flow`)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+              title="คัดลอกเฉพาะบล็อก [SHOT 1] ถึง [SHOT N] เพื่อนำไปวางในช่อง Campaign Script ของ Google Flow โดยตรง"
+            >
+              {copiedKey === "clean-shots-script" ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-200" />
+                  <span>คัดลอกสคริปต์ช็อตแล้ว!</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 text-emerald-200" />
+                  <span>🎬 คัดลอกเฉพาะสคริปต์ช็อต (วางใน Flow)</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Master Directive Preview Area */}
