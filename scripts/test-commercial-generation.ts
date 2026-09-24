@@ -418,8 +418,89 @@ async function runTests() {
     throw new Error("TEST 6 FAILED assertions.");
   }
 
+  // -------------------------------------------------------------
+  // TEST 7: ข้าวกล้องโบว์ลิ่งสไตล์โฮมเมด (Homemade Brown Rice Bowl, 10 scenes)
+  // -------------------------------------------------------------
+  console.log("\n[TEST 7] Testing 'ข้าวกล้องโบว์ลิ่งสไตล์โฮมเมด' (10 scenes)...");
+  const bowlReq = new Request("http://localhost:3000/api/ai/commercial", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productName: "ข้าวกล้องโบว์ลิ่งสไตล์โฮมเมด",
+      brand: "Clean Kitchen",
+      targetDuration: 30,
+      sceneCount: 10,
+      pacingStyle: "standard",
+      referenceMode: "pure_prompt",
+      hasPresenter: true,
+      presenterGender: "female"
+    })
+  });
+
+  const bowlRes = await POST(bowlReq as any);
+  const bowlData = await bowlRes.json();
+  if (!bowlData.success) throw new Error(`Test 7 Failed: ${bowlData.error}`);
+  const bowlScenes = bowlData.scenes || bowlData.data?.scenes;
+  console.log(`Generated ${bowlScenes.length} scenes for ข้าวกล้องโบว์ลิ่ง.`);
+  if (bowlScenes.length !== 10) throw new Error(`Expected 10 scenes, got ${bowlScenes.length}`);
+
+  let bowlPassed = true;
+  for (const scene of bowlScenes) {
+    const prompt = scene.visualPromptEn;
+    const lower = prompt.toLowerCase();
+
+    // Must NOT contain Thai characters in prompt
+    if (thaiCharRegex.test(prompt)) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} contains Thai text! Prompt: ${prompt}`);
+      bowlPassed = false;
+    }
+
+    // Must contain brown rice or bowl or clean food elements
+    const hasBowlFoodTerm =
+      lower.includes("brown rice") ||
+      lower.includes("bowl") ||
+      lower.includes("rice") ||
+      lower.includes("chicken") ||
+      lower.includes("avocado") ||
+      lower.includes("egg") ||
+      lower.includes("sesame") ||
+      lower.includes("quinoa") ||
+      lower.includes("clean");
+
+    if (!hasBowlFoodTerm) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} lacks food/rice bowl keywords! Prompt: ${prompt}`);
+      bowlPassed = false;
+    }
+
+    // Strip negative safety text before checking for banned luxury items
+    const subjectContent = lower
+      .replace(/zero watches/g, "")
+      .replace(/zero cars/g, "")
+      .replace(/zero jewelry/g, "")
+      .replace(/zero fashion accessories/g, "");
+
+    for (const b of bannedLuxuryWords) {
+      if (subjectContent.includes(b)) {
+        console.error(`FAIL: Scene ${scene.sceneNumber} depicts banned luxury item '${b}'! Prompt: ${prompt}`);
+        bowlPassed = false;
+      }
+    }
+
+    // Must NOT leak swimming or pla som or oats
+    if (lower.includes("pla som") || lower.includes("swimming pool") || lower.includes("kickboard")) {
+      console.error(`FAIL: Scene ${scene.sceneNumber} leaked other domains! Prompt: ${prompt}`);
+      bowlPassed = false;
+    }
+  }
+
+  if (bowlPassed) {
+    console.log(">>> TEST 7 PASSED: ข้าวกล้องโบว์ลิ่งสไตล์โฮมเมด is 100% wholesome rice bowl food, zero watches, zero cars, zero Thai in visual prompt!");
+  } else {
+    throw new Error("TEST 7 FAILED assertions.");
+  }
+
   console.log("\n==========================================");
-  console.log("ALL 6 TOPIC ISOLATION & DOMAIN ACCURACY TESTS PASSED 100%!");
+  console.log("ALL 7 TOPIC ISOLATION & DOMAIN ACCURACY TESTS PASSED 100%!");
   console.log("==========================================");
 }
 

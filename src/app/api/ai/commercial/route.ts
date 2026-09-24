@@ -209,14 +209,45 @@ export async function POST(req: Request) {
        combinedStr.includes("คุมอาหาร") ||
        combinedStr.includes("meal prep") ||
        combinedStr.includes("กล่องข้าว") ||
+       combinedStr.includes("ข้าวกล่อง") ||
+       combinedStr.includes("ข้าวกล้อง") ||
+       combinedStr.includes("ไรซ์เบอร์รี่") ||
+       combinedStr.includes("ข้าวไรซ์เบอร์รี่") ||
+       combinedStr.includes("โบว์ล") ||
+       combinedStr.includes("โบว์ลิ่ง") ||
+       combinedStr.includes("โบล") ||
+       combinedStr.includes("โบลว์") ||
+       combinedStr.includes("bowl") ||
+       combinedStr.includes("grain bowl") ||
+       combinedStr.includes("poke bowl") ||
+       combinedStr.includes("buddha bowl") ||
+       combinedStr.includes("ข้าวคลีน") ||
+       combinedStr.includes("เมนูคลีน") ||
        combinedStr.includes("อาหารสุขภาพ") ||
+       combinedStr.includes("อาหารเพื่อสุขภาพ") ||
+       combinedStr.includes("เพื่อสุขภาพ") ||
        combinedStr.includes("กินคลีน") ||
        combinedStr.includes("ไดเอต") ||
        combinedStr.includes("diet") ||
        combinedStr.includes("ไขมันต่ำ") ||
        combinedStr.includes("แคลอรี่") ||
        combinedStr.includes("คีโต") ||
-       combinedStr.includes("keto"));
+       combinedStr.includes("keto") ||
+       ((combinedStr.includes("โฮมเมด") || combinedStr.includes("homemade")) &&
+        (combinedStr.includes("ข้าว") || combinedStr.includes("อาหาร") || combinedStr.includes("สุขภาพ") || combinedStr.includes("สลัด"))));
+
+    const isRiceBowl =
+      isCleanFood &&
+      (combinedStr.includes("ข้าว") ||
+       combinedStr.includes("โบว์ล") ||
+       combinedStr.includes("โบว์ลิ่ง") ||
+       combinedStr.includes("โบล") ||
+       combinedStr.includes("โบลว์") ||
+       combinedStr.includes("bowl") ||
+       combinedStr.includes("grain bowl") ||
+       combinedStr.includes("poke bowl") ||
+       combinedStr.includes("buddha bowl") ||
+       combinedStr.includes("ไรซ์เบอร์รี่"));
 
     const isFishOrPlaSom =
       !isSwimming &&
@@ -245,6 +276,8 @@ export async function POST(req: Request) {
       (isFishOrPlaSom ||
        isPadGaprao ||
        combinedStr.includes("อาหาร") ||
+       combinedStr.includes("ข้าว") ||
+       combinedStr.includes("โฮมเมด") ||
        combinedStr.includes("ผัด") ||
        combinedStr.includes("ไข่ดาว") ||
        combinedStr.includes("ทำอาหาร") ||
@@ -472,9 +505,43 @@ export async function POST(req: Request) {
         tags.push("professional swimming lessons, poolside training session with kickboard, swim coach, and swimming goggles in clear pool");
       }
 
-      // 2. Clean Food & Healthy Meal Prep (Strictly Food - Zero Watches)
-      if (isCleanFood || lower.includes("คลีน") || lower.includes("อาหารคลีน") || lower.includes("clean food") || lower.includes("clean eating") || lower.includes("salad") || lower.includes("สลัด") || lower.includes("อกไก่") || lower.includes("meal prep") || lower.includes("กินคลีน")) {
-        tags.push("wholesome colorful clean eating meal prep dish with tender sliced grilled chicken breast, fresh avocado, ruby cherry tomatoes, steamed broccoli florets, and organic rainbow quinoa bowl");
+      // 2. Clean Food, Healthy Meal Prep & Rice/Grain Bowls (Strictly Food - Zero Watches)
+      if (
+        isCleanFood ||
+        lower.includes("คลีน") ||
+        lower.includes("อาหารคลีน") ||
+        lower.includes("clean food") ||
+        lower.includes("clean eating") ||
+        lower.includes("salad") ||
+        lower.includes("สลัด") ||
+        lower.includes("อกไก่") ||
+        lower.includes("meal prep") ||
+        lower.includes("กินคลีน") ||
+        lower.includes("ข้าวกล้อง") ||
+        lower.includes("ไรซ์เบอร์รี่") ||
+        lower.includes("โบว์ล") ||
+        lower.includes("โบว์ลิ่ง") ||
+        lower.includes("โบล") ||
+        lower.includes("bowl")
+      ) {
+        if (
+          isRiceBowl ||
+          lower.includes("ข้าวกล้อง") ||
+          lower.includes("ไรซ์เบอร์รี่") ||
+          lower.includes("โบว์ล") ||
+          lower.includes("โบว์ลิ่ง") ||
+          lower.includes("โบล") ||
+          lower.includes("bowl") ||
+          lower.includes("ข้าว")
+        ) {
+          tags.push(
+            "wholesome colorful homemade brown rice bowl topped with savory sliced grilled chicken breast, creamy Hass avocado slices, steamed edamame, soft-boiled golden egg yolk, and roasted sesame seeds in artisan ceramic bowl"
+          );
+        } else {
+          tags.push(
+            "wholesome colorful clean eating meal prep dish with tender sliced grilled chicken breast, fresh avocado, ruby cherry tomatoes, steamed broccoli florets, and organic rainbow quinoa bowl"
+          );
+        }
       }
 
       // 3. Oats, Cereal & Healthy Breakfast Foam
@@ -506,24 +573,24 @@ export async function POST(req: Request) {
       if (lower.includes("ชา") || lower.includes("tea") || lower.includes("มัทฉะ")) tags.push("premium organic tea beverage in glass cup");
       if (lower.includes("น้ำผลไม้") || lower.includes("juice")) tags.push("fresh cold-pressed fruit juice in clear glass bottle");
       if (lower.includes("ขนม") || lower.includes("snack") || lower.includes("เบเกอรี่")) tags.push("gourmet artisan snack bakery package");
-      if (lower.includes("อาหาร") || lower.includes("ทำอาหาร") || lower.includes("ครัว")) {
-        if (tags.length === 0) tags.push("delicious freshly prepared culinary dish");
+      if (lower.includes("อาหาร") || lower.includes("ทำอาหาร") || lower.includes("ครัว") || lower.includes("ข้าว") || lower.includes("โฮมเมด")) {
+        if (tags.length === 0) tags.push("delicious freshly prepared culinary dish on elegant tableware");
       }
 
-      // 6. Skincare & Personal Care
+      // 7. Skincare & Personal Care
       if (lower.includes("สบู่")) tags.push("artisan organic botanical soap bar");
       if (lower.includes("เซรั่ม") || lower.includes("serum")) tags.push("cosmetic dropper serum bottle");
       if (lower.includes("ครีม") || lower.includes("cream")) tags.push("nourishing cosmetic skincare cream jar");
       if (lower.includes("สกินแคร์") || lower.includes("skincare") || lower.includes("ผิว")) tags.push("premium skincare cosmetic package");
 
-      // 7. General Health & Fitness
+      // 8. General Health & Fitness
       if (lower.includes("สุขภาพ") || lower.includes("health")) {
         if (tags.length === 0) tags.push("wellness organic healthy lifestyle product");
       }
       if (lower.includes("ออกกำลังกาย") || lower.includes("ฟิตเนส") || lower.includes("gym")) tags.push("modern athletic fitness training and active lifestyle");
       if (lower.includes("โยคะ") || lower.includes("yoga")) tags.push("serene yoga practice and mindful wellness");
 
-      // 8. Household Services & Living
+      // 9. Household Services & Living
       if (lower.includes("แอร์") || lower.includes("air condition")) tags.push("modern air conditioner unit servicing and indoor maintenance");
       if (lower.includes("ทำความสะอาด") || lower.includes("แม่บ้าน") || lower.includes("cleaning")) tags.push("professional home cleaning service in tidy modern living space");
       if (lower.includes("สุนัข") || lower.includes("แมว") || lower.includes("สัตว์เลี้ยง") || lower.includes("pet")) tags.push("gentle pet care grooming and happy domestic pet");
@@ -533,6 +600,24 @@ export async function POST(req: Request) {
       // Clean topic fallback - sanitize and guarantee 100% pure English without Thai characters
       const hasThai = /[\u0E00-\u0E7F]/.test(pName + " " + bName);
       if (hasThai) {
+        if (
+          lower.includes("ข้าว") ||
+          lower.includes("อาหาร") ||
+          lower.includes("จาน") ||
+          lower.includes("ชาม") ||
+          lower.includes("ครัว") ||
+          lower.includes("โฮมเมด") ||
+          lower.includes("สไตล์") ||
+          lower.includes("กิน") ||
+          lower.includes("ทาน") ||
+          lower.includes("เมนู") ||
+          lower.includes("อร่อย") ||
+          lower.includes("โบว์ล") ||
+          lower.includes("โบว์ลิ่ง") ||
+          lower.includes("โบล")
+        ) {
+          return "delicious artisan homemade culinary specialty dish prepared with fresh premium ingredients on ceramic tableware";
+        }
         return "commercial product demonstration and authentic lifestyle presentation";
       }
       const sanitizedName = (pName || bName || "commercial subject").trim();
@@ -2062,6 +2147,172 @@ export async function POST(req: Request) {
     ];
 
     // ==========================================
+    // RICE BOWL & GRAIN BOWL MASTER POOL (16 FULL DIVERSE SHOTS - 100% PURE ENGLISH FOOD)
+    // ==========================================
+    const riceBowlMasterPool16 = [
+      {
+        type: "เปิดเรื่อง Hook ข้าวกล้องโบว์ลโฮมเมดเครื่องแน่น (Artisan Homemade Brown Rice Bowl Hero Hook)",
+        camera: "Dynamic Low-Angle Macro Push-in 100mm",
+        motion: `Photorealistic 8K image-to-video. Macro camera push-in towards artisan ceramic bowl filled with steaming warm brown rice, tender sliced grilled chicken, creamy avocado, and soft-boiled golden egg. Gentle aromatic steam rises into warm morning sunbeams, 24fps.`,
+        prompt: `Photorealistic 8K master commercial opening hook of a wholesome homemade warm brown rice bowl. Steaming fluffy whole-grain brown rice base topped with savory herb-grilled chicken breast slices, creamy Hass avocado slices, bright green edamame beans, ruby heirloom cherry tomatoes, shredded purple cabbage, and a perfect soft-boiled golden egg with glistening yolk. Warm natural morning window daylight, ARRI Alexa LF with 100mm Macro Prime. Pure culinary cinematography, vibrant fresh colors, strictly focused on food bowl on rustic ceramic tableware, zero in-image text, zero watches, zero cars, zero jewelry, zero fashion accessories. --ar ${aspectRatio}`,
+        voice: "เบื่อไหมกับอาหารคลีนที่กินยาก? เปลี่ยนมื้อสุขภาพให้อร่อยฟินด้วยข้าวกล้องโบว์ลสไตล์โฮมเมด เครื่องแน่น สารอาหารครบ 5 หมู่ในชามเดียว!",
+        text: "ข้าวกล้องโบว์ลโฮมเมด อร่อยฟินเครื่องแน่น! 🥗",
+        textPos: "Top Headline",
+        sfx: "Light refreshing culinary whoosh, crisp kitchen chime."
+      },
+      {
+        type: "ข้าวกล้องอินทรีย์หุงสุกร้อนๆ นุ่มหนึบ (Steaming Fluffy Brown Rice Base)",
+        camera: "Extreme Macro 100mm Steam Drift",
+        motion: `Photorealistic 8K image-to-video. Extreme macro slow glide across steaming warm brown rice. Translucent steam plumes rise gracefully in golden morning light, rigid rice texture, 24fps.`,
+        prompt: `Extreme macro 100mm culinary shot of warm cooked organic brown rice grains in rustic ceramic bowl. Each grain fluffy, glistening with natural moisture, delicate wisps of translucent fragrant steam rising into warm side daylight. Tack-sharp focus on textured rice grains, pure food cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "คัดสรรข้าวกล้องออร์แกนิกหุงสุกกำลังดี นุ่มหนึบ เคี้ยวเพลิน ไฟเบอร์สูง คุมน้ำตาลและช่วยให้อิ่มท้องยาวนาน",
+        text: "ข้าวกล้องออร์แกนิก นุ่มหนึบ ไฟเบอร์สูง 🌾",
+        textPos: "Lower Third",
+        sfx: "Gentle warm steam whisper, comforting culinary hum."
+      },
+      {
+        type: "ย่างอกไก่หมักสมุนไพร กริลล์มาร์กสีทอง (Sizzling Herb-Marinated Grilled Chicken)",
+        camera: "Low-Angle Sizzle Track 85mm",
+        motion: `Photorealistic 8K image-to-video. Low-angle tracking shot along sizzling cast-iron grill pan. Golden seared chicken breast bubbling with clear savory juices, rising aromatic herbal steam, 24fps.`,
+        prompt: `Mouthwatering close-up of tender chicken breast cutlets grilling on cast iron skillet with deep golden sear lines, natural savory juices bubbling with cracked black pepper and fresh rosemary sprigs. Soft rising steam, ARRI Alexa LF commercial food grading, strictly focused on grilled meat, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "เพิ่มโปรตีนลีนด้วยอกไก่หมักสมุนไพรธรรมชาติ ย่างจนหอมกรุ่น นุ่มฉ่ำ ไม่แห้งแข็ง",
+        text: "อกไก่หมักสมุนไพร นุ่มฉ่ำโปรตีนแน่น 🍗",
+        textPos: "Center Punchy",
+        sfx: "Satisfying grill sizzle, aromatic herbal aroma cue."
+      },
+      {
+        type: "สไลซ์อโวคาโดสดและเตรียมท็อปปิ้งสีสัน (Slicing Creamy Avocado & Fresh Toppings Flat Lay)",
+        camera: "Overhead 90-Degree Flat Lay 50mm",
+        motion: `Photorealistic 8K image-to-video. Top-down overhead glide. Chef knife smoothly fanning out creamy Hass avocado slices, crisp colorful toppings arranged with vibrant harmony on wooden board, 24fps.`,
+        prompt: `Artisan overhead culinary flat-lay of ripe creamy Hass avocado being sliced into uniform fan ribbons on wooden prep board. Surrounded by bowls of steamed green edamame beans, diced sweet mango, ruby cherry tomatoes, and toasted sesame seeds. Soft Scandinavian morning daylight, 50mm Prime lens, pure food styling, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "อัดแน่นด้วยไขมันดีจากอโวคาโดสด พร้อมไฟเบอร์และวิตามินจากผักหลากสีสันสดใหม่",
+        text: "อโวคาโดสด ไขมันดี วิตามินแน่น 🥑",
+        textPos: "Lower Third",
+        sfx: "Crisp clean knife slice through avocado, fresh kitchen ambience."
+      },
+      {
+        type: "ราดน้ำสลัดงาคั่วญี่ปุ่นหอมละมุน (Drizzling Roasted Sesame Dressing)",
+        camera: "High-Speed 120fps Slow-Motion Pour",
+        motion: `Photorealistic 8K image-to-video. 120fps slow motion. Silky ribbon of creamy roasted sesame dressing cascades smoothly over sliced avocado, grilled chicken, and warm brown rice in gentle arc, 24fps.`,
+        prompt: `High-speed 120fps slow-motion capture of creamy roasted Japanese sesame dressing poured in a silky golden ribbon over the colorful brown rice bowl. Glistening dressing coating crisp edamame, sliced avocado, and brown rice grains, micro-droplets in warm backlighting, shallow depth of field, pure commercial food cinematography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ราดน้ำสลัดงาคั่วญี่ปุ่นสูตรลดโซเดียม กลิ่นหอมเย้ายวน รสชาติกลมกล่อมลงตัวแบบไม่ต้องรู้สึกผิด",
+        text: "น้ำสลัดงาคั่วญี่ปุ่น หอมละมุน โซเดียมต่ำ 🥣",
+        textPos: "Center Punchy",
+        sfx: "Silky smooth liquid dressing pour, gentle culinary splash."
+      },
+      {
+        type: "เจาะไข่ต้มยางมะตูมเยิ้มทองคำ (Breaking Golden Runny Soft-Boiled Egg Yolk)",
+        camera: "Extreme Macro 100mm Food-Porn Close-up",
+        motion: `Photorealistic 8K image-to-video. Macro food-porn moment. Fork gently pierces soft-boiled egg, luxurious velvety golden egg yolk slowly oozes and cascades over steaming warm brown rice and sliced chicken, 24fps.`,
+        prompt: `Extreme macro 100mm food-porn close-up. Fork gently piercing a perfect soft-boiled egg nestled on warm brown rice. Rich, velvety, golden-orange egg yolk oozes luxuriously across tender grilled chicken slices and rice grains. Glistening warm highlights, tack-sharp macro focus, ARRI Alexa LF food commercial grading, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ไฮไลต์เด็ดคือไข่ต้มยางมะตูมเยิ้มๆ เจาะแล้วคลุกเคล้ากับข้าวกล้องร้อนๆ บอกเลยว่าฟินสุดๆ!",
+        text: "ไข่ยางมะตูมเยิ้มๆ ฟินเต็มคำ! 🍳",
+        textPos: "Center Punchy",
+        sfx: "Gentle egg break sound, mouthwatering rich culinary chime."
+      },
+      {
+        type: "ตักชิมคำแรก อร่อยฟินเต็มช้อน (First Spoonful Savoring & Delicious Bite)",
+        camera: "Medium Close-up 85mm Prime",
+        motion: `Photorealistic 8K image-to-video. Wooden spoon lifts generous steaming mouthful of brown rice, savory chicken, avocado, and yolk toward camera. Steaming delicacy, 24fps.`,
+        prompt: `Warm commercial culinary close-up. A wooden spoon lifts a generous steaming bite of brown rice, tender grilled chicken, creamy avocado, and glistening golden yolk from the bowl. Soft natural morning daylight, gentle steam rising, beautiful bokeh background, pure commercial cinematography, strictly focused on food presentation, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ตักคำแรกเข้าไป... ข้าวกล้องนุ่มหนึบ ไก่นุ่มฉ่ำ ผสานไข่เยิ้มและน้ำสลัดงา อร่อยกลมกล่อมจนลืมไปเลยว่านี่คืออาหารคลีน!",
+        text: "อร่อยกลมกล่อม สุขภาพดีทุกคำ 😋",
+        textPos: "Top Center",
+        sfx: "Gentle spoon clink, cheerful bright melodic chime."
+      },
+      {
+        type: "คนรักสุขภาพทานอย่างมีความสุขในบ้านอบอุ่น (Healthy Lifestyle Dining in Cozy Home)",
+        camera: "Medium Portrait 50mm Prime",
+        motion: `Photorealistic 8K image-to-video. Fit Asian individual savors wholesome brown rice bowl with warm genuine smile at cozy morning dining table. Natural relaxed motion, sun-drenched atmosphere, 24fps.`,
+        prompt: `Artisan lifestyle commercial scene of fit Asian health enthusiast sitting at a warm sunlit wooden dining table, enjoying the homemade brown rice bowl with genuine joyful smile. Minimalist Scandinavian kitchen interior, soft potted plants in background, radiant natural morning daylight, pure healthy lifestyle commercial, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "สุขภาพดีเริ่มต้นได้ง่ายๆ ที่บ้านคุณเอง ทานแล้วอิ่มสบายท้อง มีพลังงานลุยงานได้ทั้งวัน",
+        text: "อิ่มท้อง สบายตัว สุขภาพดีจากภายใน 💖",
+        textPos: "Lower Third",
+        sfx: "Warm positive acoustic guitar strumming, cozy home ambience."
+      },
+      {
+        type: "จัดกล่อง Meal Prep พกไปกินที่ทำงาน (Grab & Go Meal Prep Bowl)",
+        camera: "Smooth Tracking Slider 50mm",
+        motion: `Photorealistic 8K image-to-video. Smooth tracking slider past beautifully packed round glass lunch bowls with airtight lids on bright wooden counter. Crisp morning daylight, 24fps.`,
+        prompt: `Clean commercial tracking shot of two eco-friendly round glass bowl containers neatly packed with colorful homemade brown rice bowls with bamboo lids, ready for grab-and-go meal prep. Bright modern kitchen countertop, fresh morning sunlight, pure food photography, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ทำเป็น Meal Prep ใส่กล่องพกไปทานที่ทำงานได้ง่ายๆ สะดวก ประหยัดเวลา และคุมแคลอรี่ได้เป๊ะ 100%",
+        text: "พกไปทานที่ทำงาน สะดวก คุมแคลเป๊ะ 🍱",
+        textPos: "Lower Third",
+        sfx: "Snap of eco-friendly container lid, satisfying click."
+      },
+      {
+        type: "สรุปเมนู & ปิดท้าย Call to Action (Heroic Homemade Bowl Packshot & Final CTA)",
+        camera: "Centered Master Culinary Pullback",
+        motion: `Photorealistic 8K image-to-video. Centered master pullback showcasing complete steaming brown rice bowl in all its colorful glory under soft commercial lighting, 24fps.`,
+        prompt: `Grand finale heroic commercial packshot. The complete colorful homemade brown rice bowl presented majestically on rustic ceramic tableware with wooden chopsticks and small ceramic sauce ramekin on light linen cloth. Soft morning sunbeams, gentle rising steam, pure commercial food cinematography, elegant centered composition, strictly focused on culinary bowl, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "อยากได้ไอเดียเมนูคลีนทำง่ายแบบนี้ทุกวัน เซฟคลิปนี้ไว้เลย แล้วทักแชตรับสูตรตารางอาหารคลีน 7 วันฟรีได้เลยครับ!",
+        text: "เซฟสูตรทักแชตรับแพลนคลีนฟรี! 🥗",
+        textPos: "Bottom Center CTA",
+        sfx: "Signature triumphant culinary chime, uplifting acoustic finale."
+      },
+      {
+        type: "โรยงาขาวงาดำคั่วหอมกรุ่น (Sprinkling Toasted Sesame Seeds Macro)",
+        camera: "Macro 100mm Slow Motion 60fps",
+        motion: `Photorealistic 8K image-to-video. 60fps slow motion. Hand gently pinches and sprinkles roasted white and black sesame seeds over avocado and brown rice, seeds bouncing softly into place, 24fps.`,
+        prompt: `Extreme macro 100mm capture of golden roasted sesame seeds being delicately sprinkled from above onto sliced avocado and warm brown rice. Glistening seeds falling in graceful slow motion, soft morning sunlight, tack-sharp macro detail, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "โรยงาขาวและงาดำคั่วหอมๆ เพิ่มสารต้านอนุมูลอิสระและกลิ่นสัมผัสอันเป็นเอกลักษณ์",
+        text: "โรยงาคั่วหอมๆ สารอาหารแน่น 🌾",
+        textPos: "Lower Third",
+        sfx: "Gentle seed scatter whisper, warm acoustic note."
+      },
+      {
+        type: "โบลว์ข้าวไรซ์เบอร์รี่ปลาแซลมอนย่าง (Riceberry Salmon Protein Bowl)",
+        camera: "360 Orbit Glide 50mm",
+        motion: `Photorealistic 8K image-to-video. Smooth 360 orbit glide around deep purple riceberry bowl topped with flaky grilled salmon fillet, avocado, and pickled ginger on light stone surface, 24fps.`,
+        prompt: `Cinematic 360 orbit around an artisan bowl of steamed deep-purple riceberry topped with a golden pan-seared salmon fillet, edamame, and cucumber slices. Rich appetizing colors, ARRI Alexa LF grading, strictly focused on grain bowl, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "หรือจะเลือกเป็นข้าวไรซ์เบอร์รี่คู่สเต๊กแซลมอน ได้ทั้งโอเมก้า 3 และแอนโทไซยานินบำรุงสุขภาพ",
+        text: "สเต๊กแซลมอนข้าวไรซ์เบอร์รี่ โอเมก้า 3 สูง 🐟",
+        textPos: "Center Punchy",
+        sfx: "Smooth camera whoosh, delicate sizzle."
+      },
+      {
+        type: "เต้าหู้ออร์แกนิกย่างซีอิ๊วสายมังสวิรัติ (Crispy Pan-Seared Organic Tofu)",
+        camera: "Macro Sizzle Track 85mm",
+        motion: `Photorealistic 8K image-to-video. Macro slider across golden-brown seared organic tofu cubes sizzling in skillet, lightly glazed with gluten-free tamari, rising savory steam, 24fps.`,
+        prompt: `Mouthwatering macro 85mm shot of golden-brown organic firm tofu cubes glistening on seasoned skillet with light soy glaze, garnished with spring onion curls. Savory wisps of steam, pure food commercial, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "สายวีแกนหรือมังสวิรัติ สลับเป็นเต้าหู้ออร์แกนิกย่างซีอิ๊ว โปรตีนพืชแน่น อร่อยเบาสบายท้อง",
+        text: "เต้าหู้ออร์แกนิกย่าง โปรตีนพืชแน่น 🌱",
+        textPos: "Lower Third",
+        sfx: "Crispy tofu pan sizzle, light kitchen sound."
+      },
+      {
+        type: "ยำสาหร่ายวากาเมะและแตงกวาดองสดชื่น (Japanese Wakame & Pickled Cucumber)",
+        camera: "Overhead 45-Degree Close-up",
+        motion: `Photorealistic 8K image-to-video. 45-degree angle. Wooden chopsticks placing refreshing emerald green seasoned wakame seaweed and thinly sliced cucumber into the rice bowl, 24fps.`,
+        prompt: `Artisan close-up of emerald seasoned wakame seaweed and thinly ribboned cucumber ribbons neatly arranged in ceramic bowl with toasted sesame seeds. Crisp fresh textures, natural light bounce, pure culinary styling, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "ตัดเลี่ยนด้วยยำสาหร่ายวากาเมะและแตงกวาสด กรุบกรอบ สดชื่น เคี้ยวเพลินในทุกคำ",
+        text: "สาหร่ายวากาเมะ สดชื่น กรุบกรอบ 🥢",
+        textPos: "Center Punchy",
+        sfx: "Crisp chopstick placement, refreshing culinary rustle."
+      },
+      {
+        type: "เตรียมตู้เย็นคลีนสต็อกแน่น (Organized Clean Meal Fridge Prep)",
+        camera: "Smooth Dolly In into Refrigerator",
+        motion: `Photorealistic 8K image-to-video. Smooth dolly into modern refrigerator filled with labeled glass bowl meal preps, colorful fresh produce, and cold brew green tea, 24fps.`,
+        prompt: `Pristine dolly push into illuminated modern refrigerator with neatly arranged glass grain bowl containers with fresh toppings, mason jars, and organic produce. Bright clean Scandinavian aesthetic, pure food commercial, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "สต็อกใส่ตู้เย็นไว้ หิวเมื่อไหร่ก็มีมื้อคลีนอร่อยๆ พร้อมทาน ไม่ต้องเสียเวลาสั่งเดลิเวอรี่",
+        text: "สต็อกพร้อมทาน สุขภาพดีทุกมื้อ ❄️",
+        textPos: "Top Center",
+        sfx: "Clean refrigerator door whoosh, gentle cooling hum."
+      },
+      {
+        type: "เฉลิมฉลองมื้ออร่อยสุขภาพดีแสนสุข (Healthy Homemade Bowl Living Celebration)",
+        camera: "Centered Master Brand Pullback",
+        motion: `Photorealistic 8K image-to-video. Centered master pullback. Health enthusiast holds steaming colorful homemade brown rice bowl proudly with beaming radiant smile in sunny kitchen, 24fps.`,
+        prompt: `Grand triumphant lifestyle commercial finale. Radiant Asian individual standing in sunny modern minimalist kitchen, holding colorful homemade brown rice bowl with warm proud smile. Pristine natural daylight, pure healthy food commercial, strictly focused on lifestyle and food, zero in-image text, zero watches, zero cars, zero jewelry. --ar ${aspectRatio}`,
+        voice: "การกินคลีนไม่จำเป็นต้องทนฝืน เปลี่ยนมาทานข้าวกล้องโบว์ลโฮมเมด สุขภาพดีเริ่มต้นได้ทุกคำ ทักแชตรับแพลนได้เลยครับ!",
+        text: "สุขภาพดีเริ่มต้นที่มื้อนี้ ทักแชตเลย! 🌟",
+        textPos: "Bottom Center CTA",
+        sfx: "Triumphant bright acoustic chord, crisp closing chime."
+      }
+    ];
+
+    // ==========================================
     // CLEAN FOOD & HEALTHY MEAL PREP MASTER POOL (16 FULL DIVERSE SHOTS - 100% PURE ENGLISH FOOD)
     // ==========================================
     const cleanFoodMasterPool16 = [
@@ -2242,6 +2493,8 @@ export async function POST(req: Request) {
       ? (resolvedCount <= 8 ? plaSomMasterPool16.slice(0, 8) : plaSomMasterPool16)
       : isSwimming
       ? (resolvedCount <= 8 ? swimmingMasterPool16.slice(0, 8) : swimmingMasterPool16)
+      : isRiceBowl
+      ? (resolvedCount <= 8 ? riceBowlMasterPool16.slice(0, 8) : riceBowlMasterPool16)
       : isCleanFood
       ? (resolvedCount <= 8 ? cleanFoodMasterPool16.slice(0, 8) : cleanFoodMasterPool16)
       : isOatOrBreakfast
@@ -2315,9 +2568,11 @@ export async function POST(req: Request) {
         cameraMovement: "Continuous Seamless Steadicam Tracking with Dynamic Orbit",
         motionPrompt: `Photorealistic 8K image-to-video. Continuous seamless steadicam tracking shot. Subject and environment obey real-world Newtonian physical dynamics with natural motion blur. No morphing, rigid object geometry, authentic fluid/steam physics. 24fps.`,
         visualPromptEn: `Photorealistic 8K cinematic commercial one-take. ${effectiveProductEn} in ${effectiveEnvironmentEn}. Seamless fluid steadicam tracking starting from wide establishing, smoothly transitioning into intimate medium shot of ${hasPresenter ? `${genderEn} with ${actionPrompts}` : `hero commercial packshot of ${effectiveProductEn}`}, culminating in heroic brand lockup. ARRI Alexa LF grading, pure cinematography, zero visible text or watermarks in frame. --ar ${aspectRatio}`,
-        onScreenTextTh: userCustomTexts[0] || (isCleanFood ? "แพลนอาหารคลีน 7 วัน สุขภาพดีหุ่นปัง! 🥗" : isSwimming ? "เทคนิคว่ายน้ำเป็นใน 1 ชม.! 🏊‍♂️" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣" : isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
+        onScreenTextTh: userCustomTexts[0] || (isRiceBowl ? "ข้าวกล้องโบว์ลโฮมเมด สารอาหารครบ อิ่มนาน! 🥗" : isCleanFood ? "แพลนอาหารคลีน 7 วัน สุขภาพดีหุ่นปัง! 🥗" : isSwimming ? "เทคนิคว่ายน้ำเป็นใน 1 ชม.! 🏊‍♂️" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ เมนู 5 นาที! 🥣" : isDinosaurOrWildlife ? "ปริศนาหัวใจแห่งป่าไดโนเสาร์ 🦕" : isFishOrPlaSom ? "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟" : isPadGaprao ? "เคล็ดลับกะเพราคั่วกระทะไหม้ 🔥" : isCooking ? `เคล็ดลับเด็ด ${productName} ✨` : isGraduation ? "พิกัดถ่ายรูปรับปริญญา 🎓" : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : isAuto ? "THE DEFINITION OF LUXURY ✨" : `${productName} 🌟`),
         textPosition: "Top Center (Headline)",
-        thaiVoiceover: isCleanFood
+        thaiVoiceover: isRiceBowl
+          ? "อยากกินคลีนให้อร่อย อิ่มนาน ไม่น่าเบื่อ? ลองข้าวกล้องโบว์ลสไตล์โฮมเมดชามนี้เลย สารอาหารครบ 5 หมู่ เครื่องแน่น อร่อยฟิน เซฟสูตรนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีนฟรีได้เลยครับ!"
+          : isCleanFood
           ? "อยากเริ่มกินคลีนแต่ไม่รู้จะเริ่มยังไง? วันนี้เราจัดเซตอาหารคลีนทำง่าย อร่อย อิ่มนาน หุ่นลีนกระชับ เซฟคลิปนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีนฟรีได้เลยครับ!"
           : isSwimming
           ? "ว่ายน้ำไม่เป็น กลัวจม? วันนี้เรามีเคล็ดลับง่ายๆ ให้คุณว่ายเป็นและมั่นใจได้ใน 1 ชั่วโมง เซฟคลิปนี้ไว้เลย แล้วทักแชตเริ่มเรียนได้เลยครับ!"
@@ -2359,7 +2614,7 @@ export async function POST(req: Request) {
         cameraMovement: shot1.camera,
         motionPrompt: (shot1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || (isCleanFood ? "กินคลีนง่ายๆ หุ่นลีน 7 วัน 🥗" : isSwimming ? "ว่ายน้ำเป็นง่ายกว่าที่คิด 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : "พิกัดลับที่ไม่ควรพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (shot1 as any).text || (isRiceBowl ? "ข้าวกล้องโบว์ลโฮมเมด อร่อยฟิน 🥗" : isCleanFood ? "กินคลีนง่ายๆ หุ่นลีน 7 วัน 🥗" : isSwimming ? "ว่ายน้ำเป็นง่ายกว่าที่คิด 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : "พิกัดลับที่ไม่ควรพลาด ✨"),
         textPosition: (shot1 as any).textPos || "Top Headline",
         thaiVoiceover: shot1.voice,
         audioSfx: shot1.sfx,
@@ -2375,7 +2630,7 @@ export async function POST(req: Request) {
         cameraMovement: shot2.camera,
         motionPrompt: (shot2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${shot2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: shot2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isCleanFood ? "เซฟตารางอาหารคลีนด่วน 🥗" : isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
+        onScreenTextTh: userCustomTexts[1] || (shot2 as any).text || (isRiceBowl ? "เซฟสูตรข้าวกล้องโบว์ลด่วน 🥗" : isCleanFood ? "เซฟตารางอาหารคลีนด่วน 🥗" : isSwimming ? "ทักแชตจองคลาสว่ายน้ำด่วน 🏊‍♀️" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน 🥣" : "เซฟคลิปไว้แล้วทักแชตด่วน 📸"),
         textPosition: (shot2 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: shot2.voice,
         audioSfx: shot2.sfx,
@@ -2400,7 +2655,7 @@ export async function POST(req: Request) {
         cameraMovement: s1.camera,
         motionPrompt: (s1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isRiceBowl ? "เบื่ออาหารคลีนจืดๆ ไหม? 🥗" : isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
         textPosition: (s1 as any).textPos || "Top Headline",
         thaiVoiceover: s1.voice,
         audioSfx: s1.sfx,
@@ -2416,7 +2671,7 @@ export async function POST(req: Request) {
         cameraMovement: s2.camera,
         motionPrompt: (s2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
+        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isRiceBowl ? "ข้าวกล้องนุ่ม ไก่ฉ่ำ ไข่เยิ้ม 🥑" : isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
         textPosition: "Lower Third",
         thaiVoiceover: s2.voice,
         audioSfx: s2.sfx,
@@ -2432,7 +2687,7 @@ export async function POST(req: Request) {
         cameraMovement: s3.camera,
         motionPrompt: (s3 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s3.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s3.prompt,
-        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
+        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isRiceBowl ? "เซฟสูตรทักแชตรับแพลนฟรี! 🥗" : isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
         textPosition: (s3 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: s3.voice,
         audioSfx: s3.sfx,
@@ -2467,6 +2722,8 @@ export async function POST(req: Request) {
 
           const dynamicMotion = isSwimming
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Fluid aquatic action in crystal-clear swimming pool. Swimmer or coach executing smooth swimming technique, sparkling water ripples and splash droplets obeying real fluid dynamics, 24fps.`
+            : isRiceBowl
+            ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome homemade brown rice bowl preparation with steaming warm brown rice, tender sliced grilled chicken breast, fresh ripe avocado, runny soft-boiled egg, and crisp vegetables in rustic ceramic tableware. Rigid bowl geometry, vibrant natural food colors, zero morphing, 24fps.`
             : isCleanFood
             ? `Photorealistic 8K image-to-video. ${chosenMovement}. Wholesome clean meal preparation with tender grilled chicken breast, fresh ripe avocado slices, organic rainbow quinoa, and crisp steamed greens in modern kitchen setting. Rigid meal prep container and bowl geometry, vibrant natural food colors, zero morphing, 24fps.`
             : isOatOrBreakfast
@@ -2483,6 +2740,8 @@ export async function POST(req: Request) {
             voice: i === resolvedCount - 1
               ? (isSwimming
                   ? "เซฟคลิปนี้ไว้เลย แล้วทักแชตจองคอร์สทดลองเรียนว่ายน้ำ รับสิทธิ์พิเศษทันทีครับ!"
+                  : isRiceBowl
+                  ? "เซฟสูตรข้าวกล้องโบว์ลนี้ไว้เลย แล้วทักแชตรับตารางอาหารคลีน 7 วันฟรีได้เลยครับ!"
                   : isCleanFood
                   ? "เซฟตารางเมนูอาหารคลีนนี้ไว้เลย แล้วกดติดตามเพื่อสุขภาพดีและหุ่นลีนไปด้วยกันนะครับ!"
                   : isOatOrBreakfast
