@@ -1482,6 +1482,15 @@ export default function IdeaGeneratorPage() {
 
                   <div className="flex items-center gap-2">
                     <Link
+                      href={`/studio?topic=${encodeURIComponent(`${idea.title} - ${idea.hook || ""}`.trim())}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+                      title="ส่งไอเดียนี้ไปสร้างคลิปวิดีโอ 3 ฉากอัตโนมัติด้วย Veo 3.1 & FlowKit ทันที"
+                    >
+                      <Video className="w-3.5 h-3.5 text-blue-600" />
+                      <span>⚡ สร้างวิดีโออัตโนมัติ</span>
+                    </Link>
+
+                    <Link
                       href={`/commercial?id=${idea.id}&autoGen=true`}
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
                       title="ส่งไอเดียนี้ไปสร้างวิดีโอโฆษณาใน Commercial Video Studio"

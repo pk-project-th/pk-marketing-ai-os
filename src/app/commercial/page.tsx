@@ -982,6 +982,15 @@ function CommercialStudioContent() {
 
         {/* Global Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/studio?topic=${encodeURIComponent(productName ? `${productName} ${adStyle || ""}`.trim() : "บรรยากาศธรรมชาติและการท่องเที่ยว")}`}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/25 cursor-pointer"
+            title="ไปสร้างคลิปวิดีโออัตโนมัติด้วย Google Veo 3.1 & FlowKit"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>🎬 สร้างวิดีโออัตโนมัติ (Veo 3.1)</span>
+          </Link>
+
           <button
             type="button"
             onClick={handleResetForm}

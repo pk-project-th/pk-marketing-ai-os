@@ -16,6 +16,7 @@ import {
   Zap,
   BarChart3,
   Sparkles,
+  Film,
   X
 } from "lucide-react";
 
@@ -69,6 +70,7 @@ const CORE_STEPS = [
 
 const UTILITY_ITEMS = [
   { label: "Dashboard (ภาพรวม 13 แบรนด์)", href: "/", icon: LayoutDashboard },
+  { label: "AI Video Studio (Veo 3.1 & Flow)", href: "/studio", icon: Film },
   { label: "Marketing Analytics", href: "/analytics", icon: BarChart3 },
   { label: "Settings & API Keys", href: "/settings", icon: Settings }
 ];

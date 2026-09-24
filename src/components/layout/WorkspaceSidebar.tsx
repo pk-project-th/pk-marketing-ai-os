@@ -21,7 +21,8 @@ import {
   BookOpen,
   X,
   Layers,
-  Zap
+  Zap,
+  Video
 } from "lucide-react";
 import { useBrand } from "@/context/BrandContext";
 
@@ -86,6 +87,14 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
   ];
 
   const PRODUCTION_STUDIO_ITEMS = [
+    {
+      label: "AI Video Studio",
+      sublabel: "สร้างวิดีโออัตโนมัติ (Veo 3.1 & Flow)",
+      href: "/studio",
+      icon: Video,
+      badge: "AUTO",
+      activeColor: "text-blue-600 bg-blue-50 border-blue-200"
+    },
     {
       label: "Commercial Studio",
       sublabel: "สร้างโฆษณาเสมือนจริง (Google Flow)",
