@@ -58,214 +58,244 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: PARALLEL TURBO BATCH & INDEPENDENT SHOT RECOVERY & INLINE EDITOR — PK STUDIO v5.9 PRO:
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK STUDIO v6.0 PRO — SPLIT PIPELINE & FULL FIELD EDITOR:
 
-ปัญหาสำคัญที่ต้องแก้ไขทันทีจากหลักฐานการใช้งานจริง:
-1. 🚀 ปลดล็อกคิวค้างด้วย PARALLEL TURBO GENERATION (ให้เจนพร้อมกันทุกช็อต ไม่ติดค้าง):
-   - ปัญหาเดิม: รันทีละช็อต (Sequential Loop) เมื่อช็อตที่ 1 ติด RETRY หรือ Veo ปฏิเสธ ทำให้คิวค้าง ช็อต 2-10 ไม่ได้เริ่มเลย!
-   - การแก้ไขระดับโครงสร้าง:
-     A) PARALLEL TURBO MODE (Promise.allSettled): สั่งเรนเดอร์วิดีโอทุกช็อตพร้อมกันทันที! ช็อตไหนผ่านเสร็จเลย ช็อตไหนติดปัญหาจะขึ้นสถานะ Error ชัดเจน ไม่ดึงช็อตอื่นให้ช้า
-     B) INDEPENDENT ERROR REPORTING: แต่ละการ์ดรายงานสถานะอิสระ (🟡 กำลังสร้าง, 🟢 สำเร็จ, 🔴 มีข้อผิดพลาด พร้อมบอกสาเหตุ เช่น Veo Safety Rejection, Image Error)
-     C) มีปุ่ม "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)" เป็นปุ่มหลัก และปุ่ม "🛡️ ทยอยสร้างทีละช็อต" เป็นทางเลือกสำรอง
+จากหลักฐานการใช้งานจริง ปัญหาหลัก 3 ข้อที่ต้องแก้ไขทันที:
 
-2. 💥 แก้อาการ "RENDERING FAILED: Expected object response with media fields" เด็ดขาด (100% BULLETPROOF):
-   - ตรวจสอบ URL รูปภาพ: const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || imgUrl?.media?.[0]?.url || null);
-   - ถ้ามี cleanImg ที่ถูกต้อง ➔ เรียก generateVideo({ image: cleanImg, prompt: motionPrompt })
-   - ถ้าไม่มี cleanImg หรือภาพมีปัญหา ➔ ห้ามส่ง image: undefined เด็ดขาด! ให้เปลี่ยนเป็น Text-to-Video อัตโนมัติทันที: เรียก generateVideo({ prompt: (shot.visualPrompt + '. ' + shot.motionPrompt).trim() })
-   - บนการ์ดที่เจอปัญหา มีปุ่มทางลัด "🎥 ลองสร้างด้วย Text-to-Video" บายพาสรูปภาพได้ทันที
+## ปัญหาที่ 1: ⚡ รูปภาพเจนได้แต่วิดีโอเจนไม่ได้
+- สาเหตุ: ระบบเดิมรวม Image + Video เป็น Pipeline เดียว เมื่อ Veo ปฏิเสธภาพ (Safety / Quota) ทั้งช็อตจะล้มเหลวทันที
+- แก้ไข: แยก Pipeline เป็น 2 ขั้นตอนอิสระ 100% (Two-Stage Split Pipeline):
+  1) ปุ่ม "🖼️ เจนรูปทั้งหมด (Batch Images)" → เรียก generateImage สำหรับทุกช็อตพร้อมกัน (Promise.allSettled) ไม่ยุ่งกับวิดีโอ
+  2) ปุ่ม "🎬 เจนวิดีโอทั้งหมด (Batch Videos)" → เรียก generateVideo สำหรับทุกช็อตที่มีรูปภาพแล้ว ถ้าช็อตไหนไม่มีรูปให้ fallback เป็น Text-to-Video อัตโนมัติ
+  3) ในแต่ละการ์ดช็อต มีปุ่ม:
+     - "🖼️ เจนรูปช็อตนี้" (เฉพาะรูปภาพ)
+     - "🎬 เจนวิดีโอช็อตนี้" (เฉพาะวิดีโอ จากรูปที่มีอยู่แล้ว หรือ Text-to-Video)
+     - "🎥 Text-to-Video" (บายพาสรูปภาพ สร้างวิดีโอจากข้อความโดยตรง)
 
-3. ✏️ WORKING INLINE PROMPT EDITOR & INDIVIDUAL RETRY (ใช้งานได้จริง 100%):
-   - มีปุ่ม "✏️ แก้ไข Prompt" บนทุกการ์ดช็อต
-   - เมื่อคลิก จะเปิดแบบฟอร์ม 2 ช่องชัดเจน:
-     1) Visual Prompt (EN) สำหรับสร้างภาพ
-     2) Motion Prompt (EN) สำหรับสั่งมุมกล้อง Veo
-   - มีปุ่ม "💾 บันทึกและเจนใหม่" (สั่งเรนเดอร์เฉพาะช็อตนี้แบบเดี่ยวทันที) และ "✕ ยกเลิก"
-   - มีปุ่ม "🔄 ลองใหม่เฉพาะช็อตนี้" บนการ์ดที่ติดขัด ไม่ต้องเริ่มใหม่ทั้งหมด
+## ปัญหาที่ 2: ✏️ ฟิลด์แก้ไขไม่ตรงกับ OS (ต้อง Sync ทุกฟิลด์)
+- แก้ไข: Inline Editor ครบ 4 ฟิลด์เหมือน PK Marketing AI OS:
+  1) 📸 Visual Prompt (EN) — Prompt สร้างรูปภาพ
+  2) 🎬 Motion Prompt (EN) — Prompt สั่ง Camera & Veo
+  3) 🎙️ Thai Voiceover — เสียงพากย์ภาษาไทย
+  4) 📝 On-Screen Text (TH) — ข้อความบนจอภาษาไทย
+- ทุกฟิลด์ต้อง copy-paste ได้ทั้งจาก OS มา Flow และจาก Flow กลับ OS
 
-4. 🥣 UNIVERSAL TOPIC LOCK:
-   - เมนูข้าวกล้อง / ข้าวกล้องโบว์ล / อาหารคลีน: ล็อกเป็นอาหารเพื่อสุขภาพระดับพรีเมียม (Steaming brown rice, grilled chicken breast, avocado, runny soft-boiled egg, edamame, roasted sesame dressing). ห้ามมีนาฬิกา, รถยนต์, มีดเดี่ยว, เครื่องปั่น หรืออุปกรณ์แปลกปลอมเด็ดขาด!
-   - เมนูผัด / ข้าวผัด: ห้ามมี avocado หรือ salad dressing เด็ดขาด!
+## ปัญหาที่ 3: 💥 "Expected object response with media fields" Crash
+- แก้ไข: Media Fields Armor ป้องกันทุกกรณี:
+  * const cleanImg = (typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : null;
+  * ถ้ามี cleanImg ➔ generateVideo({ image: cleanImg, prompt: motionPrompt })
+  * ถ้าไม่มี cleanImg ➔ ห้ามส่ง image: undefined เด็ดขาด! ➔ generateVideo({ prompt: (visualPrompt + '. ' + motionPrompt).trim() })
 
-5. 🗑️ HARD RESET:
-   - สคริปต์เริ่มต้นด้วยความว่างเปล่า 100% ไม่มีปุ่ม Oat Milk หรือตัวอย่าง Mock Data ใดๆ ค้างอยู่!
+---
 
-แก้ไขโครงสร้างโค้ดตาม 5 ขั้นตอนนี้:
+แก้ไขโครงสร้างโค้ดทั้งหมดดังนี้:
 
-### 1. 🚀 PARALLEL & INDEPENDENT SHOT STATE:
-- เก็บ State แยกแต่ละช็อตอย่างชัดเจน:
-  const [shotStates, setShotStates] = useState<Record<string, {
-    status: 'idle' | 'generating' | 'success' | 'error';
-    step?: 'image' | 'video';
-    errorMsg?: string;
-    videoUrl?: string;
-    imageUrl?: string;
-  }>>({});
-  const [currentProgress, setCurrentProgress] = useState<string>('');
+### 1. 🗂️ SHOT STATE MANAGEMENT (แต่ละช็อตแยกสถานะอิสระ):
+const [shotStates, setShotStates] = useState<Record<string, {
+  imgStatus: 'idle' | 'generating' | 'success' | 'error';
+  vidStatus: 'idle' | 'generating' | 'success' | 'error';
+  imgErrorMsg?: string;
+  vidErrorMsg?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+}>>({});
 
-- ฟังก์ชันเรนเดอร์เดี่ยวปลอดภัย (renderSingleShot):
-  async function renderSingleShot(shot: ShotItem, forceRegen = false, useTextOnly = false) {
-    const shotId = String(shot.shotNumber);
-    let imgUrl = shotStates[shotId]?.imageUrl || shot.imageUrl;
-
-    // STEP 1: พยายามสร้างภาพนิ่งก่อน (เว้นแต่บังคับ Text-to-Video)
-    if (!useTextOnly && (!imgUrl || forceRegen)) {
-      setShotStates(prev => ({
-        ...prev,
-        [shotId]: { ...prev[shotId], status: 'generating', step: 'image', errorMsg: undefined }
-      }));
-      try {
-        const cleanPrompt = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim() + ', zero in-image text, zero watches, zero cars, zero jewelry, pure culinary cinematography';
-        const imageResult = await generateImage({ prompt: cleanPrompt, aspectRatio: '9:16' });
-        imgUrl = typeof imageResult === 'string' ? imageResult : (imageResult?.url || imageResult?.media?.[0]?.url || imageResult);
-        setShotStates(prev => ({
-          ...prev,
-          [shotId]: { ...prev[shotId], imageUrl: typeof imgUrl === 'string' ? imgUrl : undefined }
-        }));
-      } catch (imgErr: any) {
-        console.warn('Image generation warning, will use text-to-video fallback:', imgErr);
-      }
-    }
-
-    // STEP 2: เรนเดอร์วิดีโอด้วย Dual-Mode Fallback ป้องกัน Crash
-    setShotStates(prev => ({
-      ...prev,
-      [shotId]: { ...prev[shotId], status: 'generating', step: 'video', errorMsg: undefined }
-    }));
-    try {
-      const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : (imgUrl?.url || null);
-      let videoResult;
-      if (cleanImg) {
-        videoResult = await generateVideo({
-          image: cleanImg,
-          prompt: shot.motionPrompt || shot.visualPrompt
-        });
-      } else {
-        // Safe Text-to-Video Fallback: ป้องกัน Expected object response with media fields เมื่อไม่มีภาพ
-        videoResult = await generateVideo({
-          prompt: (shot.visualPrompt + '. ' + (shot.motionPrompt || '')).trim()
-        });
-      }
-      const vidUrl = typeof videoResult === 'string' ? videoResult : (videoResult?.url || videoResult?.media?.[0]?.url || videoResult);
-      if (!vidUrl) throw new Error('ไม่ได้รับไฟล์วิดีโอจากระบบ (Empty video response)');
-      setShotStates(prev => ({
-        ...prev,
-        [shotId]: { ...prev[shotId], status: 'success', videoUrl: vidUrl, errorMsg: undefined }
-      }));
-    } catch (vidErr: any) {
-      setShotStates(prev => ({
-        ...prev,
-        [shotId]: {
-          ...prev[shotId],
-          status: 'error',
-          step: 'video',
-          errorMsg: vidErr?.message || 'วิดีโอสร้างไม่สำเร็จ (Veo ปฏิเสธภาพหรือติดโควตา กรุณากดแก้ไข Prompt หรือกด Text-to-Video)'
-        }
-      }));
-    }
+### 2. 🖼️ IMAGE GENERATION FUNCTIONS (แยกจาก Video 100%):
+async function generateSingleImage(shot: ShotItem) {
+  const shotId = String(shot.shotNumber);
+  setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating', imgErrorMsg: undefined } }));
+  try {
+    const cleanPrompt = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim() + ', zero in-image text, zero watches, zero cars, zero jewelry, pure culinary cinematography';
+    const result = await generateImage({ prompt: cleanPrompt, aspectRatio: '9:16' });
+    const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
+    if (!url) throw new Error('ไม่ได้รับรูปภาพจากระบบ');
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'success', imageUrl: url, imgErrorMsg: undefined } }));
+  } catch (err: any) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'error', imgErrorMsg: err?.message || 'สร้างรูปไม่สำเร็จ' } }));
   }
+}
 
-- ฟังก์ชัน "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo Mode)":
-  async function generateAllVideosParallel() {
-    setCurrentProgress('กำลังสร้างวิดีโอทุกช็อตพร้อมกัน (Parallel Turbo)... กรุณารอสักครู่');
-    await Promise.allSettled(shots.map(s => renderSingleShot(s, false)));
-    setCurrentProgress('เสร็จสิ้นการประมวลผล ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
-  }
+async function generateAllImages() {
+  setCurrentProgress('🖼️ กำลังเจนรูปทั้งหมด...');
+  await Promise.allSettled(shots.map(s => generateSingleImage(s)));
+  setCurrentProgress('✅ เจนรูปเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
+}
 
-- ฟังก์ชัน "🛡️ ทยอยสร้างทีละช็อต (Sequential Queue)":
-  async function generateAllVideosSequential() {
-    for (let i = 0; i < shots.length; i++) {
-      setCurrentProgress('กำลังสร้างช็อต ' + (i + 1) + '/' + shots.length + '...');
-      await renderSingleShot(shots[i], false);
-      if (i < shots.length - 1) {
-        await new Promise(r => setTimeout(r, 2000));
-      }
+### 3. 🎬 VIDEO GENERATION FUNCTIONS (แยกจาก Image 100%):
+async function generateSingleVideo(shot: ShotItem, useTextOnly = false) {
+  const shotId = String(shot.shotNumber);
+  const imgUrl = shotStates[shotId]?.imageUrl;
+  setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'generating', vidErrorMsg: undefined } }));
+  try {
+    const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : null;
+    let result;
+    if (cleanImg) {
+      result = await generateVideo({ image: cleanImg, prompt: shot.motionPrompt || shot.visualPrompt });
+    } else {
+      result = await generateVideo({ prompt: (shot.visualPrompt + '. ' + (shot.motionPrompt || '')).trim() });
     }
-    setCurrentProgress('');
+    const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
+    if (!url) throw new Error('ไม่ได้รับวิดีโอจากระบบ');
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidErrorMsg: undefined } }));
+  } catch (err: any) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: err?.message || 'วิดีโอสร้างไม่สำเร็จ กรุณากด Text-to-Video หรือแก้ไข Prompt' } }));
   }
+}
 
-### 2. ✏️ WORKING INLINE EDITOR & RETRY BUTTONS PER CARD:
-- State สำหรับเปิดกล่องแก้ไข:
+async function generateAllVideos() {
+  setCurrentProgress('🎬 กำลังเจนวิดีโอทั้งหมด...');
+  await Promise.allSettled(shots.map(s => generateSingleVideo(s)));
+  setCurrentProgress('✅ เจนวิดีโอเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
+}
+
+### 4. ✏️ FULL 4-FIELD INLINE EDITOR (ตรงกับ OS ทุกฟิลด์):
+- State:
   const [editingShotNumber, setEditingShotNumber] = useState<number | null>(null);
-  const [editVisualPrompt, setEditVisualPrompt] = useState<string>('');
-  const [editMotionPrompt, setEditMotionPrompt] = useState<string>('');
+  const [editFields, setEditFields] = useState<{ visualPrompt: string; motionPrompt: string; voiceover: string; onScreenText: string }>({ visualPrompt: '', motionPrompt: '', voiceover: '', onScreenText: '' });
 
-- ฟังก์ชันเริ่มแก้ไข:
+- เมื่อกดปุ่ม "✏️ แก้ไขช็อต N":
   function handleStartEdit(shot: ShotItem) {
     setEditingShotNumber(shot.shotNumber);
-    setEditVisualPrompt(shot.visualPrompt);
-    setEditMotionPrompt(shot.motionPrompt || '');
+    setEditFields({
+      visualPrompt: shot.visualPrompt || '',
+      motionPrompt: shot.motionPrompt || '',
+      voiceover: shot.thaiVoiceover || '',
+      onScreenText: shot.onScreenText || ''
+    });
   }
 
-- ฟังก์ชันบันทึกและเรนเดอร์ใหม่:
-  async function handleSaveAndRerender(shotNumber: number) {
-    const updatedShots = shots.map(s => s.shotNumber === shotNumber ? { ...s, visualPrompt: editVisualPrompt, motionPrompt: editMotionPrompt } : s);
-    setShots(updatedShots);
+- เมื่อกดบันทึก:
+  function handleSaveEdit(shotNumber: number) {
+    setShots(prev => prev.map(s => s.shotNumber === shotNumber ? {
+      ...s,
+      visualPrompt: editFields.visualPrompt,
+      motionPrompt: editFields.motionPrompt,
+      thaiVoiceover: editFields.voiceover,
+      onScreenText: editFields.onScreenText
+    } : s));
     setEditingShotNumber(null);
-    const target = updatedShots.find(s => s.shotNumber === shotNumber);
-    if (target) {
-      await renderSingleShot(target, true);
-    }
   }
 
-- ในแต่ละการ์ดช็อต:
-  * ถ้าสถานะ error: แสดงกล่องแดงเตือนชัดเจน พร้อมปุ่ม:
-    - ✏️ แก้ไข Prompt
-    - 🔄 ลองใหม่เฉพาะช็อตนี้
-    - 🎥 เจนด้วย Text-to-Video ทันที (renderSingleShot(shot, true, true))
-  * ปุ่มด้านบน:
-    - ปุ่มหลักสีม่วง/น้ำเงิน: "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)"
-    - ปุ่มรองสีเทา: "🛡️ ทยอยสร้างทีละช็อต (Sequential)"
+- Inline Editor UI (เปิดใต้การ์ดแต่ละช็อต):
+  <div className="bg-slate-800/90 border border-emerald-500/30 p-4 rounded-xl space-y-3 text-xs backdrop-blur">
+    <div className="font-bold text-emerald-400 text-sm">✏️ แก้ไขช็อต {shot.shotNumber}</div>
+    <div>
+      <label className="font-semibold text-slate-300 text-xs">📸 Visual Prompt (EN):</label>
+      <textarea rows={3} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.visualPrompt} onChange={e => setEditFields(f => ({ ...f, visualPrompt: e.target.value }))} />
+    </div>
+    <div>
+      <label className="font-semibold text-slate-300 text-xs">🎬 Motion Prompt (EN):</label>
+      <textarea rows={2} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.motionPrompt} onChange={e => setEditFields(f => ({ ...f, motionPrompt: e.target.value }))} />
+    </div>
+    <div>
+      <label className="font-semibold text-slate-300 text-xs">🎙️ เสียงพากย์ไทย (Thai Voiceover):</label>
+      <textarea rows={2} className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.voiceover} onChange={e => setEditFields(f => ({ ...f, voiceover: e.target.value }))} />
+    </div>
+    <div>
+      <label className="font-semibold text-slate-300 text-xs">📝 ข้อความบนจอ (On-Screen Text TH):</label>
+      <input type="text" className="w-full p-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-[11px] mt-1" value={editFields.onScreenText} onChange={e => setEditFields(f => ({ ...f, onScreenText: e.target.value }))} />
+    </div>
+    <div className="flex gap-2 justify-end pt-1">
+      <button className="px-3 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-bold" onClick={() => setEditingShotNumber(null)}>✕ ยกเลิก</button>
+      <button className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold" onClick={() => handleSaveEdit(shot.shotNumber)}>💾 บันทึก</button>
+      <button className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold" onClick={() => { handleSaveEdit(shot.shotNumber); generateSingleImage(shot); }}>💾 บันทึก + เจนรูปใหม่</button>
+    </div>
+  </div>
 
-### 3. 🔍 REGEX PARSER ยืดหยุ่น 100%:
-const shotRegex = /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi;
+### 5. 📊 HEADER CONTROL BAR (ปุ่มหลัก 4 ปุ่มเรียงแถวด้านบน):
+<div className="flex flex-wrap gap-2 justify-center py-3">
+  <button className="px-4 py-2 bg-emerald-600 text-white rounded-xl font-bold text-sm" onClick={generateAllImages}>🖼️ เจนรูปทั้งหมด</button>
+  <button className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm" onClick={generateAllVideos}>🎬 เจนวิดีโอทั้งหมด</button>
+  <button className="px-4 py-2 bg-slate-600 text-white rounded-xl font-bold text-sm" onClick={hardReset}>🗑️ ล้างข้อมูล</button>
+</div>
 
-### 4. 🗑️ HARD RESET:
-- setShots([]); setShotStates({}); setEditingShotNumber(null);`;
+### 6. 🎴 SHOT CARD LAYOUT (แต่ละช็อตแสดงข้อมูลครบ):
+ในแต่ละการ์ด ให้แสดง:
+- หัวข้อช็อต + ระยะเวลา
+- รูปภาพ (ถ้ามี) พร้อม status badge (🟡/🟢/🔴) แยกระหว่าง Image กับ Video
+- ข้อความบนจอ (On-Screen Text TH)
+- เสียงพากย์ (Thai Voiceover) — แสดงเป็นข้อความย่อใต้รูป
+- ปุ่ม 4 ปุ่มเรียงแถว:
+  * "🖼️ เจนรูป" — generateSingleImage(shot)
+  * "🎬 เจนวิดีโอ" — generateSingleVideo(shot)
+  * "🎥 Text-to-Video" — generateSingleVideo(shot, true)
+  * "✏️ แก้ไข" — handleStartEdit(shot)
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v5.9 Pro (Parallel Turbo & Independent Recovery Edition)" — a production-grade 2-stage video production tool with simultaneous multi-shot execution, rate-limit protection, media-fields error defense, inline prompt editing, and absolute topic adherence.
+### 7. 🥣 UNIVERSAL TOPIC LOCK:
+- ข้าวกล้อง / โบว์ล / อาหารคลีน: ล็อกเป็นอาหารสุขภาพระดับพรีเมียม (brown rice, grilled chicken, avocado, soft-boiled egg, edamame, sesame dressing). ห้ามมีนาฬิกา รถยนต์ มีดเดี่ยว เครื่องปั่น!
+- ข้าวผัด: ล็อก zero avocado, zero salad dressing!
 
-## 1. PARALLEL TURBO BATCH GENERATION (SIMULTANEOUS NON-BLOCKING):
-- Provide two execution buttons in the header:
-  1) Primary "🚀 สร้างวิดีโอพร้อมกันทุกช็อต (Parallel Turbo)": Dispatches all shots simultaneously using Promise.allSettled. If shot 1 errors or delays, shots 2-10 generate freely without blocking!
-  2) Secondary "🛡️ ทยอยสร้างทีละช็อต (Sequential Queue)": Runs one by one with 2s cooldown for strict rate limits.
-- Progress indicator shows real-time status.
-- PREVENT "Expected object response with media fields" ERROR:
-  * Extract clean image URL safely.
-  * If image is available, pass { image: cleanImg, prompt: motionPrompt }.
-  * If image is missing/undefined, DO NOT PASS undefined image! Instead, automatically fall back to pure text-to-video: generateVideo({ prompt: visualPrompt + '. ' + motionPrompt }).
-- Every shot card manages its own state: status ('idle' | 'generating' | 'success' | 'error'), step ('image' | 'video'), errorMsg, videoUrl, imageUrl.
-- Completed shots display their ready-to-play video immediately.
+### 8. 🗑️ HARD RESET:
+function hardReset() { setShots([]); setShotStates({}); setEditingShotNumber(null); setCurrentProgress(''); }
+สคริปต์เริ่มต้นว่างเปล่า 100% ไม่มี Oat Milk หรือ Mock Data ค้างอยู่!`;
 
-## 2. PER-CARD RETRY & WORKING INLINE PROMPT EDITING:
-- On every shot card, provide:
-  * "🔄 ลองใหม่เฉพาะช็อตนี้" (Safe Retry): regenerates image/video safely for this single card.
-  * "🎥 แปลงด้วย Text-to-Video": bypasses image immediately if Veo rejects the image.
-  * "✏️ แก้ไข Prompt": opens a clean inline editor modal with two textareas:
-    1) Visual Prompt (EN)
-    2) Motion Prompt (EN)
-    With "💾 บันทึกและเจนใหม่" and "✕ ยกเลิก" buttons.
-- Fully synchronized with PK Marketing AI OS layout so users can easily copy-paste prompts between platforms.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v6.0 Pro (Split Pipeline & Full Field Editor Edition)" — a professional-grade 2-stage video production tool with separate image/video batch controls, per-shot 4-field inline editing synchronized with PK Marketing AI OS, and bulletproof media-fields error defense.
 
-## 3. STRICT SEPARATION & UNIVERSAL TOPIC LOCK:
-- generateImage (Stage 1): MUST use ONLY "- Visual Prompt (EN): ...". Prepend "[TOPIC LOCK: <Topic>]" and append ", zero in-image text, zero watches, zero cars, zero jewelry, pure cinematography".
-- If the topic is clean food / brown rice bowl (ข้าวกล้อง / ข้าวกล้องโบว์ล / อาหารคลีน), strictly depict steaming wholesome brown rice, grilled chicken breast, Hass avocado, runny soft-boiled egg, edamame, sesame dressing. Zero watches, zero cars, zero knives/juicers!
-- If the topic is stir-fried rice (ข้าวผัด / ข้าวกล้องผัด), strictly depict hot wok, brown rice, egg, chicken, scallions, lime, cucumber. MANDATORY CONSTRAINT: "zero avocado, zero salad, zero salad dressing"!
-- generateVideo (Stage 2): Use "- Camera & Physical Motion (Veo 2): ...".
+## 1. TWO-STAGE SPLIT PIPELINE (Image & Video Separated):
+- Provide THREE main action buttons in the header bar:
+  1) "🖼️ เจนรูปทั้งหมด (Batch Images)": Runs generateImage for ALL shots simultaneously (Promise.allSettled). Only images, no videos.
+  2) "🎬 เจนวิดีโอทั้งหมด (Batch Videos)": Runs generateVideo for ALL shots that have images (image-to-video), or falls back to text-to-video for shots without images. Uses Promise.allSettled.
+  3) "🗑️ ล้างข้อมูล (Hard Reset)": Clears all shots, states, and editor.
 
-## 4. ABSOLUTE BAN ON MOCK / SAMPLE BUTTONS:
-- DO NOT render any sample buttons like "ตัวอย่าง OAT MILK", "Sample Script", etc.
-- The CAMPAIGN SCRIPT textarea must start 100% empty and clean.
-- Provide a clean "🗑️ ล้างข้อมูล (Hard Reset)" button next to the input area to wipe all state in 1 click.
+- On EACH shot card, provide FOUR individual action buttons:
+  * "🖼️ เจนรูป" — generateSingleImage(shot): generates only this shot's image
+  * "🎬 เจนวิดีโอ" — generateSingleVideo(shot): generates video from existing image, or text-to-video fallback
+  * "🎥 Text-to-Video" — generateSingleVideo(shot, true): bypasses image, creates video from text prompts directly
+  * "✏️ แก้ไข" — opens inline 4-field editor for this shot
 
-## 5. ROCK-SOLID PARSER REGEX:
-Use regex: /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi
-- shotNumber: m[1]
-- shotTitle: m[2]?.trim()
-- duration: parse from "- Duration: [N]s"
-- onScreenText: parse from "- On-Screen Text (TH): [text]" or "- On-Screen Text: [text]"
-- thaiVoiceover: parse from "- Thai Voiceover Script: [text]" or "- Voiceover (TH): [text]" or "- Voiceover: [text]"
-- visualPrompt: parse from "- Visual Prompt (EN): [text]" or "- Visual Prompt: [text]"
-- motionPrompt: parse from "- Camera & Physical Motion (Veo 2): [text]" or "- Camera & Movement: [text]"`;
+## 2. INDEPENDENT SHOT STATE (Image & Video tracked separately):
+- Each shot card has TWO independent status indicators:
+  * Image status: 🟡 Generating / 🟢 Ready / 🔴 Error (with specific error message)
+  * Video status: 🟡 Generating / 🟢 Ready / 🔴 Error (with specific error message)
+- State structure per shot:
+  { imgStatus, vidStatus, imgErrorMsg, vidErrorMsg, imageUrl, videoUrl }
+
+## 3. FULL 4-FIELD INLINE EDITOR (Synchronized with PK Marketing AI OS):
+- When user clicks "✏️ แก้ไข" on any shot, open an inline editor panel with EXACTLY 4 fields:
+  1) 📸 Visual Prompt (EN) — textarea 3 rows, monospace font
+  2) 🎬 Motion Prompt (EN) — textarea 2 rows, monospace font
+  3) 🎙️ Thai Voiceover (เสียงพากย์ไทย) — textarea 2 rows
+  4) 📝 On-Screen Text (TH) (ข้อความบนจอ) — single line input
+- These field names and format EXACTLY match PK Marketing AI OS, so users can copy-paste between both platforms seamlessly.
+- Provide 3 action buttons in the editor:
+  * "✕ ยกเลิก" — close editor without saving
+  * "💾 บันทึก" — save edits to shot data
+  * "💾 บันทึก + เจนรูปใหม่" — save edits AND regenerate image immediately
+
+## 4. SHOT CARD DISPLAY (Professional & Informative):
+Each shot card shows:
+- Shot number, title, and duration badge
+- Generated image (if available) with click-to-enlarge
+- On-Screen Text (TH) displayed below image
+- Thai Voiceover text displayed as a small quoted block
+- Image status badge (top-left corner)
+- Video status badge (top-right corner)
+- 4 action buttons at the bottom
+
+## 5. MEDIA FIELDS ARMOR (Zero Crash Guarantee):
+- Image generation: const cleanPrompt = visualPrompt.replace(/--ar.*$/gi,'').trim() + ', zero in-image text, zero watches, zero cars, zero jewelry';
+- Video generation with image: const cleanImg = (typeof url === 'string' && url.startsWith('http')) ? url : null;
+  * If cleanImg exists: generateVideo({ image: cleanImg, prompt: motionPrompt })
+  * If cleanImg is null: generateVideo({ prompt: (visualPrompt + '. ' + motionPrompt).trim() })
+  * NEVER pass image: undefined or image: null to generateVideo!
+
+## 6. UNIVERSAL TOPIC LOCK:
+- Clean food / brown rice bowl (ข้าวกล้อง / โบว์ล / อาหารคลีน): Lock to wholesome food imagery (brown rice, grilled chicken, avocado, soft-boiled egg, edamame, sesame dressing). Zero watches, zero cars, zero knives, zero juicers!
+- Stir-fried rice (ข้าวผัด): Lock to wok, rice, egg, chicken, scallions, lime, cucumber. Zero avocado, zero salad dressing!
+
+## 7. ROCK-SOLID PARSER REGEX:
+/\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|$)/gi
+Parse fields:
+- visualPrompt from "- Visual Prompt (EN):" or "- Visual Prompt:"
+- motionPrompt from "- Camera & Physical Motion (Veo 2):" or "- Camera & Movement:" or "- Motion Prompt:"
+- thaiVoiceover from "- Thai Voiceover Script:" or "- Voiceover (TH):" or "- Voiceover:"
+- onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:"
+- duration from "- Duration: [N]s"
+
+## 8. ABSOLUTE BAN ON MOCK DATA:
+- NO sample buttons, NO Oat Milk demos, NO pre-filled data.
+- Campaign Script textarea starts 100% empty.
+- Clean "🗑️ ล้างข้อมูล" button to wipe everything in 1 click.`;
 
 export default function CommercialStudioPage() {
   return (
