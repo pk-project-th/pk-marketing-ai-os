@@ -121,29 +121,62 @@ async function generateAllImages() {
   setCurrentProgress('✅ เจนรูปเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
 }
 
-### 3. 🎬 VIDEO GENERATION FUNCTIONS (แยกจาก Image 100%):
+### 3. 🎬 VIDEO GENERATION FUNCTIONS (แยกจาก Image 100% พร้อม AUTO FALLBACK):
 async function generateSingleVideo(shot: ShotItem, useTextOnly = false) {
   const shotId = String(shot.shotNumber);
   const imgUrl = shotStates[shotId]?.imageUrl;
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'generating', vidErrorMsg: undefined } }));
-  try {
-    const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && imgUrl.startsWith('http')) ? imgUrl : null;
-    let result;
-    if (cleanImg) {
-      result = await generateVideo({ image: cleanImg, prompt: shot.motionPrompt || shot.visualPrompt });
-    } else {
-      result = await generateVideo({ prompt: (shot.visualPrompt + '. ' + (shot.motionPrompt || '')).trim() });
+
+  // Sanitize prompts: strip --ar parameters and sensitive keywords like 'crash'
+  const cleanMotion = (shot.motionPrompt || shot.visualPrompt || '')
+    .replace(/--ar\s*\d+:\d+/gi, '')
+    .replace(/\bcrash\b/gi, 'rapid snap')
+    .trim();
+  const cleanVisual = (shot.visualPrompt || '')
+    .replace(/--ar\s*\d+:\d+/gi, '')
+    .replace(/\bcrash\b/gi, 'dynamic')
+    .trim();
+  const combinedTextPrompt = (cleanVisual + '. ' + cleanMotion).trim();
+
+  let result = null;
+  const cleanImg = (!useTextOnly && typeof imgUrl === 'string' && (imgUrl.startsWith('http') || imgUrl.startsWith('blob:') || imgUrl.startsWith('data:'))) ? imgUrl : null;
+
+  // STEP 1: ลอง Image-to-Video ก่อน (ถ้ามีรูปภาพ)
+  if (cleanImg) {
+    try {
+      result = await generateVideo({ image: cleanImg, prompt: cleanMotion || combinedTextPrompt });
+    } catch (imgErr: any) {
+      console.warn('Image-to-Video failed, auto-falling back to Text-to-Video...', imgErr);
     }
-    const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
-    if (!url) throw new Error('ไม่ได้รับวิดีโอจากระบบ');
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidErrorMsg: undefined } }));
-  } catch (err: any) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: err?.message || 'วิดีโอสร้างไม่สำเร็จ กรุณากด Text-to-Video หรือแก้ไข Prompt' } }));
   }
+
+  // STEP 2: Auto Fallback เป็น Text-to-Video อัตโนมัติ (แก้ปัญหา Expected object response with media fields เด็ดขาด)
+  if (!result) {
+    try {
+      result = await generateVideo({ prompt: combinedTextPrompt });
+    } catch (txtErr: any) {
+      setShotStates(prev => ({
+        ...prev,
+        [shotId]: {
+          ...prev[shotId],
+          vidStatus: 'error',
+          vidErrorMsg: 'Veo ประมวลผลไม่สำเร็จ กรุณากดปุ่ม ✏️ แก้ไข Prompt ให้สั้นลงแล้วกดลองใหม่'
+        }
+      }));
+      return;
+    }
+  }
+
+  const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
+  if (!url) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: 'ไม่ได้รับวิดีโอจากระบบ' } }));
+    return;
+  }
+  setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidErrorMsg: undefined } }));
 }
 
 async function generateAllVideos() {
-  setCurrentProgress('🎬 กำลังเจนวิดีโอทั้งหมด...');
+  setCurrentProgress('🎬 กำลังเจนวิดีโอทั้งหมด (พร้อมระบบ Auto-Fallback ป้องกัน Error)...');
   await Promise.allSettled(shots.map(s => generateSingleVideo(s)));
   setCurrentProgress('✅ เจนวิดีโอเสร็จ ตรวจสอบผลลัพธ์แต่ละช็อตด้านล่าง');
 }

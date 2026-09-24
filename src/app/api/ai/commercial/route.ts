@@ -1668,10 +1668,10 @@ export async function POST(req: Request) {
         sfx: "Wire rack metal clink, delicate hot oil dripping drops."
       },
       {
-        type: "📐 Kinetic Crash Zoom โรยเครื่องสมุนไพรไม่อั้น (Garnish Waterfall)",
-        camera: "📐 Kinetic Crash Zoom 24mm-70mm Fast Snap",
+        type: "📐 Dynamic Macro Snap Zoom โรยเครื่องสมุนไพรไม่อั้น (Garnish Waterfall)",
+        camera: "📐 Dynamic Macro Snap Zoom 24mm-70mm Fast Snap",
         motion: `Photorealistic 8K image-to-video. Fast snap zoom as chef's fingers shower mountain of crispy fried garlic, translucent golden shallots, and spicy red-green chilies across top of fried Pla Som. Crisp aromatics settle with light crunching sound, 24fps.`,
-        prompt: `Kinetic crash zoom of crispy fried golden garlic and chili flakes showered generously over hot crispy fried fish, high speed 60fps, dynamic motion blur, commercial food grading. --ar ${aspectRatio}`,
+        prompt: `Dynamic macro snap zoom of crispy fried golden garlic and chili flakes showered generously over hot crispy fried fish, high speed 60fps, dynamic motion blur, commercial food grading. --ar ${aspectRatio}`,
         voice: "โรยเครื่องเคียงกระเทียมเจียวและพริกทอดลงไปแบบจุใจ เพิ่มมิติรสชาติและสัมผัสความกรอบ",
         text: "โรยเครื่องเคียงล้นๆ หอมกรอบสะใจ 🌶️",
         textPos: "Center Punchy",
@@ -1809,10 +1809,10 @@ export async function POST(req: Request) {
         sfx: "Gentle culinary acoustic atmosphere."
       },
       {
-        type: "📐 Kinetic Crash Zoom จัดจานสุดประณีต (Artisan Plating)",
-        camera: "📐 Kinetic Crash Zoom 24mm-70mm",
+        type: "📐 Dynamic Macro Snap Zoom จัดจานสุดประณีต (Artisan Plating)",
+        camera: "📐 Dynamic Macro Snap Zoom 24mm-70mm",
         motion: `Photorealistic 8K image-to-video. Snap zoom into artisan ceramic platter as ${effectiveProductEn} is beautifully arranged. Glistening textures, fresh garnishes placed with precision, 24fps.`,
-        prompt: `Kinetic crash zoom of ${effectiveProductEn} being elegantly plated on artisan ceramic dish, glistening savory gloss, macro focus, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
+        prompt: `Dynamic macro snap zoom of ${effectiveProductEn} being elegantly plated on artisan ceramic dish, glistening savory gloss, macro focus, zero watches, zero cars, zero jewelry, zero text. --ar ${aspectRatio}`,
         voice: `จัดจานอย่างประณีต เผยให้เห็นหน้าตาของ ${productName} ที่สวยงามน่าทานที่สุด`,
         text: `จัดเสิร์ฟ ${productName} พร้อมชิม 🍽️`,
         textPos: "Center Punchy",
