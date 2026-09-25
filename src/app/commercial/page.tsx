@@ -58,59 +58,64 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v12.0 DUAL-ANCHOR EDITION (PRESENTER & PRODUCT REFERENCE SLOTS, AUTOSAVE, VIDEO CONCAT & PROP CONTINUITY):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v12.1 BULLETPROOF EDITION (WORKFLOW 1->2->3, DUAL ANCHORS, EXPLICIT TEXT MODES & ZERO-CRASH SAFETY):
 
-แก้ไขและเพิ่ม 6 ฟังก์ชันสำคัญตามข้อเรียกร้องใช้งานจริง:
-1. 👥 เพิ่ม 2 ช่องแนบรูปอ้างอิง (Dual-Anchor Reference Image Slots):
-   - [ 👤 แนบรูปคน / เชฟ (Slot 1 - Presenter) ]: ล็อกใบหน้า ทรงผม ชุดเชฟ และเอกลักษณ์ของตัวแบบให้เหมือนกันทุกฉาก
-   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2 - Product) ]: ล็อกปลาส้มจริง บรรจุภัณฑ์ และสีสันของเนื้อปลาให้ตรงปก 100%
-   - ทั้ง 2 ช่องเป็น Optional: มีรูปก็ใส่ ไม่มีก็เว้นว่างได้ ระบบจะ Fallback ใช้ Pure Prompt อัตโนมัติโดยไม่ Error
-2. 💾 บันทึกโปรเจกต์อัตโนมัติ (Auto-Save & Project Persistence):
-   - บันทึกสถานะทุกช็อต (Shots, Images, Videos, Reference Images) ลง localStorage อัตโนมัติ
-   - เมื่อผู้ใช้กดรีเฟรชหน้าเว็บ หรือปิดแล้วเปิดใหม่ ระบบจะดึงงานเดิมกลับมาอัตโนมัติ 100% รูปที่แนบไว้ไม่หาย
-   - เพิ่มปุ่ม [ 💾 บันทึกโปรเจกต์ ] และ [ 📂 คืนค่างานล่าสุด ] บนแถบเมนูด้านบน
-3. 🎞️ ปุ่มรวมคลิปเป็น 1 คลิป (Master Video Concatenator):
-   - เพิ่มปุ่ม [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] บนหัวตาราง
-   - เล่นคลิปทุกฉากต่อกันแบบ Playlist ต่อเนื่องทันที และมีปุ่มดาวน์โหลด Master Video
-4. ⏱️ จัดเรียงไทม์ไลน์อาหารสมจริง (Culinary Chronology):
-   - ปลาส้มก่อนทอดต้องเป็น "ปลาดิบหมักเครื่อง" วางบนเขียงไม้ -> คลุกแป้ง -> จุ่มตะเกียบเช็กน้ำมัน -> หย่อนปลาดิบลงกระทะ -> น้ำมันเดือดฟูจนหนังพองกรอบ -> พลิกปลาสีทอง -> เจียวสมุนไพร -> ตักเสิร์ฟพร้อมข้าวสวย (ห้ามปลาสุกก่อนทอดเด็ดขาด)
-5. 🍳 ล็อกอุปกรณ์กระทะใบเดิม 100% (Continuous Cookware Entity):
-   - บังคับใช้กระทะใบเดิมตลอดเรื่อง: "seasoned black carbon-steel wok with natural wooden handle" ห้ามเปลี่ยนเป็นกระทะคนละแบบ
-6. 📝 สวิตช์โหมดตัวหนังสือ (Text Mode Selector):
-   - ตัวเลือก: [ ⭐ เฉพาะหน้าปก (แนะนำ - ปลอดภัยสุด วิดีโอผ่าน 100%) | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]
-   - แนะนำโหมด "เฉพาะหน้าปก": ฉาก 1 มีป้ายกระจกฝ้าหรูหรา ส่วนฉาก 2 ขึ้นไปเป็นภาพยนตร์คลีน 8K ช่วยให้ Veo เจนผ่านฉลุย ไร้บัคตัวหนังสือบวมเพี้ยน
+แก้ไขจุดผิดพลาดและจัดระเบียบหน้า Tool ใหม่ทั้งหมดตามคำสั่ง:
+1. 🛡️ แก้ไขข้อผิดพลาด "Uncaught Error" (หน้าจอดำ) 100%:
+   - ประกาศ State ครบทุกตัว: masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle
+   - ป้องกัน Undefined Reference Error ทุกจุด ทุกฟังก์ชันต้องมี try...catch ล้อมรอบ ไม่ให้หน้าเว็บแครช
+2. 🏷️ แก้ไขสวิตช์เลือกตำแหน่งตัวหนังสือให้ชัดเจน ไม่งง:
+   - มีป้ายกำกับชัดเจน: "ตำแหน่งตัวหนังสือ:"
+   - ตัวเลือกที่ 1: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] — แนะนำสุด! ข้อความจะอยู่เฉพาะคลิปแรกเพื่อเป็นหน้าปกหยุดสายตา ส่วนคลิปอื่นเป็นภาพ 8K คลีนๆ ช่วยให้สร้างคลิปวิดีโอผ่าน 100% ไม่ติดฟิลเตอร์ ไม่บวมเพี้ยน
+   - ตัวเลือกที่ 2: [ 📝 ใส่ทุกคลิป ] — ใส่ป้ายข้อความใต้ภาพทุกฉาก
+   - ตัวเลือกที่ 3: [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] — ภาพยนตร์คมชัด 8K เพียวๆ ไม่มีตัวอักษรใดๆ ให้เสียงพากย์บรรยายเนื้อหา
+3. 🔢 จัดเรียงปุ่มการทำงานตามลำดับขั้นตอนจริง (Workflow 1 -> 2 -> 3):
+   - ห้ามเอาปุ่มรวมคลิปขึ้นก่อนเด็ดขาด! ต้องเรียงตามลำดับการผลิต:
+     [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ]
+4. 👥 2 ช่องแนบรูปอ้างอิง (Dual-Anchor Reference Slots):
+   - [ 👤 แนบรูปคน / เชฟ (Slot 1) ] — ล็อกใบหน้าและชุดเชฟ
+   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ] — ล็อกปลาส้มจริงและแพ็กเกจ
+   - ทั้ง 2 ช่องเป็น Optional: มีรูปก็ใส่ ไม่มีก็เว้นว่างได้ ระบบจะ Fallback ใช้ Pure Prompt อัตโนมัติ
 
 ---
 
-แก้ไขโค้ดใน Tool ตามโครงสร้างนี้:
+แก้ไขโค้ด React ใน Tool ให้มีโครงสร้างที่ปลอดภัยและสมบูรณ์ดังนี้:
 
-### 1. 🖼️ STATE & DUAL REFERENCE SLOTS:
-// เก็บรูปอ้างอิงคนและสินค้า
-const [presenterImage, setPresenterImage] = useState<string | null>(null);
-const [productImage, setProductImage] = useState<string | null>(null);
+### 1. 📦 STATES DECLARATION (ครบทุกตัว ห้ามขาด):
+const [shots, setShots] = useState([]);
+const [shotStates, setShotStates] = useState({});
+const [campaignTitle, setCampaignTitle] = useState("");
+const [textMode, setTextMode] = useState("cover_only"); // "cover_only", "all_scenes", "none"
+const [presenterImage, setPresenterImage] = useState(null);
+const [productImage, setProductImage] = useState(null);
+const [masterPlayerOpen, setMasterPlayerOpen] = useState(false);
+const [currentClipIndex, setCurrentClipIndex] = useState(0);
+const [isGeneratingAllImages, setIsGeneratingAllImages] = useState(false);
+const [isGeneratingAllVideos, setIsGeneratingAllVideos] = useState(false);
 
-// บันทึกลง localStorage อัตโนมัติ (รวม Reference Images)
-function autoSaveActiveProject(currentShots: any[], currentStates: any, title: string, mode: string, pImg?: string | null, prodImg?: string | null) {
+### 2. 💾 PERSISTENCE (AUTOSAVE & RESTORE):
+function autoSaveActiveProject(currentShots, currentStates, title, mode, pImg, prodImg) {
   try {
     localStorage.setItem("pk_flow_active_project", JSON.stringify({
       shots: currentShots,
       shotStates: currentStates,
       campaignTitle: title,
       textMode: mode,
-      presenterImage: pImg ?? presenterImage,
-      productImage: prodImg ?? productImage,
+      presenterImage: pImg !== undefined ? pImg : presenterImage,
+      productImage: prodImg !== undefined ? prodImg : productImage,
       updatedAt: new Date().toISOString()
     }));
-  } catch (e) {}
+  } catch (e) {
+    console.warn("Autosave error:", e);
+  }
 }
 
-// คืนค่าโปรเจกต์อัตโนมัติเมื่อเปิดหน้าเว็บ
 useEffect(() => {
   try {
     const saved = localStorage.getItem("pk_flow_active_project");
     if (saved) {
       const data = JSON.parse(saved);
-      if (data.shots && data.shots.length > 0) {
+      if (data.shots && Array.isArray(data.shots) && data.shots.length > 0) {
         setShots(data.shots);
         setShotStates(data.shotStates || {});
         if (data.campaignTitle) setCampaignTitle(data.campaignTitle);
@@ -119,87 +124,37 @@ useEffect(() => {
         if (data.productImage) setProductImage(data.productImage);
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("Restore error:", e);
+  }
 }, []);
 
-### 2. 🔍 ฟังก์ชัน PARSER (ดึงข้อความและกรองให้สะอาด):
-function parseCampaignScript(rawText: string) {
-  const parsedShots: any[] = [];
-  const campaignMatch = rawText.match(/CAMPAIGN:\\s*([^\\n]+)/i);
-  const campaignTitle = campaignMatch ? campaignMatch[1].trim() : "";
-
-  const shotRegex = /\\[(?:SHOT|SCENE|ช็อต)\\s*(\\d+)\\]\\s*([^|\\n]*)(?:\\|\\s*Timecode:\\s*([^\\n]*))?\\n([\\s\\S]*?)(?=(?:\\[(?:SHOT|SCENE|ช็อต)\\s*\\d+\\]|---\\s*[A-Z]|$))/gi;
-  let match;
-  while ((match = shotRegex.exec(rawText)) !== null) {
-    const shotNumber = parseInt(match[1], 10);
-    const shotTitle = match[2]?.trim() || ('ช็อต ' + shotNumber);
-    const chunk = match[4] || '';
-
-    const durMatch = chunk.match(/-\\s*Duration:\\s*([\\d.]+)/i);
-    const duration = durMatch ? parseFloat(durMatch[1]) : 3;
-
-    const textMatch = chunk.match(/-\\s*On-Screen Text(?:\\s*\\(TH\\))?:\\s*["“]?([^"”\\r\\n]+)["”]?/i);
-    let rawOnScreen = textMatch ? textMatch[1].trim() : '';
-    const cleanOnScreen = rawOnScreen.replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+\\s*[:：\\-]?\\s*/gi, '').trim();
-
-    const voiceMatch = chunk.match(/-\\s*(?:Thai Voiceover Script|Voiceover(?:\\s*\\(TH\\))?|Voice):\\s*["“]?([^"”\\r\\n]+)["”]?/i);
-    const thaiVoiceover = voiceMatch ? voiceMatch[1].trim() : '';
-
-    const visualMatch = chunk.match(/-\\s*Visual Prompt(?:\\s*\\(EN\\))?:\\s*([^\\r\\n]+(?:\\r?\\n(?!-\\s*[A-Z])[^\\r\\n]+)*)/i);
-    const visualPrompt = visualMatch ? visualMatch[1].trim() : '';
-
-    const motionMatch = chunk.match(/-\\s*(?:Camera & Physical Motion(?:\\s*\\(Veo 2\\))?|Motion Prompt(?:\\s*\\(EN\\))?|Camera & Movement|Motion):\\s*([^\\r\\n]+(?:\\r?\\n(?!-\\s*[A-Z])[^\\r\\n]+)*)/i);
-    const motionPrompt = motionMatch ? motionMatch[1].trim() : '';
-
-    parsedShots.push({
-      shotNumber,
-      shotTitle,
-      duration,
-      onScreenText: cleanOnScreen,
-      thaiVoiceover,
-      visualPrompt,
-      motionPrompt,
-      campaignTitle
-    });
-  }
-  return parsedShots;
-}
-
-### 3. 🖼️ IMAGE GENERATION (DUAL ANCHORS, CHRONOLOGY, WOK CONTINUITY & TEXT MODE):
-async function generateSingleImage(shot: any, textMode: string = 'cover_only') {
+### 3. 🖼️ STEP 1: GENERATE IMAGES (CHRONOLOGY & DUAL ANCHORS):
+async function generateSingleImage(shot, currentTextMode = textMode) {
   const shotId = String(shot.shotNumber);
-  setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating' } }));
+  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'generating' } }));
   try {
-    const cleanVisual = (shot.visualPrompt || '')
-      .replace(/--ar\\s*\\d+:\\d+/gi, '')
-      .replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+[:：\\s]*/gi, '')
-      .trim();
-
+    const cleanVisual = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim();
     const cleanText = (shot.onScreenText || '').replace(/["']/g, '').trim();
     let textOverlayDirective = "";
 
-    // บังคับใช้ Text Mode:
-    // โหมด "cover_only" (แนะนำ): ฉาก 1 มีป้ายหัวข้อหรู ฉาก 2+ เป็นภาพคลีน 8K ช่วยให้ Veo เจนผ่านฉลุย
-    if (textMode === 'cover_only') {
+    if (currentTextMode === 'cover_only') {
       if (shot.shotNumber === 1) {
         const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
         textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center. (ZERO antique scrolls, ZERO comic bubbles, ZERO 3D balloon text)\`;
       }
-    } else if (textMode === 'all_scenes') {
+    } else if (currentTextMode === 'all_scenes') {
       if (shot.shotNumber === 1) {
         const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
         textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center.\`;
       } else if (cleanText) {
-        textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third. (STRICT DESIGN UNIFORMITY)\`;
+        textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third.\`;
       }
     }
 
-    // ล็อกกระทะคาร์บอนสตีลใบเดิมสำหรับทุกฉากทำอาหาร
     const cookwareLock = ", cookware continuity: inside the identical seasoned black carbon-steel wok with natural wooden handle";
-
-    // ผูก Reference Anchors (ถ้ามีรูปแนบ)
     let anchorDirective = "";
-    const activeRefImages: string[] = [];
+    const activeRefImages = [];
     if (presenterImage) {
       activeRefImages.push(presenterImage);
       anchorDirective += ", character consistency: match facial identity, haircut, and persona exactly from attached Presenter reference image";
@@ -210,32 +165,37 @@ async function generateSingleImage(shot: any, textMode: string = 'cover_only') {
     }
 
     const fullPrompt = \`\${cleanVisual}\${cookwareLock}\${anchorDirective}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
-    
-    // เรียก generateImage พร้อมแนบรูป Reference หากมี
-    const imagePayload: any = { prompt: fullPrompt, aspectRatio: '9:16' };
-    if (activeRefImages.length === 1) {
-      imagePayload.image = activeRefImages[0];
-    } else if (activeRefImages.length > 1) {
-      imagePayload.image = activeRefImages;
-    }
+    const imagePayload = { prompt: fullPrompt, aspectRatio: '9:16' };
+    if (activeRefImages.length === 1) imagePayload.image = activeRefImages[0];
+    else if (activeRefImages.length > 1) imagePayload.image = activeRefImages;
 
     const result = await generateImage(imagePayload);
     const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
     if (!url) throw new Error('ไม่ได้รับรูปภาพจากระบบ');
+
     setShotStates(prev => {
-      const next = { ...prev, [shotId]: { ...prev[shotId], imgStatus: 'success', imageUrl: url } };
-      autoSaveActiveProject(shots, next, campaignTitle, textMode);
+      const next = { ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'success', imageUrl: url } };
+      autoSaveActiveProject(shots, next, campaignTitle, currentTextMode);
       return next;
     });
-  } catch (err: any) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'error', imgErrorMsg: err?.message } }));
+  } catch (err) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'error', imgErrorMsg: err?.message || 'เจนรูปขัดข้อง' } }));
   }
 }
 
-### 4. 🎬 SAFE VEO VIDEO GENERATION & AUTOSAVE:
-async function generateSingleVideo(shot: any) {
+async function handleGenerateAllImages() {
+  if (!shots || shots.length === 0) return;
+  setIsGeneratingAllImages(true);
+  for (const shot of shots) {
+    await generateSingleImage(shot, textMode);
+  }
+  setIsGeneratingAllImages(false);
+}
+
+### 4. 🎬 STEP 2: GENERATE VIDEOS (SEQUENTIAL QUEUE):
+async function generateSingleVideo(shot) {
   const shotId = String(shot.shotNumber);
-  setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'generating', vidProgress: '⏳ กำลังเรนเดอร์ Veo (1-2 นาที)...' } }));
+  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'generating', vidProgress: '⏳ กำลังเรนเดอร์ Veo (1-2 นาที)...' } }));
 
   try {
     let rawPrompt = (shot.motionPrompt || shot.visualPrompt || '')
@@ -250,73 +210,78 @@ async function generateSingleVideo(shot: any) {
     if (!url) throw new Error('ไม่ได้รับไฟล์วิดีโอจาก Veo');
 
     setShotStates(prev => {
-      const next = { ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidProgress: undefined } };
+      const next = { ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'success', videoUrl: url, vidProgress: undefined } };
       autoSaveActiveProject(shots, next, campaignTitle, textMode);
       return next;
     });
-  } catch (err: any) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: 'Veo ขัดข้อง กรุณาลองกดปุ่มเจนวิดีโอใหม่อีกครั้ง' } }));
+  } catch (err) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'error', vidErrorMsg: 'Veo ขัดข้อง กรุณาลองกดปุ่มเจนวิดีโอใหม่อีกครั้ง' } }));
   }
 }
 
-### 5. 🎞️ MASTER VIDEO CONCATENATOR (รวมคลิปต่อเนื่อง):
+async function handleGenerateAllVideos() {
+  if (!shots || shots.length === 0) return;
+  setIsGeneratingAllVideos(true);
+  for (const shot of shots) {
+    await generateSingleVideo(shot);
+  }
+  setIsGeneratingAllVideos(false);
+}
+
+### 5. 🎞️ STEP 3: MASTER CONCAT PLAYER (รวมคลิปต่อเนื่อง):
 function playAllVideosContinuously() {
-  const videoUrls = shots.map(s => shotStates[String(s.shotNumber)]?.videoUrl).filter(Boolean);
-  if (videoUrls.length === 0) {
-    alert("ยังไม่มีวิดีโอที่เรนเดอร์เสร็จ กรุณากดเจนวิดีโอก่อน");
+  const readyVideos = shots.map(s => shotStates[String(s.shotNumber)]?.videoUrl).filter(Boolean);
+  if (readyVideos.length === 0) {
+    alert("ยังไม่มีวิดีโอที่สร้างเสร็จ กรุณากดปุ่ม '2. 🎬 สร้างเป็นคลิปทั้งหมด' ก่อนรวมคลิปครับ");
     return;
   }
-  // เปิด Master Player modal เล่นคลิปแบบเรียงลำดับต่อเนื่องอัตโนมัติ
-  setMasterPlayerOpen(true);
   setCurrentClipIndex(0);
+  setMasterPlayerOpen(true);
 }
 
-### 6. 🎴 HEADER ACTIONS, DUAL REFERENCE SLOTS & TOOLBAR:
-ด้านบนสุดของ Tool แสดง 2 ช่องแนบรูป Reference:
-1) [ 👤 แนบรูปคน / เชฟ (Slot 1) ] — รองรับ Drag & Drop หรือเลือกไฟล์รูปภาพ
-2) [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ] — รองรับ Drag & Drop หรือเลือกไฟล์รูปภาพ
+### 6. 🎴 WORKFLOW TOOLBAR & CLEAR TEXT MODE UI:
+สร้างแถบเครื่องมือด้านบนเรียงลำดับขั้นตอน 1 -> 2 -> 3 อย่างชัดเจน:
 
-แถบควบคุมด้านบนมี 6 ปุ่มครบถ้วน:
-1) [ 💾 บันทึกโปรเจกต์ ]
-2) [ 📂 คืนค่างานล่าสุด ]
-3) [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ]
-4) [ 🖼️ เจนรูปทั้งหมด ]
-5) [ 🎬 เจนวิดีโอทั้งหมด (Sequential) ]
-6) สวิตช์ Text Mode: [ ⭐ เฉพาะหน้าปก | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]`;
+1. สวิตช์ตำแหน่งตัวหนังสือ:
+   [ ตำแหน่งตัวหนังสือ: ]
+   - [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] -> textMode = 'cover_only'
+   - [ 📝 ใส่ทุกคลิป ] -> textMode = 'all_scenes'
+   - [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] -> textMode = 'none'
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v12.0 Master Complete (Dual Reference Anchors, AutoSave, Master Concat, Food Timeline & Prop Continuity Edition)" — a production-grade video studio featuring 2 reference image slots (Presenter & Product), continuous project autosave, sequential master video concat, strict culinary chronology (raw to crispy cooked), single-pan cookware continuity (black carbon-steel wok), and configurable on-screen text modes.
+2. ปุ่มการผลิตเรียงตามลำดับ 1 -> 2 -> 3:
+   - [ 1. 🖼️ เจนรูปทั้งหมด ] (กดเพื่อเจนภาพสตอรี่บอร์ดทุกช็อต)
+   - [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] (กดเพื่อเรนเดอร์ภาพเคลื่อนไหว Veo ทีละฉาก)
+   - [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] (กดเพื่อเล่นคลิปต่อกันเป็นคลิปเดียวและดาวน์โหลด)
 
-## 1. DUAL-ANCHOR REFERENCE SLOTS (รูปคน & รูปสินค้า):
-- Provide 2 top-level upload/dropzone slots:
-  - Slot 1: [ 👤 แนบรูปคน / เชฟ (Presenter Anchor) ]
-  - Slot 2: [ 📦 แนบรูปสินค้า / อาหารจริง (Product Anchor) ]
-- When images are attached, inject visual continuity directives and pass reference images into generateImage({ prompt, image, aspectRatio: '9:16' }).
-- Both slots are optional. If empty, seamlessly execute pure-prompt generation without errors.
-- Save attached reference images in localStorage alongside shots.
+3. 2 ช่องใส่รูป Reference:
+   - [ 👤 แนบรูปคน / เชฟ (Slot 1) ]
+   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]`;
 
-## 2. PROJECT PERSISTENCE & AUTOSAVE:
-- State automatically syncs to localStorage on every shot parse, image generation, video completion, and image attachment.
-- Reopening or refreshing the page immediately restores all previously generated images, video players, uploaded references, and script fields.
-- Include [ 💾 บันทึกโปรเจกต์ ] and [ 📂 คืนค่างานล่าสุด ] buttons in the main header.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v12.1 Master Complete (Bulletproof Workflow Edition)" — featuring 1->2->3 production sequence, explicit on-screen text modes, dual reference anchors (Presenter & Product), zero-crash state safety, and continuous sequential playback.
 
-## 3. MASTER VIDEO CONCATENATOR (รวมคลิปเป็น 1 คลิป):
-- Header contains [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] button.
-- Gathers all generated video URLs and opens a seamless continuous sequential player with auto-advance and download options.
+## 1. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
+- The header actions must strictly follow the natural creative sequence:
+  1) [ 1. 🖼️ เจนรูปทั้งหมด ] — Generates all storyboard stills sequentially.
+  2) [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] — Animates stills into Veo video clips sequentially.
+  3) [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] — Concatenates and previews all ready clips in seamless playlist order.
 
-## 4. CULINARY CHRONOLOGY & PROP CONTINUITY:
-- Timeline: Shot 1 & 2 enforce RAW, uncooked marinated fish on cutting board with rice flour dusting. Shot 3 tests oil. Shot 4 lowers raw fish into bubbling oil. Shot 5 blisters raw skin into golden crisp. Shot 6 flips to reveal golden crust. Shot 7 crisps aromatics. Shots 8+ rest, plate, and serve.
-- Continuous Cookware Entity: All frying scenes lock to "identical seasoned black carbon-steel wok with natural wooden handle" (zero cast iron skillet, zero stainless pan, zero non-stick wok).
+## 2. EXPLICIT ON-SCREEN TEXT MODES (Clear UI Labels):
+- Text Mode Selector with label "ตำแหน่งตัวหนังสือ:":
+  - "cover_only": Label as [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] (Dark frosted-glass headline on Shot 1, shots 2+ are clean 8K cinematography with zero text to prevent video distortion).
+  - "all_scenes": Label as [ 📝 ใส่ทุกคลิป ] (Frosted glass caption pills on all shots).
+  - "none": Label as [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] (Pure 8K cinematography without any on-screen text).
 
-## 5. ON-SCREEN TEXT MODES (Zero Video Rejection):
-- Header includes Text Mode Selector:
-  - "cover_only" (Recommended / Default): Shot 1 has dark frosted-glass headline banner. Shots 2+ are clean 8K cinematography with zero text overlay (guarantees 100% smooth Veo rendering).
-  - "all_scenes": Frosted glass pill captions on all shots.
-  - "none": Pure cinema on all shots.
+## 3. DUAL-ANCHOR REFERENCE SLOTS:
+- 2 top-level upload/dropzone slots:
+  - Slot 1: [ 👤 แนบรูปคน / เชฟ (Slot 1) ]
+  - Slot 2: [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]
+- Optional: If empty, gracefully defaults to pure prompt mode.
+- Auto-saved to localStorage.
 
-## 6. ZERO-HANG VEO VIDEO ENGINE:
-- Pure English prompts only, strip Thai and sensitive symbols.
-- Sequential rendering queue to eliminate 429 quota errors.
-- Automatic Text-to-Video fallback if image-to-video encounters media field errors.`;
+## 4. ZERO-CRASH ARCHITECTURE (Uncaught Armor):
+- Explicitly declare all states: masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle.
+- Wrap all async operations in try...catch blocks.
+- Clean Master Video player modal that mounts conditionally on masterPlayerOpen.`;
 
 export default function CommercialStudioPage() {
   return (
@@ -1596,9 +1561,9 @@ function CommercialStudioContent() {
             >
               <span className="text-amber-500 text-sm shrink-0">⭐</span>
               <div>
-                <span className="block font-bold">เฉพาะหน้าปก (แนะนำ)</span>
+                <span className="block font-bold">ใส่เฉพาะคลิปแรก (หน้าปก) — แนะนำ</span>
                 <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
-                  ช็อต 1 มีป้ายหัวข้อหรู ช็อต 2+ คลีน 8K เรนเดอร์วิดีโอผ่าน 100% ไร้บัค
+                  คลิป 1 มีป้ายหัวข้อหรู คลิป 2+ คลีน 8K เรนเดอร์วิดีโอผ่าน 100% ไร้บัค
                 </span>
               </div>
             </button>
@@ -1614,7 +1579,7 @@ function CommercialStudioContent() {
             >
               <span className="text-indigo-600 text-sm shrink-0">📝</span>
               <div>
-                <span className="block font-bold">แสดงทุกฉาก</span>
+                <span className="block font-bold">ใส่ทุกคลิป</span>
                 <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
                   ป้ายกระจกฝ้าทรงกระบอกมนสีดาร์กชาร์โคล ฟอนต์ไทยคลีนเดียวกันทุกฉาก
                 </span>
@@ -1632,7 +1597,7 @@ function CommercialStudioContent() {
             >
               <span className="text-slate-500 text-sm shrink-0">🎬</span>
               <div>
-                <span className="block font-bold">ไม่มีตัวหนังสือ</span>
+                <span className="block font-bold">ภาพล้วน (ไม่ใส่ตัวหนังสือ)</span>
                 <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
                   ภาพยนตร์ 8K เพียวๆ ไม่มีตัวอักษรใดๆ ให้เสียงพากย์บรรยายเนื้อหา
                 </span>
