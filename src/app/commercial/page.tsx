@@ -58,33 +58,44 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.0 ULTIMATE MASTER EDITION (ELEVENLABS VOICEOVER, LIVE PROGRESS DASHBOARD, EDITABLE SCENES, MULTI-PROJECT ARCHIVE & WORKFLOW 1->2->3):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.1 CHARACTER VOICE STUDIO (MULTI-CHARACTER VOICE LOCKING, ELEVENLABS PRESET VOICES, LIVE DASHBOARD & WORKFLOW 1->2->3):
 
-แก้ไขและเพิ่ม 5 ฟังก์ชันสุดล้ำตามคำขอ ออกแบบให้สวยงาม ใช้งานง่าย และคงความเสถียร 100%:
-1. 🎙️ ระบบเสียงพากย์ ElevenLabs ครบวงจร (API Key + Voice ID + พากย์รายฉาก):
-   - มีปุ่ม [ 🎙️ ตั้งค่า ElevenLabs ] ที่ Header เพื่อใส่ API Key (บันทึกลง localStorage อัตโนมัติ ใส่ครั้งเดียวจำตลอดไป)
-   - มีปุ่ม [ 🎙️ สร้างเสียงพากย์ทุกฉาก ] สำหรับรันพากย์เสียงภาษาไทยให้อัตโนมัติทีละฉาก
-   - แต่ละฉากมีกล่องแก้ไข "บทพูดเสียงพากย์ไทย" (Editable Thai Voiceover) + ปุ่ม [ 🎙️ เจนเสียงฉากนี้ ] + เครื่องเล่นเสียง [ ▶️ ฟังเสียง ]
-2. 📊 แผงสถานะการผลิตเรียลไทม์ (Live Production Dashboard):
-   - แสดงแถบ Progress Bar และตัวนับสถานะชัดเจนที่ด้านบน:
-     • 🖼️ รูปภาพ: X / Total (พร้อม % ความคืบหน้า)
-     • 🎬 วิดีโอ Veo: Y / Total (พร้อม % ความคืบหน้า)
-     • 🎙️ เสียงพากย์: Z / Total (พร้อม % ความคืบหน้า)
-   - ป้ายสถานะภาพรวม: "🎉 เรนเดอร์ครบ 100% แล้ว! พร้อมรวมคลิป Master และดาวน์โหลดทันที" (ไฟกระพริบสีเขียว)
-3. ✏️ แก้ไขเนื้อหาได้อิสระทุกฉาก (Per-Shot Full Editing):
-   - ผู้ใช้สามารถพิมพ์แก้บทพากย์ไทย, ข้อความบนจอ, และ Visual Prompt ของแต่ละฉากได้ทันที
+แก้ไขและเพิ่มระบบ "ล็อกเสียงประจำตัวละครหลายตัว" (Multi-Character Voice Lock System) ตามคำสั่ง:
+1. 🎭 ตัวเลือกเสียงภาษาไทยหลากหลาย (Curated Multilingual Voice Library):
+   - เพิ่มรายการเสียงพรีเซ็ตยอดนิยมที่พูดภาษาไทยได้ชัดเจนและเป็นธรรมชาติที่สุดของ ElevenLabs:
+     • 👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่นน่าเชื่อถือ (Adam - pNInz6obpgDQGcFmaJgB)
+     • 👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel - 21m00Tcm4TlvDq8ikWAM)
+     • 🎙️ ผู้บรรยายหลัก / โฆษณาหรูพรีเมียม (Antoni - ErXwobaYiN019PkySvjV)
+     • ✨ สาวรีวิวชวนหิว / ตื่นเต้นกระตือรือร้น (Bella - EXAVITQu4vr4xnSDxMaL)
+     • 🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ดเป็นกันเอง (Josh - TxGEqnHWrfWFTfGW9XjX)
+     • 👵 คุณแม่ / สูตรโบราณต้นตำรับอบอุ่น (Dorothy - ThT5KcBeYPX3keUQqHPh)
+     • ⚙️ กำหนด Voice ID เอง (Custom Cloned Voice สำหรับเสียงโคลนตัวเอง)
+2. 🔒 ล็อกเสียงประจำตัวละครรายฉาก (Character Voice Lock per Scene):
+   - ในการ์ดของแต่ละฉาก มีเมนูเลือกตัวละครผู้พูด: [ 🗣️ เลือกตัวละคร: เชฟ | ผู้บรรยาย | ลูกค้า/คนชิม | เสียงกำหนดเอง ]
+   - ระบบจะ "ล็อกเสียง" ให้ตรงกับตัวละครนั้นๆ ตลอดทั้งเรื่อง แม้จะสลับไปพูดฉากไหนก็จะได้เสียงคนเดิม 100%
+   - ตรวจจับอัตโนมัติจากสคริปต์ เช่น ถ้าบทเขียนว่า "เชฟ: ..." หรือ "ลูกค้า: ..." ระบบจะเลือกเสียงตัวละครให้อัตโนมัติ
+3. 📊 แผงสถานะการผลิตเรียลไทม์ (Live Production Dashboard):
+   - แสดงความคืบหน้ารวม: รูปภาพ (X/Total) • วิดีโอ Veo (Y/Total) • เสียงพากย์ (Z/Total)
+   - ป้ายไฟเขียวแจ้งเตือนเมื่อพร้อมรวมคลิป Master
 4. 💾 คลังประวัติโปรเจกต์ (Multi-Project History Archive):
-   - [ 💾 บันทึกโปรเจกต์ ]: บันทึกผลงานปัจจุบัน (ภาพ, วิดีโอ, เสียงพากย์, สคริปต์) เก็บลงคลังถาวร
-   - [ 📂 คลังประวัติโปรเจกต์ (X) ]: เปิดดูประวัติงานเก่า สลับกลับมาเปิดดูหรือดาวน์โหลดได้ตลอดเวลา
-   - [ ➕ เริ่มโปรเจกต์ใหม่ ]: ล้างหน้าจอเตรียมทำสินค้าตัวถัดไป
-5. 🔢 ปุ่มการผลิตเรียงตามลำดับ 1 -> 2 -> 3 สวยงามสมบูรณ์แบบ:
-   - [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ]
+   - [ 💾 บันทึกโปรเจกต์ ] • [ 📂 คลังประวัติโปรเจกต์ ] • [ ➕ เริ่มโปรเจกต์ใหม่ ]
+5. 🔢 ปุ่มขั้นตอนการผลิต 1 -> 2 -> 3 ครบถ้วน
 
 ---
 
 โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow:
 
-### 1. 📦 STATES & ELEVENLABS CONFIG:
+### 1. 🎭 PRESET VOICES & STATES:
+const PRESET_VOICES = [
+  { id: "pNInz6obpgDQGcFmaJgB", label: "👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น (Adam)", role: "chef" },
+  { id: "21m00Tcm4TlvDq8ikWAM", label: "👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel)", role: "presenter" },
+  { id: "ErXwobaYiN019PkySvjV", label: "🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม (Antoni)", role: "narrator" },
+  { id: "EXAVITQu4vr4xnSDxMaL", label: "✨ สาวรีวิวชวนหิว / รีแอ็กชันตื่นเต้น (Bella)", role: "reviewer" },
+  { id: "TxGEqnHWrfWFTfGW9XjX", label: "🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ด (Josh)", role: "youth" },
+  { id: "ThT5KcBeYPX3keUQqHPh", label: "👵 คุณแม่ / สูตรโบราณอบอุ่น (Dorothy)", role: "elder" },
+  { id: "custom", label: "⚙️ กำหนด Voice ID เอง (Custom Cloned Voice)", role: "custom" }
+];
+
 const [shots, setShots] = useState([]);
 const [shotStates, setShotStates] = useState({});
 const [campaignTitle, setCampaignTitle] = useState("");
@@ -92,21 +103,21 @@ const [textMode, setTextMode] = useState("cover_only");
 const [presenterImage, setPresenterImage] = useState(null);
 const [productImage, setProductImage] = useState(null);
 
-// สถานะการเรนเดอร์และ Player
 const [masterPlayerOpen, setMasterPlayerOpen] = useState(false);
 const [currentClipIndex, setCurrentClipIndex] = useState(0);
 const [isGeneratingAllImages, setIsGeneratingAllImages] = useState(false);
 const [isGeneratingAllVideos, setIsGeneratingAllVideos] = useState(false);
 const [isGeneratingAllAudios, setIsGeneratingAllAudios] = useState(false);
 
-// คลังประวัติโปรเจกต์
 const [savedProjects, setSavedProjects] = useState([]);
 const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
 const [toastMsg, setToastMsg] = useState("");
 
-// การตั้งค่า ElevenLabs
-const [elevenLabsApiKey, setElevenLabsApiKey] = useState("");
-const [elevenLabsVoiceId, setElevenLabsVoiceId] = useState("21m00Tcm4TlvDq8ikWAM"); // Default Multilingual Voice
+// ElevenLabs Config
+const [elevenLabsApiKey, setElevenLabsApiKey] = useState(() => {
+  try { return localStorage.getItem("pk_elevenlabs_api_key") || ""; } catch(e) { return ""; }
+});
+const [customVoiceIdInput, setCustomVoiceIdInput] = useState("");
 const [isVoiceSettingsOpen, setIsVoiceSettingsOpen] = useState(false);
 
 function showToast(msg) {
@@ -114,17 +125,19 @@ function showToast(msg) {
   setTimeout(() => setToastMsg(""), 3500);
 }
 
-### 2. 🎙️ ELEVENLABS AUDIO GENERATOR:
-async function generateElevenLabsAudio(text, apiKey = elevenLabsApiKey, voiceId = elevenLabsVoiceId) {
-  if (!apiKey) throw new Error("กรุณากรอก ElevenLabs API Key ในปุ่ม '🎙️ ตั้งค่า ElevenLabs' ก่อนครับ");
+### 2. 🎙️ ELEVENLABS AUDIO WITH CHARACTER VOICE LOCK:
+async function generateElevenLabsAudio(text, voiceId) {
+  if (!elevenLabsApiKey) throw new Error("กรุณากรอก ElevenLabs API Key ในปุ่ม '🎙️ ตั้งค่าเสียงตัวละคร' ก่อนครับ");
   if (!text) throw new Error("ไม่มีข้อความบทพากย์สำหรับฉากนี้");
 
-  const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${voiceId}\`, {
+  const effectiveVoiceId = (voiceId === "custom" ? customVoiceIdInput : voiceId) || "pNInz6obpgDQGcFmaJgB";
+
+  const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${effectiveVoiceId}\`, {
     method: "POST",
     headers: {
       "Accept": "audio/mpeg",
       "Content-Type": "application/json",
-      "xi-api-key": apiKey
+      "xi-api-key": elevenLabsApiKey
     },
     body: JSON.stringify({
       text: text,
@@ -141,14 +154,17 @@ async function generateElevenLabsAudio(text, apiKey = elevenLabsApiKey, voiceId 
   return URL.createObjectURL(blob);
 }
 
-// สร้างเสียงพากย์รายฉาก
+// สร้างเสียงพากย์รายฉากโดยล็อกตามตัวละครที่เลือก
 async function generateSingleAudio(shot) {
   const shotId = String(shot.shotNumber);
   const textToSpeak = shot.thaiVoiceover || shot.onScreenText || "";
+  // ดึง voiceId ที่ล็อกไว้สำหรับฉากนี้
+  const chosenVoiceId = shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB";
+  
   setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'generating' } }));
   try {
-    const audioUrl = await generateElevenLabsAudio(textToSpeak);
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl } }));
+    const audioUrl = await generateElevenLabsAudio(textToSpeak, chosenVoiceId);
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl, voiceId: chosenVoiceId } }));
     showToast(\`🎙️ สร้างเสียงพากย์ฉาก \${shot.shotNumber} สำเร็จ!\`);
   } catch (e) {
     setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'error', audioErrorMsg: e.message } }));
@@ -156,7 +172,7 @@ async function generateSingleAudio(shot) {
   }
 }
 
-// สร้างเสียงพากย์ทุกฉากอัตโนมัติ
+// สร้างเสียงพากย์ทุกฉากอัตโนมัติตามตัวละครที่ล็อกไว้
 async function handleGenerateAllAudios() {
   if (!shots || shots.length === 0) return;
   if (!elevenLabsApiKey) {
@@ -168,77 +184,52 @@ async function handleGenerateAllAudios() {
     await generateSingleAudio(shot);
   }
   setIsGeneratingAllAudios(false);
-  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากแล้ว!");
+  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากตามตัวละครแล้ว!");
 }
 
-### 3. 📊 LIVE DASHBOARD COUNTERS:
-const totalShots = shots.length;
-const completedImages = shots.filter(s => shotStates[String(s.shotNumber)]?.imageUrl).length;
-const completedVideos = shots.filter(s => shotStates[String(s.shotNumber)]?.videoUrl).length;
-const completedAudios = shots.filter(s => shotStates[String(s.shotNumber)]?.audioUrl).length;
-const isAllReady = totalShots > 0 && completedVideos === totalShots;
+### 3. 🎴 PER-SHOT CHARACTER SELECTOR UI:
+ในการ์ดแต่ละฉาก ให้แสดงเมนูเลือกตัวละคร:
+- [ 🗣️ เสียงตัวละคร: ]
+  <select 
+    value={shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB"}
+    onChange={(e) => {
+      const vId = e.target.value;
+      setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), voiceId: vId } }));
+    }}
+    className="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg p-1.5 font-bold"
+  >
+    {PRESET_VOICES.map(v => (
+      <option key={v.id} value={v.id}>{v.label}</option>
+    ))}
+  </select>
 
-### 4. 🎴 LAYOUT & DASHBOARD UI:
-1) ส่วนบนสุด (Header Bar):
-   - โลโก้ & ชื่อโปรเจกต์
-   - ปุ่ม [ 🎙️ ElevenLabs: {elevenLabsApiKey ? "เชื่อมต่อแล้ว ✓" : "ตั้งค่า API Key"} ]
-   - ปุ่ม [ 💾 บันทึกโปรเจกต์ ]
-   - ปุ่ม [ 📂 คลังประวัติ ({savedProjects.length}) ]
-   - ปุ่ม [ ➕ เริ่มงานใหม่ ]
-   - สวิตช์ตำแหน่งตัวหนังสือ: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) | 📝 ใส่ทุกคลิป | 🎬 ภาพล้วน ]
+### 4. ⚙️ MODAL ตั้งค่าเสียง ELEVENLABS:
+เมื่อคลิกปุ่ม [ 🎙️ เสียงตัวละคร & API Key ] ใน Header:
+- ช่องกรอก ElevenLabs API Key (ซ่อนรหัสแบบ password และมีปุ่มดู)
+- ช่องกรอก Custom Cloned Voice ID (กรณีมีเสียงโคลนของตัวเอง)
+- ปุ่มบันทึกการตั้งค่าลง localStorage: pk_elevenlabs_api_key`;
 
-2) แผงสถานะการผลิตสด (Live Production Dashboard):
-   - การ์ดสถิติ 3 คอลัมน์:
-     • 🖼️ รูปภาพ: {completedImages} / {totalShots} (พร้อม Progress Bar)
-     • 🎬 วิดีโอ Veo: {completedVideos} / {totalShots} (พร้อม Progress Bar)
-     • 🎙️ เสียงพากย์: {completedAudios} / {totalShots} (พร้อม Progress Bar)
-   - แถบสถานะความพร้อม:
-     {isAllReady ? (
-       <div className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-2.5 rounded-xl text-center font-bold animate-pulse">
-         🎉 ผลิตครบ 100% ทุกฉากแล้ว! พร้อมรวมคลิป Master และดาวน์โหลดทันที
-       </div>
-     ) : (
-       <div className="bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-xl text-xs text-center">
-         ความคืบหน้ารวม: รูปภาพ {completedImages}/{totalShots} • วิดีโอ {completedVideos}/{totalShots} • เสียงพากย์ {completedAudios}/{totalShots}
-       </div>
-     )}
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.1 Character Voice Edition" — featuring curated Thai/Multilingual ElevenLabs voice library, character voice locking per scene, live production status dashboard, multi-project history, and 1->2->3 production workflow.
 
-3) แถบปุ่มการผลิต (Production Workflow):
-   - [ 1. 🖼️ เจนรูปทั้งหมด ]
-   - [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ]
-   - [ 🎙️ สร้างเสียงพากย์ทั้งหมด (ElevenLabs) ]
-   - [ 3. 🎞️ รวมคลิปเป็น 1 (Master) • พร้อมแล้ว {completedVideos}/{totalShots} คลิป ]
+## 1. CURATED VOICE LIBRARY & CHARACTER LOCKING:
+- Curated presets:
+  1) Adam (pNInz6obpgDQGcFmaJgB) - 👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น
+  2) Rachel (21m00Tcm4TlvDq8ikWAM) - 👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร
+  3) Antoni (ErXwobaYiN019PkySvjV) - 🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม
+  4) Bella (EXAVITQu4vr4xnSDxMaL) - ✨ สาวรีวิวชวนหิว / รีแอ็กชันตื่นเต้น
+  5) Josh (TxGEqnHWrfWFTfGW9XjX) - 🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ด
+  6) Dorothy (ThT5KcBeYPX3keUQqHPh) - 👵 คุณแม่ / สูตรโบราณอบอุ่น
+  7) Custom Voice ID option for user's own cloned voices.
+- Each scene has a character dropdown that permanently locks that voice ID to the scene.
+- Generating audio per-shot or batch uses the character's locked voice.
 
-4) การ์ดรายฉาก (Shot Cards with Voiceover Player & Editing):
-   - มีช่องพิมพ์แก้ไข: "บทพูดเสียงพากย์ไทย (Thai Voiceover)"
-   - ปุ่มสร้างเสียง [ 🎙️ เจนเสียง ] และเครื่องเล่นเสียง <audio controls src={audioUrl} />
-   - กล่องรูปภาพ และ กล่องเครื่องเล่นวิดีโอ Veo 9:16`;
+## 2. PRODUCTION DASHBOARD & WORKFLOW:
+- Realtime progress bars for Images, Veo Videos, and Audios.
+- [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ].
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.0 Ultimate Master Edition" — featuring full ElevenLabs text-to-speech integration, live production progress dashboard, per-scene editing, multi-project history, and 1->2->3 production workflow.
-
-## 1. ELEVENLABS MULTILINGUAL VOICEOVER:
-- Header modal for ElevenLabs API Key & Voice ID (persisted in localStorage).
-- Per-shot editable Thai voiceover textarea with [ 🎙️ สร้างเสียงฉากนี้ ] button and audio player preview.
-- Global [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] action that generates MP3 audio sequentially for all shots.
-
-## 2. LIVE PRODUCTION STATUS DASHBOARD:
-- Visual statistics banner displaying exact completion metrics:
-  - 🖼️ Images: completedImages / totalShots
-  - 🎬 Videos: completedVideos / totalShots
-  - 🎙️ Voiceovers: completedAudios / totalShots
-- Dynamic readiness banner: Highlights glowing green when all shots are rendered, prompting the user to concat and download the Master video.
-
-## 3. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
-- [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) • พร้อม X/Y คลิป ]
-
-## 4. MULTI-PROJECT HISTORY & PERSISTENCE:
-- [ 💾 บันทึกโปรเจกต์ ]: Archives active shots, states, videos, audios, and script permanently.
-- [ 📂 คลังประวัติโปรเจกต์ (X) ]: Modal displaying past campaigns with thumbnails, dates, scene counts, [ ⚡ เปิดโปรเจกต์ ] and [ 🗑️ ลบ ].
-- [ ➕ เริ่มงานใหม่ ]: Resets canvas safely.
-
-## 5. REFINED LUXURY STUDIO UI:
-- Slate-950 / Dark Charcoal design system with emerald, amber, and indigo glowing accents.
-- Responsive card grids with instant inline editing for Voiceover, Prompt, and On-screen text.`;
+## 3. MULTI-PROJECT HISTORY & PERSISTENCE:
+- Save, Load, and Delete campaigns to localStorage with Shot 1 thumbnails.
+- Automatic draft saving.`;
 
 export default function CommercialStudioPage() {
   return (
