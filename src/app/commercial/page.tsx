@@ -58,15 +58,20 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v8.0 (SCENE-SPECIFIC TEXT & ROBUST VEO ENGINE):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v10.0 (100% UNIFIED DESIGN SYSTEM & STRICT SCRIPT MATCH):
 
 แก้ไข 2 ปัญหาสำคัญตามผลการใช้งานจริง:
-1. 📝 ตัวหนังสือบนรูปภาพตรงกับแต่ละฉาก (ไม่ซ้ำหัวข้อปก):
-   - ช็อต 1 (หน้าปก / Hook): ใส่หัวข้อปก (Campaign Title หรือ onScreenText) ตัวใหญ่ สวยงามสะดุดตา
-   - ช็อต 2 ถึงช็อตสุดท้าย: ห้ามเอาหัวข้อปกมาใส่ซ้ำเด็ดขาด! ให้ใส่เฉพาะข้อความ On-Screen Text ประจำฉากนั้นๆ (shot.onScreenText) เท่านั้น เช่น "ซับให้แห้ง คลุกแป้งบางเบา", "เช็คความร้อนน้ำมัน", "พลิกกลับด้าน ไม่ติดกระทะ"
-2. 🎬 แก้ปัญหาสร้างวิดีโอไม่ได้ใน Flow (Safe Veo Sequential Engine):
-   - Veo รับเฉพาะคำสั่งภาษาอังกฤษ (ห้ามส่งภาษาไทยเข้า generateVideo เด็ดขาด)
-   - เรนเดอร์วิดีโอทีละฉาก (Sequential Queue) ป้องกันปัญหาชน Rate Limit และแสดงสถานะกำลังเรนเดอร์ชัดเจน
+1. 🎨 บังคับใช้ 100% UNIFIED DESIGN SYSTEM (ฟอนต์และกรอบข้อความโทนเดียวกันเป๊ะทุกฉาก):
+   - ทุกฉากใช้กรอบเดียวกัน 100%: Sleek Dark Frosted-Glass Translucent Pill Bar (ป้ายกระจกฝ้าทรงกระบอกมน สีดาร์กชาร์โคล rgba(15,23,42,0.85) ขอบเส้นทองเรืองแสงบางเบา)
+   - ฟอนต์เดียวกัน 100%: ฟอนต์ไทย Sans-serif โมเดิร์น สะอาด คมชัด อักษรสีขาวบริสุทธิ์ (#FFFFFF)
+   - ฉากที่ 1 (Hook/หน้าปก): วางป้ายด้านบนกึ่งกลาง (Top-Center)
+   - ฉากที่ 2 เป็นต้นไป (ฉากเนื้อหา): วางป้ายแถบล่าง (Lower-Third) ในสไตล์และขนาดที่กลมกลืนเป็นอันเดียวกัน
+   - กฎเหล็ก: ZERO antique scrolls (ห้ามป้ายม้วนโบราณ), ZERO comic stickers (ห้ามสติกเกอร์การ์ตูน), ZERO 3D balloon text, ZERO white solid boxes
+2. 📝 ตัวหนังสือตรงกับสคริปต์ 100% ป้องกันคำมั่ว/คำเพี้ยน (Zero Hallucination):
+   - ตัดคำว่า "ช็อต 03:" หรือ "Extreme Macro" ออกก่อนส่งเข้า Imagen เพื่อไม่ให้ AI แปลงเสียงอังกฤษเป็นคำไทยมั่ว เช่น "อิตอัมปสุด"
+   - ใส่เฉพาะข้อความ On-Screen Text (TH) ประจำฉากนั้นๆ เป๊ะๆ
+3. 🎬 เรนเดอร์วิดีโอ Veo ปลอดภัยและไม่ค้าง (Safe Veo Sequential Engine):
+   - Veo รับเฉพาะภาษาอังกฤษ และคิวเรนเดอร์ทีละฉากตามลำดับ ป้องกัน Rate Limit 429
 
 ---
 
@@ -88,9 +93,10 @@ function parseCampaignScript(rawText: string) {
     const durMatch = chunk.match(/-\\s*Duration:\\s*([\\d.]+)/i);
     const duration = durMatch ? parseFloat(durMatch[1]) : 3;
 
-    // ดึง On-Screen Text ประจำฉากนี้
+    // ดึง On-Screen Text ประจำฉากนี้ และตัด prefix แปลกปลอมออก
     const textMatch = chunk.match(/-\\s*On-Screen Text(?:\\s*\\(TH\\))?:\\s*["“]?([^"”\\r\\n]+)["”]?/i);
-    const onScreenText = textMatch ? textMatch[1].trim() : '';
+    let onScreenText = textMatch ? textMatch[1].trim() : '';
+    onScreenText = onScreenText.replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+\\s*[:：\\-]?\\s*/gi, '').trim();
 
     const voiceMatch = chunk.match(/-\\s*(?:Thai Voiceover Script|Voiceover(?:\\s*\\(TH\\))?|Voice):\\s*["“]?([^"”\\r\\n]+)["”]?/i);
     const thaiVoiceover = voiceMatch ? voiceMatch[1].trim() : '';
@@ -120,16 +126,22 @@ async function generateSingleImage(shot: any) {
   const shotId = String(shot.shotNumber);
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating' } }));
   try {
-    const cleanVisual = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim();
+    const cleanVisual = (shot.visualPrompt || '')
+      .replace(/--ar\\s*\\d+:\\d+/gi, '')
+      .replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+[:：\\s]*/gi, '')
+      .trim();
     let textOverlayDirective = "";
 
+    const cleanText = (shot.onScreenText || '').replace(/["']/g, '').trim();
+
+    // 🎨 100% UNIFIED DESIGN SYSTEM (กรอบกระจกฝ้าชาร์โคล + ฟอนต์ไทยโมเดิร์นคลีนสีขาว ทุกฉากเหมือนกัน 100%)
     if (shot.shotNumber === 1) {
-      // ฉากที่ 1: หัวข้อปก / Hook
-      const titleText = shot.campaignTitle || shot.onScreenText || "Special Episode";
-      textOverlayDirective = \`, with bold stylish Thai typography headline overlay '\${titleText}' at top center\`;
-    } else if (shot.onScreenText) {
-      // ฉากที่ 2 เป็นต้นไป: ใส่เฉพาะคำพูดประจำฉากนั้นๆ ห้ามเอาหัวข้อปกมาซ้ำ!
-      textOverlayDirective = \`, with clean stylish typography banner overlay text '\${shot.onScreenText}' at lower third\`;
+      // ฉากที่ 1: หัวข้อปก / Hook (วางตำแหน่งบน กึ่งกลาง Top-Center)
+      const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
+      textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center. (ZERO antique scrolls, ZERO comic bubbles, ZERO 3D balloon text, ZERO English transliteration)\`;
+    } else if (cleanText) {
+      // ฉากที่ 2 เป็นต้นไป: ป้ายบรรยายฉาก (วางตำแหน่งล่าง Lower-Third สไตล์เดียวกันเป๊ะ 100%)
+      textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third. (STRICT DESIGN UNIFORMITY: identical font family, identical dark glass pill container, ZERO antique scrolls, ZERO comic stickers, ZERO white solid boxes, ZERO 3D floating letters, ZERO English transliteration)\`;
     }
 
     const fullPrompt = \`\${cleanVisual}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
@@ -187,44 +199,37 @@ async function generateAllVideos() {
 - 📝 บล็อกข้อความบนจอ (On-Screen Text)
 - ปุ่ม: [ 🖼️ เจนรูป ] [ 🎬 เจนวิดีโอ (1-2 นาที) ] [ ✏️ แก้ไข ]`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v6.2 Pro (4-Field Synchronized & Zero-Hang Pipeline Edition)" — a professional-grade video production tool featuring full 4-field synchronization with PK Marketing AI OS, rock-solid script parsing, zero-hang video engine with auto-fallback, and independent shot recovery.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v10.0 Pro (100% Unified Design System & Zero-Hang Pipeline Edition)" — a professional-grade video production tool featuring 100% unified typography and frosted-glass badge styling, rock-solid script parsing, zero-hang video engine with auto-fallback, and independent shot recovery.
 
 ## 1. ROCK-SOLID 4-FIELD SCRIPT PARSER:
 Implement the exact parseCampaignScript function:
 - Extracts shotNumber, shotTitle, durationSec
-- Extracts onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:"
+- Extracts onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:" (stripping any shot number prefixes like "ช็อต 3:")
 - Extracts thaiVoiceover from "- Thai Voiceover Script:" or "- Voiceover (TH):" or "- Voiceover:"
 - Extracts visualPrompt from "- Visual Prompt (EN):" or "- Visual Prompt:"
 - Extracts motionPrompt from "- Camera & Physical Motion (Veo 2):" or "- Camera & Movement:" or "- Motion Prompt:"
 - Fully parses both clean shots format and full Master Directive format without truncating.
 
-## 2. SYNCHRONIZED 4-FIELD SHOT DISPLAY & INLINE EDITOR:
-Every shot card and its inline editor (✏️) must display and edit ALL 4 core fields matching PK Marketing AI OS:
-1) 📸 Visual Prompt (EN)
-2) 🎬 Motion Prompt (EN)
-3) 🎙️ Thai Voiceover (เสียงพากย์ไทยเฉพาะของแต่ละฉาก)
-4) 📝 On-Screen Text (TH) (ข้อความบนจอ)
+## 2. 100% UNIFIED DESIGN SYSTEM & TYPOGRAPHY:
+Every shot's generated image must strictly adhere to a single unified visual design system:
+- Container Style: Sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim).
+- Typography Style: Clean modern Thai sans-serif typography in crisp pure white text (#FFFFFF).
+- Positioning: Shot 1 (Hook/Cover) headline at top center; Shots 2+ (Content shots) caption banner at lower third.
+- Strict Negative Rules: ZERO antique scrolls/ribbons, ZERO comic sticker borders, ZERO 3D balloon letters, ZERO white solid boxes, ZERO English transliteration hallucination.
 
 ## 3. TWO-STAGE SPLIT PIPELINE (Zero-Hang Execution):
 Header contains 3 main action buttons:
 1) "🖼️ เจนรูปทั้งหมด": Batches generateImage for all shots simultaneously using Promise.allSettled.
-2) "🎬 เจนวิดีโอทั้งหมด": Batches generateVideo for all shots with automatic Text-to-Video fallback.
+2) "🎬 เจนวิดีโอทั้งหมด": Batches generateVideo for all shots sequentially with auto Text-to-Video fallback.
 3) "🗑️ ล้างข้อมูล": Hard resets all states.
 
 ## 4. ZERO-HANG VIDEO ENGINE (Media Fields Armor):
 In generateSingleVideo:
-- Strip --ar \\d+:\\d+ flags and replace sensitive words like 'crash' with 'rapid snap'.
-- If image exists: try generateVideo({ image: cleanImg, prompt: motionPrompt }).
-- If Image-to-Video fails (e.g. "Expected object response with media fields"): DO NOT HANG! Automatically fall back to generateVideo({ prompt: combinedTextPrompt }).
-- If both fail, mark shot as error with a clear message and continue processing other shots.
-- Shot cards include a shortcut button: "[ ⚡ 🎥 TEXT-TO-VIDEO BYPASS ]".
+- Pure English only, strip Thai and sensitive symbols.
+- Sequential rendering to avoid 429 quota errors.
+- Auto-fallback from Image-to-Video to Text-to-Video if media field issues occur.
 
-## 5. UNIVERSAL TOPIC ADHERENCE:
-- Brown rice bowl / clean food: wholesome healthy bowl (steaming brown rice, grilled chicken breast, avocado, soft-boiled egg, edamame, sesame dressing). Zero watches, zero cars, zero knives, zero juicers.
-- Pla Som / Crispy fish: authentic crispy fried Pla Som, golden scored skin, bubbling hot oil, fried garlic, shallots, bird's eye chilies.
-- Stir-fried rice: wok, rice, egg, chicken, scallions. Zero avocado, zero salad dressing.
-
-## 6. CLEAN START:
+## 5. CLEAN START:
 - Textarea starts 100% empty. No mock Oat Milk buttons or pre-filled dummy data.`;
 
 export default function CommercialStudioPage() {
