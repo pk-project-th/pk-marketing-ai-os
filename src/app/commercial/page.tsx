@@ -58,34 +58,33 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v12.1 BULLETPROOF EDITION (WORKFLOW 1->2->3, DUAL ANCHORS, EXPLICIT TEXT MODES & ZERO-CRASH SAFETY):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v13.0 MULTI-PROJECT ARCHIVE & HISTORY EDITION (SAVE PROJECT, LOAD HISTORY, NEW PROJECT, WORKFLOW 1->2->3):
 
-แก้ไขจุดผิดพลาดและจัดระเบียบหน้า Tool ใหม่ทั้งหมดตามคำสั่ง:
-1. 🛡️ แก้ไขข้อผิดพลาด "Uncaught Error" (หน้าจอดำ) 100%:
-   - ประกาศ State ครบทุกตัว: masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle
-   - ป้องกัน Undefined Reference Error ทุกจุด ทุกฟังก์ชันต้องมี try...catch ล้อมรอบ ไม่ให้หน้าเว็บแครช
-2. 🏷️ แก้ไขสวิตช์เลือกตำแหน่งตัวหนังสือให้ชัดเจน ไม่งง:
-   - มีป้ายกำกับชัดเจน: "ตำแหน่งตัวหนังสือ:"
-   - ตัวเลือกที่ 1: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] — แนะนำสุด! ข้อความจะอยู่เฉพาะคลิปแรกเพื่อเป็นหน้าปกหยุดสายตา ส่วนคลิปอื่นเป็นภาพ 8K คลีนๆ ช่วยให้สร้างคลิปวิดีโอผ่าน 100% ไม่ติดฟิลเตอร์ ไม่บวมเพี้ยน
-   - ตัวเลือกที่ 2: [ 📝 ใส่ทุกคลิป ] — ใส่ป้ายข้อความใต้ภาพทุกฉาก
-   - ตัวเลือกที่ 3: [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] — ภาพยนตร์คมชัด 8K เพียวๆ ไม่มีตัวอักษรใดๆ ให้เสียงพากย์บรรยายเนื้อหา
-3. 🔢 จัดเรียงปุ่มการทำงานตามลำดับขั้นตอนจริง (Workflow 1 -> 2 -> 3):
-   - ห้ามเอาปุ่มรวมคลิปขึ้นก่อนเด็ดขาด! ต้องเรียงตามลำดับการผลิต:
-     [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ]
-4. 👥 2 ช่องแนบรูปอ้างอิง (Dual-Anchor Reference Slots):
-   - [ 👤 แนบรูปคน / เชฟ (Slot 1) ] — ล็อกใบหน้าและชุดเชฟ
-   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ] — ล็อกปลาส้มจริงและแพ็กเกจ
-   - ทั้ง 2 ช่องเป็น Optional: มีรูปก็ใส่ ไม่มีก็เว้นว่างได้ ระบบจะ Fallback ใช้ Pure Prompt อัตโนมัติ
+แก้ไขและเพิ่มระบบ "คลังประวัติโปรเจกต์" (Multi-Project History Manager) ตามคำสั่ง:
+1. 💾 ปุ่มบันทึกโปรเจกต์ (Save Current Project):
+   - เพิ่มปุ่ม [ 💾 บันทึกโปรเจกต์ ] บนแถบเมนูหลัก
+   - บันทึกงานปัจจุบัน (ชื่อโปรเจกต์, รูปทั้งหมด, วิดีโอทั้งหมด, สคริปต์, รูปคน/สินค้า) เก็บลงคลังประวัติอย่างถาวร
+2. 📂 หน้าต่างเรียกดูประวัติโปรเจกต์เก่า (Project History Modal):
+   - เพิ่มปุ่ม [ 📂 คลังประวัติโปรเจกต์ (X) ] แสดงจำนวนโปรเจกต์ที่เคยทำ
+   - เมื่อคลิก จะเปิดหน้าต่างแสดงรายการโปรเจกต์เก่าทั้งหมด พร้อมรูปปกตัวอย่าง, วันที่บันทึก, จำนวนฉาก
+   - มีปุ่ม [ ⚡ เปิดโปรเจกต์นี้ ] เพื่อดึงงานเก่านั้นกลับมาดูคลิป ดาวน์โหลด หรือแก้ไขได้ทันที
+   - มีปุ่ม [ 🗑️ ลบโปรเจกต์ ] สำหรับลบงานที่ไม่ต้องการ
+3. ➕ ปุ่มเริ่มโปรเจกต์ใหม่ (Start New Project):
+   - เพิ่มปุ่ม [ ➕ เริ่มโปรเจกต์ใหม่ ] เพื่อล้างหน้าจอเตรียมทำสินค้าตัวถัดไป โดยที่งานเก่าไม่หายและยังอยู่ในคลังประวัติ
+4. 🛡️ รักษาระบบเดิมให้สมบูรณ์:
+   - Workflow 1 -> 2 -> 3: [ 1. เจนรูปทั้งหมด ] -> [ 2. สร้างเป็นคลิปทั้งหมด ] -> [ 3. รวมคลิปเป็น 1 (Master) ]
+   - สวิตช์ตำแหน่งตัวหนังสือ: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) | 📝 ใส่ทุกคลิป | 🎬 ภาพล้วน ]
+   - 2 ช่องแนบรูปคนและสินค้า
 
 ---
 
-แก้ไขโค้ด React ใน Tool ให้มีโครงสร้างที่ปลอดภัยและสมบูรณ์ดังนี้:
+โครงสร้างโค้ด React ใน Tool สำหรับระบบประวัติโปรเจกต์:
 
-### 1. 📦 STATES DECLARATION (ครบทุกตัว ห้ามขาด):
+### 1. 📦 STATES DECLARATION:
 const [shots, setShots] = useState([]);
 const [shotStates, setShotStates] = useState({});
 const [campaignTitle, setCampaignTitle] = useState("");
-const [textMode, setTextMode] = useState("cover_only"); // "cover_only", "all_scenes", "none"
+const [textMode, setTextMode] = useState("cover_only");
 const [presenterImage, setPresenterImage] = useState(null);
 const [productImage, setProductImage] = useState(null);
 const [masterPlayerOpen, setMasterPlayerOpen] = useState(false);
@@ -93,195 +92,146 @@ const [currentClipIndex, setCurrentClipIndex] = useState(0);
 const [isGeneratingAllImages, setIsGeneratingAllImages] = useState(false);
 const [isGeneratingAllVideos, setIsGeneratingAllVideos] = useState(false);
 
-### 2. 💾 PERSISTENCE (AUTOSAVE & RESTORE):
-function autoSaveActiveProject(currentShots, currentStates, title, mode, pImg, prodImg) {
-  try {
-    localStorage.setItem("pk_flow_active_project", JSON.stringify({
-      shots: currentShots,
-      shotStates: currentStates,
-      campaignTitle: title,
-      textMode: mode,
-      presenterImage: pImg !== undefined ? pImg : presenterImage,
-      productImage: prodImg !== undefined ? prodImg : productImage,
-      updatedAt: new Date().toISOString()
-    }));
-  } catch (e) {
-    console.warn("Autosave error:", e);
-  }
+// State สำหรับคลังประวัติโปรเจกต์
+const [savedProjects, setSavedProjects] = useState([]);
+const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+const [toastMsg, setToastMsg] = useState("");
+
+function showToast(msg) {
+  setToastMsg(msg);
+  setTimeout(() => setToastMsg(""), 3500);
 }
 
+### 2. 💾 PROJECT HISTORY FUNCTIONS:
+// โหลดคลังประวัติโปรเจกต์จาก localStorage เมื่อเปิดเว็บ
 useEffect(() => {
   try {
-    const saved = localStorage.getItem("pk_flow_active_project");
-    if (saved) {
-      const data = JSON.parse(saved);
-      if (data.shots && Array.isArray(data.shots) && data.shots.length > 0) {
-        setShots(data.shots);
-        setShotStates(data.shotStates || {});
-        if (data.campaignTitle) setCampaignTitle(data.campaignTitle);
-        if (data.textMode) setTextMode(data.textMode);
-        if (data.presenterImage) setPresenterImage(data.presenterImage);
-        if (data.productImage) setProductImage(data.productImage);
+    const historyData = localStorage.getItem("pk_flow_projects_history");
+    if (historyData) {
+      const list = JSON.parse(historyData);
+      if (Array.isArray(list)) setSavedProjects(list);
+    }
+    // โหลดงานค้างล่าสุด
+    const activeData = localStorage.getItem("pk_flow_active_project");
+    if (activeData) {
+      const d = JSON.parse(activeData);
+      if (d.shots && d.shots.length > 0) {
+        setShots(d.shots);
+        setShotStates(d.shotStates || {});
+        if (d.campaignTitle) setCampaignTitle(d.campaignTitle);
+        if (d.textMode) setTextMode(d.textMode);
+        if (d.presenterImage) setPresenterImage(d.presenterImage);
+        if (d.productImage) setProductImage(d.productImage);
       }
     }
-  } catch (e) {
-    console.warn("Restore error:", e);
-  }
+  } catch (e) {}
 }, []);
 
-### 3. 🖼️ STEP 1: GENERATE IMAGES (CHRONOLOGY & DUAL ANCHORS):
-async function generateSingleImage(shot, currentTextMode = textMode) {
-  const shotId = String(shot.shotNumber);
-  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'generating' } }));
-  try {
-    const cleanVisual = (shot.visualPrompt || '').replace(/--ar\\s*\\d+:\\d+/gi, '').trim();
-    const cleanText = (shot.onScreenText || '').replace(/["']/g, '').trim();
-    let textOverlayDirective = "";
-
-    if (currentTextMode === 'cover_only') {
-      if (shot.shotNumber === 1) {
-        const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
-        textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center. (ZERO antique scrolls, ZERO comic bubbles, ZERO 3D balloon text)\`;
-      }
-    } else if (currentTextMode === 'all_scenes') {
-      if (shot.shotNumber === 1) {
-        const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
-        textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center.\`;
-      } else if (cleanText) {
-        textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third.\`;
-      }
-    }
-
-    const cookwareLock = ", cookware continuity: inside the identical seasoned black carbon-steel wok with natural wooden handle";
-    let anchorDirective = "";
-    const activeRefImages = [];
-    if (presenterImage) {
-      activeRefImages.push(presenterImage);
-      anchorDirective += ", character consistency: match facial identity, haircut, and persona exactly from attached Presenter reference image";
-    }
-    if (productImage) {
-      activeRefImages.push(productImage);
-      anchorDirective += ", product fidelity: match authentic appearance, texture, and packaging strictly from attached Product reference image";
-    }
-
-    const fullPrompt = \`\${cleanVisual}\${cookwareLock}\${anchorDirective}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
-    const imagePayload = { prompt: fullPrompt, aspectRatio: '9:16' };
-    if (activeRefImages.length === 1) imagePayload.image = activeRefImages[0];
-    else if (activeRefImages.length > 1) imagePayload.image = activeRefImages;
-
-    const result = await generateImage(imagePayload);
-    const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
-    if (!url) throw new Error('ไม่ได้รับรูปภาพจากระบบ');
-
-    setShotStates(prev => {
-      const next = { ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'success', imageUrl: url } };
-      autoSaveActiveProject(shots, next, campaignTitle, currentTextMode);
-      return next;
-    });
-  } catch (err) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), imgStatus: 'error', imgErrorMsg: err?.message || 'เจนรูปขัดข้อง' } }));
-  }
-}
-
-async function handleGenerateAllImages() {
-  if (!shots || shots.length === 0) return;
-  setIsGeneratingAllImages(true);
-  for (const shot of shots) {
-    await generateSingleImage(shot, textMode);
-  }
-  setIsGeneratingAllImages(false);
-}
-
-### 4. 🎬 STEP 2: GENERATE VIDEOS (SEQUENTIAL QUEUE):
-async function generateSingleVideo(shot) {
-  const shotId = String(shot.shotNumber);
-  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'generating', vidProgress: '⏳ กำลังเรนเดอร์ Veo (1-2 นาที)...' } }));
-
-  try {
-    let rawPrompt = (shot.motionPrompt || shot.visualPrompt || '')
-      .replace(/[^a-zA-Z0-9.,\\s-]/g, ' ')
-      .replace(/--ar\\s*\\d+:\\d+/gi, '')
-      .replace(/\\s+/g, ' ')
-      .trim();
-
-    const cleanPrompt = rawPrompt.slice(0, 180) || "Cinematic camera movement, photorealistic 8k food commercial, 24fps";
-    const result = await generateVideo({ prompt: cleanPrompt, aspectRatio: '9:16' });
-    const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
-    if (!url) throw new Error('ไม่ได้รับไฟล์วิดีโอจาก Veo');
-
-    setShotStates(prev => {
-      const next = { ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'success', videoUrl: url, vidProgress: undefined } };
-      autoSaveActiveProject(shots, next, campaignTitle, textMode);
-      return next;
-    });
-  } catch (err) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), vidStatus: 'error', vidErrorMsg: 'Veo ขัดข้อง กรุณาลองกดปุ่มเจนวิดีโอใหม่อีกครั้ง' } }));
-  }
-}
-
-async function handleGenerateAllVideos() {
-  if (!shots || shots.length === 0) return;
-  setIsGeneratingAllVideos(true);
-  for (const shot of shots) {
-    await generateSingleVideo(shot);
-  }
-  setIsGeneratingAllVideos(false);
-}
-
-### 5. 🎞️ STEP 3: MASTER CONCAT PLAYER (รวมคลิปต่อเนื่อง):
-function playAllVideosContinuously() {
-  const readyVideos = shots.map(s => shotStates[String(s.shotNumber)]?.videoUrl).filter(Boolean);
-  if (readyVideos.length === 0) {
-    alert("ยังไม่มีวิดีโอที่สร้างเสร็จ กรุณากดปุ่ม '2. 🎬 สร้างเป็นคลิปทั้งหมด' ก่อนรวมคลิปครับ");
+// ฟังก์ชันกดบันทึกโปรเจกต์ปัจจุบัน
+function handleSaveProject() {
+  if (!shots || shots.length === 0) {
+    alert("ยังไม่มีข้อมูลโปรเจกต์ กรุณาวางสคริปต์ก่อนบันทึกครับ");
     return;
   }
-  setCurrentClipIndex(0);
-  setMasterPlayerOpen(true);
+  const title = campaignTitle || shots[0]?.campaignTitle || "โปรเจกต์วิดีโอโฆษณา";
+  const newProj = {
+    id: "proj_" + Date.now(),
+    title: title,
+    shots: shots,
+    shotStates: shotStates,
+    campaignTitle: title,
+    textMode: textMode,
+    presenterImage: presenterImage,
+    productImage: productImage,
+    createdAt: new Date().toISOString(),
+    thumbnail: shotStates["1"]?.imageUrl || shots[0]?.imageUrl || null
+  };
+  const updated = [newProj, ...savedProjects.filter(p => p.title !== title)];
+  setSavedProjects(updated);
+  try {
+    localStorage.setItem("pk_flow_projects_history", JSON.stringify(updated));
+  } catch (e) {}
+  showToast("💾 บันทึกโปรเจกต์ '" + title + "' เข้าคลังประวัติเรียบร้อยแล้ว!");
 }
 
-### 6. 🎴 WORKFLOW TOOLBAR & CLEAR TEXT MODE UI:
-สร้างแถบเครื่องมือด้านบนเรียงลำดับขั้นตอน 1 -> 2 -> 3 อย่างชัดเจน:
+// ฟังก์ชันกดเปิดโปรเจกต์เก่าจากคลัง
+function handleLoadProject(proj) {
+  setShots(proj.shots || []);
+  setShotStates(proj.shotStates || {});
+  setCampaignTitle(proj.campaignTitle || proj.title || "");
+  setTextMode(proj.textMode || "cover_only");
+  setPresenterImage(proj.presenterImage || null);
+  setProductImage(proj.productImage || null);
+  setIsHistoryModalOpen(false);
+  showToast("📂 เปิดโปรเจกต์ '" + proj.title + "' สำเร็จ!");
+}
 
-1. สวิตช์ตำแหน่งตัวหนังสือ:
-   [ ตำแหน่งตัวหนังสือ: ]
-   - [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] -> textMode = 'cover_only'
-   - [ 📝 ใส่ทุกคลิป ] -> textMode = 'all_scenes'
-   - [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] -> textMode = 'none'
+// ฟังก์ชันลบโปรเจกต์ออกจากคลัง
+function handleDeleteProject(projId, e) {
+  e.stopPropagation();
+  if (!confirm("คุณต้องการลบโปรเจกต์นี้ออกจากคลังประวัติใช่หรือไม่?")) return;
+  const updated = savedProjects.filter(p => p.id !== projId);
+  setSavedProjects(updated);
+  try {
+    localStorage.setItem("pk_flow_projects_history", JSON.stringify(updated));
+  } catch (e) {}
+}
 
-2. ปุ่มการผลิตเรียงตามลำดับ 1 -> 2 -> 3:
-   - [ 1. 🖼️ เจนรูปทั้งหมด ] (กดเพื่อเจนภาพสตอรี่บอร์ดทุกช็อต)
-   - [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] (กดเพื่อเรนเดอร์ภาพเคลื่อนไหว Veo ทีละฉาก)
-   - [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] (กดเพื่อเล่นคลิปต่อกันเป็นคลิปเดียวและดาวน์โหลด)
+// ฟังก์ชันเริ่มโปรเจกต์ใหม่
+function handleStartNewProject() {
+  if (shots.length > 0 && !confirm("ต้องการเริ่มโปรเจกต์ใหม่ใช่หรือไม่? (อย่าลืมกดบันทึกโปรเจกต์ปัจจุบันเข้าคลังไว้ก่อน)")) return;
+  setShots([]);
+  setShotStates({});
+  setCampaignTitle("");
+  setPresenterImage(null);
+  setProductImage(null);
+  showToast("✨ เริ่มโปรเจกต์ใหม่เรียบร้อยแล้ว วางสคริปต์ตัวใหม่ได้เลย");
+}
 
-3. 2 ช่องใส่รูป Reference:
-   - [ 👤 แนบรูปคน / เชฟ (Slot 1) ]
-   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]`;
+### 3. 🎴 HEADER ACTIONS WITH PROJECT MANAGER:
+บนแถบ Header ด้านบน เพิ่มปุ่มจัดการโปรเจกต์ครบถ้วน:
+- [ 💾 บันทึกโปรเจกต์ ] -> เรียก handleSaveProject()
+- [ 📂 ประวัติโปรเจกต์ ({savedProjects.length}) ] -> เปิด isHistoryModalOpen(true)
+- [ ➕ โปรเจกต์ใหม่ ] -> เรียก handleStartNewProject()
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v12.1 Master Complete (Bulletproof Workflow Edition)" — featuring 1->2->3 production sequence, explicit on-screen text modes, dual reference anchors (Presenter & Product), zero-crash state safety, and continuous sequential playback.
+### 4. 🗂️ MODAL แสดงคลังประวัติโปรเจกต์ (Project History Modal):
+เมื่อ isHistoryModalOpen === true ให้แสดง Modal:
+- หัวข้อ: "📂 คลังประวัติโปรเจกต์ทั้งหมด ({savedProjects.length})"
+- ถ้ายังไม่มีโปรเจกต์ ให้แสดง "ยังไม่มีประวัติโปรเจกต์ที่บันทึกไว้"
+- ถ้ามี ให้แสดงการ์ดโปรเจกต์:
+  - รูปปก Thumbnail (จากช็อต 1)
+  - ชื่อโปรเจกต์ + วันเวลาที่บันทึก
+  - จำนวนฉาก (เช่น 10 ฉาก) และจำนวนวิดีโอที่เจนเสร็จ
+  - ปุ่ม [ ⚡ เปิดโปรเจกต์ ] -> handleLoadProject(p)
+  - ปุ่ม [ 🗑️ ลบ ] -> handleDeleteProject(p.id, e)
+  - ปุ่ม [ ✕ ปิดหน้าต่าง ]`;
 
-## 1. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
-- The header actions must strictly follow the natural creative sequence:
-  1) [ 1. 🖼️ เจนรูปทั้งหมด ] — Generates all storyboard stills sequentially.
-  2) [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] — Animates stills into Veo video clips sequentially.
-  3) [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] — Concatenates and previews all ready clips in seamless playlist order.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v13.0 Multi-Project History & Archive Edition" — featuring complete project save/load/delete history manager, sequential 1->2->3 production workflow, explicit text modes, dual reference image anchors, and zero-crash state architecture.
 
-## 2. EXPLICIT ON-SCREEN TEXT MODES (Clear UI Labels):
-- Text Mode Selector with label "ตำแหน่งตัวหนังสือ:":
-  - "cover_only": Label as [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ] (Dark frosted-glass headline on Shot 1, shots 2+ are clean 8K cinematography with zero text to prevent video distortion).
-  - "all_scenes": Label as [ 📝 ใส่ทุกคลิป ] (Frosted glass caption pills on all shots).
-  - "none": Label as [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ] (Pure 8K cinematography without any on-screen text).
+## 1. PROJECT ARCHIVE & HISTORY MANAGER:
+- Allow users to save their current production into a persistent Project History library in localStorage ("pk_flow_projects_history").
+- Header action buttons:
+  - [ 💾 บันทึกโปรเจกต์ ]: Saves active shots, states, generated videos, textMode, and title with instant toast feedback.
+  - [ 📂 คลังประวัติโปรเจกต์ (X) ]: Opens a modal/drawer showing all saved campaigns with Shot 1 thumbnails, creation timestamps, scene counts, [ ⚡ เปิดโปรเจกต์ ] and [ 🗑️ ลบ ].
+  - [ ➕ เริ่มงานใหม่ ]: Clears canvas for new script after user confirmation.
+- Safe autosave continues in background so active work is never lost.
 
-## 3. DUAL-ANCHOR REFERENCE SLOTS:
-- 2 top-level upload/dropzone slots:
-  - Slot 1: [ 👤 แนบรูปคน / เชฟ (Slot 1) ]
-  - Slot 2: [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]
-- Optional: If empty, gracefully defaults to pure prompt mode.
-- Auto-saved to localStorage.
+## 2. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
+- [ 1. 🖼️ เจนรูปทั้งหมด ] -> Generates stills sequentially.
+- [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> Animates into Veo video clips sequentially.
+- [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] -> Opens continuous master sequential playlist player with download option.
 
-## 4. ZERO-CRASH ARCHITECTURE (Uncaught Armor):
-- Explicitly declare all states: masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle.
-- Wrap all async operations in try...catch blocks.
-- Clean Master Video player modal that mounts conditionally on masterPlayerOpen.`;
+## 3. EXPLICIT ON-SCREEN TEXT MODES:
+- "cover_only": [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ]
+- "all_scenes": [ 📝 ใส่ทุกคลิป ]
+- "none": [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ]
+
+## 4. DUAL REFERENCE ANCHORS:
+- [ 👤 แนบรูปคน / เชฟ (Slot 1) ] & [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]
+
+## 5. ZERO-CRASH STATE SAFETY:
+- Declare all states: savedProjects, isHistoryModalOpen, toastMsg, masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle.
+- Full try...catch around all localStorage and async calls.`;
 
 export default function CommercialStudioPage() {
   return (
