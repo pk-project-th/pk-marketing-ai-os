@@ -58,21 +58,25 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v11.0 MASTER COMPLETE (AUTOSAVE, VIDEO CONCAT, TIMELINE & PROP LOCK):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v12.0 DUAL-ANCHOR EDITION (PRESENTER & PRODUCT REFERENCE SLOTS, AUTOSAVE, VIDEO CONCAT & PROP CONTINUITY):
 
-แก้ไขและเพิ่ม 5 ฟังก์ชันสำคัญตามข้อเรียกร้องใช้งานจริง:
-1. 💾 บันทึกโปรเจกต์อัตโนมัติ (Auto-Save & Project Persistence):
-   - บันทึกสถานะทุกช็อต (Shots, Images, Videos) ลง localStorage อัตโนมัติทุกครั้งที่มีการเจนหรือแก้ไข
-   - เมื่อผู้ใช้กดรีเฟรชหน้าเว็บ หรือปิดแล้วเปิดใหม่ ระบบจะดึงงานเดิมกลับมาอัตโนมัติ 100% งานไม่หายแน่นอน
+แก้ไขและเพิ่ม 6 ฟังก์ชันสำคัญตามข้อเรียกร้องใช้งานจริง:
+1. 👥 เพิ่ม 2 ช่องแนบรูปอ้างอิง (Dual-Anchor Reference Image Slots):
+   - [ 👤 แนบรูปคน / เชฟ (Slot 1 - Presenter) ]: ล็อกใบหน้า ทรงผม ชุดเชฟ และเอกลักษณ์ของตัวแบบให้เหมือนกันทุกฉาก
+   - [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2 - Product) ]: ล็อกปลาส้มจริง บรรจุภัณฑ์ และสีสันของเนื้อปลาให้ตรงปก 100%
+   - ทั้ง 2 ช่องเป็น Optional: มีรูปก็ใส่ ไม่มีก็เว้นว่างได้ ระบบจะ Fallback ใช้ Pure Prompt อัตโนมัติโดยไม่ Error
+2. 💾 บันทึกโปรเจกต์อัตโนมัติ (Auto-Save & Project Persistence):
+   - บันทึกสถานะทุกช็อต (Shots, Images, Videos, Reference Images) ลง localStorage อัตโนมัติ
+   - เมื่อผู้ใช้กดรีเฟรชหน้าเว็บ หรือปิดแล้วเปิดใหม่ ระบบจะดึงงานเดิมกลับมาอัตโนมัติ 100% รูปที่แนบไว้ไม่หาย
    - เพิ่มปุ่ม [ 💾 บันทึกโปรเจกต์ ] และ [ 📂 คืนค่างานล่าสุด ] บนแถบเมนูด้านบน
-2. 🎞️ ปุ่มรวมคลิปเป็น 1 คลิป (Master Video Concatenator):
+3. 🎞️ ปุ่มรวมคลิปเป็น 1 คลิป (Master Video Concatenator):
    - เพิ่มปุ่ม [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] บนหัวตาราง
-   - สามารถเล่นคลิปทุกฉากต่อกันแบบ Playlist ต่อเนื่องทันที และมีปุ่มดาวน์โหลด Master Video
-3. ⏱️ จัดเรียงไทม์ไลน์อาหารสมจริง (Culinary Chronology):
+   - เล่นคลิปทุกฉากต่อกันแบบ Playlist ต่อเนื่องทันที และมีปุ่มดาวน์โหลด Master Video
+4. ⏱️ จัดเรียงไทม์ไลน์อาหารสมจริง (Culinary Chronology):
    - ปลาส้มก่อนทอดต้องเป็น "ปลาดิบหมักเครื่อง" วางบนเขียงไม้ -> คลุกแป้ง -> จุ่มตะเกียบเช็กน้ำมัน -> หย่อนปลาดิบลงกระทะ -> น้ำมันเดือดฟูจนหนังพองกรอบ -> พลิกปลาสีทอง -> เจียวสมุนไพร -> ตักเสิร์ฟพร้อมข้าวสวย (ห้ามปลาสุกก่อนทอดเด็ดขาด)
-4. 🍳 ล็อกอุปกรณ์กระทะใบเดิม 100% (Continuous Cookware Entity):
-   - บังคับใช้กระทะใบเดิมตลอดเรื่อง: "seasoned black carbon-steel wok with natural wooden handle" ห้ามเปลี่ยนเป็นกระทะเทฟลอนหรือสเตนเลสคนละแบบ
-5. 📝 สวิตช์โหมดตัวหนังสือ (Text Mode Selector):
+5. 🍳 ล็อกอุปกรณ์กระทะใบเดิม 100% (Continuous Cookware Entity):
+   - บังคับใช้กระทะใบเดิมตลอดเรื่อง: "seasoned black carbon-steel wok with natural wooden handle" ห้ามเปลี่ยนเป็นกระทะคนละแบบ
+6. 📝 สวิตช์โหมดตัวหนังสือ (Text Mode Selector):
    - ตัวเลือก: [ ⭐ เฉพาะหน้าปก (แนะนำ - ปลอดภัยสุด วิดีโอผ่าน 100%) | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]
    - แนะนำโหมด "เฉพาะหน้าปก": ฉาก 1 มีป้ายกระจกฝ้าหรูหรา ส่วนฉาก 2 ขึ้นไปเป็นภาพยนตร์คลีน 8K ช่วยให้ Veo เจนผ่านฉลุย ไร้บัคตัวหนังสือบวมเพี้ยน
 
@@ -80,15 +84,21 @@ const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VID
 
 แก้ไขโค้ดใน Tool ตามโครงสร้างนี้:
 
-### 1. 💾 AUTOSAVE & RESTORE STATE:
-// บันทึกลง localStorage อัตโนมัติ
-function autoSaveActiveProject(currentShots: any[], currentStates: any, title: string, mode: string) {
+### 1. 🖼️ STATE & DUAL REFERENCE SLOTS:
+// เก็บรูปอ้างอิงคนและสินค้า
+const [presenterImage, setPresenterImage] = useState<string | null>(null);
+const [productImage, setProductImage] = useState<string | null>(null);
+
+// บันทึกลง localStorage อัตโนมัติ (รวม Reference Images)
+function autoSaveActiveProject(currentShots: any[], currentStates: any, title: string, mode: string, pImg?: string | null, prodImg?: string | null) {
   try {
     localStorage.setItem("pk_flow_active_project", JSON.stringify({
       shots: currentShots,
       shotStates: currentStates,
       campaignTitle: title,
       textMode: mode,
+      presenterImage: pImg ?? presenterImage,
+      productImage: prodImg ?? productImage,
       updatedAt: new Date().toISOString()
     }));
   } catch (e) {}
@@ -105,6 +115,8 @@ useEffect(() => {
         setShotStates(data.shotStates || {});
         if (data.campaignTitle) setCampaignTitle(data.campaignTitle);
         if (data.textMode) setTextMode(data.textMode);
+        if (data.presenterImage) setPresenterImage(data.presenterImage);
+        if (data.productImage) setProductImage(data.productImage);
       }
     }
   } catch (e) {}
@@ -153,7 +165,7 @@ function parseCampaignScript(rawText: string) {
   return parsedShots;
 }
 
-### 3. 🖼️ IMAGE GENERATION (CHRONOLOGY, WOK CONTINUITY & TEXT MODE):
+### 3. 🖼️ IMAGE GENERATION (DUAL ANCHORS, CHRONOLOGY, WOK CONTINUITY & TEXT MODE):
 async function generateSingleImage(shot: any, textMode: string = 'cover_only') {
   const shotId = String(shot.shotNumber);
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating' } }));
@@ -185,8 +197,29 @@ async function generateSingleImage(shot: any, textMode: string = 'cover_only') {
     // ล็อกกระทะคาร์บอนสตีลใบเดิมสำหรับทุกฉากทำอาหาร
     const cookwareLock = ", cookware continuity: inside the identical seasoned black carbon-steel wok with natural wooden handle";
 
-    const fullPrompt = \`\${cleanVisual}\${cookwareLock}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
-    const result = await generateImage({ prompt: fullPrompt, aspectRatio: '9:16' });
+    // ผูก Reference Anchors (ถ้ามีรูปแนบ)
+    let anchorDirective = "";
+    const activeRefImages: string[] = [];
+    if (presenterImage) {
+      activeRefImages.push(presenterImage);
+      anchorDirective += ", character consistency: match facial identity, haircut, and persona exactly from attached Presenter reference image";
+    }
+    if (productImage) {
+      activeRefImages.push(productImage);
+      anchorDirective += ", product fidelity: match authentic appearance, texture, and packaging strictly from attached Product reference image";
+    }
+
+    const fullPrompt = \`\${cleanVisual}\${cookwareLock}\${anchorDirective}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
+    
+    // เรียก generateImage พร้อมแนบรูป Reference หากมี
+    const imagePayload: any = { prompt: fullPrompt, aspectRatio: '9:16' };
+    if (activeRefImages.length === 1) {
+      imagePayload.image = activeRefImages[0];
+    } else if (activeRefImages.length > 1) {
+      imagePayload.image = activeRefImages;
+    }
+
+    const result = await generateImage(imagePayload);
     const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
     if (!url) throw new Error('ไม่ได้รับรูปภาพจากระบบ');
     setShotStates(prev => {
@@ -238,7 +271,11 @@ function playAllVideosContinuously() {
   setCurrentClipIndex(0);
 }
 
-### 6. 🎴 HEADER ACTIONS & TOOLBAR:
+### 6. 🎴 HEADER ACTIONS, DUAL REFERENCE SLOTS & TOOLBAR:
+ด้านบนสุดของ Tool แสดง 2 ช่องแนบรูป Reference:
+1) [ 👤 แนบรูปคน / เชฟ (Slot 1) ] — รองรับ Drag & Drop หรือเลือกไฟล์รูปภาพ
+2) [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ] — รองรับ Drag & Drop หรือเลือกไฟล์รูปภาพ
+
 แถบควบคุมด้านบนมี 6 ปุ่มครบถ้วน:
 1) [ 💾 บันทึกโปรเจกต์ ]
 2) [ 📂 คืนค่างานล่าสุด ]
@@ -247,28 +284,36 @@ function playAllVideosContinuously() {
 5) [ 🎬 เจนวิดีโอทั้งหมด (Sequential) ]
 6) สวิตช์ Text Mode: [ ⭐ เฉพาะหน้าปก | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v11.0 Master Complete (AutoSave, Master Concat, Food Timeline & Prop Continuity Edition)" — a production-grade video studio featuring continuous project autosave, sequential master video concat, strict culinary chronology (raw to crispy cooked), single-pan cookware continuity (black carbon-steel wok), and configurable on-screen text modes.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v12.0 Master Complete (Dual Reference Anchors, AutoSave, Master Concat, Food Timeline & Prop Continuity Edition)" — a production-grade video studio featuring 2 reference image slots (Presenter & Product), continuous project autosave, sequential master video concat, strict culinary chronology (raw to crispy cooked), single-pan cookware continuity (black carbon-steel wok), and configurable on-screen text modes.
 
-## 1. PROJECT PERSISTENCE & AUTOSAVE:
-- State automatically syncs to localStorage on every shot parse, image generation, and video completion.
-- Reopening or refreshing the page immediately restores all previously generated images, video players, and script fields.
+## 1. DUAL-ANCHOR REFERENCE SLOTS (รูปคน & รูปสินค้า):
+- Provide 2 top-level upload/dropzone slots:
+  - Slot 1: [ 👤 แนบรูปคน / เชฟ (Presenter Anchor) ]
+  - Slot 2: [ 📦 แนบรูปสินค้า / อาหารจริง (Product Anchor) ]
+- When images are attached, inject visual continuity directives and pass reference images into generateImage({ prompt, image, aspectRatio: '9:16' }).
+- Both slots are optional. If empty, seamlessly execute pure-prompt generation without errors.
+- Save attached reference images in localStorage alongside shots.
+
+## 2. PROJECT PERSISTENCE & AUTOSAVE:
+- State automatically syncs to localStorage on every shot parse, image generation, video completion, and image attachment.
+- Reopening or refreshing the page immediately restores all previously generated images, video players, uploaded references, and script fields.
 - Include [ 💾 บันทึกโปรเจกต์ ] and [ 📂 คืนค่างานล่าสุด ] buttons in the main header.
 
-## 2. MASTER VIDEO CONCATENATOR (รวมคลิปเป็น 1 คลิป):
+## 3. MASTER VIDEO CONCATENATOR (รวมคลิปเป็น 1 คลิป):
 - Header contains [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] button.
 - Gathers all generated video URLs and opens a seamless continuous sequential player with auto-advance and download options.
 
-## 3. CULINARY CHRONOLOGY & PROP CONTINUITY:
+## 4. CULINARY CHRONOLOGY & PROP CONTINUITY:
 - Timeline: Shot 1 & 2 enforce RAW, uncooked marinated fish on cutting board with rice flour dusting. Shot 3 tests oil. Shot 4 lowers raw fish into bubbling oil. Shot 5 blisters raw skin into golden crisp. Shot 6 flips to reveal golden crust. Shot 7 crisps aromatics. Shots 8+ rest, plate, and serve.
 - Continuous Cookware Entity: All frying scenes lock to "identical seasoned black carbon-steel wok with natural wooden handle" (zero cast iron skillet, zero stainless pan, zero non-stick wok).
 
-## 4. ON-SCREEN TEXT MODES (Zero Video Rejection):
+## 5. ON-SCREEN TEXT MODES (Zero Video Rejection):
 - Header includes Text Mode Selector:
   - "cover_only" (Recommended / Default): Shot 1 has dark frosted-glass headline banner. Shots 2+ are clean 8K cinematography with zero text overlay (guarantees 100% smooth Veo rendering).
   - "all_scenes": Frosted glass pill captions on all shots.
   - "none": Pure cinema on all shots.
 
-## 5. ZERO-HANG VEO VIDEO ENGINE:
+## 6. ZERO-HANG VEO VIDEO ENGINE:
 - Pure English prompts only, strip Thai and sensitive symbols.
 - Sequential rendering queue to eliminate 429 quota errors.
 - Automatic Text-to-Video fallback if image-to-video encounters media field errors.`;
@@ -1674,17 +1719,17 @@ function CommercialStudioContent() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-200">
-                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v5.8 PRO STUDIO)
+                  🛠️ GOOGLE FLOW FIX & SETUP STATION (v12.0 DUAL ANCHOR STUDIO)
                 </span>
                 <span className="text-xs font-bold text-slate-600">
-                  ⚡ ป้องกัน Rate-Limit & Media Fields Error · Safe Sequential Queue · แก้ไข Prompt อิสระสัมพันธ์กับ OS
+                  ⚡ 2 ช่องแนบรูปคนและสินค้า · AutoSave คืนค่างาน · รวมคลิป Master · ป้องกัน Rate-Limit & Media Fields Crash
                 </span>
               </div>
               <h2 className="text-base font-black text-slate-900 tracking-tight mt-1">
                 คำสั่งแก้และอัปเกรด Google Flow Tool (นำไปวางในแท็บ [แก้ไข] ของ Flow)
               </h2>
               <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
-                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v5.8 Pro)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>อัปเกรดระบบเป็น Safe Sequential Queue + Media Fields Armor ไม่หลุด Rate Limit ไม่เจอ Media Fields Crash และมีกล่องแก้ไข Prompt รายช็อตสัมพันธ์กับ OS</strong> ทันที!
+                Google Flow ทำงานบนเบราว์เซอร์ของคุณ — เพียงคุณกด <strong>"คัดลอกคำสั่งแก้ Tool เดิม (v12.0 Dual Anchors)"</strong> แล้วนำไปวางในแท็บ <strong>[ แก้ไข ]</strong> ของหน้า Google Flow แล้วกด Enter หรือคลิกบันทึก Flow AI จะ<strong>เพิ่ม 2 ช่องแนบรูปคน/สินค้า, ระบบ Safe Sequential Queue, AutoSave คืนค่างานอัตโนมัติ และปุ่มรวมคลิป Master</strong> ทันที!
               </p>
             </div>
           </div>
@@ -1708,7 +1753,7 @@ function CommercialStudioContent() {
               <span>กดคัดลอกคำสั่งแก้</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              กดปุ่มสีเขียว <strong>"📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.7 Pro)"</strong> ด้านล่างนี้
+              กดปุ่มสีเขียว <strong>"📋 คัดลอกคำสั่งแก้ Tool เดิม (v12.0)"</strong> ด้านล่างนี้
             </p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
@@ -1726,7 +1771,7 @@ function CommercialStudioContent() {
               <span>วางคำสั่งแล้วกดบันทึก</span>
             </div>
             <p className="text-[11.5px] text-slate-600 leading-snug">
-              วางข้อความลงในช่องแชต แล้วกด Enter เพื่ออัปเกรด Tool เป็นระบบ Parallel ทันที
+              วางข้อความลงในช่องแชต แล้วกด Enter เพื่ออัปเกรด Tool เป็น v12.0 พร้อมช่องใส่รูปทันที
             </p>
           </div>
         </div>
@@ -1748,7 +1793,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Copy className="w-4 h-4 text-teal-200" />
-                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v5.8 Pro Sequential Armor) — แนะนำ</span>
+                  <span>📋 คัดลอกคำสั่งแก้ Tool เดิม (v12.0 Dual Anchors) — แนะนำ</span>
                 </>
               )}
             </button>
@@ -1756,7 +1801,7 @@ function CommercialStudioContent() {
             {/* Secondary: Copy Rebuild Prompt */}
             <button
               type="button"
-              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v5.8 Pro")}
+              onClick={() => copyToClipboard(GOOGLE_FLOW_FULL_BUILDER_PROMPT, "station-rebuild-prompt", "คำสั่งสร้าง Tool ใหม่ v12.0")}
               className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer"
             >
               {copiedKey === "station-rebuild-prompt" ? (
@@ -1767,7 +1812,7 @@ function CommercialStudioContent() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>คำสั่งสร้าง Tool ใหม่ (v5.8 Pro Rebuild)</span>
+                  <span>คำสั่งสร้าง Tool ใหม่ (v12.0 Rebuild)</span>
                 </>
               )}
             </button>
