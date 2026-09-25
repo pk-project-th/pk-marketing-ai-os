@@ -58,176 +58,155 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.1 CHARACTER VOICE STUDIO (MULTI-CHARACTER VOICE LOCKING, ELEVENLABS PRESET VOICES, LIVE DASHBOARD & WORKFLOW 1->2->3):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.2 SMART VOICE CASTING & API HEALTHCHECK EDITION (INSTANT API VERIFICATION, AUTO-VOICE DETECTION FROM PROMPT, LIVE DASHBOARD & WORKFLOW 1->2->3):
 
-แก้ไขและเพิ่มระบบ "ล็อกเสียงประจำตัวละครหลายตัว" (Multi-Character Voice Lock System) ตามคำสั่ง:
-1. 🎭 ตัวเลือกเสียงภาษาไทยหลากหลาย (Curated Multilingual Voice Library):
-   - เพิ่มรายการเสียงพรีเซ็ตยอดนิยมที่พูดภาษาไทยได้ชัดเจนและเป็นธรรมชาติที่สุดของ ElevenLabs:
-     • 👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่นน่าเชื่อถือ (Adam - pNInz6obpgDQGcFmaJgB)
-     • 👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel - 21m00Tcm4TlvDq8ikWAM)
-     • 🎙️ ผู้บรรยายหลัก / โฆษณาหรูพรีเมียม (Antoni - ErXwobaYiN019PkySvjV)
-     • ✨ สาวรีวิวชวนหิว / ตื่นเต้นกระตือรือร้น (Bella - EXAVITQu4vr4xnSDxMaL)
-     • 🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ดเป็นกันเอง (Josh - TxGEqnHWrfWFTfGW9XjX)
-     • 👵 คุณแม่ / สูตรโบราณต้นตำรับอบอุ่น (Dorothy - ThT5KcBeYPX3keUQqHPh)
-     • ⚙️ กำหนด Voice ID เอง (Custom Cloned Voice สำหรับเสียงโคลนตัวเอง)
-2. 🔒 ล็อกเสียงประจำตัวละครรายฉาก (Character Voice Lock per Scene):
-   - ในการ์ดของแต่ละฉาก มีเมนูเลือกตัวละครผู้พูด: [ 🗣️ เลือกตัวละคร: เชฟ | ผู้บรรยาย | ลูกค้า/คนชิม | เสียงกำหนดเอง ]
-   - ระบบจะ "ล็อกเสียง" ให้ตรงกับตัวละครนั้นๆ ตลอดทั้งเรื่อง แม้จะสลับไปพูดฉากไหนก็จะได้เสียงคนเดิม 100%
-   - ตรวจจับอัตโนมัติจากสคริปต์ เช่น ถ้าบทเขียนว่า "เชฟ: ..." หรือ "ลูกค้า: ..." ระบบจะเลือกเสียงตัวละครให้อัตโนมัติ
-3. 📊 แผงสถานะการผลิตเรียลไทม์ (Live Production Dashboard):
-   - แสดงความคืบหน้ารวม: รูปภาพ (X/Total) • วิดีโอ Veo (Y/Total) • เสียงพากย์ (Z/Total)
-   - ป้ายไฟเขียวแจ้งเตือนเมื่อพร้อมรวมคลิป Master
-4. 💾 คลังประวัติโปรเจกต์ (Multi-Project History Archive):
-   - [ 💾 บันทึกโปรเจกต์ ] • [ 📂 คลังประวัติโปรเจกต์ ] • [ ➕ เริ่มโปรเจกต์ใหม่ ]
-5. 🔢 ปุ่มขั้นตอนการผลิต 1 -> 2 -> 3 ครบถ้วน
+แก้ไขและเพิ่ม 2 ฟังก์ชันอัจฉริยะตามคำขอ:
+1. ⚡ ปุ่มตรวจเช็กสถานะการเชื่อมต่อ API ทันที (Instant API Healthcheck):
+   - ในหน้าต่างตั้งค่า มีปุ่ม [ ⚡ ทดสอบการเชื่อมต่อ API ]
+   - กดปุ๊บ ระบบจะยิงเช็ก ElevenLabs ให้ทันที พร้อมแสดง:
+     • ✅ เชื่อมต่อสำเร็จ! (สถานะ: Active, โควตาตัวอักษรคงเหลือ: X,XXX ตัว)
+     • 🟢 บน Header จะขึ้นป้ายเขียว: "ElevenLabs: เชื่อมต่อแล้ว (พร้อมใช้งาน)"
+     • หากผิดพลาด จะแจ้งสาเหตุชัดเจน เช่น API Key ผิด หรือ เครดิตหมด
+2. 🤖 ระบบเลือกเสียงอัตโนมัติตามความเหมาะสมของบท (Smart Auto-Voice Casting):
+   - ไม่ต้องให้ผู้ใช้มานั่งเลือกเองตั้งแต่แรก! ระบบจะอ่านวิเคราะห์ Prompt และบทพูดในแต่ละฉาก แล้วเลือกเสียงที่เหมาะสมให้อัตโนมัติ:
+     • ช็อตที่ 1 (เปิดเรื่อง/หัวข้อ): 🎙️ ผู้บรรยายหลักทรงพลัง (Antoni)
+     • ช็อตขั้นตอนทำ/ทอด/คลุกแป้ง/เชฟ: 👨‍🍳 เชฟหนุ่มอบอุ่นน่าเชื่อถือ (Adam)
+     • ช็อตชิม/กัดกรอบ/รีแอ็กชันฟิน: ✨ สาวรีวิวชวนหิวตื่นเต้น (Bella)
+     • ช็อตปิดท้าย/โปรโมชั่น/CTA: 👩‍🍳 พรีเซนเตอร์สาวสดใส (Rachel)
+     • ช็อตสูตรโบราณ/ดั้งเดิม: 👵 คุณแม่สูตรโบราณ (Dorothy)
+   - ✏️ ยืดหยุ่นสูงสุด: แต่ละฉากยังมีเมนูดรอปดาวน์ให้คลิกเปลี่ยนเสียงทีละฉากได้ตลอดเวลาหากต้องการปรับแก้เอง!
+3. 📊 Live Production Dashboard & 💾 Multi-Project History & 1->2->3 Workflow คงอยู่ครบถ้วน
 
 ---
 
 โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow:
 
-### 1. 🎭 PRESET VOICES & STATES:
-const PRESET_VOICES = [
-  { id: "pNInz6obpgDQGcFmaJgB", label: "👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น (Adam)", role: "chef" },
-  { id: "21m00Tcm4TlvDq8ikWAM", label: "👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel)", role: "presenter" },
-  { id: "ErXwobaYiN019PkySvjV", label: "🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม (Antoni)", role: "narrator" },
-  { id: "EXAVITQu4vr4xnSDxMaL", label: "✨ สาวรีวิวชวนหิว / รีแอ็กชันตื่นเต้น (Bella)", role: "reviewer" },
-  { id: "TxGEqnHWrfWFTfGW9XjX", label: "🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ด (Josh)", role: "youth" },
-  { id: "ThT5KcBeYPX3keUQqHPh", label: "👵 คุณแม่ / สูตรโบราณอบอุ่น (Dorothy)", role: "elder" },
-  { id: "custom", label: "⚙️ กำหนด Voice ID เอง (Custom Cloned Voice)", role: "custom" }
-];
+### 1. ⚡ ฟังก์ชันทดสอบ API ELEVENLABS:
+const [apiTestResult, setApiTestResult] = useState(null);
+const [isTestingApi, setIsTestingApi] = useState(false);
 
-const [shots, setShots] = useState([]);
-const [shotStates, setShotStates] = useState({});
-const [campaignTitle, setCampaignTitle] = useState("");
-const [textMode, setTextMode] = useState("cover_only");
-const [presenterImage, setPresenterImage] = useState(null);
-const [productImage, setProductImage] = useState(null);
-
-const [masterPlayerOpen, setMasterPlayerOpen] = useState(false);
-const [currentClipIndex, setCurrentClipIndex] = useState(0);
-const [isGeneratingAllImages, setIsGeneratingAllImages] = useState(false);
-const [isGeneratingAllVideos, setIsGeneratingAllVideos] = useState(false);
-const [isGeneratingAllAudios, setIsGeneratingAllAudios] = useState(false);
-
-const [savedProjects, setSavedProjects] = useState([]);
-const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
-const [toastMsg, setToastMsg] = useState("");
-
-// ElevenLabs Config
-const [elevenLabsApiKey, setElevenLabsApiKey] = useState(() => {
-  try { return localStorage.getItem("pk_elevenlabs_api_key") || ""; } catch(e) { return ""; }
-});
-const [customVoiceIdInput, setCustomVoiceIdInput] = useState("");
-const [isVoiceSettingsOpen, setIsVoiceSettingsOpen] = useState(false);
-
-function showToast(msg) {
-  setToastMsg(msg);
-  setTimeout(() => setToastMsg(""), 3500);
-}
-
-### 2. 🎙️ ELEVENLABS AUDIO WITH CHARACTER VOICE LOCK:
-async function generateElevenLabsAudio(text, voiceId) {
-  if (!elevenLabsApiKey) throw new Error("กรุณากรอก ElevenLabs API Key ในปุ่ม '🎙️ ตั้งค่าเสียงตัวละคร' ก่อนครับ");
-  if (!text) throw new Error("ไม่มีข้อความบทพากย์สำหรับฉากนี้");
-
-  const effectiveVoiceId = (voiceId === "custom" ? customVoiceIdInput : voiceId) || "pNInz6obpgDQGcFmaJgB";
-
-  const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${effectiveVoiceId}\`, {
-    method: "POST",
-    headers: {
-      "Accept": "audio/mpeg",
-      "Content-Type": "application/json",
-      "xi-api-key": elevenLabsApiKey
-    },
-    body: JSON.stringify({
-      text: text,
-      model_id: "eleven_multilingual_v2",
-      voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-    })
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err?.detail?.message || \`ElevenLabs API Error (\${response.status})\`);
-  }
-  const blob = await response.blob();
-  return URL.createObjectURL(blob);
-}
-
-// สร้างเสียงพากย์รายฉากโดยล็อกตามตัวละครที่เลือก
-async function generateSingleAudio(shot) {
-  const shotId = String(shot.shotNumber);
-  const textToSpeak = shot.thaiVoiceover || shot.onScreenText || "";
-  // ดึง voiceId ที่ล็อกไว้สำหรับฉากนี้
-  const chosenVoiceId = shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB";
-  
-  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'generating' } }));
-  try {
-    const audioUrl = await generateElevenLabsAudio(textToSpeak, chosenVoiceId);
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl, voiceId: chosenVoiceId } }));
-    showToast(\`🎙️ สร้างเสียงพากย์ฉาก \${shot.shotNumber} สำเร็จ!\`);
-  } catch (e) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'error', audioErrorMsg: e.message } }));
-    alert(e.message);
-  }
-}
-
-// สร้างเสียงพากย์ทุกฉากอัตโนมัติตามตัวละครที่ล็อกไว้
-async function handleGenerateAllAudios() {
-  if (!shots || shots.length === 0) return;
-  if (!elevenLabsApiKey) {
-    setIsVoiceSettingsOpen(true);
+async function testElevenLabsConnection(keyToTest) {
+  const key = keyToTest || elevenLabsApiKey;
+  if (!key) {
+    alert("กรุณากรอก API Key ก่อนกดทดสอบครับ");
     return;
   }
-  setIsGeneratingAllAudios(true);
-  for (const shot of shots) {
-    await generateSingleAudio(shot);
+  setIsTestingApi(true);
+  setApiTestResult(null);
+  try {
+    const res = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
+      headers: { "xi-api-key": key }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.detail?.message || \`API Key ไม่ถูกต้อง (Status \${res.status})\`);
+    }
+    const data = await res.json();
+    const remaining = (data.character_limit || 0) - (data.character_count || 0);
+    const resultObj = {
+      success: true,
+      message: \`✅ เชื่อมต่อสำเร็จ! แพ็กเกจ: \${data.tier || 'Active'} (โควตาคงเหลือ: \${remaining.toLocaleString()} ตัวอักษร)\`
+    };
+    setApiTestResult(resultObj);
+    setElevenLabsApiKey(key);
+    try { localStorage.setItem("pk_elevenlabs_api_key", key); } catch(e) {}
+    showToast("🟢 เชื่อมต่อ ElevenLabs API สำเร็จเรียบร้อย!");
+  } catch (err) {
+    setApiTestResult({
+      success: false,
+      message: \`❌ ไม่สามารถเชื่อมต่อได้: \${err.message}\`
+    });
+  } finally {
+    setIsTestingApi(false);
   }
-  setIsGeneratingAllAudios(false);
-  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากตามตัวละครแล้ว!");
 }
 
-### 3. 🎴 PER-SHOT CHARACTER SELECTOR UI:
-ในการ์ดแต่ละฉาก ให้แสดงเมนูเลือกตัวละคร:
-- [ 🗣️ เสียงตัวละคร: ]
-  <select 
-    value={shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB"}
-    onChange={(e) => {
-      const vId = e.target.value;
-      setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), voiceId: vId } }));
-    }}
-    className="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg p-1.5 font-bold"
-  >
-    {PRESET_VOICES.map(v => (
-      <option key={v.id} value={v.id}>{v.label}</option>
-    ))}
-  </select>
+### 2. 🤖 ฟังก์ชัน SMART VOICE CASTING (วิเคราะห์บทและเลือกเสียงให้อัตโนมัติ):
+function autoDetectVoiceForShot(shotNumber, title, voiceover, visualPrompt, totalCount = 10) {
+  const text = (title + " " + voiceover + " " + visualPrompt).toLowerCase();
 
-### 4. ⚙️ MODAL ตั้งค่าเสียง ELEVENLABS:
-เมื่อคลิกปุ่ม [ 🎙️ เสียงตัวละคร & API Key ] ใน Header:
-- ช่องกรอก ElevenLabs API Key (ซ่อนรหัสแบบ password และมีปุ่มดู)
-- ช่องกรอก Custom Cloned Voice ID (กรณีมีเสียงโคลนของตัวเอง)
-- ปุ่มบันทึกการตั้งค่าลง localStorage: pk_elevenlabs_api_key`;
+  // 1. ช็อตแรก = ผู้บรรยายเปิดหัวข้อ
+  if (shotNumber === 1) return "ErXwobaYiN019PkySvjV"; // Antoni (Narrator)
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.1 Character Voice Edition" — featuring curated Thai/Multilingual ElevenLabs voice library, character voice locking per scene, live production status dashboard, multi-project history, and 1->2->3 production workflow.
+  // 2. ช็อตชิม / กัดกรอบ / รีแอ็กชันฟิน
+  if (text.includes("ชิม") || text.includes("กรอบ") || text.includes("อร่อย") || text.includes("กัด") || text.includes("taste") || text.includes("crunch") || text.includes("crisp") || text.includes("delicious")) {
+    return "EXAVITQu4vr4xnSDxMaL"; // Bella (Reviewer)
+  }
 
-## 1. CURATED VOICE LIBRARY & CHARACTER LOCKING:
-- Curated presets:
-  1) Adam (pNInz6obpgDQGcFmaJgB) - 👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น
-  2) Rachel (21m00Tcm4TlvDq8ikWAM) - 👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร
-  3) Antoni (ErXwobaYiN019PkySvjV) - 🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม
-  4) Bella (EXAVITQu4vr4xnSDxMaL) - ✨ สาวรีวิวชวนหิว / รีแอ็กชันตื่นเต้น
-  5) Josh (TxGEqnHWrfWFTfGW9XjX) - 🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ด
-  6) Dorothy (ThT5KcBeYPX3keUQqHPh) - 👵 คุณแม่ / สูตรโบราณอบอุ่น
-  7) Custom Voice ID option for user's own cloned voices.
-- Each scene has a character dropdown that permanently locks that voice ID to the scene.
-- Generating audio per-shot or batch uses the character's locked voice.
+  // 3. ช็อตปิดท้าย / สรุป / โปรโมชั่น / สั่งซื้อ
+  if (shotNumber === totalCount || text.includes("สั่ง") || text.includes("พิกัด") || text.includes("โปร") || text.includes("order") || text.includes("call to action") || text.includes("cta")) {
+    return "21m00Tcm4TlvDq8ikWAM"; // Rachel (Presenter)
+  }
 
-## 2. PRODUCTION DASHBOARD & WORKFLOW:
+  // 4. ช็อตสูตรโบราณ / มรดกตกทอด
+  if (text.includes("โบราณ") || text.includes("สูตรแม่") || text.includes("ตำรับ") || text.includes("traditional")) {
+    return "ThT5KcBeYPX3keUQqHPh"; // Dorothy (Heritage)
+  }
+
+  // 5. ช็อตทำอาหาร / ทอด / ลงกระทะ / เตรียมวัตถุดิบ (Default สำหรับเชฟ)
+  return "pNInz6obpgDQGcFmaJgB"; // Adam (Chef)
+}
+
+### 3. 🔍 PARSER ฝัง AUTO VOICE เข้าแต่ละฉากทันที:
+// เมื่อผู้ใช้กด [ วิเคราะห์สคริปต์ ] ระบบจะเรียก autoDetectVoiceForShot() ใส่ใน shot.voiceId ให้อัตโนมัติ
+parsedShots.push({
+  shotNumber,
+  shotTitle,
+  duration,
+  onScreenText: cleanOnScreen,
+  thaiVoiceover,
+  visualPrompt,
+  motionPrompt,
+  voiceId: autoDetectVoiceForShot(shotNumber, shotTitle, thaiVoiceover, visualPrompt, totalCount)
+});
+
+### 4. 🎴 MODAL ตั้งค่า ELEVENLABS พร้อมปุ่มตรวจเช็ก:
+เมื่อคลิกปุ่ม [ 🎙️ ElevenLabs ] บน Header:
+- ช่องกรอก API Key
+- ปุ่ม [ ⚡ ทดสอบการเชื่อมต่อ API ] (กดแล้วเช็กทันที)
+- แสดงกล่องผลการทดสอบ:
+  {apiTestResult && (
+    <div className={apiTestResult.success ? "p-3 rounded-xl bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-xs font-bold" : "p-3 rounded-xl bg-rose-950/80 border border-rose-500 text-rose-300 text-xs font-bold"}>
+      {apiTestResult.message}
+    </div>
+  )}
+
+### 5. 🗣️ การ์ดแต่ละฉาก (PER-SHOT SELECTOR):
+ในการ์ดแต่ละฉาก มีดรอปดาวน์เลือกเสียงที่ AI เลือกให้อยู่แล้ว:
+<select 
+  value={shotStates[shotId]?.voiceId || shot.voiceId}
+  onChange={(e) => {
+    const vId = e.target.value;
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), voiceId: vId } }));
+  }}
+  className="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg p-1.5 font-bold"
+>
+  {PRESET_VOICES.map(v => (
+    <option key={v.id} value={v.id}>{v.label}</option>
+  ))}
+</select>`;
+
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.2 Smart Voice Casting Edition" — featuring instant ElevenLabs API verification, automatic AI voice casting based on scene prompt context, per-scene voice customization, live progress dashboard, and 1->2->3 workflow.
+
+## 1. INSTANT ELEVENLABS API VERIFICATION:
+- Test Connection button in settings modal calls ElevenLabs /v1/user/subscription.
+- Displays live feedback: Active status and remaining character quota.
+- Header badge reflects live connection status.
+
+## 2. SMART AUTO-VOICE CASTING FROM PROMPT:
+- Automatically casts the ideal voice for each scene based on context:
+  - Shot 1 (Opening/Title): Antoni (🎙️ ผู้บรรยายหลัก)
+  - Cooking/Wok/Frying: Adam (👨‍🍳 เชฟหนุ่ม)
+  - Tasting/Crunch/Juicy: Bella (✨ สาวรีวิวชวนหิว)
+  - Closing/CTA: Rachel (👩‍🍳 พรีเซนเตอร์สาว)
+  - Heritage/Recipe: Dorothy (👵 คุณแม่สูตรโบราณ)
+- Users can override and customize the voice of any individual scene anytime.
+
+## 3. PRODUCTION DASHBOARD & WORKFLOW:
 - Realtime progress bars for Images, Veo Videos, and Audios.
 - [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ].
 
-## 3. MULTI-PROJECT HISTORY & PERSISTENCE:
+## 4. MULTI-PROJECT HISTORY & PERSISTENCE:
 - Save, Load, and Delete campaigns to localStorage with Shot 1 thumbnails.
 - Automatic draft saving.`;
 
