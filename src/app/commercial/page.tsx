@@ -58,180 +58,187 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v13.0 MULTI-PROJECT ARCHIVE & HISTORY EDITION (SAVE PROJECT, LOAD HISTORY, NEW PROJECT, WORKFLOW 1->2->3):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.0 ULTIMATE MASTER EDITION (ELEVENLABS VOICEOVER, LIVE PROGRESS DASHBOARD, EDITABLE SCENES, MULTI-PROJECT ARCHIVE & WORKFLOW 1->2->3):
 
-แก้ไขและเพิ่มระบบ "คลังประวัติโปรเจกต์" (Multi-Project History Manager) ตามคำสั่ง:
-1. 💾 ปุ่มบันทึกโปรเจกต์ (Save Current Project):
-   - เพิ่มปุ่ม [ 💾 บันทึกโปรเจกต์ ] บนแถบเมนูหลัก
-   - บันทึกงานปัจจุบัน (ชื่อโปรเจกต์, รูปทั้งหมด, วิดีโอทั้งหมด, สคริปต์, รูปคน/สินค้า) เก็บลงคลังประวัติอย่างถาวร
-2. 📂 หน้าต่างเรียกดูประวัติโปรเจกต์เก่า (Project History Modal):
-   - เพิ่มปุ่ม [ 📂 คลังประวัติโปรเจกต์ (X) ] แสดงจำนวนโปรเจกต์ที่เคยทำ
-   - เมื่อคลิก จะเปิดหน้าต่างแสดงรายการโปรเจกต์เก่าทั้งหมด พร้อมรูปปกตัวอย่าง, วันที่บันทึก, จำนวนฉาก
-   - มีปุ่ม [ ⚡ เปิดโปรเจกต์นี้ ] เพื่อดึงงานเก่านั้นกลับมาดูคลิป ดาวน์โหลด หรือแก้ไขได้ทันที
-   - มีปุ่ม [ 🗑️ ลบโปรเจกต์ ] สำหรับลบงานที่ไม่ต้องการ
-3. ➕ ปุ่มเริ่มโปรเจกต์ใหม่ (Start New Project):
-   - เพิ่มปุ่ม [ ➕ เริ่มโปรเจกต์ใหม่ ] เพื่อล้างหน้าจอเตรียมทำสินค้าตัวถัดไป โดยที่งานเก่าไม่หายและยังอยู่ในคลังประวัติ
-4. 🛡️ รักษาระบบเดิมให้สมบูรณ์:
-   - Workflow 1 -> 2 -> 3: [ 1. เจนรูปทั้งหมด ] -> [ 2. สร้างเป็นคลิปทั้งหมด ] -> [ 3. รวมคลิปเป็น 1 (Master) ]
-   - สวิตช์ตำแหน่งตัวหนังสือ: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) | 📝 ใส่ทุกคลิป | 🎬 ภาพล้วน ]
-   - 2 ช่องแนบรูปคนและสินค้า
+แก้ไขและเพิ่ม 5 ฟังก์ชันสุดล้ำตามคำขอ ออกแบบให้สวยงาม ใช้งานง่าย และคงความเสถียร 100%:
+1. 🎙️ ระบบเสียงพากย์ ElevenLabs ครบวงจร (API Key + Voice ID + พากย์รายฉาก):
+   - มีปุ่ม [ 🎙️ ตั้งค่า ElevenLabs ] ที่ Header เพื่อใส่ API Key (บันทึกลง localStorage อัตโนมัติ ใส่ครั้งเดียวจำตลอดไป)
+   - มีปุ่ม [ 🎙️ สร้างเสียงพากย์ทุกฉาก ] สำหรับรันพากย์เสียงภาษาไทยให้อัตโนมัติทีละฉาก
+   - แต่ละฉากมีกล่องแก้ไข "บทพูดเสียงพากย์ไทย" (Editable Thai Voiceover) + ปุ่ม [ 🎙️ เจนเสียงฉากนี้ ] + เครื่องเล่นเสียง [ ▶️ ฟังเสียง ]
+2. 📊 แผงสถานะการผลิตเรียลไทม์ (Live Production Dashboard):
+   - แสดงแถบ Progress Bar และตัวนับสถานะชัดเจนที่ด้านบน:
+     • 🖼️ รูปภาพ: X / Total (พร้อม % ความคืบหน้า)
+     • 🎬 วิดีโอ Veo: Y / Total (พร้อม % ความคืบหน้า)
+     • 🎙️ เสียงพากย์: Z / Total (พร้อม % ความคืบหน้า)
+   - ป้ายสถานะภาพรวม: "🎉 เรนเดอร์ครบ 100% แล้ว! พร้อมรวมคลิป Master และดาวน์โหลดทันที" (ไฟกระพริบสีเขียว)
+3. ✏️ แก้ไขเนื้อหาได้อิสระทุกฉาก (Per-Shot Full Editing):
+   - ผู้ใช้สามารถพิมพ์แก้บทพากย์ไทย, ข้อความบนจอ, และ Visual Prompt ของแต่ละฉากได้ทันที
+4. 💾 คลังประวัติโปรเจกต์ (Multi-Project History Archive):
+   - [ 💾 บันทึกโปรเจกต์ ]: บันทึกผลงานปัจจุบัน (ภาพ, วิดีโอ, เสียงพากย์, สคริปต์) เก็บลงคลังถาวร
+   - [ 📂 คลังประวัติโปรเจกต์ (X) ]: เปิดดูประวัติงานเก่า สลับกลับมาเปิดดูหรือดาวน์โหลดได้ตลอดเวลา
+   - [ ➕ เริ่มโปรเจกต์ใหม่ ]: ล้างหน้าจอเตรียมทำสินค้าตัวถัดไป
+5. 🔢 ปุ่มการผลิตเรียงตามลำดับ 1 -> 2 -> 3 สวยงามสมบูรณ์แบบ:
+   - [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ]
 
 ---
 
-โครงสร้างโค้ด React ใน Tool สำหรับระบบประวัติโปรเจกต์:
+โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow:
 
-### 1. 📦 STATES DECLARATION:
+### 1. 📦 STATES & ELEVENLABS CONFIG:
 const [shots, setShots] = useState([]);
 const [shotStates, setShotStates] = useState({});
 const [campaignTitle, setCampaignTitle] = useState("");
 const [textMode, setTextMode] = useState("cover_only");
 const [presenterImage, setPresenterImage] = useState(null);
 const [productImage, setProductImage] = useState(null);
+
+// สถานะการเรนเดอร์และ Player
 const [masterPlayerOpen, setMasterPlayerOpen] = useState(false);
 const [currentClipIndex, setCurrentClipIndex] = useState(0);
 const [isGeneratingAllImages, setIsGeneratingAllImages] = useState(false);
 const [isGeneratingAllVideos, setIsGeneratingAllVideos] = useState(false);
+const [isGeneratingAllAudios, setIsGeneratingAllAudios] = useState(false);
 
-// State สำหรับคลังประวัติโปรเจกต์
+// คลังประวัติโปรเจกต์
 const [savedProjects, setSavedProjects] = useState([]);
 const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
 const [toastMsg, setToastMsg] = useState("");
+
+// การตั้งค่า ElevenLabs
+const [elevenLabsApiKey, setElevenLabsApiKey] = useState("");
+const [elevenLabsVoiceId, setElevenLabsVoiceId] = useState("21m00Tcm4TlvDq8ikWAM"); // Default Multilingual Voice
+const [isVoiceSettingsOpen, setIsVoiceSettingsOpen] = useState(false);
 
 function showToast(msg) {
   setToastMsg(msg);
   setTimeout(() => setToastMsg(""), 3500);
 }
 
-### 2. 💾 PROJECT HISTORY FUNCTIONS:
-// โหลดคลังประวัติโปรเจกต์จาก localStorage เมื่อเปิดเว็บ
-useEffect(() => {
-  try {
-    const historyData = localStorage.getItem("pk_flow_projects_history");
-    if (historyData) {
-      const list = JSON.parse(historyData);
-      if (Array.isArray(list)) setSavedProjects(list);
-    }
-    // โหลดงานค้างล่าสุด
-    const activeData = localStorage.getItem("pk_flow_active_project");
-    if (activeData) {
-      const d = JSON.parse(activeData);
-      if (d.shots && d.shots.length > 0) {
-        setShots(d.shots);
-        setShotStates(d.shotStates || {});
-        if (d.campaignTitle) setCampaignTitle(d.campaignTitle);
-        if (d.textMode) setTextMode(d.textMode);
-        if (d.presenterImage) setPresenterImage(d.presenterImage);
-        if (d.productImage) setProductImage(d.productImage);
-      }
-    }
-  } catch (e) {}
-}, []);
+### 2. 🎙️ ELEVENLABS AUDIO GENERATOR:
+async function generateElevenLabsAudio(text, apiKey = elevenLabsApiKey, voiceId = elevenLabsVoiceId) {
+  if (!apiKey) throw new Error("กรุณากรอก ElevenLabs API Key ในปุ่ม '🎙️ ตั้งค่า ElevenLabs' ก่อนครับ");
+  if (!text) throw new Error("ไม่มีข้อความบทพากย์สำหรับฉากนี้");
 
-// ฟังก์ชันกดบันทึกโปรเจกต์ปัจจุบัน
-function handleSaveProject() {
-  if (!shots || shots.length === 0) {
-    alert("ยังไม่มีข้อมูลโปรเจกต์ กรุณาวางสคริปต์ก่อนบันทึกครับ");
+  const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${voiceId}\`, {
+    method: "POST",
+    headers: {
+      "Accept": "audio/mpeg",
+      "Content-Type": "application/json",
+      "xi-api-key": apiKey
+    },
+    body: JSON.stringify({
+      text: text,
+      model_id: "eleven_multilingual_v2",
+      voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err?.detail?.message || \`ElevenLabs API Error (\${response.status})\`);
+  }
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}
+
+// สร้างเสียงพากย์รายฉาก
+async function generateSingleAudio(shot) {
+  const shotId = String(shot.shotNumber);
+  const textToSpeak = shot.thaiVoiceover || shot.onScreenText || "";
+  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'generating' } }));
+  try {
+    const audioUrl = await generateElevenLabsAudio(textToSpeak);
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl } }));
+    showToast(\`🎙️ สร้างเสียงพากย์ฉาก \${shot.shotNumber} สำเร็จ!\`);
+  } catch (e) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'error', audioErrorMsg: e.message } }));
+    alert(e.message);
+  }
+}
+
+// สร้างเสียงพากย์ทุกฉากอัตโนมัติ
+async function handleGenerateAllAudios() {
+  if (!shots || shots.length === 0) return;
+  if (!elevenLabsApiKey) {
+    setIsVoiceSettingsOpen(true);
     return;
   }
-  const title = campaignTitle || shots[0]?.campaignTitle || "โปรเจกต์วิดีโอโฆษณา";
-  const newProj = {
-    id: "proj_" + Date.now(),
-    title: title,
-    shots: shots,
-    shotStates: shotStates,
-    campaignTitle: title,
-    textMode: textMode,
-    presenterImage: presenterImage,
-    productImage: productImage,
-    createdAt: new Date().toISOString(),
-    thumbnail: shotStates["1"]?.imageUrl || shots[0]?.imageUrl || null
-  };
-  const updated = [newProj, ...savedProjects.filter(p => p.title !== title)];
-  setSavedProjects(updated);
-  try {
-    localStorage.setItem("pk_flow_projects_history", JSON.stringify(updated));
-  } catch (e) {}
-  showToast("💾 บันทึกโปรเจกต์ '" + title + "' เข้าคลังประวัติเรียบร้อยแล้ว!");
+  setIsGeneratingAllAudios(true);
+  for (const shot of shots) {
+    await generateSingleAudio(shot);
+  }
+  setIsGeneratingAllAudios(false);
+  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากแล้ว!");
 }
 
-// ฟังก์ชันกดเปิดโปรเจกต์เก่าจากคลัง
-function handleLoadProject(proj) {
-  setShots(proj.shots || []);
-  setShotStates(proj.shotStates || {});
-  setCampaignTitle(proj.campaignTitle || proj.title || "");
-  setTextMode(proj.textMode || "cover_only");
-  setPresenterImage(proj.presenterImage || null);
-  setProductImage(proj.productImage || null);
-  setIsHistoryModalOpen(false);
-  showToast("📂 เปิดโปรเจกต์ '" + proj.title + "' สำเร็จ!");
-}
+### 3. 📊 LIVE DASHBOARD COUNTERS:
+const totalShots = shots.length;
+const completedImages = shots.filter(s => shotStates[String(s.shotNumber)]?.imageUrl).length;
+const completedVideos = shots.filter(s => shotStates[String(s.shotNumber)]?.videoUrl).length;
+const completedAudios = shots.filter(s => shotStates[String(s.shotNumber)]?.audioUrl).length;
+const isAllReady = totalShots > 0 && completedVideos === totalShots;
 
-// ฟังก์ชันลบโปรเจกต์ออกจากคลัง
-function handleDeleteProject(projId, e) {
-  e.stopPropagation();
-  if (!confirm("คุณต้องการลบโปรเจกต์นี้ออกจากคลังประวัติใช่หรือไม่?")) return;
-  const updated = savedProjects.filter(p => p.id !== projId);
-  setSavedProjects(updated);
-  try {
-    localStorage.setItem("pk_flow_projects_history", JSON.stringify(updated));
-  } catch (e) {}
-}
+### 4. 🎴 LAYOUT & DASHBOARD UI:
+1) ส่วนบนสุด (Header Bar):
+   - โลโก้ & ชื่อโปรเจกต์
+   - ปุ่ม [ 🎙️ ElevenLabs: {elevenLabsApiKey ? "เชื่อมต่อแล้ว ✓" : "ตั้งค่า API Key"} ]
+   - ปุ่ม [ 💾 บันทึกโปรเจกต์ ]
+   - ปุ่ม [ 📂 คลังประวัติ ({savedProjects.length}) ]
+   - ปุ่ม [ ➕ เริ่มงานใหม่ ]
+   - สวิตช์ตำแหน่งตัวหนังสือ: [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) | 📝 ใส่ทุกคลิป | 🎬 ภาพล้วน ]
 
-// ฟังก์ชันเริ่มโปรเจกต์ใหม่
-function handleStartNewProject() {
-  if (shots.length > 0 && !confirm("ต้องการเริ่มโปรเจกต์ใหม่ใช่หรือไม่? (อย่าลืมกดบันทึกโปรเจกต์ปัจจุบันเข้าคลังไว้ก่อน)")) return;
-  setShots([]);
-  setShotStates({});
-  setCampaignTitle("");
-  setPresenterImage(null);
-  setProductImage(null);
-  showToast("✨ เริ่มโปรเจกต์ใหม่เรียบร้อยแล้ว วางสคริปต์ตัวใหม่ได้เลย");
-}
+2) แผงสถานะการผลิตสด (Live Production Dashboard):
+   - การ์ดสถิติ 3 คอลัมน์:
+     • 🖼️ รูปภาพ: {completedImages} / {totalShots} (พร้อม Progress Bar)
+     • 🎬 วิดีโอ Veo: {completedVideos} / {totalShots} (พร้อม Progress Bar)
+     • 🎙️ เสียงพากย์: {completedAudios} / {totalShots} (พร้อม Progress Bar)
+   - แถบสถานะความพร้อม:
+     {isAllReady ? (
+       <div className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-2.5 rounded-xl text-center font-bold animate-pulse">
+         🎉 ผลิตครบ 100% ทุกฉากแล้ว! พร้อมรวมคลิป Master และดาวน์โหลดทันที
+       </div>
+     ) : (
+       <div className="bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-xl text-xs text-center">
+         ความคืบหน้ารวม: รูปภาพ {completedImages}/{totalShots} • วิดีโอ {completedVideos}/{totalShots} • เสียงพากย์ {completedAudios}/{totalShots}
+       </div>
+     )}
 
-### 3. 🎴 HEADER ACTIONS WITH PROJECT MANAGER:
-บนแถบ Header ด้านบน เพิ่มปุ่มจัดการโปรเจกต์ครบถ้วน:
-- [ 💾 บันทึกโปรเจกต์ ] -> เรียก handleSaveProject()
-- [ 📂 ประวัติโปรเจกต์ ({savedProjects.length}) ] -> เปิด isHistoryModalOpen(true)
-- [ ➕ โปรเจกต์ใหม่ ] -> เรียก handleStartNewProject()
+3) แถบปุ่มการผลิต (Production Workflow):
+   - [ 1. 🖼️ เจนรูปทั้งหมด ]
+   - [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ]
+   - [ 🎙️ สร้างเสียงพากย์ทั้งหมด (ElevenLabs) ]
+   - [ 3. 🎞️ รวมคลิปเป็น 1 (Master) • พร้อมแล้ว {completedVideos}/{totalShots} คลิป ]
 
-### 4. 🗂️ MODAL แสดงคลังประวัติโปรเจกต์ (Project History Modal):
-เมื่อ isHistoryModalOpen === true ให้แสดง Modal:
-- หัวข้อ: "📂 คลังประวัติโปรเจกต์ทั้งหมด ({savedProjects.length})"
-- ถ้ายังไม่มีโปรเจกต์ ให้แสดง "ยังไม่มีประวัติโปรเจกต์ที่บันทึกไว้"
-- ถ้ามี ให้แสดงการ์ดโปรเจกต์:
-  - รูปปก Thumbnail (จากช็อต 1)
-  - ชื่อโปรเจกต์ + วันเวลาที่บันทึก
-  - จำนวนฉาก (เช่น 10 ฉาก) และจำนวนวิดีโอที่เจนเสร็จ
-  - ปุ่ม [ ⚡ เปิดโปรเจกต์ ] -> handleLoadProject(p)
-  - ปุ่ม [ 🗑️ ลบ ] -> handleDeleteProject(p.id, e)
-  - ปุ่ม [ ✕ ปิดหน้าต่าง ]`;
+4) การ์ดรายฉาก (Shot Cards with Voiceover Player & Editing):
+   - มีช่องพิมพ์แก้ไข: "บทพูดเสียงพากย์ไทย (Thai Voiceover)"
+   - ปุ่มสร้างเสียง [ 🎙️ เจนเสียง ] และเครื่องเล่นเสียง <audio controls src={audioUrl} />
+   - กล่องรูปภาพ และ กล่องเครื่องเล่นวิดีโอ Veo 9:16`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v13.0 Multi-Project History & Archive Edition" — featuring complete project save/load/delete history manager, sequential 1->2->3 production workflow, explicit text modes, dual reference image anchors, and zero-crash state architecture.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.0 Ultimate Master Edition" — featuring full ElevenLabs text-to-speech integration, live production progress dashboard, per-scene editing, multi-project history, and 1->2->3 production workflow.
 
-## 1. PROJECT ARCHIVE & HISTORY MANAGER:
-- Allow users to save their current production into a persistent Project History library in localStorage ("pk_flow_projects_history").
-- Header action buttons:
-  - [ 💾 บันทึกโปรเจกต์ ]: Saves active shots, states, generated videos, textMode, and title with instant toast feedback.
-  - [ 📂 คลังประวัติโปรเจกต์ (X) ]: Opens a modal/drawer showing all saved campaigns with Shot 1 thumbnails, creation timestamps, scene counts, [ ⚡ เปิดโปรเจกต์ ] and [ 🗑️ ลบ ].
-  - [ ➕ เริ่มงานใหม่ ]: Clears canvas for new script after user confirmation.
-- Safe autosave continues in background so active work is never lost.
+## 1. ELEVENLABS MULTILINGUAL VOICEOVER:
+- Header modal for ElevenLabs API Key & Voice ID (persisted in localStorage).
+- Per-shot editable Thai voiceover textarea with [ 🎙️ สร้างเสียงฉากนี้ ] button and audio player preview.
+- Global [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] action that generates MP3 audio sequentially for all shots.
 
-## 2. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
-- [ 1. 🖼️ เจนรูปทั้งหมด ] -> Generates stills sequentially.
-- [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> Animates into Veo video clips sequentially.
-- [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ] -> Opens continuous master sequential playlist player with download option.
+## 2. LIVE PRODUCTION STATUS DASHBOARD:
+- Visual statistics banner displaying exact completion metrics:
+  - 🖼️ Images: completedImages / totalShots
+  - 🎬 Videos: completedVideos / totalShots
+  - 🎙️ Voiceovers: completedAudios / totalShots
+- Dynamic readiness banner: Highlights glowing green when all shots are rendered, prompting the user to concat and download the Master video.
 
-## 3. EXPLICIT ON-SCREEN TEXT MODES:
-- "cover_only": [ ⭐ ใส่เฉพาะคลิปแรก (หน้าปก) ]
-- "all_scenes": [ 📝 ใส่ทุกคลิป ]
-- "none": [ 🎬 ภาพล้วน (ไม่ใส่ตัวหนังสือ) ]
+## 3. PRODUCTION WORKFLOW (1 -> 2 -> 3 SEQUENCE):
+- [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) • พร้อม X/Y คลิป ]
 
-## 4. DUAL REFERENCE ANCHORS:
-- [ 👤 แนบรูปคน / เชฟ (Slot 1) ] & [ 📦 แนบรูปสินค้า / อาหารจริง (Slot 2) ]
+## 4. MULTI-PROJECT HISTORY & PERSISTENCE:
+- [ 💾 บันทึกโปรเจกต์ ]: Archives active shots, states, videos, audios, and script permanently.
+- [ 📂 คลังประวัติโปรเจกต์ (X) ]: Modal displaying past campaigns with thumbnails, dates, scene counts, [ ⚡ เปิดโปรเจกต์ ] and [ 🗑️ ลบ ].
+- [ ➕ เริ่มงานใหม่ ]: Resets canvas safely.
 
-## 5. ZERO-CRASH STATE SAFETY:
-- Declare all states: savedProjects, isHistoryModalOpen, toastMsg, masterPlayerOpen, currentClipIndex, isGeneratingAllImages, isGeneratingAllVideos, presenterImage, productImage, shots, shotStates, textMode, campaignTitle.
-- Full try...catch around all localStorage and async calls.`;
+## 5. REFINED LUXURY STUDIO UI:
+- Slate-950 / Dark Charcoal design system with emerald, amber, and indigo glowing accents.
+- Responsive card grids with instant inline editing for Voiceover, Prompt, and On-screen text.`;
 
 export default function CommercialStudioPage() {
   return (
