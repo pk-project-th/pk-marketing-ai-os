@@ -58,26 +58,59 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v10.0 (100% UNIFIED DESIGN SYSTEM & STRICT SCRIPT MATCH):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v11.0 MASTER COMPLETE (AUTOSAVE, VIDEO CONCAT, TIMELINE & PROP LOCK):
 
-แก้ไข 2 ปัญหาสำคัญตามผลการใช้งานจริง:
-1. 🎨 บังคับใช้ 100% UNIFIED DESIGN SYSTEM (ฟอนต์และกรอบข้อความโทนเดียวกันเป๊ะทุกฉาก):
-   - ทุกฉากใช้กรอบเดียวกัน 100%: Sleek Dark Frosted-Glass Translucent Pill Bar (ป้ายกระจกฝ้าทรงกระบอกมน สีดาร์กชาร์โคล rgba(15,23,42,0.85) ขอบเส้นทองเรืองแสงบางเบา)
-   - ฟอนต์เดียวกัน 100%: ฟอนต์ไทย Sans-serif โมเดิร์น สะอาด คมชัด อักษรสีขาวบริสุทธิ์ (#FFFFFF)
-   - ฉากที่ 1 (Hook/หน้าปก): วางป้ายด้านบนกึ่งกลาง (Top-Center)
-   - ฉากที่ 2 เป็นต้นไป (ฉากเนื้อหา): วางป้ายแถบล่าง (Lower-Third) ในสไตล์และขนาดที่กลมกลืนเป็นอันเดียวกัน
-   - กฎเหล็ก: ZERO antique scrolls (ห้ามป้ายม้วนโบราณ), ZERO comic stickers (ห้ามสติกเกอร์การ์ตูน), ZERO 3D balloon text, ZERO white solid boxes
-2. 📝 ตัวหนังสือตรงกับสคริปต์ 100% ป้องกันคำมั่ว/คำเพี้ยน (Zero Hallucination):
-   - ตัดคำว่า "ช็อต 03:" หรือ "Extreme Macro" ออกก่อนส่งเข้า Imagen เพื่อไม่ให้ AI แปลงเสียงอังกฤษเป็นคำไทยมั่ว เช่น "อิตอัมปสุด"
-   - ใส่เฉพาะข้อความ On-Screen Text (TH) ประจำฉากนั้นๆ เป๊ะๆ
-3. 🎬 เรนเดอร์วิดีโอ Veo ปลอดภัยและไม่ค้าง (Safe Veo Sequential Engine):
-   - Veo รับเฉพาะภาษาอังกฤษ และคิวเรนเดอร์ทีละฉากตามลำดับ ป้องกัน Rate Limit 429
+แก้ไขและเพิ่ม 5 ฟังก์ชันสำคัญตามข้อเรียกร้องใช้งานจริง:
+1. 💾 บันทึกโปรเจกต์อัตโนมัติ (Auto-Save & Project Persistence):
+   - บันทึกสถานะทุกช็อต (Shots, Images, Videos) ลง localStorage อัตโนมัติทุกครั้งที่มีการเจนหรือแก้ไข
+   - เมื่อผู้ใช้กดรีเฟรชหน้าเว็บ หรือปิดแล้วเปิดใหม่ ระบบจะดึงงานเดิมกลับมาอัตโนมัติ 100% งานไม่หายแน่นอน
+   - เพิ่มปุ่ม [ 💾 บันทึกโปรเจกต์ ] และ [ 📂 คืนค่างานล่าสุด ] บนแถบเมนูด้านบน
+2. 🎞️ ปุ่มรวมคลิปเป็น 1 คลิป (Master Video Concatenator):
+   - เพิ่มปุ่ม [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] บนหัวตาราง
+   - สามารถเล่นคลิปทุกฉากต่อกันแบบ Playlist ต่อเนื่องทันที และมีปุ่มดาวน์โหลด Master Video
+3. ⏱️ จัดเรียงไทม์ไลน์อาหารสมจริง (Culinary Chronology):
+   - ปลาส้มก่อนทอดต้องเป็น "ปลาดิบหมักเครื่อง" วางบนเขียงไม้ -> คลุกแป้ง -> จุ่มตะเกียบเช็กน้ำมัน -> หย่อนปลาดิบลงกระทะ -> น้ำมันเดือดฟูจนหนังพองกรอบ -> พลิกปลาสีทอง -> เจียวสมุนไพร -> ตักเสิร์ฟพร้อมข้าวสวย (ห้ามปลาสุกก่อนทอดเด็ดขาด)
+4. 🍳 ล็อกอุปกรณ์กระทะใบเดิม 100% (Continuous Cookware Entity):
+   - บังคับใช้กระทะใบเดิมตลอดเรื่อง: "seasoned black carbon-steel wok with natural wooden handle" ห้ามเปลี่ยนเป็นกระทะเทฟลอนหรือสเตนเลสคนละแบบ
+5. 📝 สวิตช์โหมดตัวหนังสือ (Text Mode Selector):
+   - ตัวเลือก: [ ⭐ เฉพาะหน้าปก (แนะนำ - ปลอดภัยสุด วิดีโอผ่าน 100%) | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]
+   - แนะนำโหมด "เฉพาะหน้าปก": ฉาก 1 มีป้ายกระจกฝ้าหรูหรา ส่วนฉาก 2 ขึ้นไปเป็นภาพยนตร์คลีน 8K ช่วยให้ Veo เจนผ่านฉลุย ไร้บัคตัวหนังสือบวมเพี้ยน
 
 ---
 
 แก้ไขโค้ดใน Tool ตามโครงสร้างนี้:
 
-### 1. 🔍 ฟังก์ชัน PARSER (ดึงข้อความแยกแต่ละฉาก):
+### 1. 💾 AUTOSAVE & RESTORE STATE:
+// บันทึกลง localStorage อัตโนมัติ
+function autoSaveActiveProject(currentShots: any[], currentStates: any, title: string, mode: string) {
+  try {
+    localStorage.setItem("pk_flow_active_project", JSON.stringify({
+      shots: currentShots,
+      shotStates: currentStates,
+      campaignTitle: title,
+      textMode: mode,
+      updatedAt: new Date().toISOString()
+    }));
+  } catch (e) {}
+}
+
+// คืนค่าโปรเจกต์อัตโนมัติเมื่อเปิดหน้าเว็บ
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem("pk_flow_active_project");
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.shots && data.shots.length > 0) {
+        setShots(data.shots);
+        setShotStates(data.shotStates || {});
+        if (data.campaignTitle) setCampaignTitle(data.campaignTitle);
+        if (data.textMode) setTextMode(data.textMode);
+      }
+    }
+  } catch (e) {}
+}, []);
+
+### 2. 🔍 ฟังก์ชัน PARSER (ดึงข้อความและกรองให้สะอาด):
 function parseCampaignScript(rawText: string) {
   const parsedShots: any[] = [];
   const campaignMatch = rawText.match(/CAMPAIGN:\\s*([^\\n]+)/i);
@@ -93,10 +126,9 @@ function parseCampaignScript(rawText: string) {
     const durMatch = chunk.match(/-\\s*Duration:\\s*([\\d.]+)/i);
     const duration = durMatch ? parseFloat(durMatch[1]) : 3;
 
-    // ดึง On-Screen Text ประจำฉากนี้ และตัด prefix แปลกปลอมออก
     const textMatch = chunk.match(/-\\s*On-Screen Text(?:\\s*\\(TH\\))?:\\s*["“]?([^"”\\r\\n]+)["”]?/i);
-    let onScreenText = textMatch ? textMatch[1].trim() : '';
-    onScreenText = onScreenText.replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+\\s*[:：\\-]?\\s*/gi, '').trim();
+    let rawOnScreen = textMatch ? textMatch[1].trim() : '';
+    const cleanOnScreen = rawOnScreen.replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+\\s*[:：\\-]?\\s*/gi, '').trim();
 
     const voiceMatch = chunk.match(/-\\s*(?:Thai Voiceover Script|Voiceover(?:\\s*\\(TH\\))?|Voice):\\s*["“]?([^"”\\r\\n]+)["”]?/i);
     const thaiVoiceover = voiceMatch ? voiceMatch[1].trim() : '';
@@ -111,7 +143,7 @@ function parseCampaignScript(rawText: string) {
       shotNumber,
       shotTitle,
       duration,
-      onScreenText,
+      onScreenText: cleanOnScreen,
       thaiVoiceover,
       visualPrompt,
       motionPrompt,
@@ -121,8 +153,8 @@ function parseCampaignScript(rawText: string) {
   return parsedShots;
 }
 
-### 2. 🖼️ IMAGE GENERATION (ใส่ข้อความเฉพาะฉาก ไม่ซ้ำหัวข้อปก):
-async function generateSingleImage(shot: any) {
+### 3. 🖼️ IMAGE GENERATION (CHRONOLOGY, WOK CONTINUITY & TEXT MODE):
+async function generateSingleImage(shot: any, textMode: string = 'cover_only') {
   const shotId = String(shot.shotNumber);
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'generating' } }));
   try {
@@ -130,107 +162,116 @@ async function generateSingleImage(shot: any) {
       .replace(/--ar\\s*\\d+:\\d+/gi, '')
       .replace(/^(?:ช็อต|Shot|SCENE|Scene)\\s*\\d+[:：\\s]*/gi, '')
       .trim();
-    let textOverlayDirective = "";
 
     const cleanText = (shot.onScreenText || '').replace(/["']/g, '').trim();
+    let textOverlayDirective = "";
 
-    // 🎨 100% UNIFIED DESIGN SYSTEM (กรอบกระจกฝ้าชาร์โคล + ฟอนต์ไทยโมเดิร์นคลีนสีขาว ทุกฉากเหมือนกัน 100%)
-    if (shot.shotNumber === 1) {
-      // ฉากที่ 1: หัวข้อปก / Hook (วางตำแหน่งบน กึ่งกลาง Top-Center)
-      const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
-      textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center. (ZERO antique scrolls, ZERO comic bubbles, ZERO 3D balloon text, ZERO English transliteration)\`;
-    } else if (cleanText) {
-      // ฉากที่ 2 เป็นต้นไป: ป้ายบรรยายฉาก (วางตำแหน่งล่าง Lower-Third สไตล์เดียวกันเป๊ะ 100%)
-      textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third. (STRICT DESIGN UNIFORMITY: identical font family, identical dark glass pill container, ZERO antique scrolls, ZERO comic stickers, ZERO white solid boxes, ZERO 3D floating letters, ZERO English transliteration)\`;
+    // บังคับใช้ Text Mode:
+    // โหมด "cover_only" (แนะนำ): ฉาก 1 มีป้ายหัวข้อหรู ฉาก 2+ เป็นภาพคลีน 8K ช่วยให้ Veo เจนผ่านฉลุย
+    if (textMode === 'cover_only') {
+      if (shot.shotNumber === 1) {
+        const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
+        textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center. (ZERO antique scrolls, ZERO comic bubbles, ZERO 3D balloon text)\`;
+      }
+    } else if (textMode === 'all_scenes') {
+      if (shot.shotNumber === 1) {
+        const title = (shot.campaignTitle || cleanText || "Special Episode").replace(/["']/g, '');
+        textOverlayDirective = \`, with a unified premium header banner: a sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${title}" at top center.\`;
+      } else if (cleanText) {
+        textOverlayDirective = \`, with a unified premium caption banner: an identical sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim) featuring identical clean modern Thai sans-serif typography in crisp pure white text reading exactly: "\${cleanText}" at lower third. (STRICT DESIGN UNIFORMITY)\`;
+      }
     }
 
-    const fullPrompt = \`\${cleanVisual}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
+    // ล็อกกระทะคาร์บอนสตีลใบเดิมสำหรับทุกฉากทำอาหาร
+    const cookwareLock = ", cookware continuity: inside the identical seasoned black carbon-steel wok with natural wooden handle";
+
+    const fullPrompt = \`\${cleanVisual}\${cookwareLock}\${textOverlayDirective}, photorealistic 8k commercial photography, cinematic lighting --ar 9:16\`;
     const result = await generateImage({ prompt: fullPrompt, aspectRatio: '9:16' });
     const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
     if (!url) throw new Error('ไม่ได้รับรูปภาพจากระบบ');
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'success', imageUrl: url } }));
+    setShotStates(prev => {
+      const next = { ...prev, [shotId]: { ...prev[shotId], imgStatus: 'success', imageUrl: url } };
+      autoSaveActiveProject(shots, next, campaignTitle, textMode);
+      return next;
+    });
   } catch (err: any) {
     setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], imgStatus: 'error', imgErrorMsg: err?.message } }));
   }
 }
 
-### 3. 🎬 SAFE VEO VIDEO GENERATION (Pure English & Sequential):
+### 4. 🎬 SAFE VEO VIDEO GENERATION & AUTOSAVE:
 async function generateSingleVideo(shot: any) {
   const shotId = String(shot.shotNumber);
   setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'generating', vidProgress: '⏳ กำลังเรนเดอร์ Veo (1-2 นาที)...' } }));
 
   try {
-    // กรองเอาเฉพาะภาษาอังกฤษเท่านั้น ห้ามมีภาษาไทยส่งเข้า Veo
     let rawPrompt = (shot.motionPrompt || shot.visualPrompt || '')
-      .replace(/[^a-zA-Z0-9.,\\s-]/g, ' ') // ลบภาษาไทยและสัญลักษณ์แปลกปลอม
+      .replace(/[^a-zA-Z0-9.,\\s-]/g, ' ')
       .replace(/--ar\\s*\\d+:\\d+/gi, '')
       .replace(/\\s+/g, ' ')
       .trim();
 
-    // ดึงเฉพาะ 150 ตัวอักษรแรกเพื่อความกระชับและไม่ติด Token limit
     const cleanPrompt = rawPrompt.slice(0, 180) || "Cinematic camera movement, photorealistic 8k food commercial, 24fps";
-
     const result = await generateVideo({ prompt: cleanPrompt, aspectRatio: '9:16' });
     const url = typeof result === 'string' ? result : (result?.url || result?.media?.[0]?.url || null);
     if (!url) throw new Error('ไม่ได้รับไฟล์วิดีโอจาก Veo');
 
-    setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidProgress: undefined } }));
+    setShotStates(prev => {
+      const next = { ...prev, [shotId]: { ...prev[shotId], vidStatus: 'success', videoUrl: url, vidProgress: undefined } };
+      autoSaveActiveProject(shots, next, campaignTitle, textMode);
+      return next;
+    });
   } catch (err: any) {
     setShotStates(prev => ({ ...prev, [shotId]: { ...prev[shotId], vidStatus: 'error', vidErrorMsg: 'Veo ขัดข้อง กรุณาลองกดปุ่มเจนวิดีโอใหม่อีกครั้ง' } }));
   }
 }
 
-// เจนวิดีโอทีละฉากตามลำดับ (Sequential) ไม่ยิงพร้อมกันเพื่อป้องกัน Rate Limit 429
-async function generateAllVideos() {
-  setCurrentProgress('🎬 กำลังเรนเดอร์วิดีโอทีละฉากตามคิว (ป้องกันเซิร์ฟเวอร์ปฏิเสธ)...');
-  for (let i = 0; i < shots.length; i++) {
-    setCurrentProgress(\`🎬 กำลังเรนเดอร์วิดีโอฉากที่ \${i + 1} จาก \${shots.length}...\`);
-    await generateSingleVideo(shots[i]);
+### 5. 🎞️ MASTER VIDEO CONCATENATOR (รวมคลิปต่อเนื่อง):
+function playAllVideosContinuously() {
+  const videoUrls = shots.map(s => shotStates[String(s.shotNumber)]?.videoUrl).filter(Boolean);
+  if (videoUrls.length === 0) {
+    alert("ยังไม่มีวิดีโอที่เรนเดอร์เสร็จ กรุณากดเจนวิดีโอก่อน");
+    return;
   }
-  setCurrentProgress('✅ เรนเดอร์วิดีโอครบทุกฉากแล้ว!');
+  // เปิด Master Player modal เล่นคลิปแบบเรียงลำดับต่อเนื่องอัตโนมัติ
+  setMasterPlayerOpen(true);
+  setCurrentClipIndex(0);
 }
 
-### 4. 🎴 SHOT CARD & PREVIEWS:
-แต่ละการ์ดแสดง:
-- หัวข้อช็อต + เวลา
-- รูปภาพ (Thumbnail)
-- วิดีโอ (Video Player พร้อม controls เล่นวน loop ได้)
-- 🎙️ บล็อกเสียงพากย์ไทย (Thai Voiceover)
-- 📝 บล็อกข้อความบนจอ (On-Screen Text)
-- ปุ่ม: [ 🖼️ เจนรูป ] [ 🎬 เจนวิดีโอ (1-2 นาที) ] [ ✏️ แก้ไข ]`;
+### 6. 🎴 HEADER ACTIONS & TOOLBAR:
+แถบควบคุมด้านบนมี 6 ปุ่มครบถ้วน:
+1) [ 💾 บันทึกโปรเจกต์ ]
+2) [ 📂 คืนค่างานล่าสุด ]
+3) [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ]
+4) [ 🖼️ เจนรูปทั้งหมด ]
+5) [ 🎬 เจนวิดีโอทั้งหมด (Sequential) ]
+6) สวิตช์ Text Mode: [ ⭐ เฉพาะหน้าปก | 📝 ทุกฉาก | 🎬 ไม่มีข้อความ ]`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v10.0 Pro (100% Unified Design System & Zero-Hang Pipeline Edition)" — a professional-grade video production tool featuring 100% unified typography and frosted-glass badge styling, rock-solid script parsing, zero-hang video engine with auto-fallback, and independent shot recovery.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v11.0 Master Complete (AutoSave, Master Concat, Food Timeline & Prop Continuity Edition)" — a production-grade video studio featuring continuous project autosave, sequential master video concat, strict culinary chronology (raw to crispy cooked), single-pan cookware continuity (black carbon-steel wok), and configurable on-screen text modes.
 
-## 1. ROCK-SOLID 4-FIELD SCRIPT PARSER:
-Implement the exact parseCampaignScript function:
-- Extracts shotNumber, shotTitle, durationSec
-- Extracts onScreenText from "- On-Screen Text (TH):" or "- On-Screen Text:" (stripping any shot number prefixes like "ช็อต 3:")
-- Extracts thaiVoiceover from "- Thai Voiceover Script:" or "- Voiceover (TH):" or "- Voiceover:"
-- Extracts visualPrompt from "- Visual Prompt (EN):" or "- Visual Prompt:"
-- Extracts motionPrompt from "- Camera & Physical Motion (Veo 2):" or "- Camera & Movement:" or "- Motion Prompt:"
-- Fully parses both clean shots format and full Master Directive format without truncating.
+## 1. PROJECT PERSISTENCE & AUTOSAVE:
+- State automatically syncs to localStorage on every shot parse, image generation, and video completion.
+- Reopening or refreshing the page immediately restores all previously generated images, video players, and script fields.
+- Include [ 💾 บันทึกโปรเจกต์ ] and [ 📂 คืนค่างานล่าสุด ] buttons in the main header.
 
-## 2. 100% UNIFIED DESIGN SYSTEM & TYPOGRAPHY:
-Every shot's generated image must strictly adhere to a single unified visual design system:
-- Container Style: Sleek dark frosted-glass translucent pill bar (rounded corners, dark charcoal slate-gray rgba(15,23,42,0.85) background, subtle luminous gold border rim).
-- Typography Style: Clean modern Thai sans-serif typography in crisp pure white text (#FFFFFF).
-- Positioning: Shot 1 (Hook/Cover) headline at top center; Shots 2+ (Content shots) caption banner at lower third.
-- Strict Negative Rules: ZERO antique scrolls/ribbons, ZERO comic sticker borders, ZERO 3D balloon letters, ZERO white solid boxes, ZERO English transliteration hallucination.
+## 2. MASTER VIDEO CONCATENATOR (รวมคลิปเป็น 1 คลิป):
+- Header contains [ 🎞️ รวมคลิปเป็น 1 วิดีโอ Master ] button.
+- Gathers all generated video URLs and opens a seamless continuous sequential player with auto-advance and download options.
 
-## 3. TWO-STAGE SPLIT PIPELINE (Zero-Hang Execution):
-Header contains 3 main action buttons:
-1) "🖼️ เจนรูปทั้งหมด": Batches generateImage for all shots simultaneously using Promise.allSettled.
-2) "🎬 เจนวิดีโอทั้งหมด": Batches generateVideo for all shots sequentially with auto Text-to-Video fallback.
-3) "🗑️ ล้างข้อมูล": Hard resets all states.
+## 3. CULINARY CHRONOLOGY & PROP CONTINUITY:
+- Timeline: Shot 1 & 2 enforce RAW, uncooked marinated fish on cutting board with rice flour dusting. Shot 3 tests oil. Shot 4 lowers raw fish into bubbling oil. Shot 5 blisters raw skin into golden crisp. Shot 6 flips to reveal golden crust. Shot 7 crisps aromatics. Shots 8+ rest, plate, and serve.
+- Continuous Cookware Entity: All frying scenes lock to "identical seasoned black carbon-steel wok with natural wooden handle" (zero cast iron skillet, zero stainless pan, zero non-stick wok).
 
-## 4. ZERO-HANG VIDEO ENGINE (Media Fields Armor):
-In generateSingleVideo:
-- Pure English only, strip Thai and sensitive symbols.
-- Sequential rendering to avoid 429 quota errors.
-- Auto-fallback from Image-to-Video to Text-to-Video if media field issues occur.
+## 4. ON-SCREEN TEXT MODES (Zero Video Rejection):
+- Header includes Text Mode Selector:
+  - "cover_only" (Recommended / Default): Shot 1 has dark frosted-glass headline banner. Shots 2+ are clean 8K cinematography with zero text overlay (guarantees 100% smooth Veo rendering).
+  - "all_scenes": Frosted glass pill captions on all shots.
+  - "none": Pure cinema on all shots.
 
-## 5. CLEAN START:
-- Textarea starts 100% empty. No mock Oat Milk buttons or pre-filled dummy data.`;
+## 5. ZERO-HANG VEO VIDEO ENGINE:
+- Pure English prompts only, strip Thai and sensitive symbols.
+- Sequential rendering queue to eliminate 429 quota errors.
+- Automatic Text-to-Video fallback if image-to-video encounters media field errors.`;
 
 export default function CommercialStudioPage() {
   return (
@@ -311,6 +352,71 @@ function CommercialStudioContent() {
   const [projectHistoryModalOpen, setProjectHistoryModalOpen] = useState<boolean>(false);
   const [saveProjectModalOpen, setSaveProjectModalOpen] = useState<boolean>(false);
   const [projectNameInput, setProjectNameInput] = useState<string>("");
+
+  // Text Overlay Mode State
+  const [textOverlayMode, setTextOverlayMode] = useState<"cover_only" | "all_scenes" | "none">("cover_only");
+
+  // Video Concat Modal & States
+  const [concatModalOpen, setConcatModalOpen] = useState<boolean>(false);
+  const [isConcatenating, setIsConcatenating] = useState<boolean>(false);
+  const [concatError, setConcatError] = useState<string | null>(null);
+  const [mergedVideoResult, setMergedVideoResult] = useState<{
+    videoUrl: string;
+    fileName: string;
+    clipCount: number;
+    title?: string;
+  } | null>(null);
+  const [manualVideoUrls, setManualVideoUrls] = useState<string>("");
+
+  const handleConcatVideos = async (urlsToConcat?: string[]) => {
+    let targetUrls: string[] = [];
+    if (urlsToConcat && urlsToConcat.length > 0) {
+      targetUrls = urlsToConcat;
+    } else if (manualVideoUrls.trim()) {
+      targetUrls = manualVideoUrls
+        .split(/[\n,]+/)
+        .map(u => u.trim())
+        .filter(u => u.length > 0);
+    } else {
+      targetUrls = scenes
+        .map((s: any) => s.videoUrl || s.video_url)
+        .filter((u: any) => typeof u === "string" && u.trim().length > 0);
+    }
+
+    if (targetUrls.length === 0) {
+      setConcatModalOpen(true);
+      return;
+    }
+
+    setIsConcatenating(true);
+    setConcatError(null);
+    setConcatModalOpen(true);
+
+    try {
+      const res = await fetch("/api/video/concat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          videoUrls: targetUrls,
+          aspectRatio,
+          title: productName || "PK Master Commercial"
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "เกิดข้อผิดพลาดในการรวมวิดีโอ");
+      }
+
+      setMergedVideoResult(data);
+      showToast(`🎬 รวมคลิปสำเร็จแล้ว (${data.clipCount} ฉาก)!`);
+    } catch (err: any) {
+      console.error("Concat error:", err);
+      setConcatError(err.message || "ไม่สามารถรวมคลิปได้ กรุณาลองใหม่อีกครั้ง");
+    } finally {
+      setIsConcatenating(false);
+    }
+  };
 
   // Load Projects from localStorage
   useEffect(() => {
@@ -435,6 +541,7 @@ function CommercialStudioContent() {
           if (d.masterDirectiveV3) setMasterDirectiveV3(d.masterDirectiveV3);
           if (d.scenes && Array.isArray(d.scenes) && d.scenes.length > 0) setScenes(d.scenes);
           if (d.referenceGuides) setReferenceGuides(d.referenceGuides);
+          if (d.textOverlayMode) setTextOverlayMode(d.textOverlayMode);
           if (d.savedAt) {
             setLastSavedTime(new Date(d.savedAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" }));
           }
@@ -520,6 +627,7 @@ function CommercialStudioContent() {
         masterDirectiveV3,
         scenes,
         referenceGuides,
+        textOverlayMode,
         savedAt: new Date().toISOString()
       };
       localStorage.setItem("pk_commercial_clean_v3", JSON.stringify(payload));
@@ -527,7 +635,7 @@ function CommercialStudioContent() {
     } catch (e) {
       console.warn("Auto-save error:", e);
     }
-  }, [selectedIdea, productName, productPrice, customOnScreenText, targetDuration, pacingStyle, sceneCount, aspectRatio, adStyle, referenceMode, masterDirectiveV3, scenes, referenceGuides, isInitialized]);
+  }, [selectedIdea, productName, productPrice, customOnScreenText, targetDuration, pacingStyle, sceneCount, aspectRatio, adStyle, referenceMode, masterDirectiveV3, scenes, referenceGuides, textOverlayMode, isInitialized]);
 
   // Apply idea
   const applyIdea = (idea: ContentIdea, triggerAutoGenerate = false) => {
@@ -858,7 +966,8 @@ function CommercialStudioContent() {
           targetDuration: dur,
           sceneCount: count,
           pacingStyle: pacing,
-          adStyle: finalAdStyle
+          adStyle: finalAdStyle,
+          textOverlayMode
         })
       });
 
@@ -1420,6 +1529,73 @@ function CommercialStudioContent() {
           </div>
         </div>
 
+        {/* ROW 3.5: On-Screen Text Mode Selector */}
+        <div className="pt-2 border-t border-slate-100 space-y-1.5">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <Type className="w-3.5 h-3.5 text-indigo-600" />
+              <span>โหมดตัวหนังสือบนคลิป (On-Screen Text Mode)</span>
+            </label>
+            <span className="text-[10.5px] text-slate-400">ควบคุมการแสดงผลข้อความเพื่อป้องกันวิดีโอติดฟิลเตอร์ / บวมเพี้ยน</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-[#F7F8FA] p-1.5 rounded-xl border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setTextOverlayMode("cover_only")}
+              className={`py-2 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer text-left flex items-start gap-2 ${
+                textOverlayMode === "cover_only"
+                  ? "bg-white text-indigo-950 shadow-xs border border-indigo-300 ring-1 ring-indigo-300"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <span className="text-amber-500 text-sm shrink-0">⭐</span>
+              <div>
+                <span className="block font-bold">เฉพาะหน้าปก (แนะนำ)</span>
+                <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
+                  ช็อต 1 มีป้ายหัวข้อหรู ช็อต 2+ คลีน 8K เรนเดอร์วิดีโอผ่าน 100% ไร้บัค
+                </span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTextOverlayMode("all_scenes")}
+              className={`py-2 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer text-left flex items-start gap-2 ${
+                textOverlayMode === "all_scenes"
+                  ? "bg-white text-indigo-950 shadow-xs border border-indigo-300 ring-1 ring-indigo-300"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <span className="text-indigo-600 text-sm shrink-0">📝</span>
+              <div>
+                <span className="block font-bold">แสดงทุกฉาก</span>
+                <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
+                  ป้ายกระจกฝ้าทรงกระบอกมนสีดาร์กชาร์โคล ฟอนต์ไทยคลีนเดียวกันทุกฉาก
+                </span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTextOverlayMode("none")}
+              className={`py-2 px-3 text-xs font-bold rounded-lg transition-all cursor-pointer text-left flex items-start gap-2 ${
+                textOverlayMode === "none"
+                  ? "bg-white text-indigo-950 shadow-xs border border-indigo-300 ring-1 ring-indigo-300"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <span className="text-slate-500 text-sm shrink-0">🎬</span>
+              <div>
+                <span className="block font-bold">ไม่มีตัวหนังสือ</span>
+                <span className="text-[10.5px] text-slate-500 font-normal leading-tight block mt-0.5">
+                  ภาพยนตร์ 8K เพียวๆ ไม่มีตัวอักษรใดๆ ให้เสียงพากย์บรรยายเนื้อหา
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+
         {/* ROW 4: Custom On-Screen Thai Text / Graphic Headline */}
         <div className="space-y-1.5 pt-2 border-t border-slate-100">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
@@ -1907,6 +2083,32 @@ function CommercialStudioContent() {
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>เปิด AI Video Studio →</span>
           </Link>
+        </div>
+
+        {/* Master Video Concat Banner */}
+        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 rounded-2xl p-4 text-white shadow-md shadow-emerald-500/15 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+              <Film className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <div className="text-sm font-bold flex items-center gap-2">
+                <span>🎞️ รวมคลิปฉากทั้งหมดเป็น 1 วิดีโอ Master Commercial</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/30 text-emerald-100 font-mono font-bold">FFMPEG 9.0</span>
+              </div>
+              <p className="text-xs text-white/80 mt-0.5">
+                รวมวิดีโอจากทุกช็อต ({scenes.length} ฉาก) เข้าด้วยกันเป็นไฟล์ Master MP4 ไฟล์เดียว พร้อมดาวน์โหลดไปใช้งานทันที
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setConcatModalOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-white text-emerald-900 hover:bg-emerald-50 font-bold text-xs shadow-md shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-emerald-600" />
+            <span>🎞️ รวมคลิปเป็น 1 วิดีโอ (.MP4) →</span>
+          </button>
         </div>
 
         {/* Dynamic Scene Cards Grid */}
@@ -2694,6 +2896,128 @@ function CommercialStudioContent() {
                     </div>
                   </div>
                 ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MASTER VIDEO CONCAT MODAL */}
+      {concatModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 p-6 space-y-4 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <Film className="w-5 h-5 text-emerald-600" />
+                <h3 className="text-sm font-black text-slate-900">
+                  รวมคลิปเป็น 1 วิดีโอ Master Commercial (.MP4)
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setConcatModalOpen(false);
+                  setConcatError(null);
+                }}
+                className="p-1 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs overflow-y-auto flex-1 custom-scrollbar">
+              {mergedVideoResult ? (
+                <div className="space-y-3">
+                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-950 font-bold flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>รวมคลิปวิดีโอสมบูรณ์แล้ว ({mergedVideoResult.clipCount} ฉาก)!</span>
+                  </div>
+
+                  <div className="relative rounded-xl overflow-hidden bg-black aspect-[9/16] max-h-[400px] mx-auto shadow-md">
+                    <video
+                      src={mergedVideoResult.videoUrl}
+                      controls
+                      autoPlay
+                      loop
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between gap-3 pt-2">
+                    <a
+                      href={mergedVideoResult.videoUrl}
+                      download={mergedVideoResult.fileName || "commercial_master.mp4"}
+                      className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-center text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>ดาวน์โหลดไฟล์ Master MP4</span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setMergedVideoResult(null)}
+                      className="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+                    >
+                      รวมคลิปใหม่อีกครั้ง
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <p className="text-slate-600 leading-relaxed">
+                    ระบบจะนำไฟล์วิดีโอจากทุกฉากมารวมต่อกัน (Concatenate) ด้วย FFmpeg 9.0 คมชัดระดับ Full HD 1080p พร้อมปรับอัตราเฟรมและคุมจังหวะให้เนียนสนิท
+                  </p>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-[11px] font-bold text-slate-700">
+                      รายการลิงก์วิดีโอ (วาง URL หรือลิงก์ MP4 แต่ละฉาก บรรทัดละ 1 ลิงก์):
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={manualVideoUrls}
+                      onChange={(e) => setManualVideoUrls(e.target.value)}
+                      placeholder={`https://example.com/scene1.mp4\nhttps://example.com/scene2.mp4\nhttps://example.com/scene3.mp4`}
+                      className="w-full bg-[#F7F8FA] border border-[#E8E9EC] rounded-xl p-3 text-xs font-mono text-slate-800 focus:outline-none focus:border-emerald-500"
+                    />
+                    <span className="text-[10px] text-slate-400">
+                      💡 หากคลิปถูกเรนเดอร์ในระบบแล้ว จะดึงมารวมให้อัตโนมัติ หรือคัดลอกลิงก์วิดีโอจาก Google Flow มาวางที่นี่ได้เลยครับ
+                    </span>
+                  </div>
+
+                  {concatError && (
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs font-semibold flex items-center gap-2">
+                      <X className="w-4 h-4 text-rose-600 shrink-0" />
+                      <span>{concatError}</span>
+                    </div>
+                  )}
+
+                  <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => setConcatModalOpen(false)}
+                      className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                    >
+                      ยกเลิก
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isConcatenating}
+                      onClick={() => handleConcatVideos()}
+                      className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+                    >
+                      {isConcatenating ? (
+                        <>
+                          <RotateCw className="w-4 h-4 animate-spin text-white" />
+                          <span>กำลังประมวลผล FFmpeg รวมคลิป...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4" />
+                          <span>🚀 เริ่มรวมคลิปเป็น 1 วิดีโอทันที</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>

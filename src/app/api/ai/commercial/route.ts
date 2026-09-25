@@ -139,7 +139,8 @@ export async function POST(req: Request) {
       pacingStyle = "standard", // "standard" | "dynamic_fast" | "cinematic_slow" | "custom"
       masterPrompt = "",
       productionMode = "multi_image",
-      promptStrategy = "single_master"
+      promptStrategy = "single_master",
+      textOverlayMode = "cover_only" // "cover_only" | "all_scenes" | "none"
     } = body;
 
     // Target Duration in Seconds (clamp between 4s and 180s)
@@ -1581,27 +1582,27 @@ export async function POST(req: Request) {
       }
     ];
 
-        // ==========================================
-    // PLA SOM / CRISPY FISH MASTER POOL (16 FULL DIVERSE SHOTS - 100% ACCURATE)
+    // ==========================================
+    // PLA SOM / CRISPY FISH MASTER POOL (16 FULL DIVERSE SHOTS - 100% CHRONOLOGICAL & ACCURATE)
     // ==========================================
     const plaSomMasterPool16 = [
       {
-        type: "เปิดเรื่อง Hook ไวรัล (Crispy Fish Sizzle Hook)",
+        type: "เปิดเรื่อง Hook ไวรัล (Raw Marinated Pla Som Reveal)",
         camera: "Dynamic Low-Angle Macro Push-in 100mm",
-        motion: `Photorealistic 8K image-to-video. Macro slow motion. Golden seasoned Pla Som fish gently sizzling in hot cooking oil inside deep wok. Delicate micro-bubbles shimmer smoothly along crispy golden skin. Shimmering steam rises into warm amber backlight. Low-angle camera slowly pushes in with tack-sharp focus on bubbling crispy golden scales, 24fps.`,
+        motion: `Photorealistic 8K image-to-video. Macro slow motion. Low-angle slow push-in on pristine raw marinated authentic Thai Pla Som fish resting on dark rustic wooden board. Glistening pale pinkish-white fermented fish meat with delicate diamond-scored skin and fragrant garlic rice marinade. In soft background, a seasoned black carbon-steel wok with natural wooden handle rests on stove with clean shimmering oil. Natural soft morning light, 24fps.`,
         prompt: isPurePrompt
-          ? `Photorealistic 8K culinary opening hook of authentic Thai Pla Som (fermented crispy fish) sizzling in shimmering hot oil inside deep wok. Extreme macro 100mm f/2.8 of bubbling golden oil micro-bubbles erupting against crispy scored fish skin, aromatic steam plumes. Shot on ARRI Alexa LF with 100mm Macro Prime. Lighting: warm 3200K side rim light. Commercial food grade, pure cinematography, zero text. --ar ${aspectRatio}`
-          : `Photorealistic 8K cinematic commercial hook of authentic Thai Pla Som sizzling in hot oil. [Slot 2 Product Anchor]: Match fish appearance to Slot 2 reference. Macro 100mm, bubbling oil, golden crispy skin. Pure cinematography, zero text. --ar ${aspectRatio}`,
-        voice: "เคยเจอปัญหาทอดปลาส้มแล้วเนื้อเละติดกระทะไหม? วันนี้เรามีเคล็ดลับทอดปลาส้มให้หนังกรอบฟู เนื้อในนุ่มฉ่ำ ไม่เละ 100%!",
+          ? `Photorealistic 8K culinary opening hook of authentic raw marinated Thai Pla Som (fermented uncooked fish) on dark rustic wooden cutting board. Pale pinkish-white raw fish texture, diamond-scored skin with crushed garlic marinade, surrounded by whole fresh shallots, bird eye chilies, and lime wedges. In background, a seasoned black carbon-steel wok with natural wooden handle sits ready on kitchen stove. ARRI Alexa LF, 50mm Prime, warm 3200K side rim light. Commercial food grade, pure cinematography. --ar ${aspectRatio}`
+          : `Photorealistic 8K cinematic commercial hook of authentic raw marinated Thai Pla Som fish on wooden board with garlic marinade. [Slot 2 Product Anchor]: Match fish appearance to Slot 2 reference. Background: seasoned black carbon-steel wok with wooden handle on stove. Macro 100mm, pure cinematography. --ar ${aspectRatio}`,
+        voice: "เคยเจอปัญหาทอดปลาส้มแล้วเนื้อเละติดกระทะไหม? วันนี้เรามีเคล็ดลับทอดปลาส้มดิบให้หนังกรอบฟู เนื้อในนุ่มฉ่ำ ไม่เละ 100%!",
         text: "เคล็ดลับทอดปลาส้ม หนังกรอบฟู ไม่เละ! 🐟",
         textPos: "Top Headline",
-        sfx: "Aggressive hot oil sizzling crackle, deep culinary whoosh."
+        sfx: "Atmospheric kitchen sizzle buildup, deep culinary whoosh."
       },
       {
-        type: "เตรียมวัตถุดิบปลาส้ม (Pla Som Marinated Prep)",
+        type: "เตรียมวัตถุดิบปลาส้ม (Pla Som Marinated Prep & Flour Dusting)",
         camera: "Overhead 90-Degree Top Down Artisan Macro",
-        motion: `Photorealistic 8K image-to-video. Overhead top-down view on rustic wooden cutting board. Chef's hand gently pats dry a premium marinated whole Pla Som with paper towel. Scored patterned skin shows fresh tender white fish meat. Chef dusts a whisper of fine rice flour over the skin with fine mesh sieve. Smooth downward slider, natural morning window daylight, 24fps.`,
-        prompt: `Artisan overhead flat-lay of premium Thai Pla Som fish on dark rustic wooden board. Diamond scored skin dusted lightly with fine rice flour, surrounded by fresh lime wedges, Thai garlic, sliced shallots, and fiery bird's eye chilies. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Overhead top-down view on rustic wooden cutting board. Chef's hand gently pats dry the raw uncooked Pla Som with paper towel. Scored raw pale skin shows fresh tender white fish meat. Chef dusts a whisper of fine rice flour over the raw skin with fine mesh sieve. Background: seasoned black carbon-steel wok with wooden handle on kitchen counter. Smooth downward slider, natural morning window daylight, 24fps.`,
+        prompt: `Artisan overhead flat-lay of raw uncooked Thai Pla Som fish on dark rustic wooden board. Diamond scored raw pale skin being dusted lightly with fine rice flour by chef's hand using fine mesh sieve, surrounded by fresh lime wedges, Thai garlic, sliced shallots, and fiery bird's eye chilies. Cookware continuity: seasoned black carbon-steel wok with wooden handle visible nearby. Shot on ARRI Alexa LF, 50mm Prime, soft natural lighting. --ar ${aspectRatio}`,
         voice: "เริ่มจากซับปลาส้มให้แห้งสนิท แล้วคลุกแป้งข้าวเจ้าบางเบา เพื่อล็อกความชุ่มชื้นและช่วยให้หนังฟูกรอบเป็นพิเศษ",
         text: "ซับให้แห้ง คลุกแป้งบางเบา ✨",
         textPos: "Lower Third",
@@ -1610,28 +1611,28 @@ export async function POST(req: Request) {
       {
         type: "🔍 Extreme Macro เช็กความร้อนน้ำมัน (Testing Oil Temperature)",
         camera: "🔍 Extreme Macro 100mm f/2.8 Surface Tension",
-        motion: `Photorealistic 8K image-to-video. Extreme macro close-up of wooden chopstick dipped into center of wok oil. Tiny energetic micro-bubbles immediately fizz and pop vigorously around tip of chopstick, indicating perfect medium-high frying temperature. Steam shimmers across golden oil surface, 24fps.`,
-        prompt: `Extreme macro 100mm f/2.8 of wooden chopstick tip touching hot frying oil, micro-bubbles fizzing rapidly around wood, shimmering heat haze, professional kitchen lighting. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Extreme macro close-up of wooden chopstick dipped into center of hot oil inside the seasoned black carbon-steel wok with natural wooden handle. Tiny energetic micro-bubbles immediately fizz and pop vigorously around tip of chopstick, indicating perfect medium-high frying temperature. Steam shimmers across golden oil surface, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of wooden chopstick tip dipping into shimmering hot oil inside the seasoned black carbon-steel wok with natural wooden handle. Tiny energetic micro-bubbles fizz rapidly around wooden tip. Tack-sharp focus, professional kitchen lighting. Cookware continuity: black carbon-steel wok. --ar ${aspectRatio}`,
         voice: "เคล็ดลับคือน้ำมันต้องร้อนพอดี ใช้ตะเกียบจุ่มลงไปถ้ามีฟองปุดขึ้นมา แปลว่าพร้อมทอดแล้วครับ",
         text: "เช็กความร้อน: ฟองปุดพร้อมทอด! 🔥",
         textPos: "Lower Third",
         sfx: "Gentle bubbling sizzle, soft oil resonance."
       },
       {
-        type: "หย่อนปลาลงกระทะ (Fish Entering Hot Oil)",
+        type: "หย่อนปลาสดลงกระทะ (Raw Fish Entering Hot Oil)",
         camera: "Dynamic Side Tracking at Oil Surface Level",
-        motion: `Photorealistic 8K image-to-video. Brass tongs hold whole dusted Pla Som gently sizzling in hot shimmering oil. Shimmering foam waves dance along the pan. Camera tracks smoothly alongside, locked focal plane on sizzling golden tail fin, 24fps.`,
-        prompt: `Side angle macro shot of marinated fish lowered into shimmering hot oil in cast iron pan, dynamic splashing bubbles, crisp steam release, dramatic low-key lighting with golden rim. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Brass tongs hold whole raw dusted Pla Som gently lowered into shimmering hot bubbling oil inside the identical seasoned black carbon-steel wok with natural wooden handle. Shimmering foam waves dance along the dark carbon-steel curve. Camera tracks smoothly alongside, locked focal plane on sizzling raw tail fin, 24fps.`,
+        prompt: `Side angle macro shot of raw floured Pla Som fish gently lowered into shimmering hot bubbling oil inside the identical seasoned black carbon-steel wok with natural wooden handle. Energetic bubbling foam erupts around the pale raw fish skin, dynamic steam release, golden rim light. Cookware continuity: black carbon-steel wok. --ar ${aspectRatio}`,
         voice: "ค่อยๆ วางปลาลงไป แล้วเปิดไฟกลางค่อนข้างแรง ปล่อยให้เซ็ตตัว ห้ามคนหรือขยับเด็ดขาดใน 3 นาทีแรก!",
         text: "วางปลาลงไฟกลาง ห้ามขยับเด็ดขาด ⏳",
         textPos: "Center Punchy",
         sfx: "Loud aggressive frying sizzle roar, metal tongs click."
       },
       {
-        type: "🔍 Extreme Macro หนังปลาพองกรอบ (Fish Skin Blistering Golden)",
+        type: "🔍 Extreme Macro หนังปลาเริ่มพองกรอบ (Fish Skin Blistering Golden)",
         camera: "🔍 Extreme Macro 100mm f/2.8 Shallow DOF",
-        motion: `Photorealistic 8K image-to-video. Macro 100mm tight focus on fish skin. Scored textured surface reveals glistening white tender meat within, while outer skin caramelizes into an ultra-crispy, puffed golden-brown texture with miniature oil bubbles dancing across ridges. Buttery smooth bokeh, 24fps.`,
-        prompt: `Extreme macro 100mm f/2.8 shot of fish skin crisping into golden brown lace and blistered crackling texture in hot oil, shimmering oil droplets, mouthwatering culinary cinematography. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Macro 100mm tight focus on fish skin inside the identical seasoned black carbon-steel wok. The raw pale skin transitions and blisters into a delicate, puffed golden-brown crackling crust with miniature oil bubbles dancing across scored ridges. Tender moist meat visible within, buttery smooth bokeh, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 shot of fish skin in bubbling hot oil inside the identical seasoned black carbon-steel wok with natural wooden handle. The raw pale skin transitions and blisters into a delicate, puffed golden-brown crackling crust with miniature oil bubbles dancing across scored ridges. Cookware continuity: black carbon-steel wok. --ar ${aspectRatio}`,
         voice: "ดูความฟูของหนังปลาส้มครับ... แป้งบางๆ ทำปฏิกิริยากับน้ำมันจนหนังพองกรอบ สีเหลืองทองเสมอกัน",
         text: "หนังพองฟูกรอบ สีทองอร่าม 🤤",
         textPos: "Lower Third",
@@ -1640,18 +1641,18 @@ export async function POST(req: Request) {
       {
         type: "พลิกกลับด้านปลาสีทองอร่าม (The Master Golden Flip)",
         camera: "Kinetic Medium Close-Up 45-Degree Angle",
-        motion: `Photorealistic 8K image-to-video. Chef smoothly slides wide stainless spatula under fish, gracefully lifting and turning whole Pla Som over in one confident motion. Revealing underside fried to breathtaking uniform golden-brown crunchiness. Sizzling oil drains in shimmering rivulets. Zero splashing distortion, 24fps.`,
-        prompt: `Dynamic culinary shot of chef flipping whole crispy fried fish in wok with spatula, revealing perfectly browned, crispy golden skin, steam swirling upwards, commercial warm kitchen glow. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Chef smoothly slides wide stainless spatula under fish inside the identical seasoned black carbon-steel wok with natural wooden handle, gracefully lifting and turning whole Pla Som over in one confident motion. Revealing underside fried to breathtaking uniform golden-brown crunchiness. Sizzling oil drains in shimmering rivulets. Zero splashing distortion, 24fps.`,
+        prompt: `Dynamic culinary shot of chef flipping whole crispy fried fish inside the identical seasoned black carbon-steel wok with natural wooden handle using wide stainless spatula, revealing underside fried to breathtaking uniform golden-brown crunchiness, steam swirling upwards. Cookware continuity: black carbon-steel wok. --ar ${aspectRatio}`,
         voice: "พลิกแค่ครั้งเดียวพอ! หนังปลาอีกด้านเหลืองกรอบสวยงาม ไม่หลุด ไม่ติดกระทะแม้แต่น้อย",
         text: "พลิกแค่ครั้งเดียว หนังไม่ติดกระทะ! 🏆",
         textPos: "Center Punchy",
         sfx: "Satisfying spatula scoop and flip splash, loud sizzle."
       },
       {
-        type: "เจียวเครื่องเคียงสมุนไพร (Crisping Shallots & Garlic Garnish)",
+        type: "เจียวเครื่องเคียงสมุนไพรในกระทะ (Crisping Shallots & Garlic Garnish in Wok)",
         camera: "High-Angle 60-Degree Close-Up 85mm",
-        motion: `Photorealistic 8K image-to-video. High-angle close-up of sliced Thai shallots, crushed garlic, and fresh red chilies thrown into hot oil around fish. Aromatics flash-fry into crispy amber-gold crisps within seconds, releasing savory fragrance through translucent steam, 24fps.`,
-        prompt: `Close-up 85mm of sliced shallots, garlic, and fresh chilies sizzling into golden crispy garnish in pan alongside fried fish, fragrant steam, vibrant food commercial lighting. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. High-angle close-up of sliced Thai shallots, crushed garlic, and fresh red chilies thrown into hot oil around fish inside the identical seasoned black carbon-steel wok with natural wooden handle. Aromatics flash-fry into crispy amber-gold crisps within seconds, releasing savory fragrance through translucent steam, 24fps.`,
+        prompt: `High-angle close-up 85mm of sliced Thai shallots, crushed garlic, and fresh red chilies sizzling into crispy golden garnish in hot oil around the fried fish inside the identical seasoned black carbon-steel wok with natural wooden handle, fragrant translucent steam. Cookware continuity: black carbon-steel wok. --ar ${aspectRatio}`,
         voice: "เจียวกระเทียมไทย หอมแดง และพริกขี้หนูสวนลงไปในน้ำมันรอบๆ ดึงกลิ่นหอมสมุนไพรคลุมทั่วตัวปลา",
         text: "เจียวเครื่องเคียง หอมแดง & พริกกระเทียม 🧄",
         textPos: "Lower Third",
@@ -1660,8 +1661,8 @@ export async function POST(req: Request) {
       {
         type: "💡 B-Roll ตักปลาขึ้นสะเด็ดน้ำมัน (Resting on Wire Rack)",
         camera: "💡 B-Roll Slow Slider 50mm Backlight Glow",
-        motion: `Photorealistic 8K image-to-video. Chef lifts golden crispy Pla Som with brass skimmer onto stainless wire resting rack. Shimmering oil droplets fall cleanly through wire grid. Evening golden sunbeam illuminates delicate steam rising from crispy skin, 24fps.`,
-        prompt: `Cinematic B-roll of steaming golden crispy fried fish resting on stainless steel wire rack, excess oil dripping away, backlit by warm golden hour sunlight, artisan kitchen background. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Chef lifts golden crispy Pla Som with brass skimmer from the seasoned black carbon-steel wok onto stainless wire resting rack. Shimmering oil droplets fall cleanly through wire grid. Evening golden sunbeam illuminates delicate steam rising from crispy skin, 24fps.`,
+        prompt: `Cinematic B-roll of steaming golden crispy fried fish lifted with brass skimmer from the black carbon-steel wok onto stainless steel wire resting rack, excess oil dripping away, backlit by warm golden hour sunlight, artisan kitchen background. --ar ${aspectRatio}`,
         voice: "ตักขึ้นพักบนตะแกรงสะเด็ดน้ำมัน หนังปลาจะเซ็ตตัวกรอบนานขึ้น ไม่อมน้ำมัน",
         text: "พักสะเด็ดน้ำมัน หนังกรอบนานไม่อมน้ำมัน ✨",
         textPos: "Lower Third",
@@ -1670,8 +1671,8 @@ export async function POST(req: Request) {
       {
         type: "📐 Dynamic Macro Snap Zoom โรยเครื่องสมุนไพรไม่อั้น (Garnish Waterfall)",
         camera: "📐 Dynamic Macro Snap Zoom 24mm-70mm Fast Snap",
-        motion: `Photorealistic 8K image-to-video. Fast snap zoom as chef's fingers shower mountain of crispy fried garlic, translucent golden shallots, and spicy red-green chilies across top of fried Pla Som. Crisp aromatics settle with light crunching sound, 24fps.`,
-        prompt: `Dynamic macro snap zoom of crispy fried golden garlic and chili flakes showered generously over hot crispy fried fish, high speed 60fps, dynamic motion blur, commercial food grading. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Fast snap zoom as chef's fingers shower mountain of crispy fried garlic, translucent golden shallots, and spicy red-green chilies across top of fried Pla Som resting on artisan ceramic serving platter. Crisp aromatics settle with light crunching sound, 24fps.`,
+        prompt: `Dynamic macro snap zoom of crispy fried golden garlic and chili flakes showered generously over hot crispy fried fish on ceramic platter, high speed 60fps, dynamic motion blur, commercial food grading. --ar ${aspectRatio}`,
         voice: "โรยเครื่องเคียงกระเทียมเจียวและพริกทอดลงไปแบบจุใจ เพิ่มมิติรสชาติและสัมผัสความกรอบ",
         text: "โรยเครื่องเคียงล้นๆ หอมกรอบสะใจ 🌶️",
         textPos: "Center Punchy",
@@ -1680,8 +1681,8 @@ export async function POST(req: Request) {
       {
         type: "🔍 Extreme Macro บิเนื้อปลาเสียงกรอบสะท้าน (The Auditory Crunch Test)",
         camera: "🔍 Extreme Macro 100mm f/2.8 Sound & Steam Focus",
-        motion: `Photorealistic 8K image-to-video. Extreme macro close-up. Wooden chopsticks gently press down on middle of fish. Outer skin cracks with crisp audible acoustic snap. Thick, flaky white fish meat separates easily, glistening with natural savory juices, pure white steam wafting outward, 24fps.`,
-        prompt: `Extreme macro 100mm f/2.8 of chopsticks breaking through ultra-crispy golden fish skin, revealing tender steaming moist flaky white fish meat inside, visible steam, shallow DOF. --ar ${aspectRatio}`,
+        motion: `Photorealistic 8K image-to-video. Extreme macro close-up. Wooden chopsticks gently press down on middle of fish on ceramic plate. Outer skin cracks with crisp audible acoustic snap. Thick, flaky white fish meat separates easily, glistening with natural savory juices, pure white steam wafting outward, 24fps.`,
+        prompt: `Extreme macro 100mm f/2.8 of chopsticks breaking through ultra-crispy golden fish skin on ceramic platter, revealing tender steaming moist flaky white fish meat inside, visible steam, shallow DOF. --ar ${aspectRatio}`,
         voice: "ฟังเสียงความกรอบนะครับ... ข้างนอกกรอบสะท้าน แต่ข้างในเนื้อปลาขาวฟูนุ่มฉ่ำ รสเปรี้ยวกลมกล่อมแท้ๆ",
         text: "เสียงกรอบสะท้าน! เนื้อในนุ่มฉ่ำ 🥢",
         textPos: "Top Center",
@@ -2918,10 +2919,18 @@ export async function POST(req: Request) {
           };
         }
 
-        const defaultText = userCustomTexts.length > 0
+        const rawText = userCustomTexts.length > 0
           ? (userCustomTexts[i] || userCustomTexts[i % userCustomTexts.length])
           : ((baseScene as any).text || (i === 0 ? "พิกัดลับที่ไม่ควรพลาด ✨" : i === resolvedCount - 1 ? "เซฟคลิปไว้แล้วทักแชตด่วน! 📲" : `มุมมองที่ ${i + 1} โทนสีละมุน 🎞️`));
         const defaultPos = (baseScene as any).textPos || (i === 0 ? "Top Headline" : i === resolvedCount - 1 ? "Bottom Center CTA" : "Lower Third");
+
+        // Apply textOverlayMode: cover_only (default: safe for Veo), all_scenes, or none
+        let finalOnScreenText = rawText;
+        if (textOverlayMode === "none") {
+          finalOnScreenText = "";
+        } else if (textOverlayMode === "cover_only" && i > 0) {
+          finalOnScreenText = "";
+        }
 
         generatedScenes.push({
           id: `scene-dyn-${i + 1}`,
@@ -2932,7 +2941,7 @@ export async function POST(req: Request) {
           cameraMovement: baseScene.camera,
           motionPrompt: (baseScene as any).motion || `Photorealistic 8K image-to-video. Camera executes ${baseScene.camera}. Duration: ${timing.durationSec}s. Real-world physical action, smooth motion, natural depth, preserve anatomical consistency, zero morphing. 24fps.`,
           visualPromptEn: baseScene.prompt,
-          onScreenTextTh: defaultText,
+          onScreenTextTh: finalOnScreenText,
           textPosition: defaultPos,
           thaiVoiceover: baseScene.voice,
           audioSfx: baseScene.sfx,
