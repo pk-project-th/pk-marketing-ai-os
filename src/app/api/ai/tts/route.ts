@@ -195,10 +195,10 @@ export async function POST(req: NextRequest) {
         const chunkFile = path.join(tempDir, `shot_${String(i + 1).padStart(3, "0")}.mp3`);
         fs.writeFileSync(chunkFile, audioBuf);
 
-        // Normalize each chunk to target shot duration
+        // Normalize each chunk to target shot duration with exact silence padding & trim
         const targetDur = item.durationSec || 3.0;
         const normFile = path.join(tempDir, `norm_${String(i + 1).padStart(3, "0")}.mp3`);
-        await execAsync(`ffmpeg -y -i "${chunkFile}" -t ${targetDur} -q:a 2 "${normFile}"`);
+        await execAsync(`ffmpeg -y -i "${chunkFile}" -af "apad,atrim=0:${targetDur}" -q:a 2 "${normFile}"`);
 
         listEntries.push(`file '${normFile.replace(/\\/g, "/")}'`);
       }

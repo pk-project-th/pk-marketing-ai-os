@@ -423,6 +423,7 @@ function CommercialStudioContent() {
   const [isGeneratingMasterAudio, setIsGeneratingMasterAudio] = useState<boolean>(false);
   const [masterAudioUrl, setMasterAudioUrl] = useState<string | null>(null);
   const [masterAudioBase64, setMasterAudioBase64] = useState<string | null>(null);
+  const [showTimingBreakdown, setShowTimingBreakdown] = useState<boolean>(false);
 
   // Load API Key from localStorage
   useEffect(() => {
@@ -2483,52 +2484,153 @@ function CommercialStudioContent() {
             </div>
           </div>
 
-          {/* Action Station */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-white/10">
-            <div className="flex flex-wrap items-center gap-2">
+          {/* Voiceover Modes: Per-Scene vs Single Master Timeline Audio */}
+          <div className="pt-3 border-t border-white/10 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <Sliders className="w-4 h-4 text-indigo-400" />
+                <span>เลือกรูปแบบไฟล์เสียงพากย์ที่ต้องการผลิตใน OS (แบ่งสัดส่วนเวลาตรงกับคลิปเป๊ะ):</span>
+              </span>
               <button
                 type="button"
-                disabled={isGeneratingAllAudios || scenes.length === 0}
-                onClick={handleGenerateAllSceneAudios}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shrink-0 flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                onClick={() => setShowTimingBreakdown(!showTimingBreakdown)}
+                className="text-[11px] text-indigo-300 hover:text-white underline font-semibold flex items-center gap-1 self-start sm:self-auto cursor-pointer"
               >
-                {isGeneratingAllAudios ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Mic className="w-4 h-4" />
-                )}
-                <span>
-                  {isGeneratingAllAudios
-                    ? `กำลังเจนเสียงฉากที่ ${generatingAudioProgress.current}/${generatingAudioProgress.total}...`
-                    : `🎙️ สร้างเสียงพากย์ทุกฉาก (${Object.values(sceneAudios).filter(a => a.status === "success").length}/${scenes.length})`}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                disabled={isGeneratingMasterAudio || scenes.length === 0}
-                onClick={handleDownloadMasterTrack}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-xs shadow-lg shrink-0 flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
-              >
-                {isGeneratingMasterAudio ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Music className="w-4 h-4" />
-                )}
-                <span>
-                  {isGeneratingMasterAudio
-                    ? "กำลังประกอบ Master Audio Track..."
-                    : "🎵 ดาวน์โหลด Master Voiceover MP3 (รวมทุกฉากตามเวลาเป๊ะ)"}
-                </span>
+                <Clock className="w-3.5 h-3.5 text-amber-300" />
+                <span>{showTimingBreakdown ? "▲ ซ่อนตารางสัดส่วนเวลา" : "▼ ดูตารางสัดส่วนเวลาฉากต่อฉาก (Timecode Breakdown)"}</span>
               </button>
             </div>
 
-            {masterAudioUrl && (
-              <div className="flex items-center gap-2 bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-indigo-400/30">
-                <span className="text-[11px] font-bold text-indigo-200">ทดลองฟัง Master Track:</span>
-                <audio controls src={masterAudioUrl} className="h-7 w-48" />
+            {/* Timing Breakdown Table */}
+            {showTimingBreakdown && (
+              <div className="bg-slate-950/90 border border-indigo-500/30 rounded-2xl p-4 space-y-3 animate-fade-in text-xs font-sans">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
+                  <span className="font-bold text-amber-300 flex items-center gap-1.5">
+                    <span>⏱️ ตารางควบคุมสัดส่วนเวลา (รวมความยาวทั้งคลิป: {targetDuration} วินาที · {scenes.length} ฉาก)</span>
+                  </span>
+                  <span className="text-[10.5px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                    ⚡ FFmpeg Frame-Accurate Sync Guarantee
+                  </span>
+                </div>
+
+                <div className="max-h-56 overflow-y-auto space-y-1.5 pr-1">
+                  {scenes.map((s) => {
+                    const voiceId = sceneVoices[s.id] || autoDetectVoiceForScene(s.sceneNumber, s.shotType, s.thaiVoiceover, s.visualPromptEn, scenes.length);
+                    const voiceObj = CURATED_VOICES.find(v => v.id === voiceId);
+                    const isVoiced = sceneAudios[s.id]?.status === "success";
+
+                    return (
+                      <div key={s.id} className="grid grid-cols-12 gap-2 items-center p-2 rounded-xl bg-white/5 border border-white/5 text-[11px]">
+                        <div className="col-span-2 sm:col-span-2 font-mono font-bold text-indigo-300 flex items-center gap-1">
+                          <span className="px-1.5 py-0.5 rounded bg-indigo-900/60 text-white text-[10px]">#{s.sceneNumber}</span>
+                          <span>{s.timecode}</span>
+                        </div>
+                        <div className="col-span-2 sm:col-span-1 font-semibold text-slate-400">
+                          {s.durationSec}s
+                        </div>
+                        <div className="col-span-3 sm:col-span-3 font-semibold text-amber-200 truncate" title={voiceObj?.label}>
+                          {voiceObj?.label || "Adam"}
+                        </div>
+                        <div className="col-span-3 sm:col-span-5 text-slate-300 truncate italic">
+                          &ldquo;{s.thaiVoiceover}&rdquo;
+                        </div>
+                        <div className="col-span-2 sm:col-span-1 text-right">
+                          <span className={`px-2 py-0.5 rounded text-[9.5px] font-bold ${
+                            isVoiced ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "bg-slate-800 text-slate-400"
+                          }`}>
+                            {isVoiced ? "พร้อม" : "รอเจน"}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
+
+            {/* 2 Main Action Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              {/* Option 1: Per-Scene Audios */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-emerald-500/30 transition-all">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
+                      <Mic className="w-4 h-4 text-emerald-400" />
+                      <span>แบบที่ 1: เสียงพากย์แยกรายฉาก (Per-Scene Clips)</span>
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                      {Object.values(sceneAudios).filter(a => a.status === "success").length} / {scenes.length} ช็อต
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    สร้างและดาวน์โหลดไฟล์เสียงแยกรายช็อตทีละไฟล์ สามารถกดฟังและปรับแต่งเสียงทีละฉากได้ในการ์ดด้านล่าง
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isGeneratingAllAudios || scenes.length === 0}
+                  onClick={handleGenerateAllSceneAudios}
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                >
+                  {isGeneratingAllAudios ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
+                  <span>
+                    {isGeneratingAllAudios
+                      ? `กำลังเจนเสียงฉากที่ ${generatingAudioProgress.current}/${generatingAudioProgress.total}...`
+                      : `🎙️ เจนเสียงพากย์ครบทุกฉาก (${Object.values(sceneAudios).filter(a => a.status === "success").length}/${scenes.length})`}
+                  </span>
+                </button>
+              </div>
+
+              {/* Option 2: Single Master Timeline Continuous Audio */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-indigo-500/30 transition-all">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-indigo-300 text-xs flex items-center gap-1.5">
+                      <Music className="w-4 h-4 text-purple-400" />
+                      <span>แบบที่ 2: เสียงพากย์ยาวอันเดียว (Master Timeline Audio)</span>
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300">
+                      1 ไฟล์ MP3 ({targetDuration}s)
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    รวมเสียงทุกฉากให้อยู่ในไฟล์เดียว แบ่งสัดส่วนเวลาตาม Timecode และเติมช่องว่างเงียบให้เป๊ะตรงกับวิดีโอ 100%
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <button
+                    type="button"
+                    disabled={isGeneratingMasterAudio || scenes.length === 0}
+                    onClick={handleDownloadMasterTrack}
+                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                  >
+                    {isGeneratingMasterAudio ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4" />
+                    )}
+                    <span>
+                      {isGeneratingMasterAudio
+                        ? "กำลังประกอบ Master Audio Track..."
+                        : `🎵 ดาวน์โหลด Master Voiceover MP3 (ยาว ${targetDuration}s ไฟล์เดียว)`}
+                    </span>
+                  </button>
+
+                  {masterAudioUrl && (
+                    <div className="flex items-center justify-between gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-indigo-500/30">
+                      <span className="text-[10px] font-bold text-indigo-300 shrink-0">ฟัง Master Track:</span>
+                      <audio controls src={masterAudioUrl} className="h-6 w-full" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
