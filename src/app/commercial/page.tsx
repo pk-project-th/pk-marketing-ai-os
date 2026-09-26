@@ -118,33 +118,54 @@ interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: PK COMMERCIAL VIDEO STUDIO v15.0 PURE CINEMA & VEO STUDIO (ZERO-API STABILITY, LIVE PRODUCTION DASHBOARD & MULTI-PROJECT HISTORY)
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v15.1 (TRIPLE REFERENCE ANCHORS + LIVE DASHBOARD + ZERO-API STABILITY)
 
-แก้ไขปัญหา "Failed to fetch / เชื่อมต่อไม่ได้" 100% และเพิ่มระบบควบคุมการผลิตครบวงจร:
-1. 🛡️ 100% Zero-API & Pure Sandbox Stability (ไร้ Error 100%):
-   - ลบโค้ดเชื่อมต่อ API ภายนอกออกจาก Flow ทั้งหมด เพื่อไม่ให้โดน Google Flow Sandbox บล็อก CORS / NetworkError
-   - โฟกัสที่หัวใจหลักของ Google Flow: เรนเดอร์ภาพนิ่ง Imagen 3 คุมหน้าคน-สินค้า และแปลงเป็นคลิปวิดีโอ Veo 2 ด้วยฟิสิกส์และมุมกล้องระดับภาพยนตร์
+เป้าหมายสำคัญ:
+1. 🖼️ รักษาและคงช่องแนบรูปอ้างอิงทั้ง 3 ช่องไว้ 100% (TRIPLE REFERENCE ANCHORS - สำคัญมาก ห้ามลบ!):
+   - 🛍️ ช่องแนบรูปสินค้า/อาหารจริง (Product Reference Packshot)
+   - 👤 ช่องแนบรูปคน/พรีเซนเตอร์ (Person / Face Reference)
+   - 🏞️ ช่องแนบรูปฉาก/สถานที่จริง (Scene / Location Reference)
+   *เพื่อให้ Imagen 3 และ Veo 2 นำรูปทั้ง 3 ช่องนี้ไปคุมหน้าตาคน สินค้า และบรรยากาศให้ตรงกันทุกช็อตอย่างสม่ำเสมอ*
+2. 🚫 ลบเฉพาะป๊อปอัปและระบบเสียงพากย์ภายนอกออก 100%:
+   - ลบปุ่ม "🎙️ ตั้งค่าเสียง/API", State "isVoiceSettingsOpen" และ Modal ป๊อปอัป "ตั้งค่า API & เสียงพากย์" ทิ้งทั้งหมด เพื่อไม่ให้เกิด CORS/NetworkError
    - (ส่วนเสียงพากย์ไทยและ Master Timecode จัดการใน PK Marketing AI OS อย่างแม่นยำ)
-2. 📊 Live Production Status Dashboard:
-   - แสดงสถานะความคืบหน้าแบบเรียลไทม์:
-     • 🖼️ รูปภาพนิ่งที่สร้างแล้ว: X / Total (พร้อม Progress Bar สีเขียว)
-     • 🎬 คลิปวิดีโอที่สร้างแล้ว: Y / Total (พร้อม Progress Bar สีม่วง)
-     • แถบสถานะความพร้อม: "✅ เสร็จสมบูรณ์ พร้อมดาวน์โหลดและรวมคลิป"
-3. ⚡ Smart 1 ➔ 2 ➔ 3 Production Pipeline:
-   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด (Batch Images) ]: สร้างภาพ Keyframe ทุกฉากเพื่อตรวจเช็กหน้าตาคนและสินค้าก่อน
-   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด (Batch Veo Videos) ]: นำภาพนิ่งแต่ละช็อตมาเป็นจุดเริ่มต้น แล้วใส่ Camera Motion + ฟิสิกส์ เรนเดอร์เป็นคลิป Veo 8K
-   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด (Export Clips) ]: ดาวน์โหลดคลิปเพื่อนำไปรวมกับ Master Voiceover Track ใน OS
-4. 💾 Multi-Project History & Local Storage:
-   - มีปุ่ม [ 💾 บันทึกโปรเจกต์ ] จัดเก็บข้อมูลลง localStorage (ชื่อแคมเปญ, จำนวนฉาก, วันเวลา, รูปตัวอย่างช็อต 1)
-   - มีแถบ [ 📂 ประวัติโปรเจกต์เก่า ] เรียกดูและสลับโปรเจกต์ที่เคยทำได้ทันที ไม่หายเมื่อปิดเบราว์เซอร์หรือรีเฟรช
-5. 📥 Master Directive Smart Parser:
-   - Textarea รับคำสั่งเดียวจาก OS แล้วแตกเป็น [SHOT 1], [SHOT 2], ... อัตโนมัติ พร้อมแสดง Timecode, Visual Prompt (EN), Camera Movement (Veo 2), และบทพากย์ไทย/ซับไตเติลสำหรับการตรวจงาน
+3. 📊 Live Production Status Dashboard:
+   - แสดง Progress Bar เรียลไทม์:
+     • 🖼️ รูปภาพนิ่งที่สร้างแล้ว: X / Total (Progress Bar สีฟ้า)
+     • 🎬 คลิปวิดีโอที่สร้างแล้ว: Y / Total (Progress Bar สีม่วง)
+     • สถานะรวม: [ ⏳ กำลังผลิต / ✅ เสร็จสมบูรณ์ พร้อมดาวน์โหลด ]
+4. ⚡ Smart 1 ➔ 2 ➔ 3 Production Pipeline:
+   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด ]: นำรูปสินค้า+คน+ฉาก มาเจน Keyframe ตรวจสอบหน้าตาและความถูกต้อง
+   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด ]: นำภาพนิ่งมาแปลงเป็นคลิป Veo 2 ตามคำสั่ง Camera Motion & Physics
+   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด ]: บันทึกคลิปวิดีโอทั้งหมดเพื่อนำไปประกบ Master Voiceover MP3
+5. 💾 Multi-Project History: บันทึกและเรียกดูประวัติโปรเจกต์เก่าได้จาก localStorage ไม่หายเมื่อรีเฟรช
 
 ---
 
-โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow (v15.0):
+โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow (v15.1):
 
-### 1. 📊 สถานะความคืบหน้าการผลิต (LIVE PRODUCTION DASHBOARD):
+### 1. 🖼️ ช่องรับ MASTER DIRECTIVE & 3 ช่องแนบรูปภาพอ้างอิง (TRIPLE ANCHORS):
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+  {/* Anchor 1: สินค้า */}
+  <div style={{ border: '1px dashed #3B82F6', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
+    <div style={{ fontSize: '11px', fontWeight: 700, color: '#60A5FA', marginBottom: '6px' }}>🛍️ 1. รูปสินค้าจริง (Product)</div>
+    {/* Upload/Drop Zone for Product Image */}
+  </div>
+
+  {/* Anchor 2: คน/ตัวแบบ */}
+  <div style={{ border: '1px dashed #A855F7', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
+    <div style={{ fontSize: '11px', fontWeight: 700, color: '#C084FC', marginBottom: '6px' }}>👤 2. รูปตัวแบบ/พรีเซนเตอร์ (Face)</div>
+    {/* Upload/Drop Zone for Face Reference Image */}
+  </div>
+
+  {/* Anchor 3: ฉาก/สถานที่ */}
+  <div style={{ border: '1px dashed #10B981', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
+    <div style={{ fontSize: '11px', fontWeight: 700, color: '#34D399', marginBottom: '6px' }}>🏞️ 3. รูปฉาก/สถานที่ (Scene/Location)</div>
+    {/* Upload/Drop Zone for Scene Reference Image */}
+  </div>
+</div>
+
+### 2. 📊 สถานะความคืบหน้าการผลิต (LIVE PRODUCTION DASHBOARD):
 const totalShots = shots.length;
 const imagesCount = Object.values(shotStates).filter(s => s?.imageUrl).length;
 const videosCount = Object.values(shotStates).filter(s => s?.videoUrl).length;
@@ -176,7 +197,7 @@ const isReadyToExport = totalShots > 0 && videosCount === totalShots;
   </div>
 </div>
 
-### 2. ⚡ WORKFLOW 1 ➔ 2 ➔ 3 (BATCH PIPELINE):
+### 3. ⚡ WORKFLOW 1 ➔ 2 ➔ 3 (BATCH PIPELINE):
 <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
   <button 
     onClick={handleBatchGenerateImages}
@@ -203,7 +224,7 @@ const isReadyToExport = totalShots > 0 && videosCount === totalShots;
   </button>
 </div>
 
-### 3. 💾 MULTI-PROJECT HISTORY & PERSISTENCE:
+### 4. 💾 MULTI-PROJECT HISTORY & PERSISTENCE:
 function saveCurrentProject() {
   if (!shots || shots.length === 0) return;
   const projectItem = {
