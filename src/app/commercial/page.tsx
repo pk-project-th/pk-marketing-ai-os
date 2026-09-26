@@ -118,206 +118,142 @@ interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.3 ROBUST API CONNECT & SMART VOICE CASTING (AUTO-TRIM KEY, FALLBACK VOICE & INSTANT VERIFY):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL UPGRADE: PK COMMERCIAL VIDEO STUDIO v15.0 PURE CINEMA & VEO STUDIO (ZERO-API STABILITY, LIVE PRODUCTION DASHBOARD & MULTI-PROJECT HISTORY)
 
-แก้ไขปัญหา "เชื่อม API ไม่ได้" และเพิ่มระบบตรวจเช็กอัจฉริยะ 100%:
-1. 🛡️ แก้ไขปัญหาเชื่อม ElevenLabs API ไม่ได้ (Robust API Connect):
-   - ทำความสะอาด Key อัตโนมัติ (Auto-Trim whitespace): ตัดช่องว่างหรือเว้นบรรทัดที่เผลอก๊อปปี้ติดมาทิ้ง
-   - ตรวจสอบผ่านทั้ง Subscription และ Voices Endpoint ป้องกันปัญหา Scoped Key
-   - แจ้งสาเหตุชัดเจน: ถ้าเป็น "Failed to fetch" จะแจ้งเตือนวิธีแก้ไข หรือเปิดระบบ Browser Thai Speech Fallback ให้อัตโนมัติ
-2. 🔊 ระบบเสียงสำรองฉุกเฉิน (Browser Thai Speech Fallback):
-   - หาก ElevenLabs มีปัญหาเรื่องเน็ตหรือคีย์ ระบบสามารถกดฟังเสียงพากย์ภาษาไทยผ่าน Web Speech Synthesis ในเบราว์เซอร์ได้ทันที ไม่สะดุด
-3. 🤖 ระบบเลือกเสียงอัตโนมัติตามความเหมาะสมของบท (Smart Auto-Voice Casting):
-   - ช็อต 1: 🎙️ ผู้บรรยายหลัก (Antoni)
-   - ช็อตทำอาหาร/ทอด: 👨‍🍳 เชฟหนุ่ม (Adam)
-   - ช็อตชิม/กรอบ/ฟิน: ✨ สาวรีวิวชวนหิว (Bella)
-   - ช็อตปิดท้าย/CTA: 👩‍🍳 พรีเซนเตอร์สาว (Rachel)
-   - ปรับเปลี่ยนรายฉากทีหลังได้ตลอดเวลา
-4. 📊 Live Production Dashboard & 💾 Multi-Project History & 1->2->3 Workflow ครบถ้วน
+แก้ไขปัญหา "Failed to fetch / เชื่อมต่อไม่ได้" 100% และเพิ่มระบบควบคุมการผลิตครบวงจร:
+1. 🛡️ 100% Zero-API & Pure Sandbox Stability (ไร้ Error 100%):
+   - ลบโค้ดเชื่อมต่อ API ภายนอกออกจาก Flow ทั้งหมด เพื่อไม่ให้โดน Google Flow Sandbox บล็อก CORS / NetworkError
+   - โฟกัสที่หัวใจหลักของ Google Flow: เรนเดอร์ภาพนิ่ง Imagen 3 คุมหน้าคน-สินค้า และแปลงเป็นคลิปวิดีโอ Veo 2 ด้วยฟิสิกส์และมุมกล้องระดับภาพยนตร์
+   - (ส่วนเสียงพากย์ไทยและ Master Timecode จัดการใน PK Marketing AI OS อย่างแม่นยำ)
+2. 📊 Live Production Status Dashboard:
+   - แสดงสถานะความคืบหน้าแบบเรียลไทม์:
+     • 🖼️ รูปภาพนิ่งที่สร้างแล้ว: X / Total (พร้อม Progress Bar สีเขียว)
+     • 🎬 คลิปวิดีโอที่สร้างแล้ว: Y / Total (พร้อม Progress Bar สีม่วง)
+     • แถบสถานะความพร้อม: "✅ เสร็จสมบูรณ์ พร้อมดาวน์โหลดและรวมคลิป"
+3. ⚡ Smart 1 ➔ 2 ➔ 3 Production Pipeline:
+   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด (Batch Images) ]: สร้างภาพ Keyframe ทุกฉากเพื่อตรวจเช็กหน้าตาคนและสินค้าก่อน
+   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด (Batch Veo Videos) ]: นำภาพนิ่งแต่ละช็อตมาเป็นจุดเริ่มต้น แล้วใส่ Camera Motion + ฟิสิกส์ เรนเดอร์เป็นคลิป Veo 8K
+   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด (Export Clips) ]: ดาวน์โหลดคลิปเพื่อนำไปรวมกับ Master Voiceover Track ใน OS
+4. 💾 Multi-Project History & Local Storage:
+   - มีปุ่ม [ 💾 บันทึกโปรเจกต์ ] จัดเก็บข้อมูลลง localStorage (ชื่อแคมเปญ, จำนวนฉาก, วันเวลา, รูปตัวอย่างช็อต 1)
+   - มีแถบ [ 📂 ประวัติโปรเจกต์เก่า ] เรียกดูและสลับโปรเจกต์ที่เคยทำได้ทันที ไม่หายเมื่อปิดเบราว์เซอร์หรือรีเฟรช
+5. 📥 Master Directive Smart Parser:
+   - Textarea รับคำสั่งเดียวจาก OS แล้วแตกเป็น [SHOT 1], [SHOT 2], ... อัตโนมัติ พร้อมแสดง Timecode, Visual Prompt (EN), Camera Movement (Veo 2), และบทพากย์ไทย/ซับไตเติลสำหรับการตรวจงาน
 
 ---
 
-โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow:
+โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow (v15.0):
 
-### 1. ⚡ ฟังก์ชันทดสอบ API ELEVENLABS (ROBUST CHECK):
-const [apiTestResult, setApiTestResult] = useState(null);
-const [isTestingApi, setIsTestingApi] = useState(false);
+### 1. 📊 สถานะความคืบหน้าการผลิต (LIVE PRODUCTION DASHBOARD):
+const totalShots = shots.length;
+const imagesCount = Object.values(shotStates).filter(s => s?.imageUrl).length;
+const videosCount = Object.values(shotStates).filter(s => s?.videoUrl).length;
+const isReadyToExport = totalShots > 0 && videosCount === totalShots;
 
-async function testElevenLabsConnection(keyToTest) {
-  const key = String(keyToTest || elevenLabsApiKey || "").trim();
-  if (!key) {
-    alert("กรุณากรอก ElevenLabs API Key ก่อนกดทดสอบครับ");
-    return;
-  }
-  setIsTestingApi(true);
-  setApiTestResult(null);
-  try {
-    // ทดสอบดึงข้อมูล User Subscription
-    const res = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
-      method: "GET",
-      headers: { "xi-api-key": key }
-    });
+{/* Live Dashboard Bar */}
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '16px', background: '#0F172A', borderRadius: '16px', border: '1px solid #1E293B', color: '#F8FAFC', marginBottom: '16px' }}>
+  <div>
+    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>🖼️ ภาพนิ่งคีย์เฟรม</div>
+    <div style={{ fontSize: '18px', fontWeight: 800, color: '#38BDF8', marginTop: '4px' }}>{imagesCount} / {totalShots} รูป</div>
+    <div style={{ width: '100%', height: '6px', background: '#334155', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
+      <div style={{ width: \`\${totalShots ? (imagesCount / totalShots) * 100 : 0}%\`, height: '100%', background: '#38BDF8', transition: 'width 0.3s' }}></div>
+    </div>
+  </div>
 
-    if (res.status === 401) {
-      throw new Error("API Key ไม่ถูกต้อง กรุณาคัดลอก API Key จากหน้า Profile บนเว็บ elevenlabs.io อีกครั้ง");
-    }
+  <div>
+    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>🎬 คลิปวิดีโอ VEO</div>
+    <div style={{ fontSize: '18px', fontWeight: 800, color: '#A855F7', marginTop: '4px' }}>{videosCount} / {totalShots} คลิป</div>
+    <div style={{ width: '100%', height: '6px', background: '#334155', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
+      <div style={{ width: \`\${totalShots ? (videosCount / totalShots) * 100 : 0}%\`, height: '100%', background: '#A855F7', transition: 'width 0.3s' }}></div>
+    </div>
+  </div>
 
-    if (!res.ok) {
-      // ลองสำรองด้วย Endpoint voices
-      const vRes = await fetch("https://api.elevenlabs.io/v1/voices", {
-        method: "GET",
-        headers: { "xi-api-key": key }
-      });
-      if (!vRes.ok) {
-        throw new Error(\`เซิร์ฟเวอร์ตอบกลับรหัส \${res.status} กรุณาตรวจสอบสิทธิ์ของ API Key\`);
-      }
-    }
+  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>สถานะการผลิต</div>
+    <div style={{ fontSize: '13px', fontWeight: 700, color: isReadyToExport ? '#4ADE80' : '#FBBF24', marginTop: '4px' }}>
+      {isReadyToExport ? '✅ พร้อมดาวน์โหลดและรวมคลิป' : totalShots > 0 ? '⏳ อยู่ระหว่างสร้างสรรค์' : 'รอคำสั่ง Master Directive'}
+    </div>
+  </div>
+</div>
 
-    let quotaMsg = "";
-    try {
-      const data = await res.json();
-      const remaining = (data.character_limit || 0) - (data.character_count || 0);
-      quotaMsg = \` (โควตาคงเหลือ: \${remaining.toLocaleString()} ตัวอักษร)\`;
-    } catch(e) {}
+### 2. ⚡ WORKFLOW 1 ➔ 2 ➔ 3 (BATCH PIPELINE):
+<div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+  <button 
+    onClick={handleBatchGenerateImages}
+    disabled={isBatchGeneratingImages || totalShots === 0}
+    style={{ flex: 1, padding: '12px', background: '#2563EB', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
+  >
+    {isBatchGeneratingImages ? '⏳ กำลังเจนภาพทั้งหมด...' : \`1. 🖼️ เจนภาพนิ่งทั้งหมด (\${imagesCount}/\${totalShots})\`}
+  </button>
 
-    const resultObj = {
-      success: true,
-      message: \`✅ เชื่อมต่อ ElevenLabs API สำเร็จเรียบร้อย!\${quotaMsg}\`
-    };
-    setApiTestResult(resultObj);
-    setElevenLabsApiKey(key);
-    try { localStorage.setItem("pk_elevenlabs_api_key", key); } catch(e) {}
-    showToast("🟢 เชื่อมต่อ ElevenLabs API สำเร็จ!");
-  } catch (err) {
-    let msg = err.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ";
-    if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
-      msg = "เบราว์เซอร์หรือเครือข่ายบล็อกการยิงออกนอกเว็บ (คุณสามารถทดลองกดปุ่มเจนเสียงรายฉาก หรือใช้เสียงสำรองในเครื่องได้ครับ)";
-    }
-    setApiTestResult({
-      success: false,
-      message: \`❌ ไม่สามารถเชื่อมต่อได้: \${msg}\`
-    });
-  } finally {
-    setIsTestingApi(false);
-  }
-}
+  <button 
+    onClick={handleBatchGenerateVideos}
+    disabled={isBatchGeneratingVideos || imagesCount === 0}
+    style={{ flex: 1, padding: '12px', background: '#7C3AED', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
+  >
+    {isBatchGeneratingVideos ? '⏳ กำลังเรนเดอร์คลิปวิดีโอ...' : \`2. 🎬 สร้างเป็นคลิปทั้งหมด (\${videosCount}/\${totalShots})\`}
+  </button>
 
-### 2. 🎙️ ELEVENLABS AUDIO + BROWSER FALLBACK:
-function playBrowserThaiSpeech(text) {
-  if (typeof window !== "undefined" && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "th-TH";
-    utterance.rate = 1.0;
-    window.speechSynthesis.speak(utterance);
-    showToast("🔊 กำลังอ่านออกเสียงด้วยระบบ Browser Thai Voice");
-  }
-}
+  <button 
+    onClick={handleDownloadAllClips}
+    disabled={videosCount === 0}
+    style={{ flex: 1, padding: '12px', background: isReadyToExport ? '#059669' : '#334155', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
+  >
+    3. 🎞️ ดาวน์โหลดคลิปทั้งหมด
+  </button>
+</div>
 
-async function generateElevenLabsAudio(text, voiceId) {
-  const key = String(elevenLabsApiKey || "").trim();
-  if (!key) {
-    playBrowserThaiSpeech(text);
-    return null;
-  }
-  if (!text) throw new Error("ไม่มีข้อความบทพากย์สำหรับฉากนี้");
-
-  const effectiveVoiceId = (voiceId === "custom" ? customVoiceIdInput : voiceId) || "pNInz6obpgDQGcFmaJgB";
-
-  try {
-    const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${effectiveVoiceId}\`, {
-      method: "POST",
-      headers: {
-        "Accept": "audio/mpeg",
-        "Content-Type": "application/json",
-        "xi-api-key": key
-      },
-      body: JSON.stringify({
-        text: text,
-        model_id: "eleven_multilingual_v2",
-        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-      })
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err?.detail?.message || \`ElevenLabs API Error (\${response.status})\`);
-    }
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  } catch (e) {
-    console.warn("ElevenLabs TTS error, playing fallback:", e);
-    playBrowserThaiSpeech(text);
-    throw e;
-  }
-}
-
-// สร้างเสียงพากย์รายฉาก
-async function generateSingleAudio(shot) {
-  const shotId = String(shot.shotNumber);
-  const textToSpeak = shot.thaiVoiceover || shot.onScreenText || "";
-  const chosenVoiceId = shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB";
-  
-  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'generating' } }));
-  try {
-    const audioUrl = await generateElevenLabsAudio(textToSpeak, chosenVoiceId);
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl, voiceId: chosenVoiceId } }));
-    showToast(\`🎙️ สร้างเสียงพากย์ฉาก \${shot.shotNumber} สำเร็จ!\`);
-  } catch (e) {
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'error', audioErrorMsg: e.message } }));
-    alert(e.message);
-  }
-}
-
-// สร้างเสียงพากย์ทุกฉาก
-async function handleGenerateAllAudios() {
+### 3. 💾 MULTI-PROJECT HISTORY & PERSISTENCE:
+function saveCurrentProject() {
   if (!shots || shots.length === 0) return;
-  if (!elevenLabsApiKey) {
-    setIsVoiceSettingsOpen(true);
-    return;
-  }
-  setIsGeneratingAllAudios(true);
-  for (const shot of shots) {
-    await generateSingleAudio(shot);
-  }
-  setIsGeneratingAllAudios(false);
-  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากแล้ว!");
+  const projectItem = {
+    id: 'proj_' + Date.now(),
+    name: projectName || 'Commercial Project (' + shots.length + ' ฉาก)',
+    shots: shots,
+    shotStates: shotStates,
+    savedAt: new Date().toISOString()
+  };
+  const existing = JSON.parse(localStorage.getItem('pk_flow_projects') || '[]');
+  const updated = [projectItem, ...existing.filter(p => p.name !== projectItem.name)];
+  localStorage.setItem('pk_flow_projects', JSON.stringify(updated));
+  setProjectList(updated);
+  alert('💾 บันทึกโปรเจกต์ลงในประวัติเรียบร้อยแล้ว!');
 }
 
-### 3. 🤖 ฟังก์ชัน SMART VOICE CASTING (วิเคราะห์บทและเลือกเสียงให้อัตโนมัติ):
-function autoDetectVoiceForShot(shotNumber, title, voiceover, visualPrompt, totalCount = 10) {
-  const text = (title + " " + voiceover + " " + visualPrompt).toLowerCase();
-  if (shotNumber === 1) return "ErXwobaYiN019PkySvjV"; // Antoni (Narrator)
-  if (text.includes("ชิม") || text.includes("กรอบ") || text.includes("อร่อย") || text.includes("กัด") || text.includes("taste") || text.includes("crunch") || text.includes("crisp") || text.includes("delicious")) {
-    return "EXAVITQu4vr4xnSDxMaL"; // Bella (Reviewer)
-  }
-  if (shotNumber === totalCount || text.includes("สั่ง") || text.includes("พิกัด") || text.includes("โปร") || text.includes("order") || text.includes("call to action") || text.includes("cta")) {
-    return "21m00Tcm4TlvDq8ikWAM"; // Rachel (Presenter)
-  }
-  if (text.includes("โบราณ") || text.includes("สูตรแม่") || text.includes("ตำรับ") || text.includes("traditional")) {
-    return "ThT5KcBeYPX3keUQqHPh"; // Dorothy (Heritage)
-  }
-  return "pNInz6obpgDQGcFmaJgB"; // Adam (Chef)
+function loadProject(project) {
+  setShots(project.shots);
+  setShotStates(project.shotStates || {});
+  setProjectName(project.name);
+  alert('📂 โหลดโปรเจกต์ "' + project.name + '" เรียบร้อยแล้ว!');
 }`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.3 Robust Connect Edition" — featuring robust ElevenLabs connection with auto-trim, fallback Thai speech synthesis, smart auto-voice casting from prompt, live dashboard, and multi-project history.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v15.0 Pure Cinema & Veo Edition" in Google Flow — a robust, zero-external-API commercial video tool designed for seamless pairing with PK Marketing AI OS.
 
-## 1. ROBUST ELEVENLABS CONNECTIVITY & FALLBACK:
-- Auto-trims API key and validates with multiple fallback endpoints.
-- Built-in Browser Thai Speech Synthesis fallback if ElevenLabs network is blocked.
-- Live quota and tier display upon verification.
+## KEY SPECIFICATIONS & ARCHITECTURE:
 
-## 2. SMART AUTO-VOICE CASTING:
-- Auto-detects ideal voice for each scene (Antoni, Adam, Bella, Rachel, Dorothy).
-- Editable per-scene voice dropdown.
+1. ZERO EXTERNAL NETWORK APIS (100% FLOW SANDBOX COMPLIANT):
+- Strictly relies on Google Flow internal AI nodes (Imagen 3 & Veo 2).
+- Zero third-party fetch calls to eliminate CORS or Failed to Fetch network errors completely.
+- Voiceover & audio sync is decoupled and handled by the local OS.
 
-## 3. PRODUCTION DASHBOARD & WORKFLOW:
-- Realtime progress bars for Images, Veo Videos, and Audios.
-- [ 1. 🖼️ เจนรูปทั้งหมด ] -> [ 2. 🎬 สร้างเป็นคลิปทั้งหมด ] -> [ 🎙️ สร้างเสียงพากย์ทั้งหมด ] -> [ 3. 🎞️ รวมคลิปเป็น 1 (Master) ].
+2. MASTER DIRECTIVE INPUT & AUTOMATIC PARSING:
+- Single large Textarea input for pasting the Master Directive from PK Marketing AI OS.
+- Auto-parses [SHOT 1], [SHOT 2], ... with Duration, Timecode, Shot Type, Visual Prompt (EN), Camera Motion (Veo 2), and Subtitle/Voiceover scripts.
 
-## 4. MULTI-PROJECT HISTORY & PERSISTENCE:
-- Save, Load, and Delete campaigns to localStorage with Shot 1 thumbnails.
-- Automatic draft saving.`;
+3. LIVE PRODUCTION STATUS DASHBOARD:
+- Visual progress bars for:
+  • Keyframe Images generated (e.g., 8/8)
+  • Veo Videos rendered (e.g., 8/8)
+  • Overall Production Status (Pending / In Progress / Ready to Export).
+
+4. STRUCTURED 1 -> 2 -> 3 BATCH PRODUCTION PIPELINE:
+- [ 1. 🖼️ เจนภาพนิ่งทั้งหมด (Batch Images) ]: Renders all keyframes for character & product consistency check.
+- [ 2. 🎬 สร้างเป็นคลิปทั้งหมด (Batch Veo Videos) ]: Uses keyframes as input anchor and applies cinematic camera & physical motion prompts.
+- [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด (Export Clips) ]: Allows 1-click batch download of all generated video clips.
+
+5. MULTI-PROJECT HISTORY & PERSISTENCE:
+- Saves campaigns to localStorage with timestamps, shot counts, and names.
+- Dropdown or Drawer to browse and reload previous projects without losing work upon page refresh.`;
 
 export default function CommercialStudioPage() {
   return (
