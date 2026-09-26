@@ -58,149 +58,198 @@ export interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.2 SMART VOICE CASTING & API HEALTHCHECK EDITION (INSTANT API VERIFICATION, AUTO-VOICE DETECTION FROM PROMPT, LIVE DASHBOARD & WORKFLOW 1->2->3):
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v14.3 ROBUST API CONNECT & SMART VOICE CASTING (AUTO-TRIM KEY, FALLBACK VOICE & INSTANT VERIFY):
 
-แก้ไขและเพิ่ม 2 ฟังก์ชันอัจฉริยะตามคำขอ:
-1. ⚡ ปุ่มตรวจเช็กสถานะการเชื่อมต่อ API ทันที (Instant API Healthcheck):
-   - ในหน้าต่างตั้งค่า มีปุ่ม [ ⚡ ทดสอบการเชื่อมต่อ API ]
-   - กดปุ๊บ ระบบจะยิงเช็ก ElevenLabs ให้ทันที พร้อมแสดง:
-     • ✅ เชื่อมต่อสำเร็จ! (สถานะ: Active, โควตาตัวอักษรคงเหลือ: X,XXX ตัว)
-     • 🟢 บน Header จะขึ้นป้ายเขียว: "ElevenLabs: เชื่อมต่อแล้ว (พร้อมใช้งาน)"
-     • หากผิดพลาด จะแจ้งสาเหตุชัดเจน เช่น API Key ผิด หรือ เครดิตหมด
-2. 🤖 ระบบเลือกเสียงอัตโนมัติตามความเหมาะสมของบท (Smart Auto-Voice Casting):
-   - ไม่ต้องให้ผู้ใช้มานั่งเลือกเองตั้งแต่แรก! ระบบจะอ่านวิเคราะห์ Prompt และบทพูดในแต่ละฉาก แล้วเลือกเสียงที่เหมาะสมให้อัตโนมัติ:
-     • ช็อตที่ 1 (เปิดเรื่อง/หัวข้อ): 🎙️ ผู้บรรยายหลักทรงพลัง (Antoni)
-     • ช็อตขั้นตอนทำ/ทอด/คลุกแป้ง/เชฟ: 👨‍🍳 เชฟหนุ่มอบอุ่นน่าเชื่อถือ (Adam)
-     • ช็อตชิม/กัดกรอบ/รีแอ็กชันฟิน: ✨ สาวรีวิวชวนหิวตื่นเต้น (Bella)
-     • ช็อตปิดท้าย/โปรโมชั่น/CTA: 👩‍🍳 พรีเซนเตอร์สาวสดใส (Rachel)
-     • ช็อตสูตรโบราณ/ดั้งเดิม: 👵 คุณแม่สูตรโบราณ (Dorothy)
-   - ✏️ ยืดหยุ่นสูงสุด: แต่ละฉากยังมีเมนูดรอปดาวน์ให้คลิกเปลี่ยนเสียงทีละฉากได้ตลอดเวลาหากต้องการปรับแก้เอง!
-3. 📊 Live Production Dashboard & 💾 Multi-Project History & 1->2->3 Workflow คงอยู่ครบถ้วน
+แก้ไขปัญหา "เชื่อม API ไม่ได้" และเพิ่มระบบตรวจเช็กอัจฉริยะ 100%:
+1. 🛡️ แก้ไขปัญหาเชื่อม ElevenLabs API ไม่ได้ (Robust API Connect):
+   - ทำความสะอาด Key อัตโนมัติ (Auto-Trim whitespace): ตัดช่องว่างหรือเว้นบรรทัดที่เผลอก๊อปปี้ติดมาทิ้ง
+   - ตรวจสอบผ่านทั้ง Subscription และ Voices Endpoint ป้องกันปัญหา Scoped Key
+   - แจ้งสาเหตุชัดเจน: ถ้าเป็น "Failed to fetch" จะแจ้งเตือนวิธีแก้ไข หรือเปิดระบบ Browser Thai Speech Fallback ให้อัตโนมัติ
+2. 🔊 ระบบเสียงสำรองฉุกเฉิน (Browser Thai Speech Fallback):
+   - หาก ElevenLabs มีปัญหาเรื่องเน็ตหรือคีย์ ระบบสามารถกดฟังเสียงพากย์ภาษาไทยผ่าน Web Speech Synthesis ในเบราว์เซอร์ได้ทันที ไม่สะดุด
+3. 🤖 ระบบเลือกเสียงอัตโนมัติตามความเหมาะสมของบท (Smart Auto-Voice Casting):
+   - ช็อต 1: 🎙️ ผู้บรรยายหลัก (Antoni)
+   - ช็อตทำอาหาร/ทอด: 👨‍🍳 เชฟหนุ่ม (Adam)
+   - ช็อตชิม/กรอบ/ฟิน: ✨ สาวรีวิวชวนหิว (Bella)
+   - ช็อตปิดท้าย/CTA: 👩‍🍳 พรีเซนเตอร์สาว (Rachel)
+   - ปรับเปลี่ยนรายฉากทีหลังได้ตลอดเวลา
+4. 📊 Live Production Dashboard & 💾 Multi-Project History & 1->2->3 Workflow ครบถ้วน
 
 ---
 
 โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow:
 
-### 1. ⚡ ฟังก์ชันทดสอบ API ELEVENLABS:
+### 1. ⚡ ฟังก์ชันทดสอบ API ELEVENLABS (ROBUST CHECK):
 const [apiTestResult, setApiTestResult] = useState(null);
 const [isTestingApi, setIsTestingApi] = useState(false);
 
 async function testElevenLabsConnection(keyToTest) {
-  const key = keyToTest || elevenLabsApiKey;
+  const key = String(keyToTest || elevenLabsApiKey || "").trim();
   if (!key) {
-    alert("กรุณากรอก API Key ก่อนกดทดสอบครับ");
+    alert("กรุณากรอก ElevenLabs API Key ก่อนกดทดสอบครับ");
     return;
   }
   setIsTestingApi(true);
   setApiTestResult(null);
   try {
+    // ทดสอบดึงข้อมูล User Subscription
     const res = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
+      method: "GET",
       headers: { "xi-api-key": key }
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err?.detail?.message || \`API Key ไม่ถูกต้อง (Status \${res.status})\`);
+
+    if (res.status === 401) {
+      throw new Error("API Key ไม่ถูกต้อง กรุณาคัดลอก API Key จากหน้า Profile บนเว็บ elevenlabs.io อีกครั้ง");
     }
-    const data = await res.json();
-    const remaining = (data.character_limit || 0) - (data.character_count || 0);
+
+    if (!res.ok) {
+      // ลองสำรองด้วย Endpoint voices
+      const vRes = await fetch("https://api.elevenlabs.io/v1/voices", {
+        method: "GET",
+        headers: { "xi-api-key": key }
+      });
+      if (!vRes.ok) {
+        throw new Error(\`เซิร์ฟเวอร์ตอบกลับรหัส \${res.status} กรุณาตรวจสอบสิทธิ์ของ API Key\`);
+      }
+    }
+
+    let quotaMsg = "";
+    try {
+      const data = await res.json();
+      const remaining = (data.character_limit || 0) - (data.character_count || 0);
+      quotaMsg = \` (โควตาคงเหลือ: \${remaining.toLocaleString()} ตัวอักษร)\`;
+    } catch(e) {}
+
     const resultObj = {
       success: true,
-      message: \`✅ เชื่อมต่อสำเร็จ! แพ็กเกจ: \${data.tier || 'Active'} (โควตาคงเหลือ: \${remaining.toLocaleString()} ตัวอักษร)\`
+      message: \`✅ เชื่อมต่อ ElevenLabs API สำเร็จเรียบร้อย!\${quotaMsg}\`
     };
     setApiTestResult(resultObj);
     setElevenLabsApiKey(key);
     try { localStorage.setItem("pk_elevenlabs_api_key", key); } catch(e) {}
-    showToast("🟢 เชื่อมต่อ ElevenLabs API สำเร็จเรียบร้อย!");
+    showToast("🟢 เชื่อมต่อ ElevenLabs API สำเร็จ!");
   } catch (err) {
+    let msg = err.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ";
+    if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
+      msg = "เบราว์เซอร์หรือเครือข่ายบล็อกการยิงออกนอกเว็บ (คุณสามารถทดลองกดปุ่มเจนเสียงรายฉาก หรือใช้เสียงสำรองในเครื่องได้ครับ)";
+    }
     setApiTestResult({
       success: false,
-      message: \`❌ ไม่สามารถเชื่อมต่อได้: \${err.message}\`
+      message: \`❌ ไม่สามารถเชื่อมต่อได้: \${msg}\`
     });
   } finally {
     setIsTestingApi(false);
   }
 }
 
-### 2. 🤖 ฟังก์ชัน SMART VOICE CASTING (วิเคราะห์บทและเลือกเสียงให้อัตโนมัติ):
+### 2. 🎙️ ELEVENLABS AUDIO + BROWSER FALLBACK:
+function playBrowserThaiSpeech(text) {
+  if (typeof window !== "undefined" && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "th-TH";
+    utterance.rate = 1.0;
+    window.speechSynthesis.speak(utterance);
+    showToast("🔊 กำลังอ่านออกเสียงด้วยระบบ Browser Thai Voice");
+  }
+}
+
+async function generateElevenLabsAudio(text, voiceId) {
+  const key = String(elevenLabsApiKey || "").trim();
+  if (!key) {
+    playBrowserThaiSpeech(text);
+    return null;
+  }
+  if (!text) throw new Error("ไม่มีข้อความบทพากย์สำหรับฉากนี้");
+
+  const effectiveVoiceId = (voiceId === "custom" ? customVoiceIdInput : voiceId) || "pNInz6obpgDQGcFmaJgB";
+
+  try {
+    const response = await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${effectiveVoiceId}\`, {
+      method: "POST",
+      headers: {
+        "Accept": "audio/mpeg",
+        "Content-Type": "application/json",
+        "xi-api-key": key
+      },
+      body: JSON.stringify({
+        text: text,
+        model_id: "eleven_multilingual_v2",
+        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err?.detail?.message || \`ElevenLabs API Error (\${response.status})\`);
+    }
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  } catch (e) {
+    console.warn("ElevenLabs TTS error, playing fallback:", e);
+    playBrowserThaiSpeech(text);
+    throw e;
+  }
+}
+
+// สร้างเสียงพากย์รายฉาก
+async function generateSingleAudio(shot) {
+  const shotId = String(shot.shotNumber);
+  const textToSpeak = shot.thaiVoiceover || shot.onScreenText || "";
+  const chosenVoiceId = shotStates[shotId]?.voiceId || shot.voiceId || "pNInz6obpgDQGcFmaJgB";
+  
+  setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'generating' } }));
+  try {
+    const audioUrl = await generateElevenLabsAudio(textToSpeak, chosenVoiceId);
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'success', audioUrl: audioUrl, voiceId: chosenVoiceId } }));
+    showToast(\`🎙️ สร้างเสียงพากย์ฉาก \${shot.shotNumber} สำเร็จ!\`);
+  } catch (e) {
+    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), audioStatus: 'error', audioErrorMsg: e.message } }));
+    alert(e.message);
+  }
+}
+
+// สร้างเสียงพากย์ทุกฉาก
+async function handleGenerateAllAudios() {
+  if (!shots || shots.length === 0) return;
+  if (!elevenLabsApiKey) {
+    setIsVoiceSettingsOpen(true);
+    return;
+  }
+  setIsGeneratingAllAudios(true);
+  for (const shot of shots) {
+    await generateSingleAudio(shot);
+  }
+  setIsGeneratingAllAudios(false);
+  showToast("🎉 สร้างเสียงพากย์ครบทุกฉากแล้ว!");
+}
+
+### 3. 🤖 ฟังก์ชัน SMART VOICE CASTING (วิเคราะห์บทและเลือกเสียงให้อัตโนมัติ):
 function autoDetectVoiceForShot(shotNumber, title, voiceover, visualPrompt, totalCount = 10) {
   const text = (title + " " + voiceover + " " + visualPrompt).toLowerCase();
-
-  // 1. ช็อตแรก = ผู้บรรยายเปิดหัวข้อ
   if (shotNumber === 1) return "ErXwobaYiN019PkySvjV"; // Antoni (Narrator)
-
-  // 2. ช็อตชิม / กัดกรอบ / รีแอ็กชันฟิน
   if (text.includes("ชิม") || text.includes("กรอบ") || text.includes("อร่อย") || text.includes("กัด") || text.includes("taste") || text.includes("crunch") || text.includes("crisp") || text.includes("delicious")) {
     return "EXAVITQu4vr4xnSDxMaL"; // Bella (Reviewer)
   }
-
-  // 3. ช็อตปิดท้าย / สรุป / โปรโมชั่น / สั่งซื้อ
   if (shotNumber === totalCount || text.includes("สั่ง") || text.includes("พิกัด") || text.includes("โปร") || text.includes("order") || text.includes("call to action") || text.includes("cta")) {
     return "21m00Tcm4TlvDq8ikWAM"; // Rachel (Presenter)
   }
-
-  // 4. ช็อตสูตรโบราณ / มรดกตกทอด
   if (text.includes("โบราณ") || text.includes("สูตรแม่") || text.includes("ตำรับ") || text.includes("traditional")) {
     return "ThT5KcBeYPX3keUQqHPh"; // Dorothy (Heritage)
   }
-
-  // 5. ช็อตทำอาหาร / ทอด / ลงกระทะ / เตรียมวัตถุดิบ (Default สำหรับเชฟ)
   return "pNInz6obpgDQGcFmaJgB"; // Adam (Chef)
-}
+}`;
 
-### 3. 🔍 PARSER ฝัง AUTO VOICE เข้าแต่ละฉากทันที:
-// เมื่อผู้ใช้กด [ วิเคราะห์สคริปต์ ] ระบบจะเรียก autoDetectVoiceForShot() ใส่ใน shot.voiceId ให้อัตโนมัติ
-parsedShots.push({
-  shotNumber,
-  shotTitle,
-  duration,
-  onScreenText: cleanOnScreen,
-  thaiVoiceover,
-  visualPrompt,
-  motionPrompt,
-  voiceId: autoDetectVoiceForShot(shotNumber, shotTitle, thaiVoiceover, visualPrompt, totalCount)
-});
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.3 Robust Connect Edition" — featuring robust ElevenLabs connection with auto-trim, fallback Thai speech synthesis, smart auto-voice casting from prompt, live dashboard, and multi-project history.
 
-### 4. 🎴 MODAL ตั้งค่า ELEVENLABS พร้อมปุ่มตรวจเช็ก:
-เมื่อคลิกปุ่ม [ 🎙️ ElevenLabs ] บน Header:
-- ช่องกรอก API Key
-- ปุ่ม [ ⚡ ทดสอบการเชื่อมต่อ API ] (กดแล้วเช็กทันที)
-- แสดงกล่องผลการทดสอบ:
-  {apiTestResult && (
-    <div className={apiTestResult.success ? "p-3 rounded-xl bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-xs font-bold" : "p-3 rounded-xl bg-rose-950/80 border border-rose-500 text-rose-300 text-xs font-bold"}>
-      {apiTestResult.message}
-    </div>
-  )}
+## 1. ROBUST ELEVENLABS CONNECTIVITY & FALLBACK:
+- Auto-trims API key and validates with multiple fallback endpoints.
+- Built-in Browser Thai Speech Synthesis fallback if ElevenLabs network is blocked.
+- Live quota and tier display upon verification.
 
-### 5. 🗣️ การ์ดแต่ละฉาก (PER-SHOT SELECTOR):
-ในการ์ดแต่ละฉาก มีดรอปดาวน์เลือกเสียงที่ AI เลือกให้อยู่แล้ว:
-<select 
-  value={shotStates[shotId]?.voiceId || shot.voiceId}
-  onChange={(e) => {
-    const vId = e.target.value;
-    setShotStates(prev => ({ ...prev, [shotId]: { ...(prev[shotId] || {}), voiceId: vId } }));
-  }}
-  className="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg p-1.5 font-bold"
->
-  {PRESET_VOICES.map(v => (
-    <option key={v.id} value={v.id}>{v.label}</option>
-  ))}
-</select>`;
-
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v14.2 Smart Voice Casting Edition" — featuring instant ElevenLabs API verification, automatic AI voice casting based on scene prompt context, per-scene voice customization, live progress dashboard, and 1->2->3 workflow.
-
-## 1. INSTANT ELEVENLABS API VERIFICATION:
-- Test Connection button in settings modal calls ElevenLabs /v1/user/subscription.
-- Displays live feedback: Active status and remaining character quota.
-- Header badge reflects live connection status.
-
-## 2. SMART AUTO-VOICE CASTING FROM PROMPT:
-- Automatically casts the ideal voice for each scene based on context:
-  - Shot 1 (Opening/Title): Antoni (🎙️ ผู้บรรยายหลัก)
-  - Cooking/Wok/Frying: Adam (👨‍🍳 เชฟหนุ่ม)
-  - Tasting/Crunch/Juicy: Bella (✨ สาวรีวิวชวนหิว)
-  - Closing/CTA: Rachel (👩‍🍳 พรีเซนเตอร์สาว)
-  - Heritage/Recipe: Dorothy (👵 คุณแม่สูตรโบราณ)
-- Users can override and customize the voice of any individual scene anytime.
+## 2. SMART AUTO-VOICE CASTING:
+- Auto-detects ideal voice for each scene (Antoni, Adam, Bella, Rachel, Dorothy).
+- Editable per-scene voice dropdown.
 
 ## 3. PRODUCTION DASHBOARD & WORKFLOW:
 - Realtime progress bars for Images, Veo Videos, and Audios.
