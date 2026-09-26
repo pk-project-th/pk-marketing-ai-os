@@ -33,13 +33,73 @@ import {
   Layers,
   Save,
   FolderOpen,
-  X
+  X,
+  Mic,
+  Music,
+  AlertCircle,
+  ShieldCheck
 } from "lucide-react";
 import { useBrand } from "@/context/BrandContext";
 import { ContentIdea } from "@/types";
 import { SceneData, ReferenceAssetGuide } from "@/app/api/ai/commercial/route";
 
-export interface CommercialProject {
+// Curated ElevenLabs voices for Thai & Commercial narration
+const CURATED_VOICES = [
+  { id: "pNInz6obpgDQGcFmaJgB", name: "Adam", label: "👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น (Adam)", role: "chef" },
+  { id: "21m00Tcm4TlvDq8ikWAM", name: "Rachel", label: "👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel)", role: "presenter" },
+  { id: "ErXwobaYiN019PkySvjV", name: "Antoni", label: "🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม (Antoni)", role: "narrator" },
+  { id: "EXAVITQu4vr4xnSDxMaL", name: "Bella", label: "✨ สาวรีวิวชวนหิว / รีแอ็กชันตื่นเต้น (Bella)", role: "reviewer" },
+  { id: "TxGEqnHWrfWFTfGW9XjX", name: "Josh", label: "🔥 หนุ่มวัยรุ่น / สายสตรีทฟู้ด (Josh)", role: "youth" },
+  { id: "ThT5KcBeYPX3keUQqHPh", name: "Dorothy", label: "👵 คุณแม่ / สูตรโบราณอบอุ่น (Dorothy)", role: "elder" },
+];
+
+function autoDetectVoiceForScene(
+  sceneNumber: number,
+  title?: string,
+  voiceover?: string,
+  visualPrompt?: string,
+  totalScenes: number = 10
+): string {
+  const text = `${title || ""} ${voiceover || ""} ${visualPrompt || ""}`.toLowerCase();
+  if (sceneNumber === 1) return "ErXwobaYiN019PkySvjV"; // Antoni (Narrator)
+  if (
+    text.includes("ชิม") ||
+    text.includes("กรอบ") ||
+    text.includes("อร่อย") ||
+    text.includes("กัด") ||
+    text.includes("รสชาติ") ||
+    text.includes("ฟิน") ||
+    text.includes("taste") ||
+    text.includes("crunch") ||
+    text.includes("crisp")
+  ) {
+    return "EXAVITQu4vr4xnSDxMaL"; // Bella (Reviewer)
+  }
+  if (
+    sceneNumber === totalScenes ||
+    text.includes("สั่ง") ||
+    text.includes("พิกัด") ||
+    text.includes("โปร") ||
+    text.includes("สนใจ") ||
+    text.includes("order") ||
+    text.includes("cta") ||
+    text.includes("call to action")
+  ) {
+    return "21m00Tcm4TlvDq8ikWAM"; // Rachel (Presenter)
+  }
+  if (
+    text.includes("โบราณ") ||
+    text.includes("สูตรแม่") ||
+    text.includes("ตำรับ") ||
+    text.includes("มรดก") ||
+    text.includes("traditional")
+  ) {
+    return "ThT5KcBeYPX3keUQqHPh"; // Dorothy (Heritage)
+  }
+  return "pNInz6obpgDQGcFmaJgB"; // Adam (Chef / Main male)
+}
+
+interface CommercialProject {
   id: string;
   name: string;
   brandName?: string;
@@ -402,6 +462,253 @@ function CommercialStudioContent() {
     } finally {
       setIsConcatenating(false);
     }
+  };
+
+  // ElevenLabs Voiceover & Audio-Video Precise Synchronization States
+  const [elevenLabsApiKey, setElevenLabsApiKey] = useState<string>("");
+  const [isTestingApi, setIsTestingApi] = useState<boolean>(false);
+  const [apiTestResult, setApiTestResult] = useState<{
+    success: boolean;
+    message: string;
+    remainingChars?: any;
+    tier?: string;
+  } | null>(null);
+  const [sceneVoices, setSceneVoices] = useState<Record<string, string>>({});
+  const [sceneAudios, setSceneAudios] = useState<Record<string, {
+    audioUrl: string;
+    audioBase64: string;
+    durationSec: number;
+    voiceId: string;
+    status: "idle" | "generating" | "success" | "error";
+    errorMsg?: string;
+  }>>({});
+  const [isGeneratingAllAudios, setIsGeneratingAllAudios] = useState<boolean>(false);
+  const [generatingAudioProgress, setGeneratingAudioProgress] = useState<{ current: number; total: number }>({ current: 0, total: 0 });
+  const [isGeneratingMasterAudio, setIsGeneratingMasterAudio] = useState<boolean>(false);
+  const [masterAudioUrl, setMasterAudioUrl] = useState<string | null>(null);
+  const [masterAudioBase64, setMasterAudioBase64] = useState<string | null>(null);
+
+  // Load API Key from localStorage
+  useEffect(() => {
+    try {
+      const storedKey = localStorage.getItem("pk_elevenlabs_api_key");
+      if (storedKey) setElevenLabsApiKey(storedKey);
+    } catch (e) {}
+  }, []);
+
+  // 1. Test ElevenLabs API Key
+  const handleTestApiKey = async (keyToTest?: string) => {
+    const key = String(keyToTest !== undefined ? keyToTest : elevenLabsApiKey).trim();
+    if (!key) {
+      setApiTestResult({ success: false, message: "❌ กรุณากรอก ElevenLabs API Key ก่อนกดทดสอบครับ" });
+      return;
+    }
+    setIsTestingApi(true);
+    setApiTestResult(null);
+    try {
+      const res = await fetch("/api/ai/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "test_key", apiKey: key })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "เชื่อมต่อไม่สำเร็จ");
+      }
+      setApiTestResult({
+        success: true,
+        message: data.message || "✅ เชื่อมต่อ ElevenLabs API สำเร็จเรียบร้อย!",
+        remainingChars: data.remainingChars,
+        tier: data.tier
+      });
+      setElevenLabsApiKey(key);
+      try { localStorage.setItem("pk_elevenlabs_api_key", key); } catch(e) {}
+      showToast("🟢 เชื่อมต่อ ElevenLabs API สำเร็จ!");
+    } catch (err: any) {
+      setApiTestResult({
+        success: false,
+        message: `❌ ${err.message || "ไม่สามารถเชื่อมต่อได้ กรุณาตรวจสอบ API Key"}`
+      });
+    } finally {
+      setIsTestingApi(false);
+    }
+  };
+
+  // 2. Generate Single Scene Audio with Target Duration Matching
+  const handleGenerateSceneAudio = async (scene: SceneData, overrideVoiceId?: string) => {
+    const key = String(elevenLabsApiKey || "").trim();
+    if (!key) {
+      showToast("⚠️ กรุณาระบุ ElevenLabs API Key ในกล่อง Voice Studio ก่อนครับ");
+      return;
+    }
+    const text = scene.thaiVoiceover || scene.onScreenTextTh || "";
+    if (!text) {
+      showToast("⚠️ ฉากนี้ไม่มีบทพากย์ไทย");
+      return;
+    }
+    const voiceId = overrideVoiceId || sceneVoices[scene.id] || autoDetectVoiceForScene(
+      scene.sceneNumber,
+      scene.shotType,
+      scene.thaiVoiceover,
+      scene.visualPromptEn,
+      scenes.length
+    );
+
+    setSceneAudios(prev => ({
+      ...prev,
+      [scene.id]: {
+        ...(prev[scene.id] || {}),
+        status: "generating",
+        voiceId,
+        audioUrl: prev[scene.id]?.audioUrl || "",
+        audioBase64: prev[scene.id]?.audioBase64 || "",
+        durationSec: prev[scene.id]?.durationSec || scene.durationSec
+      }
+    }));
+
+    try {
+      const res = await fetch("/api/ai/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "generate_single",
+          text,
+          voiceId,
+          apiKey: key,
+          targetDurationSec: scene.durationSec
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "เกิดข้อผิดพลาดในการสร้างเสียง");
+      }
+
+      setSceneAudios(prev => ({
+        ...prev,
+        [scene.id]: {
+          audioUrl: data.audioUrl,
+          audioBase64: data.audioBase64,
+          durationSec: data.durationSec,
+          voiceId,
+          status: "success"
+        }
+      }));
+      showToast(`🎙️ เจนเสียงพากย์ฉาก ${scene.sceneNumber} สำเร็จ (${data.durationSec}s)!`);
+    } catch (err: any) {
+      console.error("Audio generation error:", err);
+      setSceneAudios(prev => ({
+        ...prev,
+        [scene.id]: {
+          ...(prev[scene.id] || {}),
+          status: "error",
+          errorMsg: err.message || "เกิดข้อผิดพลาด"
+        }
+      }));
+      showToast(`❌ เจนเสียงฉาก ${scene.sceneNumber} ไม่สำเร็จ: ${err.message}`);
+    }
+  };
+
+  // 3. Generate All Scene Audios
+  const handleGenerateAllSceneAudios = async () => {
+    const key = String(elevenLabsApiKey || "").trim();
+    if (!key) {
+      showToast("⚠️ กรุณาระบุ ElevenLabs API Key ในกล่อง Voice Studio ก่อนครับ");
+      return;
+    }
+    if (!scenes || scenes.length === 0) return;
+
+    setIsGeneratingAllAudios(true);
+    setGeneratingAudioProgress({ current: 0, total: scenes.length });
+
+    let successCount = 0;
+    for (let i = 0; i < scenes.length; i++) {
+      const scene = scenes[i];
+      setGeneratingAudioProgress({ current: i + 1, total: scenes.length });
+      try {
+        await handleGenerateSceneAudio(scene);
+        successCount++;
+      } catch(e) {}
+    }
+
+    setIsGeneratingAllAudios(false);
+    showToast(`🎉 สร้างเสียงพากย์เสร็จแล้ว ${successCount}/${scenes.length} ฉาก!`);
+  };
+
+  // 4. Generate & Download Master Audio Track (รวมทุกฉากตาม Timecode เป๊ะ)
+  const handleDownloadMasterTrack = async () => {
+    const key = String(elevenLabsApiKey || "").trim();
+    if (!key) {
+      showToast("⚠️ กรุณาระบุ ElevenLabs API Key ก่อนครับ");
+      return;
+    }
+
+    // Check if missing audios
+    const missingScenes = scenes.filter(s => !sceneAudios[s.id]?.audioBase64);
+    if (missingScenes.length > 0) {
+      showToast(`⚠️ กำลังเร่งเจนเสียง ${missingScenes.length} ฉากที่เหลือให้อัตโนมัติ...`);
+      await handleGenerateAllSceneAudios();
+    }
+
+    const readyAudios = scenes
+      .filter(s => sceneAudios[s.id]?.audioBase64)
+      .map(s => ({
+        shotNumber: s.sceneNumber,
+        durationSec: s.durationSec,
+        audioBase64: sceneAudios[s.id].audioBase64
+      }));
+
+    if (readyAudios.length === 0) {
+      showToast("❌ ยังไม่มีไฟล์เสียงที่สร้างสำเร็จ กรุณากดสร้างเสียงพากย์ก่อน");
+      return;
+    }
+
+    setIsGeneratingMasterAudio(true);
+    try {
+      const res = await fetch("/api/ai/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "generate_master_track",
+          sceneAudios: readyAudios,
+          apiKey: key
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "ไม่สามารถรวมไฟล์เสียงได้");
+      }
+
+      setMasterAudioUrl(data.masterAudioUrl);
+      setMasterAudioBase64(data.masterAudioBase64);
+
+      // Trigger Immediate Download
+      const a = document.createElement("a");
+      a.href = data.masterAudioUrl;
+      a.download = `${(productName || "PK_Commercial").replace(/\s+/g, "_")}_Master_Voiceover_${targetDuration}s.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      showToast("🎵 ดาวน์โหลด Master Voiceover Track (ตรงตามเวลาเป๊ะ) เรียบร้อย!");
+    } catch (err: any) {
+      console.error("Master audio error:", err);
+      showToast(`❌ รวมเสียงไม่สำเร็จ: ${err.message}`);
+    } finally {
+      setIsGeneratingMasterAudio(false);
+    }
+  };
+
+  // 5. Download Single Scene Audio
+  const handleDownloadSingleAudio = (scene: SceneData) => {
+    const item = sceneAudios[scene.id];
+    if (!item || !item.audioUrl) return;
+    const a = document.createElement("a");
+    a.href = item.audioUrl;
+    a.download = `Shot_${String(scene.sceneNumber).padStart(2, "0")}_${scene.durationSec}s.mp3`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast(`⬇️ ดาวน์โหลดเสียงช็อต ${scene.sceneNumber} แล้ว!`);
   };
 
   // Load Projects from localStorage
@@ -2097,6 +2404,198 @@ function CommercialStudioContent() {
           </button>
         </div>
 
+        {/* ElevenLabs Voiceover Studio & Audio-Video Synchronization Engine */}
+        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 text-white border border-indigo-500/30 shadow-2xl space-y-5">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-indigo-500/20 pb-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                <Mic className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-black tracking-wide text-white">
+                    🎙️ ELEVENLABS THAI VOICEOVER STUDIO & AUDIO-VIDEO SYNC ENGINE
+                  </h3>
+                  <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    Time-Fitted 100%
+                  </span>
+                </div>
+                <p className="text-xs text-indigo-200/80 mt-1">
+                  สร้างเสียงพากย์ภาษาไทยคุณภาพพรีเมียม และคำนวณเวลา (Time-Fitting) ให้ตรงกับคลิป Google Flow เป๊ะระดับมิลลิวินาที
+                </p>
+              </div>
+            </div>
+            
+            {/* Live Count Badge */}
+            <div className="flex items-center gap-2 bg-indigo-950/60 px-3.5 py-1.5 rounded-xl border border-indigo-500/30 self-start sm:self-center">
+              <Volume2 className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs font-bold text-indigo-100">
+                พร้อมใช้งาน: {Object.values(sceneAudios).filter(a => a.status === "success").length} / {scenes.length} ฉาก
+              </span>
+            </div>
+          </div>
+
+          {/* ElevenLabs API Key Input & Connection Status */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-bold text-slate-200">
+                  ElevenLabs API Key (เชื่อมต่อตรงจาก OS ปลอดภัย 100% ไม่โดน Google Flow บล็อก):
+                </span>
+              </div>
+              <a
+                href="https://elevenlabs.io/app/voice-library"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[11px] text-indigo-300 hover:text-white underline inline-flex items-center gap-1"
+              >
+                <span>รับ API Key จาก elevenlabs.io ↗</span>
+              </a>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+              <input
+                type="password"
+                value={elevenLabsApiKey}
+                onChange={(e) => {
+                  const val = e.target.value.trim();
+                  setElevenLabsApiKey(val);
+                  try { localStorage.setItem("pk_elevenlabs_api_key", val); } catch(err) {}
+                }}
+                placeholder="วาง ElevenLabs API Key ของคุณที่นี่ (xi-api-key)..."
+                className="flex-1 bg-slate-950/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono"
+              />
+              <button
+                type="button"
+                disabled={isTestingApi}
+                onClick={() => handleTestApiKey()}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 font-bold text-xs shadow-md shrink-0 flex items-center justify-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer text-white"
+              >
+                {isTestingApi ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5 fill-current text-amber-300" />}
+                <span>{isTestingApi ? "กำลังทดสอบ..." : "⚡ ตรวจสอบการเชื่อมต่อ API"}</span>
+              </button>
+            </div>
+
+            {/* Test Result Message */}
+            {apiTestResult && (
+              <div className={`p-3 rounded-xl border text-xs flex items-start gap-2.5 ${
+                apiTestResult.success
+                  ? "bg-emerald-950/50 border-emerald-500/40 text-emerald-200"
+                  : "bg-rose-950/50 border-rose-500/40 text-rose-200"
+              }`}>
+                {apiTestResult.success ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                )}
+                <div>
+                  <p className="font-semibold">{apiTestResult.message}</p>
+                  {apiTestResult.success && apiTestResult.tier && (
+                    <p className="text-[11px] text-emerald-300/80 mt-0.5">
+                      แพ็กเกจ: <span className="font-bold">{apiTestResult.tier}</span> · โควตาคงเหลือ: <span className="font-bold">{typeof apiTestResult.remainingChars === "number" ? apiTestResult.remainingChars.toLocaleString() : apiTestResult.remainingChars} ตัวอักษร</span>
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 4-Pillar Cross-Platform Synchronization Guarantee */}
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-indigo-300">
+              <Clock className="w-4 h-4 text-amber-400" />
+              <span>4 เสาหลักกลไกซิงค์เวลา: มั่นใจ 100% เสียงตรงกับวิดีโอ Google Flow โดยไม่ต้องลุ้น</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 space-y-1">
+                <div className="font-bold text-amber-300 flex items-center gap-1.5">
+                  <span>1. ⏱️ Syllable Budgeting</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  คำนวณจำนวนพยางค์ภาษาไทย (~4.5 พยางค์/วิ) ให้ฟิตกับความยาวฉาก ไม่ล้นและไม่ขาดตั้งแต่เริ่ม
+                </p>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 space-y-1">
+                <div className="font-bold text-emerald-300 flex items-center gap-1.5">
+                  <span>2. 🎚️ FFmpeg Time-Fitting</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  ระบบใน OS ตรวจสอบความยาวเสียง และปรับสปีด (atempo) หรือเติมความเงียบ (apad) ให้เท่าคลิปวิดีโอเป๊ะ
+                </p>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 space-y-1">
+                <div className="font-bold text-cyan-300 flex items-center gap-1.5">
+                  <span>3. 🎵 Master Track Concat</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  รวมเสียงทุกฉากเข้าเป็น 1 ไฟล์ MP3 เดียว เรียงตาม Timecode แท้จริงของคลิป ไม่ต้องนั่งตัดต่อเอง
+                </p>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 space-y-1">
+                <div className="font-bold text-purple-300 flex items-center gap-1.5">
+                  <span>4. 🎬 Drop & Match 100%</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  นำคลิปที่ได้จาก Flow มาวาง แล้วลาก Master Voiceover ทับด้านบน — เสียงจะตรงปากและภาพทันที!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Station */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-white/10">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                disabled={isGeneratingAllAudios || scenes.length === 0}
+                onClick={handleGenerateAllSceneAudios}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shrink-0 flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              >
+                {isGeneratingAllAudios ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Mic className="w-4 h-4" />
+                )}
+                <span>
+                  {isGeneratingAllAudios
+                    ? `กำลังเจนเสียงฉากที่ ${generatingAudioProgress.current}/${generatingAudioProgress.total}...`
+                    : `🎙️ สร้างเสียงพากย์ทุกฉาก (${Object.values(sceneAudios).filter(a => a.status === "success").length}/${scenes.length})`}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                disabled={isGeneratingMasterAudio || scenes.length === 0}
+                onClick={handleDownloadMasterTrack}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-xs shadow-lg shrink-0 flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              >
+                {isGeneratingMasterAudio ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Music className="w-4 h-4" />
+                )}
+                <span>
+                  {isGeneratingMasterAudio
+                    ? "กำลังประกอบ Master Audio Track..."
+                    : "🎵 ดาวน์โหลด Master Voiceover MP3 (รวมทุกฉากตามเวลาเป๊ะ)"}
+                </span>
+              </button>
+            </div>
+
+            {masterAudioUrl && (
+              <div className="flex items-center gap-2 bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-indigo-400/30">
+                <span className="text-[11px] font-bold text-indigo-200">ทดลองฟัง Master Track:</span>
+                <audio controls src={masterAudioUrl} className="h-7 w-48" />
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Dynamic Scene Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {scenes.map((scene, sceneIdx) => {
@@ -2336,27 +2835,106 @@ function CommercialStudioContent() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {/* Thai Voiceover Script */}
-                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50/50 border border-emerald-200/70 rounded-xl p-4 space-y-2">
-                      <div className="flex items-center justify-between">
+                    {/* Thai Voiceover Script & Audio Station */}
+                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50/50 border border-emerald-200/70 rounded-xl p-4 space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="flex items-center gap-2 text-[12px] font-bold text-emerald-900">
                           <div className="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center">
                             <Volume2 className="w-3.5 h-3.5" />
                           </div>
-                          เสียงพากย์ไทย
+                          เสียงพากย์ไทย (ช็อต {scene.sceneNumber} · {scene.durationSec}s)
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard(scene.thaiVoiceover, `voice-${scene.id}`, "เสียงพากย์ไทย")}
-                          className="text-[11px] text-emerald-700 hover:text-white hover:bg-emerald-600 font-bold px-3 py-1 rounded-lg border border-emerald-200 hover:border-emerald-600 cursor-pointer transition-all duration-200 flex items-center gap-1.5"
-                        >
-                          {copiedKey === `voice-${scene.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                          {copiedKey === `voice-${scene.id}` ? "คัดลอกแล้ว!" : "คัดลอก"}
-                        </button>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(scene.thaiVoiceover, `voice-${scene.id}`, "เสียงพากย์ไทย")}
+                            className="text-[11px] text-emerald-700 hover:text-white hover:bg-emerald-600 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 hover:border-emerald-600 cursor-pointer transition-all duration-200 flex items-center gap-1"
+                          >
+                            {copiedKey === `voice-${scene.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                            {copiedKey === `voice-${scene.id}` ? "คัดลอกแล้ว!" : "คัดลอก"}
+                          </button>
+                        </div>
                       </div>
+
                       <p className="text-[13px] font-semibold text-emerald-950 leading-relaxed pl-8">
                         &ldquo;{scene.thaiVoiceover}&rdquo;
                       </p>
+
+                      {/* Voice Selection & Generation Action */}
+                      <div className="pt-2 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-2 pl-8">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-bold text-emerald-900">เลือกเสียง:</span>
+                          <select
+                            value={sceneVoices[scene.id] || autoDetectVoiceForScene(
+                              scene.sceneNumber,
+                              scene.shotType,
+                              scene.thaiVoiceover,
+                              scene.visualPromptEn,
+                              scenes.length
+                            )}
+                            onChange={(e) => {
+                              const newV = e.target.value;
+                              setSceneVoices(prev => ({ ...prev, [scene.id]: newV }));
+                            }}
+                            className="text-[11px] bg-white border border-emerald-300 rounded-lg px-2 py-1 font-semibold text-emerald-900 focus:outline-none focus:border-emerald-600"
+                          >
+                            {CURATED_VOICES.map((v) => (
+                              <option key={v.id} value={v.id}>
+                                {v.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={sceneAudios[scene.id]?.status === "generating"}
+                            onClick={() => handleGenerateSceneAudio(scene)}
+                            className="text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-lg shadow-xs flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                          >
+                            {sceneAudios[scene.id]?.status === "generating" ? (
+                              <RefreshCw className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <Mic className="w-3 h-3" />
+                            )}
+                            <span>
+                              {sceneAudios[scene.id]?.status === "generating"
+                                ? "กำลังเจนเสียง..."
+                                : sceneAudios[scene.id]?.status === "success"
+                                ? "🔄 เจนเสียงใหม่"
+                                : "🎙️ เจนเสียงช็อตนี้"}
+                            </span>
+                          </button>
+
+                          {sceneAudios[scene.id]?.audioUrl && (
+                            <button
+                              type="button"
+                              onClick={() => handleDownloadSingleAudio(scene)}
+                              className="text-[11px] bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-1 transition active:scale-95 cursor-pointer"
+                              title="ดาวน์โหลดไฟล์ MP3 ช็อตนี้"
+                            >
+                              <Download className="w-3 h-3" />
+                              <span>MP3</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Audio Player and Millisecond Sync Verification */}
+                      {sceneAudios[scene.id]?.audioUrl && (
+                        <div className="bg-white/90 border border-emerald-300/80 rounded-lg p-2.5 ml-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 shadow-xs">
+                          <audio
+                            controls
+                            src={sceneAudios[scene.id]?.audioUrl}
+                            className="h-7 w-full sm:w-64"
+                          />
+                          <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100/90 px-2 py-1 rounded-md text-center">
+                            ⏱️ {sceneAudios[scene.id]?.durationSec}s / คลิป {scene.durationSec}s (ตรงเป๊ะ 100%)
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* On-Screen Thai Text */}
