@@ -41,74 +41,72 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
   const { activeBrand, setActiveBrand, brands } = useBrand();
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
 
-  // Grouped Navigation according to Section 10 of prompt:
-  // OVERVIEW, CREATE (5-stage), MANAGE, GROW, SYSTEM
-  const WORKFLOW_STAGES = [
+  // Redesigned Frictionless Workflow Architecture
+  const CORE_PRODUCTION_ITEMS = [
     {
-      stage: "01",
-      label: "Ideas",
-      sublabel: "คิดไอเดีย & หัวข้อ",
+      id: "ideas",
+      label: "Ideas & Strategy",
+      sublabel: "คิดไอเดีย & กลยุทธ์แคมเปญ",
       href: "/ideas",
       icon: Lightbulb,
-      activeColor: "text-amber-600 bg-amber-50 border-amber-200"
+      badge: "01",
+      badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+      activeColor: "text-amber-700 bg-amber-50/80 border-amber-200"
     },
     {
-      stage: "02",
-      label: "Content",
-      sublabel: "สตูดิโอสื่อ & แคปชัน",
-      href: "/content",
-      icon: FileText,
-      activeColor: "text-blue-600 bg-blue-50 border-blue-200"
-    },
-    {
-      stage: "03",
-      label: "Repurpose",
-      sublabel: "ปรับแต่ง 5 สื่อ",
-      href: "/repurpose",
-      icon: Repeat,
-      activeColor: "text-purple-600 bg-purple-50 border-purple-200"
-    },
-    {
-      stage: "04",
-      label: "Approval",
-      sublabel: "ตรวจสอบ & ความปลอดภัย",
-      href: "/approvals",
-      icon: CheckSquare,
-      activeColor: "text-emerald-600 bg-emerald-50 border-emerald-200"
-    },
-    {
-      stage: "05",
-      label: "Publishing",
-      sublabel: "ตารางออกอากาศ",
-      href: "/publisher",
-      icon: Send,
-      activeColor: "text-rose-600 bg-rose-50 border-rose-200"
-    }
-  ];
-
-  const PRODUCTION_STUDIO_ITEMS = [
-    {
-      label: "AI Video Studio",
-      sublabel: "สร้างวิดีโออัตโนมัติ (Veo 3.1 & Flow)",
-      href: "/studio",
-      icon: Video,
-      badge: "AUTO",
-      activeColor: "text-blue-600 bg-blue-50 border-blue-200"
-    },
-    {
-      label: "Commercial Studio",
-      sublabel: "สร้างโฆษณาเสมือนจริง (Google Flow)",
+      id: "commercial",
+      label: "Commercial Video Studio",
+      sublabel: "วิดีโอโฆษณา + เสียงพากย์ AI + Flow",
       href: "/commercial",
       icon: Film,
-      badge: "STUDIO",
-      activeColor: "text-indigo-600 bg-indigo-50 border-indigo-200"
+      badge: "02 PRO",
+      badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300 font-bold",
+      activeColor: "text-emerald-800 bg-emerald-50/90 border-emerald-300"
+    },
+    {
+      id: "content",
+      label: "Social Copy & Posts",
+      sublabel: "สตูดิโอแคปชัน & ภาพกราฟิกโซเชียล",
+      href: "/content",
+      icon: FileText,
+      badge: "03",
+      badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
+      activeColor: "text-blue-700 bg-blue-50/80 border-blue-200"
+    },
+    {
+      id: "repurpose",
+      label: "Multi-Platform Repurpose",
+      sublabel: "ดัดแปลงฟอร์แมต 5 แพลตฟอร์ม",
+      href: "/repurpose",
+      icon: Repeat,
+      badge: "04",
+      badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
+      activeColor: "text-purple-700 bg-purple-50/80 border-purple-200"
     }
   ];
 
-  const MANAGE_ITEMS = [
-    { label: "Calendar", href: "/publisher?tab=calendar", icon: Calendar },
-    { label: "Prompts & Knowledge", href: "/knowledge", icon: BookOpen },
-    { label: "Creative Briefs", href: "/creative", icon: Compass },
+  const PUBLISH_AND_OPS = [
+    {
+      label: "Review & Approvals",
+      sublabel: "ตรวจความถูกต้อง & กฎความปลอดภัย",
+      href: "/approvals",
+      icon: CheckSquare,
+      activeColor: "text-emerald-700 bg-emerald-50 border-emerald-200"
+    },
+    {
+      label: "Publishing & Calendar",
+      sublabel: "ปฏิทินคอนเทนต์ & คิวออกอากาศ",
+      href: "/publisher",
+      icon: Calendar,
+      activeColor: "text-rose-700 bg-rose-50 border-rose-200"
+    }
+  ];
+
+  const ASSETS_AND_GROWTH = [
+    { label: "Performance Analytics", href: "/analytics", icon: BarChart3 },
+    { label: "Prompts & Knowledge Bible", href: "/knowledge", icon: BookOpen },
+    { label: "Creative Briefs & Positioning", href: "/creative", icon: Compass },
+    { label: "Automated Veo Runner", href: "/studio", icon: Video }
   ];
 
   return (
@@ -216,115 +214,61 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
         <nav className="flex-1 overflow-y-auto p-3 space-y-4 custom-scrollbar">
           {/* OVERVIEW */}
           <div>
-            <div className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 px-2 mb-1">
-              Overview
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 mb-1.5">
+              Command Center
             </div>
             <Link
               href="/"
               onClick={onCloseMobile}
-              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
                 pathname === "/"
-                  ? "bg-[#17181A] text-white font-semibold shadow-luxury-sm"
+                  ? "bg-[#17181A] text-white shadow-luxury-sm"
                   : "text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
               }`}
             >
-              <LayoutDashboard className="w-4 h-4 text-slate-600" />
-              <span>Dashboard (ภาพรวม)</span>
-            </Link>
-
-            <Link
-              href="/studio"
-              onClick={onCloseMobile}
-              className={`flex items-center justify-between px-3 py-2 mt-1 rounded-xl text-xs font-medium border transition-all ${
-                pathname === "/studio"
-                  ? "bg-blue-50 text-blue-800 border-blue-200 font-bold shadow-luxury-sm"
-                  : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <Video className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold">AI Video Studio (Veo 3.1)</span>
-              </div>
-              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200">
-                AUTO
-              </span>
+              <LayoutDashboard className="w-4 h-4 text-slate-500" />
+              <span>Dashboard (ภาพรวมระบบ)</span>
             </Link>
           </div>
 
-          {/* CREATE — 5 GLOBAL WORKFLOW STAGES */}
+          {/* 1. CREATIVE & PRODUCTION */}
           <div>
-            <div className="flex items-center justify-between px-2 mb-1">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
-                Create & Workflow
+            <div className="flex items-center justify-between px-2 mb-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Creative Production
               </span>
-              <span className="text-[9px] font-mono text-[#C9A96E] font-bold">STUDIO</span>
+              <span className="text-[9px] font-mono text-[#C9A96E] font-bold tracking-wider">STUDIOS</span>
             </div>
             <div className="space-y-1">
-              {WORKFLOW_STAGES.map((step) => {
-                const Icon = step.icon;
-                const isActive = pathname === step.href;
-                return (
-                  <Link
-                    key={step.stage}
-                    href={step.href}
-                    onClick={onCloseMobile}
-                    className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
-                      isActive
-                        ? step.activeColor + " font-bold shadow-luxury-sm"
-                        : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className="w-4 h-4 shrink-0" />
-                      <div>
-                        <div className="leading-tight font-semibold">{step.label}</div>
-                        <div className="text-[10.5px] text-slate-500 font-medium leading-tight mt-0.5">
-                          {step.sublabel}
-                        </div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
-                      {step.stage}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* AI PRODUCTION & STUDIOS */}
-          <div>
-            <div className="flex items-center justify-between px-2 mb-1">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
-                AI Studios & Tools
-              </span>
-              <span className="text-[9px] font-mono text-indigo-600 font-bold">VIRTUAL</span>
-            </div>
-            <div className="space-y-1">
-              {PRODUCTION_STUDIO_ITEMS.map((item) => {
+              {CORE_PRODUCTION_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
+                const isCommercial = item.id === "commercial";
                 return (
                   <Link
-                    key={item.href}
+                    key={item.id}
                     href={item.href}
                     onClick={onCloseMobile}
                     className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
                       isActive
                         ? item.activeColor + " font-bold shadow-luxury-sm"
+                        : isCommercial
+                        ? "border-emerald-200/70 bg-gradient-to-r from-emerald-50/40 to-transparent text-slate-800 hover:bg-emerald-50/80 hover:border-emerald-300"
                         : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <Icon className="w-4 h-4 shrink-0 text-indigo-600" />
+                      <Icon className={`w-4 h-4 shrink-0 ${isCommercial ? "text-emerald-600" : ""}`} />
                       <div>
-                        <div className="leading-tight font-semibold text-[#17181A]">{item.label}</div>
+                        <div className="leading-tight font-semibold flex items-center gap-1.5">
+                          <span>{item.label}</span>
+                        </div>
                         <div className="text-[10px] text-slate-500 font-medium leading-tight mt-0.5">
                           {item.sublabel}
                         </div>
                       </div>
                     </div>
-                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${item.badgeColor}`}>
                       {item.badge}
                     </span>
                   </Link>
@@ -333,13 +277,46 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
             </div>
           </div>
 
-          {/* MANAGE */}
+          {/* 2. PUBLISH & OPERATIONS */}
           <div>
-            <div className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 px-2 mb-1">
-              Manage & Assets
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2 mb-1.5">
+              Publish & Operations
+            </div>
+            <div className="space-y-1">
+              {PUBLISH_AND_OPS.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onCloseMobile}
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
+                      isActive
+                        ? item.activeColor + " font-bold shadow-luxury-sm"
+                        : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 text-slate-500 shrink-0" />
+                    <div>
+                      <div className="leading-tight font-semibold">{item.label}</div>
+                      <div className="text-[10px] text-slate-500 font-medium leading-tight mt-0.5">
+                        {item.sublabel}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 3. INTELLIGENCE & ASSETS */}
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2 mb-1">
+              Intelligence & Assets
             </div>
             <div className="space-y-0.5">
-              {MANAGE_ITEMS.map((item) => {
+              {ASSETS_AND_GROWTH.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href.split("?")[0];
                 return (
@@ -350,34 +327,15 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
                     className={`flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
                       isActive
                         ? "bg-slate-100 text-[#17181A] font-bold"
-                        : "text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
+                        : "text-slate-600 hover:text-[#17181A] hover:bg-slate-100"
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5 text-slate-500" />
-                    <span className="font-semibold">{item.label}</span>
+                    <Icon className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="font-medium text-xs">{item.label}</span>
                   </Link>
                 );
               })}
             </div>
-          </div>
-
-          {/* GROW */}
-          <div>
-            <div className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 px-2 mb-1">
-              Grow & Analytics
-            </div>
-            <Link
-              href="/analytics"
-              onClick={onCloseMobile}
-              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
-                pathname === "/analytics"
-                  ? "bg-slate-100 text-[#17181A] font-bold"
-                  : "text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
-              }`}
-            >
-              <BarChart3 className="w-4 h-4 text-slate-500" />
-              <span className="font-semibold">Marketing Analytics</span>
-            </Link>
           </div>
 
           {/* SYSTEM */}

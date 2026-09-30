@@ -24,7 +24,7 @@ const CORE_STEPS = [
   {
     step: "01",
     label: "1. สั่ง AI คิดไอเดีย",
-    sublabel: "กรอกบรีฟ ➔ ซีรีส์เนื้อหา / เดี่ยว",
+    sublabel: "กรอกบรีฟ ➔ ซีรีส์เนื้อหา / วางแผน",
     href: "/ideas",
     icon: Lightbulb,
     color: "text-amber-400",
@@ -32,16 +32,25 @@ const CORE_STEPS = [
   },
   {
     step: "02",
-    label: "2. สตูดิโอสื่อ & อัลบั้ม",
-    sublabel: "Imagen 3 / Flux / Blueprint",
+    label: "2. วิดีโอโฆษณา & เสียง AI (Flow)",
+    sublabel: "Commercial Studio + Voiceover",
+    href: "/commercial",
+    icon: Film,
+    color: "text-emerald-400",
+    bgActive: "bg-emerald-500/20 border-emerald-400/50 text-emerald-300 font-bold"
+  },
+  {
+    step: "03",
+    label: "3. สตูดิโอสื่อ & แคปชันโซเชียล",
+    sublabel: "Copywriting & ภาพกราฟิก",
     href: "/content",
     icon: ImageIcon,
     color: "text-blue-400",
     bgActive: "bg-blue-500/15 border-blue-500/40 text-blue-300 font-bold"
   },
   {
-    step: "03",
-    label: "3. ดัดแปลง 5 แพลตฟอร์ม",
+    step: "04",
+    label: "4. ดัดแปลง 5 แพลตฟอร์ม",
     sublabel: "FB, TikTok, IG, X, Lemon8",
     href: "/repurpose",
     icon: Repeat,
@@ -49,18 +58,18 @@ const CORE_STEPS = [
     bgActive: "bg-purple-500/15 border-purple-500/40 text-purple-300 font-bold"
   },
   {
-    step: "04",
-    label: "4. ตรวจสอบ & คิวโพสต์",
-    sublabel: "Human-in-the-Loop Gate",
+    step: "05",
+    label: "5. ตรวจสอบ & คิวโพสต์",
+    sublabel: "Human Gate & Calendar",
     href: "/approvals",
     icon: CheckSquare,
-    color: "text-emerald-400",
-    bgActive: "bg-emerald-500/15 border-emerald-500/40 text-emerald-300 font-bold"
+    color: "text-teal-400",
+    bgActive: "bg-teal-500/15 border-teal-500/40 text-teal-300 font-bold"
   },
   {
-    step: "05",
-    label: "5. ตารางโพสต์ & ออกอากาศ",
-    sublabel: "Golden Hours & เครดิต AiPASS",
+    step: "06",
+    label: "6. ตารางโพสต์ & ออกอากาศ",
+    sublabel: "Auto-Publish & Golden Hours",
     href: "/publisher",
     icon: Send,
     color: "text-rose-400",
@@ -70,7 +79,7 @@ const CORE_STEPS = [
 
 const UTILITY_ITEMS = [
   { label: "Dashboard (ภาพรวม 13 แบรนด์)", href: "/", icon: LayoutDashboard },
-  { label: "AI Video Studio (Veo 3.1 & Flow)", href: "/studio", icon: Film },
+  { label: "AI Video Studio (Veo Runner)", href: "/studio", icon: Zap },
   { label: "Marketing Analytics", href: "/analytics", icon: BarChart3 },
   { label: "Settings & API Keys", href: "/settings", icon: Settings }
 ];
