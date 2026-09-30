@@ -391,26 +391,28 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
 
   // Order priority depending on preferred engine
   if (preferredEngine === "groq") {
-    // 1. Groq Cloud (Qwen) -> 2. OpenAI (GPT-4o) -> 3. Gemini (Flash/Pro)
+    // 1. Groq (Free Speed) -> 2. Gemini -> 3. OpenAI -> 4. OpenRouter
     tiers.push(tierGroq);
-    tiers.push(tierPrimaryOpenAI);
-    tiers.push(tierBackupOpenAI);
     tiers.push(tierPrimaryGemini);
+    tiers.push(tierPrimaryOpenAI);
+    tiers.push(tierOpenRouter);
     tiers.push(tierBackupGemini);
-    tiers.push(tierOpenRouter);
-  } else if (preferredEngine === "chatgpt") {
-    tiers.push(tierPrimaryOpenAI);
     tiers.push(tierBackupOpenAI);
+  } else if (preferredEngine === "chatgpt") {
+    // 1. OpenAI (GPT-4o) -> 2. Gemini (Flash/Pro) -> 3. Groq (Free) -> 4. OpenRouter
+    tiers.push(tierPrimaryOpenAI);
+    tiers.push(tierPrimaryGemini);
     tiers.push(tierGroq);
     tiers.push(tierOpenRouter);
-    tiers.push(tierPrimaryGemini);
+    tiers.push(tierBackupOpenAI);
     tiers.push(tierBackupGemini);
   } else {
+    // 1. Gemini (Flash/Pro) -> 2. OpenAI (GPT-4o) -> 3. Groq (Free) -> 4. OpenRouter
     tiers.push(tierPrimaryGemini);
-    tiers.push(tierBackupGemini);
+    tiers.push(tierPrimaryOpenAI);
     tiers.push(tierGroq);
     tiers.push(tierOpenRouter);
-    tiers.push(tierPrimaryOpenAI);
+    tiers.push(tierBackupGemini);
     tiers.push(tierBackupOpenAI);
   }
 

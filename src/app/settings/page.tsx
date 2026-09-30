@@ -480,26 +480,26 @@ export default function SettingsPage() {
             </div>
 
             {/* Preferred Engine Selector */}
-            <div className="bg-white/90 border border-amber-200 rounded-xl p-3.5 space-y-2">
+            <div className="bg-white/90 border border-slate-200 rounded-xl p-3.5 space-y-2">
               <label className="text-xs font-bold text-[#17181A] flex items-center justify-between">
-                <span>🎯 ลำดับโมเดลหลักที่ต้องการให้ระบบเรียกใช้เป็นอันดับ 1 (Default AI Engine):</span>
-                <span className="text-[10px] text-amber-700 font-normal">หากโควต้าหมด ระบบจะสลับไปยังอันดับ 2 และ 3 ให้อัตโนมัติ</span>
+                <span>🎯 เลือกเครื่องยนต์หลักที่คุณต้องการให้ระบบเรียกใช้เป็นอันดับ 1 (Primary AI Engine):</span>
+                <span className="text-[10px] text-slate-500 font-normal">หากโควต้าหมดหรือติดขัด ระบบจะสลับไปเครื่องยนต์สำรองให้อัตโนมัติ</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
-                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "groq" }))}
+                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "gemini" }))}
                   className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer flex flex-col gap-1 ${
-                    settings.default_ai_engine === "groq"
-                      ? "bg-amber-50 border-amber-500 text-amber-900 ring-1 ring-amber-400 shadow-sm"
+                    settings.default_ai_engine === "gemini"
+                      ? "bg-blue-50 border-blue-500 text-blue-900 ring-1 ring-blue-400 shadow-sm"
                       : "bg-[#F7F8FA] border-[#E8E9EC] text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   <div className="flex items-center gap-1.5 font-bold">
-                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    <span>อันดับ 1: Groq Cloud (Qwen)</span>
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Google Gemini (Flash / Pro)</span>
                   </div>
-                  <span className="text-[10px] font-normal text-slate-500">ความเร็วสูงสุด ~300ms ภาพสวย ฟรี 14,400 ครั้ง/วัน (แนะนำ)</span>
+                  <span className="text-[10px] font-normal text-slate-500">วิเคราะห์บริบทลึก คิดไอเดียรอบด้าน โควตาสูง (แนะนำ)</span>
                 </button>
 
                 <button
@@ -513,71 +513,136 @@ export default function SettingsPage() {
                 >
                   <div className="flex items-center gap-1.5 font-bold">
                     <Bot className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>อันดับ 2: OpenAI (GPT-4o)</span>
+                    <span>OpenAI (GPT-4o)</span>
                   </div>
                   <span className="text-[10px] font-normal text-slate-500">กลยุทธ์การตลาดและ Copywriting ภาษาไทยระดับสูง</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "gemini" }))}
+                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "groq" }))}
                   className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer flex flex-col gap-1 ${
-                    settings.default_ai_engine === "gemini"
-                      ? "bg-blue-50 border-blue-500 text-blue-900 ring-1 ring-blue-400 shadow-sm"
+                    settings.default_ai_engine === "groq"
+                      ? "bg-amber-50 border-amber-500 text-amber-900 ring-1 ring-amber-400 shadow-sm"
                       : "bg-[#F7F8FA] border-[#E8E9EC] text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   <div className="flex items-center gap-1.5 font-bold">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                    <span>อันดับ 3: Gemini (Flash/Pro)</span>
+                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    <span>Groq Cloud (ความเร็วสูง & ฟรี)</span>
                   </div>
-                  <span className="text-[10px] font-normal text-slate-500">วิเคราะห์บริบทลึกและสร้างไอเดียรอบด้าน</span>
+                  <span className="text-[10px] font-normal text-slate-500">ความเร็วสูงสุด ~300ms ฟรี 14,400 ครั้ง/วัน</span>
                 </button>
               </div>
             </div>
 
-            {/* Failover Tier Pipeline Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
-              <div className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3">
-                <div className="text-[10px] text-slate-500 font-semibold mb-1">Tier 1: อันดับ 1 (หลัก)</div>
-                <div className="font-bold text-[#17181A] flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                  <span>{settings.default_ai_engine === "groq" ? "Groq (Qwen 3.8)" : settings.default_ai_engine === "chatgpt" ? "ChatGPT (GPT-4o)" : "Gemini Flash"}</span>
-                </div>
-                <div className="text-[10px] text-slate-500 mt-1">
-                  {settings.has_groq_key || settings.has_openai_key || settings.has_gemini_key ? "✓ มีคีย์พร้อมใช้" : "⚠️ ยังไม่มีคีย์"}
-                </div>
-              </div>
+            {/* Failover Tier Pipeline Badges (Dynamically ordered without duplication) */}
+            {(() => {
+              const currentEngine = settings.default_ai_engine || "gemini";
+              
+              let tier1 = {
+                title: "Tier 1: อันดับ 1 (หลัก)",
+                name: "Google Gemini (Gemini 3 Flash)",
+                hasKey: !!settings.has_gemini_key,
+                color: "bg-blue-500",
+                pulse: true,
+                desc: settings.has_gemini_key ? "✓ มีคีย์พร้อมใช้" : "⚠️ ยังไม่มีคีย์"
+              };
+              let tier2 = {
+                title: "Tier 2: อันดับ 2 (สำรอง 1)",
+                name: "OpenAI (GPT-4o)",
+                hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
+                color: "bg-emerald-500",
+                pulse: false,
+                desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
+              };
+              let tier3 = {
+                title: "Tier 3: อันดับ 3 (สำรอง 2)",
+                name: "Groq Cloud / OpenRouter",
+                hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
+                color: "bg-amber-500",
+                pulse: false,
+                desc: "สแตนด์บาย Free Tier 14.4k/วัน"
+              };
 
-              <div className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3">
-                <div className="text-[10px] text-slate-500 font-semibold mb-1">Tier 2: อันดับ 2 (สำรอง 1)</div>
-                <div className="font-bold text-[#17181A] flex items-center gap-1.5">
-                  <span className={`w-2 h-2 rounded-full ${settings.has_openai_key || settings.has_openai_backup_key ? "bg-emerald-500" : "bg-slate-300"}`}></span>
-                  <span>OpenAI (GPT-4o)</span>
-                </div>
-                <div className="text-[10px] text-slate-500 mt-1">
-                  {settings.has_openai_key ? "✓ สลับทันทีเมื่อ Tier 1 หมด" : "สำรองเมื่อมีคีย์"}
-                </div>
-              </div>
+              if (currentEngine === "chatgpt") {
+                tier1 = {
+                  title: "Tier 1: อันดับ 1 (หลัก)",
+                  name: "OpenAI (GPT-4o)",
+                  hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
+                  color: "bg-emerald-500",
+                  pulse: true,
+                  desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ มีคีย์พร้อมใช้" : "⚠️ ยังไม่มีคีย์"
+                };
+                tier2 = {
+                  title: "Tier 2: อันดับ 2 (สำรอง 1)",
+                  name: "Google Gemini (Gemini 3 Flash)",
+                  hasKey: !!settings.has_gemini_key,
+                  color: "bg-blue-500",
+                  pulse: false,
+                  desc: settings.has_gemini_key ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
+                };
+                tier3 = {
+                  title: "Tier 3: อันดับ 3 (สำรอง 2)",
+                  name: "Groq Cloud / OpenRouter",
+                  hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
+                  color: "bg-amber-500",
+                  pulse: false,
+                  desc: "สแตนด์บาย Free Tier 14.4k/วัน"
+                };
+              } else if (currentEngine === "groq") {
+                tier1 = {
+                  title: "Tier 1: อันดับ 1 (หลัก)",
+                  name: "Groq Cloud (ความเร็วสูง)",
+                  hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
+                  color: "bg-amber-500",
+                  pulse: true,
+                  desc: (settings.has_groq_key || settings.has_openrouter_key) ? "✓ มีคีย์พร้อมใช้" : "⚠️ ใช้โควตาฟรี"
+                };
+                tier2 = {
+                  title: "Tier 2: อันดับ 2 (สำรอง 1)",
+                  name: "Google Gemini (Gemini 3 Flash)",
+                  hasKey: !!settings.has_gemini_key,
+                  color: "bg-blue-500",
+                  pulse: false,
+                  desc: settings.has_gemini_key ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
+                };
+                tier3 = {
+                  title: "Tier 3: อันดับ 3 (สำรอง 2)",
+                  name: "OpenAI (GPT-4o)",
+                  hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
+                  color: "bg-emerald-500",
+                  pulse: false,
+                  desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
+                };
+              }
 
-              <div className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3">
-                <div className="text-[10px] text-slate-500 font-semibold mb-1">Tier 3: อันดับ 3 (สำรอง 2)</div>
-                <div className="font-bold text-[#17181A] flex items-center gap-1.5">
-                  <span className={`w-2 h-2 rounded-full ${settings.has_gemini_key || settings.has_openrouter_key ? "bg-blue-500" : "bg-slate-300"}`}></span>
-                  <span>Gemini / OpenRouter</span>
-                </div>
-                <div className="text-[10px] text-slate-500 mt-1">สแตนด์บาย 15 RPM / Free</div>
-              </div>
+              const tier4 = {
+                title: "Tier 4: Zero-Quota Local",
+                name: "สแตนด์บาย 100%",
+                hasKey: true,
+                color: "bg-emerald-600",
+                pulse: false,
+                desc: "ทำงานได้ตลอดแม้เน็ตหลุด/โควต้าหมด"
+              };
 
-              <div className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3">
-                <div className="text-[10px] text-slate-500 font-semibold mb-1">Tier 4: Zero-Quota Local</div>
-                <div className="font-bold text-emerald-600 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>สแตนด์บาย 100%</span>
+              const pipelineBadges = [tier1, tier2, tier3, tier4];
+
+              return (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+                  {pipelineBadges.map((badge, idx) => (
+                    <div key={idx} className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3 shadow-xs">
+                      <div className="text-[10px] text-slate-500 font-semibold mb-1">{badge.title}</div>
+                      <div className="font-bold text-[#17181A] flex items-center gap-1.5">
+                        <span className={`w-2 h-2 rounded-full ${badge.hasKey ? badge.color : "bg-slate-300"} ${badge.pulse ? "animate-pulse" : ""}`}></span>
+                        <span>{badge.name}</span>
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-1">{badge.desc}</div>
+                    </div>
+                  ))}
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1">ทำงานได้ตลอดแม้เน็ตหลุด/โควต้าหมด</div>
-              </div>
-            </div>
+              );
+            })()}
           </div>
 
           {/* SECTION 1: GOOGLE GEMINI CONFIGURATION */}
