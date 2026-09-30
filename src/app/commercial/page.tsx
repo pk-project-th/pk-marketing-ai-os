@@ -118,163 +118,155 @@ interface CommercialProject {
 
 const GOOGLE_FLOW_TOOL_URL = "https://labs.google/fx/tools/flow/shared/tool/cfc7240d-3118-41b6-a08d-4bac91a1b1c5";
 
-const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v15.1 (TRIPLE REFERENCE ANCHORS + LIVE DASHBOARD + ZERO-API STABILITY)
+const GOOGLE_FLOW_FIX_PROMPT = `CRITICAL ARCHITECTURE UPGRADE: PK COMMERCIAL VIDEO STUDIO v16.0 EMERALD CINEMA & VEO STUDIO (SAFE BATCH GENERATOR, TRIPLE ANCHORS & ZERO-CRASH ARCHITECTURE)
 
-เป้าหมายสำคัญ:
-1. 🖼️ รักษาและคงช่องแนบรูปอ้างอิงทั้ง 3 ช่องไว้ 100% (TRIPLE REFERENCE ANCHORS - สำคัญมาก ห้ามลบ!):
-   - 🛍️ ช่องแนบรูปสินค้า/อาหารจริง (Product Reference Packshot)
-   - 👤 ช่องแนบรูปคน/พรีเซนเตอร์ (Person / Face Reference)
+แก้ไขปัญหา "⚠️ Uncaught" และ "สร้างรูปภาพไม่สำเร็จ" 100% พร้อมแปลงโฉมเป็น ธีมสีเขียวมรกตสุดหรู (Luxury Emerald Cinema):
+
+1. 🎨 ธีมสีเขียวมรกตสุดหรู (LUXURY EMERALD CINEMA THEME):
+   - พื้นหลังหลัก: Dark Emerald Slate (#0A120E, #0F1A15)
+   - การ์ดและคอนเทนเนอร์: Deep Forest Green (#14241D, #1B2F27) ขอบเรืองแสงสีเขียว (#244237)
+   - สีเด่น (Accent): Vivid Emerald (#10B981) และ Mint Neon (#34D399, #00F5A0) สำหรับปุ่มหลัก, Progress Bar และสถานะ
+   - ข้อความ: ขาวคมชัด และสีเขียวมิ้นต์ (#A7F3D0) อ่านง่าย สบายตา สไตล์ภาพยนตร์พรีเมียม
+
+2. 🛡️ แก้ไขปัญหา "⚠️ Uncaught" และ "สร้างรูปภาพไม่สำเร็จ" 100%:
+   - เพิ่ม Safe Defensive Check: ค่า shots ต้องมี fallback เป็น [] เสมอ ป้องกัน TypeError: Cannot read properties of undefined
+   - ตรวจสอบความถูกต้องก่อนเจนภาพ: ถ้าไม่มีข้อความ Directive ให้แจ้งเตือนอย่างสุภาพ (ห้ามรันคำสั่งว่าง)
+   - ป้องกัน Prompt ว่างเปล่า: ถ้าช็อตไหนไม่มี Visual Prompt ให้ใช้ Fallback Prompt อัตโนมัติ: "Cinematic commercial keyframe, 8k resolution, photorealistic, professional lighting"
+   - หุ้มด้วย try/catch รายช็อต (Per-shot error boundary) หากช็อตใดมีปัญหา จะข้ามไปช็อตถัดไปโดยที่ระบบไม่แคลช Uncaught เด็ดขาด
+
+3. 🖼️ TRIPLE REFERENCE ANCHORS (3 ช่องแนบรูปภาพอ้างอิง - ดีไซน์กรอบเขียวมรกต):
+   - 🛍️ ช่องแนบรูปสินค้าจริง (Product Packshot Reference)
+   - 👤 ช่องแนบรูปคน/ตัวแบบ (Presenter / Face Reference)
    - 🏞️ ช่องแนบรูปฉาก/สถานที่จริง (Scene / Location Reference)
-   *เพื่อให้ Imagen 3 และ Veo 2 นำรูปทั้ง 3 ช่องนี้ไปคุมหน้าตาคน สินค้า และบรรยากาศให้ตรงกันทุกช็อตอย่างสม่ำเสมอ*
-2. 🚫 ลบเฉพาะป๊อปอัปและระบบเสียงพากย์ภายนอกออก 100%:
-   - ลบปุ่ม "🎙️ ตั้งค่าเสียง/API", State "isVoiceSettingsOpen" และ Modal ป๊อปอัป "ตั้งค่า API & เสียงพากย์" ทิ้งทั้งหมด เพื่อไม่ให้เกิด CORS/NetworkError
-   - (ส่วนเสียงพากย์ไทยและ Master Timecode จัดการใน PK Marketing AI OS อย่างแม่นยำ)
-3. 📊 Live Production Status Dashboard:
-   - แสดง Progress Bar เรียลไทม์:
-     • 🖼️ รูปภาพนิ่งที่สร้างแล้ว: X / Total (Progress Bar สีฟ้า)
-     • 🎬 คลิปวิดีโอที่สร้างแล้ว: Y / Total (Progress Bar สีม่วง)
-     • สถานะรวม: [ ⏳ กำลังผลิต / ✅ เสร็จสมบูรณ์ พร้อมดาวน์โหลด ]
-4. ⚡ Smart 1 ➔ 2 ➔ 3 Production Pipeline:
-   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด ]: นำรูปสินค้า+คน+ฉาก มาเจน Keyframe ตรวจสอบหน้าตาและความถูกต้อง
-   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด ]: นำภาพนิ่งมาแปลงเป็นคลิป Veo 2 ตามคำสั่ง Camera Motion & Physics
-   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด ]: บันทึกคลิปวิดีโอทั้งหมดเพื่อนำไปประกบ Master Voiceover MP3
-5. 💾 Multi-Project History: บันทึกและเรียกดูประวัติโปรเจกต์เก่าได้จาก localStorage ไม่หายเมื่อรีเฟรช
+   *คงไว้ครบ 100% เพื่อให้ Imagen 3 และ Veo 2 นำไปคุมหน้าคน สินค้า และบรรยากาศ*
+
+4. 📊 EMERALD LIVE PRODUCTION DASHBOARD:
+   - แถบ Progress Bar สีเขียวมรกต สำหรับนับภาพนิ่งที่สร้างเสร็จ (X / Total)
+   - แถบ Progress Bar สีเขียวสะท้อนแสง สำหรับนับคลิปวิดีโอ Veo ที่เรนเดอร์เสร็จ (Y / Total)
+   - ป้ายสถานะเรืองแสง: "🟢 พร้อมใช้งาน" / "⏳ กำลังผลิต" / "✅ เสร็จสมบูรณ์"
+
+5. ⚡ 3 ปุ่ม BATCH PIPELINE:
+   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด (Batch Images) ]: ตรวจสอบรูปภาพและหน้าคนก่อน
+   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด (Batch Veo) ]: แปลงภาพเป็นวิดีโอ Veo 2
+   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด (Export Clips) ]: บันทึกคลิปทั้งหมดไปประกอบใน OS
+
+6. 🎬 SCENE CARDS GRID (การ์ดรายช็อตธีมเขียวพรีเมียม):
+   - มีปุ่มเจนภาพและวิดีโอเฉพาะฉาก
+   - มีกรอบพรีวิวรูปภาพและวิดีโอที่สามารถกดเล่นได้
+
+7. 💾 MULTI-PROJECT HISTORY:
+   - บันทึกและสลับโปรเจกต์งานโฆษณาในเครื่องได้ตลอดเวลา ไม่หายเมื่อรีเฟรช
 
 ---
 
-โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow (v15.1):
+โครงสร้างโค้ด React สำหรับ Tool ใน Google Flow (v16.0):
 
-### 1. 🖼️ ช่องรับ MASTER DIRECTIVE & 3 ช่องแนบรูปภาพอ้างอิง (TRIPLE ANCHORS):
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '16px' }}>
-  {/* Anchor 1: สินค้า */}
-  <div style={{ border: '1px dashed #3B82F6', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
-    <div style={{ fontSize: '11px', fontWeight: 700, color: '#60A5FA', marginBottom: '6px' }}>🛍️ 1. รูปสินค้าจริง (Product)</div>
-    {/* Upload/Drop Zone for Product Image */}
-  </div>
+### 1. 🛡️ SAFE PARSING & FALLBACK PROMPT GENERATOR:
+function parseMasterDirective(text) {
+  if (!text || typeof text !== 'string') return [];
+  const rawShots = text.split(/\\[SHOT\\s*(\\d+)\\]/i);
+  if (rawShots.length <= 1) {
+    // Fallback: หากไม่ได้ขึ้นต้นด้วย [SHOT X] ให้สร้าง 1 ฉากเริ่มต้นอัตโนมัติ
+    return [{
+      sceneNumber: 1,
+      shotType: "Master Commercial Scene",
+      durationSec: 3.0,
+      timecode: "00:00 - 00:03",
+      visualPromptEn: text.slice(0, 300) || "Cinematic 8K commercial product showcase, professional studio lighting",
+      motionPrompt: "Smooth cinematic push-in dolly shot, 4k 60fps",
+      thaiVoiceover: ""
+    }];
+  }
 
-  {/* Anchor 2: คน/ตัวแบบ */}
-  <div style={{ border: '1px dashed #A855F7', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
-    <div style={{ fontSize: '11px', fontWeight: 700, color: '#C084FC', marginBottom: '6px' }}>👤 2. รูปตัวแบบ/พรีเซนเตอร์ (Face)</div>
-    {/* Upload/Drop Zone for Face Reference Image */}
-  </div>
+  const parsed = [];
+  for (let i = 1; i < rawShots.length; i += 2) {
+    const num = parseInt(rawShots[i], 10);
+    const content = rawShots[i + 1] || "";
+    
+    const visualMatch = content.match(/Visual Prompt(?:\\s*\\(EN\\))?:?\\s*["']?([^\\n"']+)["']?/i);
+    const motionMatch = content.match(/(?:Camera & Physical Motion|Camera Movement):?\\s*["']?([^\\n"']+)["']?/i);
+    const voiceMatch = content.match(/Thai Voiceover Script:?\\s*["']?([^\\n"']+)["']?/i);
+    const durMatch = content.match(/Duration:?\\s*(\\d+(?:\\.\\d+)?)s?/i);
+    const timeMatch = content.match(/Timecode:?\\s*([\\d: -]+)/i);
 
-  {/* Anchor 3: ฉาก/สถานที่ */}
-  <div style={{ border: '1px dashed #10B981', borderRadius: '12px', padding: '12px', background: '#1E293B', textAlign: 'center' }}>
-    <div style={{ fontSize: '11px', fontWeight: 700, color: '#34D399', marginBottom: '6px' }}>🏞️ 3. รูปฉาก/สถานที่ (Scene/Location)</div>
-    {/* Upload/Drop Zone for Scene Reference Image */}
-  </div>
-</div>
-
-### 2. 📊 สถานะความคืบหน้าการผลิต (LIVE PRODUCTION DASHBOARD):
-const totalShots = shots.length;
-const imagesCount = Object.values(shotStates).filter(s => s?.imageUrl).length;
-const videosCount = Object.values(shotStates).filter(s => s?.videoUrl).length;
-const isReadyToExport = totalShots > 0 && videosCount === totalShots;
-
-{/* Live Dashboard Bar */}
-<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '16px', background: '#0F172A', borderRadius: '16px', border: '1px solid #1E293B', color: '#F8FAFC', marginBottom: '16px' }}>
-  <div>
-    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>🖼️ ภาพนิ่งคีย์เฟรม</div>
-    <div style={{ fontSize: '18px', fontWeight: 800, color: '#38BDF8', marginTop: '4px' }}>{imagesCount} / {totalShots} รูป</div>
-    <div style={{ width: '100%', height: '6px', background: '#334155', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
-      <div style={{ width: \`\${totalShots ? (imagesCount / totalShots) * 100 : 0}%\`, height: '100%', background: '#38BDF8', transition: 'width 0.3s' }}></div>
-    </div>
-  </div>
-
-  <div>
-    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>🎬 คลิปวิดีโอ VEO</div>
-    <div style={{ fontSize: '18px', fontWeight: 800, color: '#A855F7', marginTop: '4px' }}>{videosCount} / {totalShots} คลิป</div>
-    <div style={{ width: '100%', height: '6px', background: '#334155', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
-      <div style={{ width: \`\${totalShots ? (videosCount / totalShots) * 100 : 0}%\`, height: '100%', background: '#A855F7', transition: 'width 0.3s' }}></div>
-    </div>
-  </div>
-
-  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>สถานะการผลิต</div>
-    <div style={{ fontSize: '13px', fontWeight: 700, color: isReadyToExport ? '#4ADE80' : '#FBBF24', marginTop: '4px' }}>
-      {isReadyToExport ? '✅ พร้อมดาวน์โหลดและรวมคลิป' : totalShots > 0 ? '⏳ อยู่ระหว่างสร้างสรรค์' : 'รอคำสั่ง Master Directive'}
-    </div>
-  </div>
-</div>
-
-### 3. ⚡ WORKFLOW 1 ➔ 2 ➔ 3 (BATCH PIPELINE):
-<div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-  <button 
-    onClick={handleBatchGenerateImages}
-    disabled={isBatchGeneratingImages || totalShots === 0}
-    style={{ flex: 1, padding: '12px', background: '#2563EB', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
-  >
-    {isBatchGeneratingImages ? '⏳ กำลังเจนภาพทั้งหมด...' : \`1. 🖼️ เจนภาพนิ่งทั้งหมด (\${imagesCount}/\${totalShots})\`}
-  </button>
-
-  <button 
-    onClick={handleBatchGenerateVideos}
-    disabled={isBatchGeneratingVideos || imagesCount === 0}
-    style={{ flex: 1, padding: '12px', background: '#7C3AED', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
-  >
-    {isBatchGeneratingVideos ? '⏳ กำลังเรนเดอร์คลิปวิดีโอ...' : \`2. 🎬 สร้างเป็นคลิปทั้งหมด (\${videosCount}/\${totalShots})\`}
-  </button>
-
-  <button 
-    onClick={handleDownloadAllClips}
-    disabled={videosCount === 0}
-    style={{ flex: 1, padding: '12px', background: isReadyToExport ? '#059669' : '#334155', color: '#FFF', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
-  >
-    3. 🎞️ ดาวน์โหลดคลิปทั้งหมด
-  </button>
-</div>
-
-### 4. 💾 MULTI-PROJECT HISTORY & PERSISTENCE:
-function saveCurrentProject() {
-  if (!shots || shots.length === 0) return;
-  const projectItem = {
-    id: 'proj_' + Date.now(),
-    name: projectName || 'Commercial Project (' + shots.length + ' ฉาก)',
-    shots: shots,
-    shotStates: shotStates,
-    savedAt: new Date().toISOString()
-  };
-  const existing = JSON.parse(localStorage.getItem('pk_flow_projects') || '[]');
-  const updated = [projectItem, ...existing.filter(p => p.name !== projectItem.name)];
-  localStorage.setItem('pk_flow_projects', JSON.stringify(updated));
-  setProjectList(updated);
-  alert('💾 บันทึกโปรเจกต์ลงในประวัติเรียบร้อยแล้ว!');
+    parsed.push({
+      sceneNumber: num,
+      shotType: content.split('\\n')[0].replace(/^\\s*[-|]\\s*/, '').trim() || \`ช็อต \${num}\`,
+      durationSec: durMatch ? parseFloat(durMatch[1]) : 3.0,
+      timecode: timeMatch ? timeMatch[1].trim() : \`00:0\${(num-1)*3} - 00:0\${num*3}\`,
+      visualPromptEn: (visualMatch ? visualMatch[1].trim() : "") || \`Cinematic 8K shot of product, scene \${num}, beautiful lighting, high detail\`,
+      motionPrompt: (motionMatch ? motionMatch[1].trim() : "") || "Smooth camera dolly motion, photorealistic physics",
+      thaiVoiceover: voiceMatch ? voiceMatch[1].trim() : ""
+    });
+  }
+  return parsed;
 }
 
-function loadProject(project) {
-  setShots(project.shots);
-  setShotStates(project.shotStates || {});
-  setProjectName(project.name);
-  alert('📂 โหลดโปรเจกต์ "' + project.name + '" เรียบร้อยแล้ว!');
+### 2. 🎨 EMERALD THEME STYLES:
+const emeraldTheme = {
+  bg: '#0A120E',
+  surface: '#14241D',
+  surfaceHover: '#1B2F27',
+  border: '#244237',
+  accent: '#10B981',
+  accentHover: '#059669',
+  mint: '#34D399',
+  text: '#F0FDF4',
+  textMuted: '#A7F3D0'
+};
+
+### 3. ⚡ SAFE BATCH IMAGE GENERATOR (ZERO CRASH):
+async function handleBatchGenerateImages() {
+  const safeShots = Array.isArray(shots) ? shots : [];
+  if (safeShots.length === 0) {
+    alert("กรุณาวางข้อความ Master Directive ก่อนกดสร้างภาพครับ");
+    return;
+  }
+
+  setIsBatchGeneratingImages(true);
+  for (const shot of safeShots) {
+    try {
+      const promptToUse = shot.visualPromptEn && shot.visualPromptEn.trim().length > 5
+        ? shot.visualPromptEn
+        : \`Ultra-high quality 8k cinematic shot of product, professional lighting, photorealistic\`;
+
+      // ปลอดภัย 100%: เรียกใช้งานตัวสร้างภาพของ Flow ด้วย prompt ที่ผ่านการตรวจสอบแล้ว
+      await generateImageForShot(shot.sceneNumber, promptToUse);
+    } catch (err) {
+      console.warn(\`ช็อต \${shot.sceneNumber} ข้ามเนื่องจากติดปัญหา: \`, err);
+    }
+  }
+  setIsBatchGeneratingImages(false);
 }`;
 
-const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v15.0 Pure Cinema & Veo Edition" in Google Flow — a robust, zero-external-API commercial video tool designed for seamless pairing with PK Marketing AI OS.
+const GOOGLE_FLOW_FULL_BUILDER_PROMPT = `Build "PK Commercial Video Studio v16.0 Emerald Cinema Edition" in Google Flow.
 
-## KEY SPECIFICATIONS & ARCHITECTURE:
+## THEME & PALETTE (LUXURY EMERALD CINEMA):
+- Background: Dark Emerald Charcoal (#0A120E, #0F1A15).
+- Surface & Cards: Deep Forest Green (#14241D, #1B2F27) with subtle emerald borders (#244237).
+- Accents & Highlights: Vivid Emerald (#10B981) and Mint Neon (#34D399).
+- Text: Crisp white and soft mint green (#A7F3D0).
 
-1. ZERO EXTERNAL NETWORK APIS (100% FLOW SANDBOX COMPLIANT):
-- Strictly relies on Google Flow internal AI nodes (Imagen 3 & Veo 2).
-- Zero third-party fetch calls to eliminate CORS or Failed to Fetch network errors completely.
-- Voiceover & audio sync is decoupled and handled by the local OS.
+## CORE ARCHITECTURE & ZERO-CRASH SPECIFICATIONS:
+1. TRIPLE REFERENCE ANCHORS:
+   - 🛍️ Product Image Upload
+   - 👤 Face / Presenter Image Upload
+   - 🏞️ Scene / Location Image Upload
 
-2. MASTER DIRECTIVE INPUT & AUTOMATIC PARSING:
-- Single large Textarea input for pasting the Master Directive from PK Marketing AI OS.
-- Auto-parses [SHOT 1], [SHOT 2], ... with Duration, Timecode, Shot Type, Visual Prompt (EN), Camera Motion (Veo 2), and Subtitle/Voiceover scripts.
+2. MASTER DIRECTIVE INPUT & AUTO-PARSER:
+   - Large Textarea with "Load Demo" button.
+   - Robust fallback parser that ensures visualPromptEn is never empty.
 
-3. LIVE PRODUCTION STATUS DASHBOARD:
-- Visual progress bars for:
-  • Keyframe Images generated (e.g., 8/8)
-  • Veo Videos rendered (e.g., 8/8)
-  • Overall Production Status (Pending / In Progress / Ready to Export).
+3. EMERALD LIVE PRODUCTION DASHBOARD:
+   - Realtime progress bars for Keyframe Images and Veo Videos.
 
-4. STRUCTURED 1 -> 2 -> 3 BATCH PRODUCTION PIPELINE:
-- [ 1. 🖼️ เจนภาพนิ่งทั้งหมด (Batch Images) ]: Renders all keyframes for character & product consistency check.
-- [ 2. 🎬 สร้างเป็นคลิปทั้งหมด (Batch Veo Videos) ]: Uses keyframes as input anchor and applies cinematic camera & physical motion prompts.
-- [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด (Export Clips) ]: Allows 1-click batch download of all generated video clips.
+4. 1 -> 2 -> 3 SAFE BATCH WORKFLOW:
+   - [ 1. 🖼️ เจนภาพนิ่งทั้งหมด ]: Wrapped in per-shot try/catch to prevent Uncaught errors.
+   - [ 2. 🎬 สร้างคลิปวิดีโอทั้งหมด ]: Veo batch rendering.
+   - [ 3. 🎞️ ดาวน์โหลดคลิปทั้งหมด ]: Export all clips.
 
 5. MULTI-PROJECT HISTORY & PERSISTENCE:
-- Saves campaigns to localStorage with timestamps, shot counts, and names.
-- Dropdown or Drawer to browse and reload previous projects without losing work upon page refresh.`;
+   - Save and reload previous campaigns to localStorage.`;
 
 export default function CommercialStudioPage() {
   return (
