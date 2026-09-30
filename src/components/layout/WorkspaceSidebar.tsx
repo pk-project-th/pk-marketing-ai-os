@@ -103,10 +103,34 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
   ];
 
   const ASSETS_AND_GROWTH = [
-    { label: "Performance Analytics", href: "/analytics", icon: BarChart3 },
-    { label: "Prompts & Knowledge Bible", href: "/knowledge", icon: BookOpen },
-    { label: "Creative Briefs & Positioning", href: "/creative", icon: Compass },
-    { label: "Automated Veo Runner", href: "/studio", icon: Video }
+    {
+      label: "Performance Analytics",
+      sublabel: "สถิติ & ประสิทธิภาพคอนเทนต์",
+      href: "/analytics",
+      icon: BarChart3,
+      color: "text-blue-600"
+    },
+    {
+      label: "Prompts & Knowledge Bible",
+      sublabel: "คลังข้อมูลแบรนด์ & สูตร Prompt",
+      href: "/knowledge",
+      icon: BookOpen,
+      color: "text-amber-600"
+    },
+    {
+      label: "Creative Briefs & Positioning",
+      sublabel: "บรีฟกลยุทธ์ & จุดขายสินค้า",
+      href: "/creative",
+      icon: Compass,
+      color: "text-purple-600"
+    },
+    {
+      label: "Automated Veo Runner",
+      sublabel: "บอทเรนเดอร์วิดีโออัตโนมัติ",
+      href: "/studio",
+      icon: Video,
+      color: "text-emerald-600"
+    }
   ];
 
   return (
@@ -324,14 +348,19 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
                     key={item.label}
                     href={item.href}
                     onClick={onCloseMobile}
-                    className={`flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
                       isActive
-                        ? "bg-slate-100 text-[#17181A] font-bold"
-                        : "text-slate-600 hover:text-[#17181A] hover:bg-slate-100"
+                        ? "bg-slate-100 border-slate-200 text-[#17181A] font-bold shadow-luxury-xs"
+                        : "border-transparent text-slate-700 hover:text-[#17181A] hover:bg-slate-100"
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5 text-slate-400" />
-                    <span className="font-medium text-xs">{item.label}</span>
+                    <Icon className={`w-4 h-4 shrink-0 ${item.color || "text-slate-500"}`} />
+                    <div>
+                      <div className="leading-tight font-semibold text-xs text-[#17181A]">{item.label}</div>
+                      <div className="text-[10px] text-slate-500 font-medium leading-tight mt-0.5">
+                        {item.sublabel}
+                      </div>
+                    </div>
                   </Link>
                 );
               })}

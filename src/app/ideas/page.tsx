@@ -1480,40 +1480,42 @@ export default function IdeaGeneratorPage() {
                     <span>🗑️ ลบทิ้ง</span>
                   </button>
 
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/studio?topic=${encodeURIComponent(`${idea.title} - ${idea.hook || ""}`.trim())}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
-                      title="ส่งไอเดียนี้ไปสร้างคลิปวิดีโอ 3 ฉากอัตโนมัติด้วย Veo 3.1 & FlowKit ทันที"
-                    >
-                      <Video className="w-3.5 h-3.5 text-blue-600" />
-                      <span>⚡ สร้างวิดีโออัตโนมัติ</span>
-                    </Link>
-
+                  <div className="flex flex-wrap items-center gap-2">
                     <Link
                       href={`/commercial?id=${idea.id}&autoGen=true`}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
-                      title="ส่งไอเดียนี้ไปสร้างวิดีโอโฆษณาใน Commercial Video Studio"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold transition-all cursor-pointer shadow-xs hover:scale-[1.02]"
+                      title="ส่งไอเดียนี้ไปสร้างวิดีโอโฆษณา + เสียงพากย์ AI + Google Flow (Step 02)"
                     >
-                      <Film className="w-3.5 h-3.5 text-indigo-600" />
-                      <span>🎬 ทำโฆษณาเสมือนจริง</span>
+                      <Film className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>🎬 ทำวิดีโอโฆษณา (02) →</span>
                     </Link>
 
-                    {isAccepted ? (
-                      <Link
-                        href={`/content?id=${idea.id}`}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-luxury-sm shadow-emerald-600/20 transition-all cursor-pointer"
-                      >
-                        <span>ไปยังสตูดิโอสื่อ (Step 2) →</span>
-                      </Link>
-                    ) : (
+                    <Link
+                      href={`/content?id=${idea.id}`}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition-all cursor-pointer shadow-xs hover:scale-[1.02]"
+                      title="ส่งไอเดียนี้ไปทำแคปชันและผังอัลบั้มภาพ 3-5 รูป (Step 03)"
+                    >
+                      <span>✍️ ทำโพสต์ & รูปภาพ (03) →</span>
+                    </Link>
+
+                    <Link
+                      href={`/studio?topic=${encodeURIComponent(`${idea.title} - ${idea.hook || ""}`.trim())}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 text-xs font-medium transition-all cursor-pointer"
+                      title="ส่งไอเดียนี้ไปสร้างคลิปวิดีโออัตโนมัติด้วย Veo 3.1 & FlowKit Runner"
+                    >
+                      <Video className="w-3.5 h-3.5 text-slate-500" />
+                      <span>⚡ รันอัตโนมัติ</span>
+                    </Link>
+
+                    {!isAccepted && (
                       <button
                         type="button"
                         onClick={() => handleAccept(idea)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-luxury-sm shadow-emerald-600/20 transition-all cursor-pointer"
+                        className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-semibold transition-all cursor-pointer"
+                        title="ปักหมุดเก็บไอเดียนี้ไว้ในคลัง"
                       >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>✓ เอา (เลือกไอเดียนี้)</span>
+                        <Check className="w-3.5 h-3.5 text-amber-600" />
+                        <span>เก็บไว้</span>
                       </button>
                     )}
                   </div>
