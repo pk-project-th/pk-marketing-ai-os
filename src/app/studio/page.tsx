@@ -42,6 +42,14 @@ interface StudioJobStatus {
 }
 
 export default function VideoStudioPage() {
+  return (
+    <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-500 font-mono">Loading Video Studio...</div>}>
+      <VideoStudioContent />
+    </React.Suspense>
+  );
+}
+
+function VideoStudioContent() {
   const searchParams = useSearchParams();
   const initialTopic = searchParams.get("topic") || "";
   const { activeBrand } = useBrand();

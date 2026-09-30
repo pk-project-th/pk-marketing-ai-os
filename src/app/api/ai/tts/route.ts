@@ -10,7 +10,7 @@ const execAsync = promisify(exec);
 export const dynamic = "force-dynamic";
 
 // Curated ElevenLabs voices for Thai & Commercial narration
-export const CURATED_VOICES = [
+const CURATED_VOICES = [
   { id: "pNInz6obpgDQGcFmaJgB", name: "Adam", label: "👨‍🍳 เชฟหนุ่ม / เสียงผู้ชายอบอุ่น (Adam)", role: "chef" },
   { id: "21m00Tcm4TlvDq8ikWAM", name: "Rachel", label: "👩‍🍳 พรีเซนเตอร์หญิง / สดใสเป็นมิตร (Rachel)", role: "presenter" },
   { id: "ErXwobaYiN019PkySvjV", name: "Antoni", label: "🎙️ ผู้บรรยายหลัก / โฆษณาพรีเมียม (Antoni)", role: "narrator" },
