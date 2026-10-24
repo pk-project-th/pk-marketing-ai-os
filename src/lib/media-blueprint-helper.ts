@@ -789,17 +789,79 @@ export function buildDefaultMediaBlueprint(
     combined.includes("ยานยนต์") ||
     combined.includes("ดีลเลอร์");
 
+  const isSkincareOrBeauty =
+    combined.includes("สกินแคร์") ||
+    combined.includes("เซรั่ม") ||
+    combined.includes("ครีม") ||
+    combined.includes("ผิว") ||
+    combined.includes("หน้าใส") ||
+    combined.includes("สิว") ||
+    combined.includes("ริ้วรอย") ||
+    combined.includes("กันแดด") ||
+    combined.includes("โทนเนอร์") ||
+    combined.includes("มอยส์") ||
+    combined.includes("คลินิก") ||
+    combined.includes("ฟิลเลอร์") ||
+    combined.includes("เครื่องสำอาง") ||
+    combined.includes("ลิป") ||
+    combined.includes("แต่งหน้า") ||
+    combined.includes("บิวตี้") ||
+    combined.includes("skincare") ||
+    combined.includes("serum") ||
+    combined.includes("beauty") ||
+    combined.includes("cosmetic") ||
+    combined.includes("กู้ผิว");
+
+  const isFashion =
+    combined.includes("เสื้อผ้า") ||
+    combined.includes("แฟชั่น") ||
+    combined.includes("ชุด") ||
+    combined.includes("เดรส") ||
+    combined.includes("กางเกง") ||
+    combined.includes("กระเป๋า") ||
+    combined.includes("รองเท้า") ||
+    combined.includes("เครื่องประดับ") ||
+    combined.includes("ootd") ||
+    combined.includes("fashion") ||
+    combined.includes("outfit") ||
+    combined.includes("แต่งตัว");
+
+  const isGadgetOrHome =
+    combined.includes("แกดเจ็ต") ||
+    combined.includes("gadget") ||
+    combined.includes("เครื่องใช้ไฟฟ้า") ||
+    combined.includes("ของแต่งบ้าน") ||
+    combined.includes("โต๊ะคอม") ||
+    combined.includes("หูฟัง") ||
+    combined.includes("พาวเวอร์แบงค์") ||
+    combined.includes("สมาร์ทโฮม") ||
+    combined.includes("ของใช้ในบ้าน") ||
+    combined.includes("จัดโต๊ะ");
+
+  const isHealthOrSupplement =
+    combined.includes("สุขภาพ") ||
+    combined.includes("อาหารเสริม") ||
+    combined.includes("วิตามิน") ||
+    combined.includes("คอลลาเจน") ||
+    combined.includes("โพรไบโอติก") ||
+    combined.includes("โปรตีน") ||
+    combined.includes("คุมน้ำหนัก") ||
+    combined.includes("supplement") ||
+    combined.includes("wellness");
+
+  const isBookOrSelfDev =
+    combined.includes("หนังสือ") ||
+    combined.includes("atomic habits") ||
+    combined.includes("อ่านหนังสือ") ||
+    combined.includes("หนังสือน่าอ่าน");
+
   const isReview =
     combined.includes("must have") ||
     combined.includes("ป้ายยา") ||
-    combined.includes("แกดเจ็ต") ||
-    combined.includes("ของใช้") ||
     combined.includes("นายหน้า");
 
   const isKnowledge =
-    combined.includes("หนังสือ") ||
-    combined.includes("habits") ||
-    combined.includes("สรุป") ||
+    isBookOrSelfDev ||
     combined.includes("จิตวิทยา") ||
     combined.includes("นิทาน") ||
     combined.includes("สารคดี");
@@ -914,6 +976,14 @@ export function buildDefaultMediaBlueprint(
       targetCount = 2;
     } else if (isCarouselOrGuide) {
       targetCount = 5;
+    } else if (isSkincareOrBeauty) {
+      targetCount = 4;
+    } else if (isFashion) {
+      targetCount = 4;
+    } else if (isGadgetOrHome) {
+      targetCount = 4;
+    } else if (isHealthOrSupplement) {
+      targetCount = 4;
     } else if (isTravelOrCafe) {
       targetCount = 4;
     } else if (isAmulet) {
@@ -1337,93 +1407,250 @@ export function buildDefaultMediaBlueprint(
         }
       ];
     }
-  } else if (isKnowledge || isReview) {
-    real_shoot_guide = "📸 คำแนะนำถ่ายจริงด้วยมือถือ: ถ่ายบนโต๊ะทำงานหรือมุมบ้านที่มีแสงธรรมชาติเข้าด้านข้าง จัดของรอบข้างให้เป็นระเบียบ ถ่ายให้เห็นตอนมือจับใช้งานจริง";
-    equipment_needed = "📱 มือถือ (โหมด 1x และ 2x) + ☕ พร็อพประกอบฉาก เช่น โน้ตบุ๊ก แก้วกาแฟ ปากกาไฮไลต์";
-    visual_direction = "สมจริง มีสไตล์ มินิมอล จัดวางบนโต๊ะหรือห้องที่ใช้งานจริง อบอุ่น สบายตา";
+  } else if (isSkincareOrBeauty) {
+    real_shoot_guide = "📸 คำแนะนำถ่ายสกินแคร์ด้วยมือถือ: ถ่ายริมหน้าต่างแสงธรรมชาติเฉียง 45° หรือใช้ไฟสตูดิโอแสงนุ่ม วางขวดผลิตภัณฑ์บนแท่นอะคริลิกใสหรือหินอ่อน ฉีดละอองน้ำเบาๆ เพื่อเพิ่มความสดชื่น โคลสอัพหยดเซรั่มด้วยโหมด Portrait 2x หรือมาโคร 100mm";
+    equipment_needed = "📱 สมาร์ตโฟน (โหมด Portrait 2x / Macro) + 💧 ฟ็อกกี้ฉีดละอองน้ำ + 🪞 แผ่นสะท้อนแสงสีขาว + 🧴 แท่นวางสินค้าหินอ่อน/อะคริลิก";
+    visual_direction = "คลีน ฉ่ำน้ำ อ่อนโยน สดชื่น แสงสว่างโปร่งสบายตา เน้นมิติเนื้อสัมผัส (Texture) และผิวสุขภาพดี";
 
     if (targetCount === 1) {
       slidesPool = [
         {
           slide_no: 1,
-          visual: `ภาพหน้าปกหนังสือหรือแกดเจ็ตวางบนโต๊ะมินิมอล พร้อมพาดหัวสรุปประเด็นหลักที่ต้องรู้`,
-          camera_angle: "📐 Flatlay 90° หรือ มุมกด 45° Cozy Lifestyle",
-          real_photo_tip: "💡 วางคู่แก้วกาแฟหรือโน้ตบุ๊ก แสงธรรมชาติริมหน้าต่าง สร้างมูดที่น่าสนใจและชวนหยุดอ่านทันที",
+          visual: `ภาพ Hero Shot ขวด ${title} วางเด่นบนแท่นหินอ่อน ท่ามกลางละอองน้ำบริสุทธิ์ แสงนุ่มละมุน พร้อมพาดหัวจุดเด่นกู้ผิว`,
+          camera_angle: "📐 มุม 3/4 ระดับสายตา (Eye-Level Hero Product Shot)",
+          real_photo_tip: "💡 วางขวดผลิตภัณฑ์เยื้องกึ่งกลาง แสงธรรมชาติเฉียง 45° จากด้านซ้าย ฉีดละอองน้ำบนขวดเบาๆ ให้ดูสดชื่นฉ่ำน้ำ",
           text_overlay: title,
-          shoot_instruction: "จัดวางบนโต๊ะสไตล์มินิมอล แสงธรรมชาติริมหน้าต่าง",
-          prompt: `Aesthetic minimal flatlay photography representing ${title}, cozy desk setting, soft window light, 8k.`
+          shoot_instruction: "ถ่ายขวดสกินแคร์เด่น แสงสว่างโปร่ง โชว์แพ็กเกจจิ้งพรีเมียม",
+          prompt: `Commercial hero photography of ${title} skincare bottle resting on sleek marble pedestal, delicate crystal water droplets, soft morning vanity lighting, high-end cosmetics aesthetic, 8k --ar 1:1`
         }
       ];
     } else if (targetCount === 2) {
       slidesPool = [
         {
           slide_no: 1,
-          visual: "ภาพเปิดตัวหนังสือ/ปัญหาที่คนส่วนใหญ่พบเจอในชีวิตประจำวัน",
-          camera_angle: "📐 มุมกด 45° บนโต๊ะทำงาน",
-          real_photo_tip: "💡 ถ่ายหน้าปกหรือจุดที่คนมักมองข้าม แสงนุ่มสบายตา",
+          visual: `ภาพเปิดตัวขวด ${title} พร้อมหยดเนื้อเซรั่มใสฉ่ำวาวบนดรอปเปอร์`,
+          camera_angle: "📐 มุม 45° ระดับสายตา",
+          real_photo_tip: "💡 ยกหัวดรอปเปอร์ขึ้นให้หยดเซรั่มค้างตรงปลาย แสงส่องสะท้อนความใส",
           text_overlay: title,
-          shoot_instruction: "ถ่ายภาพหน้าปกหรือชิ้นงานเปิดเรื่อง",
-          prompt: `Aesthetic photography of book or problem situation on desk.`
+          shoot_instruction: "ถ่ายขวดคู่กับดรอปเปอร์หยดเซรั่มใส",
+          prompt: `Cosmetics product shot of ${title} dropper bottle with glistening crystal serum drop.`
         },
         {
           slide_no: 2,
-          visual: "ภาพประโยคทองคำที่ไฮไลต์ไว้ หรือ ผลลัพธ์หลังแก้ไขปัญหา",
-          camera_angle: "🔍 โคลสอัพขนานหน้ากระดาษ หรือ มุมมองผู้ใช้ POV",
-          real_photo_tip: "💡 ใช้ปากกาไฮไลต์สีสะท้อนแสงเน้นข้อความ ถ่ายให้ตัวหนังสือคมชัดอ่านออกทันที",
-          text_overlay: "ประโยคสั้นๆ ที่เปลี่ยนวิธีคิดทั้งชีวิต",
-          shoot_instruction: "โคลสอัพประโยคเด็ดหรือฟังก์ชันสำคัญ",
-          prompt: `Macro closeup of highlighted text in book, crisp letters, shallow depth of field.`
+          visual: "ภาพเปรียบเทียบ Before vs After ผิวโทรม vs ผิวฉ่ำโกลว์สุขภาพดี",
+          camera_angle: "🔍 โคลสอัพผิวหน้า 2x หน้าชัดหลังละลาย",
+          real_photo_tip: "💡 ถ่ายมุมเดิม แสงธรรมชาติเดียวกัน ไม่ใส่ฟิลเตอร์เพื่อความน่าเชื่อถือ",
+          text_overlay: "ผิวฉ่ำโกลว์ อิ่มน้ำ รอยแดงดูจางลง",
+          shoot_instruction: "ถ่ายผิวหน้าเปรียบเทียบผลลัพธ์จริง",
+          prompt: `Split screen Before and After real skin transformation, showing clear glowing plump complexion.`
         }
       ];
     } else {
       slidesPool = [
         {
           slide_no: 1,
-          visual: "ภาพหน้าปกหนังสือ/แกดเจ็ต วางคู่แก้วกาแฟ แสงนุ่ม (ภาพเปิด)",
-          camera_angle: "📐 มุมกด 45° สไตล์ Cozy Lifestyle บนโต๊ะทำงาน",
-          real_photo_tip: "💡 จัดวางเยื้องกึ่งกลาง วางแก้วกาแฟไว้มุมตรงข้ามเพื่อสร้างบาลานซ์ภาพ",
+          visual: `ภาพ Hero Shot: ขวด ${title} พร้อมหยดน้ำบริสุทธิ์และสารสกัดธรรมชาติ (ภาพปกดึงดูดสายตา)`,
+          camera_angle: "📐 มุม 3/4 ระดับสายตา (Eye-level Vanity Hero)",
+          real_photo_tip: "💡 วางขวดบนแท่นหินอ่อนหรือกระจก แสงเช้าเฉียง 45° ส่องสะท้อนเนื้อเซรั่มใสบริสุทธิ์",
           text_overlay: title,
-          shoot_instruction: "จัดวางคู่แก้วกาแฟ แสงแดดรำไรสร้างอารมณ์สบายตา",
-          prompt: `Aesthetic cozy flatlay photography of ${title} on wooden table beside coffee mug, 8k.`
+          shoot_instruction: "ถ่ายภาพรวมขวดผลิตภัณฑ์ แสงนุ่มฟุ้ง โชว์ความพรีเมียม",
+          prompt: `Master commercial cosmetic photography of ${title}, elegant glass bottle with frosted finish, soft daylight, fresh water ripples, high luxury beauty editorial 8k.`
         },
         {
           slide_no: 2,
-          visual: "ภาพกางหน้าหนังสือ เปิดไฮไลต์ข้อความประโยคสำคัญจุดที่ 1",
-          camera_angle: "🔍 โคลสอัพขนานหน้ากระดาษ (Text Macro Focus)",
-          real_photo_tip: "💡 ขีดไฮไลต์ท่อนที่โดนใจที่สุด ถ่ายให้ตัวหนังสือคมกริบ ชวนให้คนหยุดอ่าน",
-          text_overlay: "กฎข้อที่ 1: ก้าวแรกสู่การเปลี่ยนแปลง",
-          shoot_instruction: "โคลสอัพท่อนประโยคเด็ด ตัวอักษรคมชัด",
-          prompt: "Closeup macro photograph of open book page with highlighter emphasizing key quote."
+          visual: "ภาพเจาะลึกเนื้อสัมผัส: ซูมมาโครเนื้อเซรั่ม/ครีมเข้มข้น บางเบา ซึมไว ไม่เหนอะหนะ",
+          camera_angle: "🔍 ซูมมาโคร 2x-3x ขนานผิว (Extreme Texture Macro)",
+          real_photo_tip: "💡 ปาดเนื้อเซรั่มลงบนหลังมือหรือแผ่นแก้วใส แสงส่องเฉียงให้เห็นความฉ่ำวาวและการซึมเข้าผิว",
+          text_overlay: "เนื้อสัมผัสบางเบา ซึมไวใน 3 วินาที ไม่เหนอะหนะ",
+          shoot_instruction: "โคลสอัพเนื้อสัมผัสสกินแคร์",
+          prompt: `Extreme macro photography of silky skincare serum texture on skin, hydrating glaze, crystal clear dew.`
         },
         {
           slide_no: 3,
-          visual: "ภาพสมุดโน้ตเขียนสรุปกฎข้อที่ 2 หรือ Mindmap การนำไปใช้",
-          camera_angle: "📝 Flatlay 90° ถ่ายตรงจากด้านบน (Top-down Notes)",
-          real_photo_tip: "💡 เขียนลายมือสวยงามบนกระดาษโน้ต วางปากกาเคียงข้าง แสงสว่างสม่ำเสมอ",
-          text_overlay: "กฎข้อที่ 2: สร้างระบบที่ทำได้จริงทุกวัน",
-          shoot_instruction: "ถ่ายมุม Top-down โชว์สรุปบนสมุดบันทึก",
-          prompt: "Top-down flatlay photography of handwritten summary note with pen."
+          visual: "ภาพสเต็ปการใช้งาน: วิธีลงบำรุงผิวหน้าอย่างถูกต้อง ลำดับก่อน-หลัง",
+          camera_angle: "🧴 POV First-person หรือพอร์ตเทรตแตะเนื้อบำรุง 5 จุดบนใบหน้า",
+          real_photo_tip: "💡 ถ่ายตอนแตะเนื้อบำรุงเบาๆ บนผิวหน้า ท่าทางผ่อนคลาย แสงนุ่มนวลสบายตา",
+          text_overlay: "วิธีลงบำรุงให้สารอาหารซึมลึกถึงชั้นผิว",
+          shoot_instruction: "ถ่ายขั้นตอนการทาและการนวดประคบเบาๆ",
+          prompt: `Gentle skincare application routine, hands applying serum to glowing facial cheek, clean natural lighting.`
         },
         {
           slide_no: 4,
-          visual: "ภาพโคลสอัพประเด็นสำคัญข้อที่ 3 พร้อมตัวอย่างจริง",
-          camera_angle: "🔍 ซูมมาโคร 2x เน้นจุดตัดสินความสำเร็จ",
-          real_photo_tip: "💡 ถ่ายให้เห็นความแตกต่างเมื่อนำไปลงมือทำจริง",
-          text_overlay: "กฎข้อที่ 3: วัดผลลัพธ์เล็กๆ ที่สะสมจนยิ่งใหญ่",
-          shoot_instruction: "ถ่ายเน้นประเด็นสำคัญข้อที่ 3",
-          prompt: "Focused macro shot of diagram or key takeaways note."
+          visual: "ภาพผลลัพธ์ผิวสุขภาพดี: ผิวฉ่ำโกลว์เล่นแสง รูขุมขนกระชับ แต่งหน้าติดทน",
+          camera_angle: "✨ โคลสอัพผิวแก้มและรอยยิ้มอย่างมั่นใจ (Dewy Skin Focus)",
+          real_photo_tip: "💡 ถ่ายมุมเอียง 30° ให้แสงธรรมชาติกระทบโหนกแก้ม เกิดประกายเงาฉ่ำน้ำแบบผิวกระจก (Glass Skin)",
+          text_overlay: "ผลลัพธ์ผิวอิ่มฟู ผิวกระจกเล่นแสงอย่างเป็นธรรมชาติ",
+          shoot_instruction: "ถ่ายผิวโกลว์สุขภาพดี มุมแสงเฉียง",
+          prompt: `Close-up shot of radiant dewy skin, glass skin texture, natural soft highlights, healthy plump glow.`
         },
         {
           slide_no: 5,
-          visual: "ภาพมือถือหนังสืออ่านในบรรยากาศสบายๆ พร้อม Action Plan",
-          camera_angle: "📖 มุมมองคนอ่าน POV (First-person Reading View)",
-          real_photo_tip: "💡 ถือหนังสือด้วยมือเดียว เปิดกางในมุมผ่อนคลาย ชวนให้เริ่มลงมือทำ",
-          text_overlay: "เซฟโพสต์นี้ไว้เตือนใจ แล้วเริ่มลงมือทำวันนี้",
-          shoot_instruction: "ถ่ายมุมมองบุคคลที่หนึ่ง ถือหนังสืออ่านริมหน้าต่าง",
-          prompt: "POV aesthetic photography of hands holding open book by sunny window."
+          visual: "ภาพสรุปความคุ้มค่า: โปรโมชั่นพิเศษ เซ็ตของแถม และพิกัดสั่งซื้อในตะกร้า",
+          camera_angle: "🎁 Flatlay Top-down 90° สินค้าครบเซ็ตพร้อมการ์ดโปรโมชั่น",
+          real_photo_tip: "💡 จัดวางขวดสินค้าพร้อมกล่องบรรจุภัณฑ์และของแถม ใส่ป้ายโปรโมชั่นชัดเจน",
+          text_overlay: "พิกัดโปรโมชั่นพิเศษ จิ้มตะกร้าหรือลิงก์ด่วนก่อนหมดโปร",
+          shoot_instruction: "ภาพสรุปชุดโปรโมชั่นและ Call to Action",
+          prompt: `Clean minimalist flatlay of skincare gift set with elegant packaging and promotional offer badge.`
         }
       ];
     }
+  } else if (isFashion) {
+    real_shoot_guide = "📸 คำแนะนำถ่ายแฟชั่น OOTD ด้วยมือถือ: ถ่ายมุมต่ำระดับเอว เลนส์ 1x หรือ 2x ถอยออกไป 4-5 ก้าว ตากล้องย่อตัวลงเล็กน้อยเพื่อช่วยให้สัดส่วนดูเพรียวยาว แสงธรรมชาติตอนเย็น 16:30 น. (Golden Hour) ให้เนื้อผ้าและคัตติ้งดูมีมิติ";
+    equipment_needed = "📱 สมาร์ตโฟน (โหมด Portrait 2x) + 👜 พร็อพกระเป๋า/แว่นตากันแดด + 💡 แสงแดดธรรมชาติตอนเย็น";
+    visual_direction = "สไตล์ Lookbook / นิตยสารแฟชั่น คัตติ้งเนี้ยบ ทรงสวย พรางหุ่น ดูแพงและมั่นใจ";
+
+    if (targetCount === 1) {
+      slidesPool = [
+        {
+          slide_no: 1,
+          visual: `ภาพ Hero Look เต็มตัว ${title} สวมใส่สวยสง่า ทรงสวยพรางหุ่น คัตติ้งเนี้ยบ แสงแดดอุ่นส่องขับผิว`,
+          camera_angle: "📐 ถ่ายมุมต่ำระดับเอว (Waist-Level 0.5x / 1x Low-Angle Look)",
+          real_photo_tip: "💡 ตากล้องย่อตัวระดับเอว ตัวแบบก้าวขาข้างหนึ่งมาข้างหน้าเบาๆ เพื่อยืดทรงให้ดูสูงเพรียว",
+          text_overlay: title,
+          shoot_instruction: "ถ่ายภาพรวมลุคเต็มตัว แสงแดดส่องเฉียงขับมิติเนื้อผ้า",
+          prompt: `High-fashion editorial full body photography of model wearing ${title}, elegant silhouette, chic architectural street background, warm sunlight, 8k --ar 1:1`
+        }
+      ];
+    } else {
+      slidesPool = [
+        {
+          slide_no: 1,
+          visual: `ภาพลุคเต็มตัว OOTD: ชุด ${title} ทรงเป๊ะ คัตติ้งพรางหุ่น ลุคตัวมัมดูแพง (ภาพปก)`,
+          camera_angle: "📐 มุมต่ำระดับเอว แสงบ่ายคล้อย (Editorial Full-length)",
+          real_photo_tip: "💡 ให้ตัวแบบเดินแคนดิดแล้วหันมามองกล้อง จังหวะผ้าทิ้งตัวจะสวยเป๊ะที่สุด",
+          text_overlay: title,
+          shoot_instruction: "ภาพเปิดลุคแฟชั่นเต็มตัว สวยมั่นใจ",
+          prompt: `Editorial fashion photography of stylish woman wearing ${title}, walking confident, sunlit modern urban street.`
+        },
+        {
+          slide_no: 2,
+          visual: "ภาพเจาะลึกดีเทล: โคลสอัพเนื้อผ้า คัตติ้ง กระดุม ตะเข็บ และแพทเทิร์นการตัดเย็บ",
+          camera_angle: "🔍 โคลสอัพ 2x เจาะเฉพาะเนื้อผ้าและคัตติ้ง (Fabric Texture Detail)",
+          real_photo_tip: "💡 ถ่ายโคลสอัพที่แนวตะเข็บเอวหรือกระดุม เพื่อโชว์ความประณีตของเนื้อผ้า",
+          text_overlay: "คัตติ้งเนี้ยบ แพทเทิร์นเก็บทรง เนื้อผ้าพรีเมียม",
+          shoot_instruction: "โคลสอัพดีเทลการตัดเย็บและเนื้อผ้า",
+          prompt: `Macro closeup of fine garment tailoring, premium textile weave, sharp stitching details.`
+        },
+        {
+          slide_no: 3,
+          visual: "ภาพมิกซ์แอนด์แมตช์: ไอเดียจับคู่กับเบลเซอร์ กระเป๋า และรองเท้าส้นสูง",
+          camera_angle: "👠 Medium Shot ครึ่งตัว หรือ Flatlay ชุดพร้อมแอกเซสซอรี",
+          real_photo_tip: "💡 จัดวางเครื่องประดับ กระเป๋า หรือคลุมเบลเซอร์ทับ เพื่อให้เห็นความคุ้มค่าใส่ได้หลายโอกาส",
+          text_overlay: "แมตช์ง่ายได้ทั้งลุคทำงานและลุคคาเฟ่",
+          shoot_instruction: "ถ่ายการแต่งตัวสไตล์ Mix & Match",
+          prompt: `Chic fashion flatlay styling matching ${title} with leather bag and elegant heels.`
+        },
+        {
+          slide_no: 4,
+          visual: "ภาพสรุปไซส์ & พิกัด: ตารางสัดส่วน S-XL พร้อมป้ายราคาและพิกัดในตะกร้า",
+          camera_angle: "🏷️ Clean Minimal Graphic Showcase พร้อมชุดตัวจริง",
+          real_photo_tip: "💡 ถ่ายชุดแขวนบนไม้แขวนเสื้อไม้เรียบหรู พร้อมสรุปข้อมูลไซส์และเนื้อผ้า",
+          text_overlay: "พิกัดชุดในตะกร้า เช็กไซส์ด่วนก่อนของหมด",
+          shoot_instruction: "ถ่ายสรุปไซส์และช่องทางสั่งซื้อ",
+          prompt: `Clean garment hanging on wooden hanger beside elegant size chart typography.`
+        }
+      ];
+    }
+  } else if (isGadgetOrHome) {
+    real_shoot_guide = "📸 คำแนะนำถ่ายแกดเจ็ตด้วยมือถือ: ถ่ายบนโต๊ะทำงานสไตล์มินิมอล จัดของรอบข้างให้เป็นระเบียบ แสงธรรมชาติเข้าด้านข้าง 45° โคลสอัพพอร์ตชาร์จและปุ่มกดด้วยโหมด 2x ถ่ายให้เห็นตอนมือจับใช้งานจริง";
+    equipment_needed = "📱 สมาร์ตโฟน (โหมด 1x/2x) + 💻 โต๊ะทำงานมินิมอล + ☕ แก้วกาแฟ/โน้ตบุ๊กเป็นพร็อพ";
+    visual_direction = "สมาร์ทไลฟ์ โมเดิร์น มินิมอล จัดวางใช้งานจริง สะอาดตา แก้ Pain Point ชีวิต";
+
+    if (targetCount === 1) {
+      slidesPool = [
+        {
+          slide_no: 1,
+          visual: `ภาพ Hero Shot ${title} วางใช้งานบนโต๊ะทำงานโมเดิร์น พร้อมพาดหัวฟังก์ชันล้ำ`,
+          camera_angle: "📐 Flatlay 45° สไตล์ Minimal Desk Setup",
+          real_photo_tip: "💡 วางสินค้าคู่กับแล็ปท็อปหรือมุมโต๊ะทำงาน แสงธรรมชาติเข้าด้านข้าง จัดระเบียบสายไฟให้คลีน",
+          text_overlay: title,
+          shoot_instruction: "ถ่ายภาพรวมสินค้าบนโต๊ะทำงานสไตล์มินิมอล",
+          prompt: `Commercial tech photography of ${title} on clean Scandinavian wooden workspace desk, natural side light, aesthetic minimalist 8k.`
+        }
+      ];
+    } else {
+      slidesPool = [
+        {
+          slide_no: 1,
+          visual: `ภาพรวม ${title} บนโต๊ะทำงานสไตล์มินิมอล ช็อตเปิดตัวดึงดูดสายตา (ภาพปก)`,
+          camera_angle: "📐 มุม 45° Desk Setup Perspective",
+          real_photo_tip: "💡 จัดวางคู่กับแก้วกาแฟหรือคีย์บอร์ด แสงเช้าเฉียงสร้างบรรยากาศน่าใช้งาน",
+          text_overlay: title,
+          shoot_instruction: "ภาพเปิดตัวแกดเจ็ตบนโต๊ะทำงาน",
+          prompt: `Modern tech gadget hero photography of ${title} in sleek workstation environment.`
+        },
+        {
+          slide_no: 2,
+          visual: "ภาพเจาะลึกฟังก์ชันเด่น: ซูมโคลสอัพปุ่มควบคุม พอร์ตเชื่อมต่อ และไฟแสดงผล",
+          camera_angle: "🔍 ซูมระยะใกล้ 2x หรือโหมดมาโคร (Hardware Macro Detail)",
+          real_photo_tip: "💡 แตะโฟกัสที่ปุ่มกดหรือพอร์ตชาร์จ แสงสว่างสม่ำเสมอโชว์วัสดุพรีเมียม",
+          text_overlay: "ฟังก์ชันอัจฉริยะ ใช้งานง่ายในปุ่มเดียว",
+          shoot_instruction: "โคลสอัพชิ้นส่วนและฟังก์ชันสำคัญ",
+          prompt: `Macro closeup of sleek button and connectivity interface on ${title}, modern industrial design.`
+        },
+        {
+          slide_no: 3,
+          visual: "ภาพการใช้งานจริง: มือจับถือใช้งานสาธิตการแก้ปัญหาในชีวิตประจำวัน",
+          camera_angle: "✋ มุมมองบุคคลที่หนึ่ง POV (First-person In-Use)",
+          real_photo_tip: "💡 ถ่ายจังหวะมือเสียบสายหรือกดปุ่มใช้งานจริง เพื่อให้คนดูเห็นภาพความสะดวก",
+          text_overlay: "ประหยัดเวลาชีวิต ตอบโจทย์การใช้งานทุกวัน",
+          shoot_instruction: "ถ่ายมุมมอง POV ตอนใช้งานจริง",
+          prompt: `First person POV hand operating ${title} efficiently at modern desk setup.`
+        },
+        {
+          slide_no: 4,
+          visual: "ภาพสรุปความคุ้มค่า: ดีไซน์กะทัดรัด พร้อมป้ายราคาและพิกัดสั่งซื้อในตะกร้า",
+          camera_angle: "📦 จัดวางสินค้าพร้อมกล่องบรรจุภัณฑ์และอุปกรณ์เสริม",
+          real_photo_tip: "💡 วางสินค้าคู่กับกล่องแพ็กเกจจิ้ง สรุปฟังก์ชันจบในใบเดียว",
+          text_overlay: "พิกัดโปรโมชั่น คุ้มค่าราคาหลักร้อย ในตะกร้าด่วน",
+          shoot_instruction: "ภาพสรุปสินค้าและช่องทางสั่งซื้อ",
+          prompt: `Clean minimalist packaging layout of ${title} with accessories, commercial product showcase.`
+        }
+      ];
+    }
+  } else if (isBookOrSelfDev) {
+    real_shoot_guide = "📸 คำแนะนำถ่ายจริงด้วยมือถือ: ถ่ายบนโต๊ะทำงานหรือมุมบ้านที่มีแสงธรรมชาติเข้าด้านข้าง จัดของรอบข้างให้เป็นระเบียบ ถ่ายให้เห็นตอนมือจับใช้งานจริง";
+    equipment_needed = "📱 มือถือ (โหมด 1x และ 2x) + ☕ พร็อพประกอบฉาก เช่น โน้ตบุ๊ก แก้วกาแฟ ปากกาไฮไลต์";
+    visual_direction = "สมจริง มีสไตล์ มินิมอล จัดวางบนโต๊ะหรือห้องที่ใช้งานจริง อบอุ่น สบายตา";
+
+    slidesPool = [
+      {
+        slide_no: 1,
+        visual: "ภาพหน้าปกหนังสือ วางคู่แก้วกาแฟ แสงนุ่มริมหน้าต่าง (ภาพเปิด)",
+        camera_angle: "📐 มุมกด 45° สไตล์ Cozy Lifestyle บนโต๊ะทำงาน",
+        real_photo_tip: "💡 จัดวางเยื้องกึ่งกลาง วางแก้วกาแฟไว้มุมตรงข้ามเพื่อสร้างบาลานซ์ภาพ",
+        text_overlay: title,
+        shoot_instruction: "จัดวางคู่แก้วกาแฟ แสงแดดรำไรสร้างอารมณ์สบายตา",
+        prompt: `Aesthetic cozy flatlay photography of ${title} on wooden table beside coffee mug, 8k.`
+      },
+      {
+        slide_no: 2,
+        visual: "ภาพกางหน้าหนังสือ เปิดไฮไลต์ข้อความประโยคสำคัญจุดที่ 1",
+        camera_angle: "🔍 โคลสอัพขนานหน้ากระดาษ (Text Macro Focus)",
+        real_photo_tip: "💡 ขีดไฮไลต์ท่อนที่โดนใจที่สุด ถ่ายให้ตัวหนังสือคมกริบ ชวนให้คนหยุดอ่าน",
+        text_overlay: "กฎข้อที่ 1: ก้าวแรกสู่การเปลี่ยนแปลง",
+        shoot_instruction: "โคลสอัพท่อนประโยคเด็ด ตัวอักษรคมชัด",
+        prompt: "Closeup macro photograph of open book page with highlighter emphasizing key quote."
+      },
+      {
+        slide_no: 3,
+        visual: "ภาพสมุดโน้ตเขียนสรุปกฎข้อที่ 2 หรือ Mindmap การนำไปใช้",
+        camera_angle: "📝 Flatlay 90° ถ่ายตรงจากด้านบน (Top-down Notes)",
+        real_photo_tip: "💡 เขียนลายมือสวยงามบนกระดาษโน้ต วางปากกาเคียงข้าง แสงสว่างสม่ำเสมอ",
+        text_overlay: "กฎข้อที่ 2: สร้างระบบที่ทำได้จริงทุกวัน",
+        shoot_instruction: "ถ่ายมุม Top-down โชว์สรุปบนสมุดบันทึก",
+        prompt: "Top-down flatlay photography of handwritten summary note with pen."
+      },
+      {
+        slide_no: 4,
+        visual: "ภาพมือถือหนังสืออ่านในบรรยากาศสบายๆ พร้อม Action Plan",
+        camera_angle: "📖 มุมมองคนอ่าน POV (First-person Reading View)",
+        real_photo_tip: "💡 ถือหนังสือด้วยมือเดียว เปิดกางในมุมผ่อนคลาย ชวนให้เริ่มลงมือทำ",
+        text_overlay: "เซฟโพสต์นี้ไว้เตือนใจ แล้วเริ่มลงมือทำวันนี้",
+        shoot_instruction: "ถ่ายมุมมองบุคคลที่หนึ่ง ถือหนังสืออ่านริมหน้าต่าง",
+        prompt: "POV aesthetic photography of hands holding open book by sunny window."
+      }
+    ];
   } else if (isTravelOrCafe) {
     real_shoot_guide = "📸 คู่มือออกกองถ่ายจริง (Local Cafe & Travel Production Guide):\n• พิกัดที่ 1 (Fleur Cafe & Eatery - สวนอังกฤษแม่ริม): ถ่ายมุมซุ้มบันไดหิน สวนกุหลาบ และลำธาร แสงบ่าย 15:30-17:00 น. แดดส่องเฉียงลอดแมกไม้ฟีลยุโรป\n• พิกัดที่ 2 (Pluto Cafe หรือ Mars.cnx - สถาปัตยกรรมยานอวกาศสันทราย/คูเมือง): มุมบันไดวนสีดำ Brutalist แสงเงา Dramatic แนะนำเลนส์ 0.5x ย่อมุมต่ำให้โครงสร้างดูโอ่อ่า\n• พิกัดที่ 3 (Fern Forest Cafe หรือ Transit No.8 - สวนมอสและเรือนกระจก / ทางม้าลายสไตล์ญี่ปุ่น): แสงเช้า 09:00 น. นุ่มละมุน โซนเรือนกระจก ถ่ายคู่แก้ว Dirty หรือเบเกอรี่ซิกเนเจอร์\n• ทริกแต่งตัว: สวมชุดลินินโทนขาว/ครีม/เอิร์ธโทน หมวกปีกกว้าง เพื่อให้ตัดกับสีเขียวและสีปูนเปลือย ถ่ายออกมาสวยเป๊ะโดยไม่ต้องพึ่งฟิลเตอร์!";
     equipment_needed = "📱 สมาร์ตโฟน (เลนส์ 0.5x Ultra-wide + เลนส์ 2x Portrait) + 🦯 ขาตั้งกล้องขนาดพกพา + ☕ พร็อพแก้วกาแฟซิกเนเจอร์/แว่นกันแดด/กล้องฟิล์ม";

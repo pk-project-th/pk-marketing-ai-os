@@ -169,14 +169,15 @@ async function callGeminiDirect(params: {
   const { apiKey, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 45000 } = params;
 
   const candidateModels = [
-    model || "gemini-3-flash-preview",
-    "gemini-3-flash-preview",
+    model || "gemini-3.1-flash-lite-preview",
     "gemini-3.1-flash-lite-preview",
+    "gemini-3-flash-preview",
     "gemini-3.8-flash",
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
-    "gemini-flash-lite-latest"
+    "gemini-flash-lite-latest",
+    "gemini-2.0-flash"
   ].filter((m, idx, arr) => arr.indexOf(m) === idx);
 
   const body: any = {
@@ -243,8 +244,6 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
   const startTime = Date.now();
   const settings = db.getSettings();
   const autoFailover = settings.auto_failover_enabled !== false;
-  const preferredEngine = options.preferredEngine || settings.default_ai_engine || "groq";
-
   const primaryOpenAiKey = process.env.OPENAI_API_KEY || settings.openai_api_key;
   const backupOpenAiKey = settings.openai_backup_api_key;
   const groqKey = process.env.GROQ_API_KEY || settings.groq_api_key;
@@ -252,6 +251,7 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
   const fallbackGeminiKey = Buffer.from("QVEuQWI4Uk42SzNsRnVGcmJsWkhsaVVQTG43eE5oM2ZOMDhHcWxDX2dGZDNQR1pjbnF2aUE=", "base64").toString("ascii");
   const primaryGeminiKey = options.apiKey || process.env.GEMINI_API_KEY || settings.gemini_api_key || fallbackGeminiKey;
   const backupGeminiKey = settings.gemini_backup_api_key;
+  const preferredEngine = options.preferredEngine || settings.default_ai_engine || (primaryGeminiKey ? "gemini" : "groq");
 
   const defaultSystem = options.systemInstruction || 
     "You are an expert AI content creator, copywriter, and digital marketing strategist. Return strictly valid JSON.";
@@ -357,12 +357,12 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
 
   const tierPrimaryGemini: ExecutionTier = {
     id: "gemini",
-    name: `Google Gemini Primary (${options.preferredModel || settings.gemini_model || "gemini-3.8-flash"})`,
+    name: `Google Gemini Primary (${options.preferredModel || settings.gemini_model || "gemini-3.1-flash-lite-preview"})`,
     hasKey: !!primaryGeminiKey && primaryGeminiKey.trim().length > 5,
     execute: async () => {
       const res = await callGeminiDirect({
         apiKey: primaryGeminiKey!,
-        model: options.preferredModel || settings.gemini_model || "gemini-3.8-flash",
+        model: options.preferredModel || settings.gemini_model || "gemini-3.1-flash-lite-preview",
         prompt: options.prompt,
         systemInstruction: defaultSystem,
         responseSchema: options.responseSchema,

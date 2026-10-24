@@ -109,48 +109,76 @@ Return JSON with:
     console.warn("Gemini call error or offline mode, using fallback production generator:", error);
   }
 
-  // Universal topic-derived resilient fallback generator
+  // Universal topic-derived resilient fallback generator (Human Thai Creator Voice)
+  const fullText = (idea.title + " " + idea.concept + " " + idea.hook + " " + idea.key_message).toLowerCase();
+  const isBeauty = fullText.includes("สกินแคร์") || fullText.includes("เซรั่ม") || fullText.includes("ครีม") || fullText.includes("ผิว") || fullText.includes("สิว") || fullText.includes("กันแดด") || fullText.includes("skincare") || fullText.includes("serum");
+  const isFood = fullText.includes("อาหาร") || fullText.includes("ทำอาหาร") || fullText.includes("สูตร") || fullText.includes("กิน") || fullText.includes("อร่อย") || fullText.includes("ครัว");
+
+  let captionShort = `✨ ${idea.hook} ${idea.key_message} ของดีบอกต่อ พิกัดในตะกร้าด่วน!`;
+  let captionLong = `【${idea.title}】\n\n${idea.hook}\n\n${idea.concept}\n\n📌 จุดเด่นสำคัญที่ต้องป้ายยา:\n• ออกแบบมาเพื่อแก้ปัญหาชีวิตประจำวันได้ตรงจุด\n• ฟังก์ชันครบ ใช้งานง่าย คุ้มค่าเกินราคา\n• การันตีรีวิวจากผู้ใช้จริง สัมผัสความพึงพอใจตั้งแต่ครั้งแรก\n\n${idea.cta || "👉 พิกัดในตะกร้าและลิงก์หน้าโปรไฟล์ด่วน ก่อนหมดโปรโมชั่นน้า!"}`;
+  let scriptIntro = `แกรรร... ใครกำลังมองหาตัวช่วยเรื่องนี้อยู่ เซฟคลิปนี้ด่วน บอกหมดแบบไม่อวย!`;
+  let scriptBody = `จากการลองใช้จริง จุดที่ประทับใจสุดคือความสะดวกและฟังก์ชันที่ตอบโจทย์เกินราคา ช่วยประหยัดเวลาชีวิตไปได้เยอะมาก`;
+  let scriptProof = "พิสูจน์แล้วจากผู้ใช้งานจริง การันตีผลลัพธ์และความคุ้มค่า";
+
+  if (isBeauty) {
+    captionShort = `✨ ${idea.hook} กู้ผิวโทรมเร่งด่วน ผิวฉ่ำโกลว์เล่นแสง พิกัดในตะกร้าด่วน!`;
+    captionLong = `【${idea.title}】\n\n${idea.hook}\n\nชีทำถึงมาก! ใครที่เจอปัญหาผิวโทรม แต่งหน้าไม่ติด รูขุมขนกว้าง ตัวนี้คือคำตอบแบบโนสปอน\n\n📌 ไฮไลต์เด็ดที่ต้องป้ายยา:\n• เนื้อสัมผัสบางเบา ซึมไวใน 3 วินาที ไม่เหนอะหนะผิว\n• ฟื้นบำรุงลึกด้วย Active Ingredients เติมน้ำให้ผิวอิ่มฟู\n• ตื่นมาผิวฉ่ำโกลว์ เล่นแสงแบบสาวเกาหลี\n\n${idea.cta || "👉 พิกัดในตะกร้าและลิงก์หน้าโปรไฟล์ด่วน ก่อนหมดโปรโมชั่นน้า!"}`;
+    scriptIntro = `แกรรร... ใครกำลังส่องกระจกแล้วรู้สึกว่าผิวพัง แต่งหน้าเป็นคราบ เซฟคลิปนี้ด่วน!`;
+    scriptBody = `ดูเนื้อสัมผัสนี่ก่อน หยดลงผิวคือซึมไวมาก ไม่เหนอะหนะ รอยแดงรอยสิวดูจางลง ผิวอิ่มน้ำฟูเด้งขึ้นชัดเจน`;
+    scriptProof = "ผลลัพธ์จริง 14 วัน ผิวกระจกเล่นแสงแบบไม่ต้องพึ่งฟิลเตอร์";
+  } else if (isFood) {
+    captionShort = `🍳 ${idea.hook} ${idea.key_message} สูตรลับชวนหิว เซฟไว้เข้าครัวด่วน!`;
+    captionLong = `【${idea.title}】\n\n${idea.hook}\n\nแจกสูตรลับฉบับโฮมเมด ทำตามง่าย อร่อยเข้มข้นเหมือนร้านดัง!\n\n📌 เคล็ดลับก้นครัว:\n• คุมไฟแรงล็อกความฉ่ำ วัตถุดิบหอมกลิ่นคั่วกระทะ\n• สัดส่วนเครื่องปรุงกลมกล่อมลงตัว ไม่แฉะ\n• ทำกินเองได้ง่ายๆ ใน 15 นาที\n\n${idea.cta || "เซฟสูตรไว้เข้าครัววันหยุด หรือแท็กคนข้างๆ ให้ทำให้กินได้เลยน้า!"}`;
+    scriptIntro = `ใครชอบทำอาหาร หรือกำลังหิวตอนดึก เซฟคลิปนี้ด่วน กลิ่นหอมทะลุจอ!`;
+    scriptBody = `เคล็ดลับอยู่ที่จังหวะลงเครื่องปรุงและการคุมไฟแรง ทำให้วัตถุดิบยังฉ่ำกรอบ หอมกลิ่นกระทะชวนน้ำลายสอ`;
+    scriptProof = "สูตรนี้ทำตามง่าย อร่อยถูกปากทุกคนในบ้านแน่นอน";
+  }
+
   const asset: ContentAsset = {
     id: `asset-${Date.now()}`,
     idea_id: idea.id,
     campaign_id: idea.campaign_id,
     framework,
-    caption_short: `✨ ${idea.hook} ${idea.key_message} คัดสรรคุณภาพตอบโจทย์ทุกการใช้งาน!`,
-    caption_long: `【${idea.title}】\n\n${idea.hook}\n\n${idea.concept}\n\n📌 จุดเด่นสำคัญที่คุณจะได้รับ:\n• คัดสรรคุณภาพเกรดพรีเมียม ตอบโจทย์การใช้งานจริง\n• ผ่านการทดสอบมาตรฐาน มั่นใจในความทนทานและความคุ้มค่า\n• รับประกันความพึงพอใจ บริการจัดส่งรวดเร็วทั่วประเทศ\n\n${idea.cta || "สนใจสอบถามรายละเอียดหรือสั่งซื้อ ทักแชทหาทีมงานได้ตลอดเวลาครับ"}`,
-    cta: `👉 ${idea.cta || "ทักแชทเพื่อรับสิทธิ์และข้อเสนอพิเศษทันที"}`,
-    hashtags: idea.hashtags && idea.hashtags.length > 0 ? idea.hashtags : ["#โปรโมชั่น", "#ของดีบอกต่อ", "#คุ้มค่า"],
+    caption_short: captionShort,
+    caption_long: captionLong,
+    cta: `👉 ${idea.cta || "พิกัดในตะกร้าและลิงก์หน้าโปรไฟล์เลยน้า!"}`,
+    hashtags: idea.hashtags && idea.hashtags.length > 0 ? idea.hashtags : ["#ป้ายยา", "#ของดีบอกต่อ", "#ใช้ดีบอกต่อ", "#tiktokป้ายยา"],
     script_hook: idea.hook,
-    script_intro: `สวัสดีครับทุกคน วันนี้เรามาเจาะลึกหัวข้อที่หลายคนให้ความสนใจมากที่สุดเกี่ยวกับ ${idea.title}`,
-    script_body: `จากการใช้งานและการทดสอบจริง พบว่าจุดเด่นสำคัญคือความสะดวก ความคุ้มค่า และคุณภาพวัสดุที่ตอบโจทย์เกินราคา`,
-    script_proof: "การันตีด้วยรีวิวจากผู้ใช้งานจริงและมาตรฐานคุณภาพระดับสากล",
-    script_cta: idea.cta || "ทักแชทหรือกดสั่งซื้อได้ทันทีที่ลิงก์ด้านล่าง",
+    script_intro: scriptIntro,
+    script_body: scriptBody,
+    script_proof: scriptProof,
+    script_cta: idea.cta || "พิกัดในตะกร้าเหลืองด้านล่างเลยนะ รีบกดก่อนของหมด!",
     video_scenes: [
       {
         timestamp: "00:00 - 00:05",
-        scene: "Scene 1: Hook",
-        visual: `ภาพเปิดดึงดูดสายตาพร้อมกราฟิกข้อความ '${idea.hook}'`,
+        scene: "Scene 1: Hook & Problem",
+        visual: `Establishing Close-up ดึงดูดสายตาพร้อมกราฟิกข้อความเปิด '${idea.hook}' ขยี้ Pain Point ทันที`,
         dialogue: idea.hook,
         on_screen_text: idea.title,
-        camera_direction: "Medium close-up ดอลลี่เข้าหาวัตถุอย่างกระชับ",
-        sound_suggestion: "เสียง Whoosh กระแทกอารมณ์ + จังหวะบีตชัดเจน"
+        camera_direction: "Dolly-in รวดเร็ว 50mm f/1.8 โฟกัสปัญหาเพื่อสะกดคนดูใน 3 วินาทีแรก",
+        sound_suggestion: "เสียง Whoosh กระแทกอารมณ์ + จังหวะบีตดนตรีหยุดคนดู"
       },
       {
-        timestamp: "00:05 - 00:20",
-        scene: "Scene 2: Core Value",
-        visual: "ภาพสาธิตฟังก์ชันและการใช้งานจริงของสินค้าในบรรยากาศจริง",
-        dialogue: "จุดเด่นที่ทำให้รุ่นนี้แตกต่างคือความลงตัวระหว่างคุณภาพและความคุ้มค่าที่จับต้องได้จริง",
+        timestamp: "00:05 - 00:18",
+        scene: "Scene 2: Core Solution & In-Use Action",
+        visual: isBeauty 
+          ? "Extreme Macro 100mm เจาะลึกหยดเนื้อเซรั่มลงบนผิว ปาดให้เห็นความฉ่ำน้ำ ซึมไวทันที"
+          : "Match Cut ต่อเนื่องไปยังการทดลองใช้งานจริง สาธิตฟังก์ชันสำคัญที่มาแก้ปัญหาได้อย่างตรงจุด",
+        dialogue: scriptBody,
         on_screen_text: idea.key_message,
-        camera_direction: "Smooth gimbal tracking shot เคลื่อนกล้องรอบวัตถุ",
-        sound_suggestion: "เสียงดนตรีประกอบแนว Modern Upbeat"
+        camera_direction: "Macro Tracking Shot เคลื่อนกล้องตามการสัมผัส/การใช้งานจริง ต่อเนื่องจากฉากแรก",
+        sound_suggestion: "เสียง Sound Effect ซึมซับ/การทำงาน + ดนตรี Modern Upbeat สร้างพลังบวก"
       },
       {
-        timestamp: "00:20 - 00:30",
-        scene: "Scene 3: Call to Action",
-        visual: "ภาพสินค้าจัดวางสวยงามพร้อมข้อความโปรโมชั่นและช่องทางติดต่อ",
-        dialogue: idea.cta || "สั่งซื้อหรือสอบถามข้อมูลเพิ่มเติมได้เลยวันนี้",
-        on_screen_text: "สอบถามหรือสั่งซื้อได้ทันที",
-        camera_direction: "Wide shot ถอยระยะเห็นภาพรวมครบถ้วน",
-        sound_suggestion: "ดนตรีท่อนฮุกปิดท้ายหนักแน่น มั่นใจ"
+        timestamp: "00:18 - 00:30",
+        scene: "Scene 3: Proof & Call to Action",
+        visual: isBeauty
+          ? "ภาพผิวหน้าฉ่ำโกลว์เล่นแสง พร้อมขวดผลิตภัณฑ์ตั้งเด่นคู่ป้ายราคาพิเศษในตะกร้า"
+          : "Pull-back Medium Hero Shot แสดงผลลัพธ์ความประทับใจ พร้อมป้ายโปรโมชั่นและพิกัดสั่งซื้อ",
+        dialogue: idea.cta || "พิกัดในตะกร้าเหลืองด้านล่างเลยนะ รีบกดก่อนของหมด!",
+        on_screen_text: "พิกัดในตะกร้า / ลิงก์หน้าโปรไฟล์ด่วน!",
+        camera_direction: "Smooth Pull-back เผยภาพรวมความคุ้มค่าและล็อกอิน Call to Action",
+        sound_suggestion: "เสียงกระดิ่ง Ding ปิดท้าย + บีตท่อนฮุกหนักแน่นมั่นใจ"
       }
     ],
     creative_brief: {

@@ -365,6 +365,68 @@ export async function POST(req: Request) {
       !isCleanFood &&
       (combinedStr.includes("fishing") || combinedStr.includes("ตกปลา"));
 
+    const isBeautyOrSkincare =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      !isCleanFood &&
+      (combinedStr.includes("สกินแคร์") ||
+       combinedStr.includes("เซรั่ม") ||
+       combinedStr.includes("ครีม") ||
+       combinedStr.includes("ผิว") ||
+       combinedStr.includes("หน้าใส") ||
+       combinedStr.includes("สิว") ||
+       combinedStr.includes("ริ้วรอย") ||
+       combinedStr.includes("กันแดด") ||
+       combinedStr.includes("โทนเนอร์") ||
+       combinedStr.includes("มอยส์") ||
+       combinedStr.includes("คลินิก") ||
+       combinedStr.includes("ฟิลเลอร์") ||
+       combinedStr.includes("ฉีดหน้า") ||
+       combinedStr.includes("เครื่องสำอาง") ||
+       combinedStr.includes("ลิป") ||
+       combinedStr.includes("แต่งหน้า") ||
+       combinedStr.includes("บิวตี้") ||
+       combinedStr.includes("skincare") ||
+       combinedStr.includes("serum") ||
+       combinedStr.includes("beauty") ||
+       combinedStr.includes("cosmetic") ||
+       combinedStr.includes("กู้ผิว"));
+
+    const isFashion =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      !isCleanFood &&
+      !isBeautyOrSkincare &&
+      (combinedStr.includes("เสื้อผ้า") ||
+       combinedStr.includes("แฟชั่น") ||
+       combinedStr.includes("ชุด") ||
+       combinedStr.includes("เดรส") ||
+       combinedStr.includes("กางเกง") ||
+       combinedStr.includes("กระเป๋า") ||
+       combinedStr.includes("รองเท้า") ||
+       combinedStr.includes("เครื่องประดับ") ||
+       combinedStr.includes("ootd") ||
+       combinedStr.includes("fashion") ||
+       combinedStr.includes("outfit") ||
+       combinedStr.includes("แต่งตัว"));
+
+    const isGadget =
+      !isSwimming &&
+      !isOatOrBreakfast &&
+      !isCleanFood &&
+      !isBeautyOrSkincare &&
+      !isFashion &&
+      (combinedStr.includes("แกดเจ็ต") ||
+       combinedStr.includes("gadget") ||
+       combinedStr.includes("เครื่องใช้ไฟฟ้า") ||
+       combinedStr.includes("ของแต่งบ้าน") ||
+       combinedStr.includes("โต๊ะคอม") ||
+       combinedStr.includes("หูฟัง") ||
+       combinedStr.includes("พาวเวอร์แบงค์") ||
+       combinedStr.includes("สมาร์ทโฮม") ||
+       combinedStr.includes("ของใช้ในบ้าน") ||
+       combinedStr.includes("จัดโต๊ะ"));
+
     const isTravel =
       !isSwimming &&
       !isOatOrBreakfast &&
@@ -374,6 +436,9 @@ export async function POST(req: Request) {
       !isTemple &&
       !isAuto &&
       !isFishing &&
+      !isBeautyOrSkincare &&
+      !isFashion &&
+      !isGadget &&
       (combinedStr.includes("เชียงใหม่") ||
        combinedStr.includes("คาเฟ่") ||
        combinedStr.includes("cafe") ||
@@ -420,6 +485,12 @@ export async function POST(req: Request) {
           resolvedPersonaList = ["บัณฑิตสาวสดใส (ชุดครุย/ชุดขาวมินิมอล)", "ช่างภาพสายคอนเทนต์ (ฟีลอบอุ่น)", "ลุคธรรมชาติ Clean Korean Tone"];
         } else if (isTemple) {
           resolvedPersonaList = ["นักท่องเที่ยวสายบุญ/สายวัฒนธรรม แต่งกายสุภาพเรียบร้อย เรียบหรู", "ผู้ดำเนินรายการสายท่องเที่ยวเชิงวัฒนธรรม"];
+        } else if (isBeautyOrSkincare) {
+          resolvedPersonaList = ["บิวตี้อินฟลูเอนเซอร์สาวสวย ผิวฉ่ำโกลว์ อารมณ์สดใส มั่นใจ (Beauty Influencer & Skincare Specialist)", "ผู้เชี่ยวชาญการดูแลผิว ลุคคลีน มินิมอล ให้คำแนะนำอย่างจริงใจ"];
+        } else if (isFashion) {
+          resolvedPersonaList = ["แฟชั่นนิสต้า & สไตลิสต์ OOTD หุ่นเพรียว มั่นใจ ลุคตัวมัมดูแพง (Fashion Stylist & Trendsetter)", "นางแบบ Lookbook เดินสับมั่นใจ ถ่ายทอดมิติเสื้อผ้าอย่างมีสไตล์"];
+        } else if (isGadget) {
+          resolvedPersonaList = ["เทคครีเอเตอร์ & ผู้เชี่ยวชาญสมาร์ทไลฟ์ ลุคสมาร์ทแคชชวล (Tech Reviewer & Smart Living Creator)", "คนทำงานรุ่นใหม่ที่หลงใหลในความสะดวกสบายและแกดเจ็ตมินิมอล"];
         } else if (isCooking) {
           resolvedPersonaList = ["เชฟรุ่นใหม่ สดใส ลุคโฮมเมด สวมผ้ากันเปื้อนมินิมอล", "ฟู้ดครีเอเตอร์สายป้ายยา"];
         } else if (isTravel) {
@@ -468,6 +539,24 @@ export async function POST(req: Request) {
           "ป่าดึกดำบรรพ์ยุคจูราสสิก แสงแดดส่องทะลุยอดไม้สูง ต้นเฟิร์นโบราณยักษ์ หมอกยามเช้าลอยเหนือน้ำ",
           "หุบเขาไดโนเสาร์ ลำธารน้ำตกใสสะอาด พืชพรรณยุคโบราณ ดินชื้นธรรมชาติ",
           "ทุ่งหญ้าสะวันนาดึกดำบรรพ์ แสงสีทองยามเย็น (Golden Hour) ผาหินโบราณตระหง่าน"
+        ];
+      } else if (isBeautyOrSkincare) {
+        resolvedEnvironmentList = [
+          "โต๊ะเครื่องแป้งหินอ่อนสไตล์มินิมอล แสงธรรมชาติส่องกระทบกระจกเงาและละอองน้ำบริสุทธิ์",
+          "ห้องน้ำโมเดิร์นหรูหรา กระเบื้องสีขาวสะอาดตา พร้อมกระจกแต่งหน้าไฟ LED นวลตา",
+          "สตูดิโอคลีนโทนอุ่น แสงนุ่ม Vanity Softbox เผยผิวเนียนใสเล่นแสงอย่างเป็นธรรมชาติ"
+        ];
+      } else if (isFashion) {
+        resolvedEnvironmentList = [
+          "ถนนสตรีทแฟชั่นโมเดิร์น สถาปัตยกรรมมินิมอล คอนกรีตและกระจก แสงบ่ายคล้อย Golden Hour",
+          "สตูดิโอถ่ายแบบ Lookbook พื้นหลังสีเทาอุ่น แสงไฟสตูดิโอแฟชั่นคมชัด",
+          "คาเฟ่กลาสเฮาส์สไตล์ยุโรป โทนเอิร์ธโทนสุดหรู"
+        ];
+      } else if (isGadget) {
+        resolvedEnvironmentList = [
+          "โต๊ะทำงานสไตล์สแกนดิเนเวียน ไม้โอ๊คและโลหะมินิมอล จัดสายไฟคลีนสะบายตา",
+          "มุมโฮมออฟฟิศพร้อมจอคอมพิวเตอร์และไฟ Ambient Light อบอุ่น",
+          "ห้องนั่งเล่นสมาร์ทโฮม ดีไซน์เรียบหรูทันสมัย"
         ];
       } else if (isCooking) {
         resolvedEnvironmentList = [
@@ -2635,10 +2724,60 @@ export async function POST(req: Request) {
       }
     ];
 
+    const skincareMasterPool8 = [
+      {
+        type: "ช็อตเปิดตัวและปัญหาผิว (Opening Hook & Skin Problem)",
+        camera: "Kinetic Push-in 50mm f/1.8 ระดับสายตา",
+        motion: `Photorealistic 8K image-to-video. Kinetic push-in camera movement focusing on model's facial expression and serum bottle. 24fps.`,
+        prompt: `Photorealistic 8K commercial opening scene. Extreme closeup of dewy radiant face and luxurious cosmetic bottle of ${effectiveProductEn} on marble vanity, soft diffused morning sunlight, luxury beauty aesthetics, 8K --ar ${aspectRatio}`,
+        voice: `แกรรร... ใครกำลังส่องกระจกแล้วรู้สึกว่าผิวพัง แต่งหน้าเป็นคราบ เซฟคลิปนี้ด่วน!`,
+        text: `กู้ผิวโทรมเร่งด่วนใน 7 วัน! ✨`,
+        sfx: "Atmospheric gentle shimmer sound effect."
+      },
+      {
+        type: "ช็อตโคลสอัพเนื้อสัมผัสและดรอปเปอร์ (Serum Texture & Dropper Macro)",
+        camera: "Extreme 100mm Macro Dolly Glide",
+        motion: `Photorealistic 8K image-to-video. Smooth slow glide capturing crystal clear serum droplet dripping from dropper onto palm. 24fps.`,
+        prompt: `Photorealistic 8K macro cosmetics photography. Glass dropper releasing a glistening crystal dewdrop of ${effectiveProductEn}, water ripples, pristine hydrating texture, tack sharp focus, 8K --ar ${aspectRatio}`,
+        voice: `ดูเนื้อสัมผัสนี่ก่อน หยดลงผิวคือบางเบามาก ซึมไวใน 3 วินาที ไม่เหนอะหนะเลย`,
+        text: `ซึมไวใน 3 วิ ไม่เหนอะหนะ 💧`,
+        sfx: "Crisp liquid droplet sound effect."
+      },
+      {
+        type: "ช็อตขั้นตอนลงบำรุงและสัมผัสซึมลึก (Gentle Application Routine)",
+        camera: "Medium Close-up Floating Steadicam",
+        motion: `Photorealistic 8K image-to-video. Gentle hands softly patting serum onto cheek with graceful movement. 24fps.`,
+        prompt: `Photorealistic 8K commercial scene. Elegant hands gently applying ${effectiveProductEn} onto glowing facial skin, soft warm vanity lighting, serene relaxed atmosphere, 8K --ar ${aspectRatio}`,
+        voice: `แตะเบาๆ ให้ทั่วใบหน้า สารบำรุงเข้มข้นจะซึมลึก ฟื้นฟูเกราะป้องกันผิวให้แข็งแรงทันที`,
+        text: `ฟื้นฟูเกราะผิว ล็อกความชุ่มชื้น 🤍`,
+        sfx: "Warm ambient modern synth music."
+      },
+      {
+        type: "ช็อตผลลัพธ์ผิวกระจกเล่นแสง (Glass Skin Transformation Reveal)",
+        camera: "Subtle 45-degree Orbit Shot",
+        motion: `Photorealistic 8K image-to-video. Subtle orbit revealing radiant glowing cheek catching warm light highlights. 24fps.`,
+        prompt: `Photorealistic 8K beauty commercial shot. Stunning close-up of model smiling with luminous glass skin, natural glistening highlights on cheekbone, flawless healthy complexion, 8K --ar ${aspectRatio}`,
+        voice: `ตื่นมาคือผิวฉ่ำโกลว์เล่นแสงมาก รอยแดงรอยสิวดูจางลง แต่งหน้าง่ายขึ้นเยอะ ชีทำถึงมาก!`,
+        text: `ผิวกระจกเล่นแสง ฉ่ำมงมากแม่ 🌟`,
+        sfx: "Uplifting melodic crescendo."
+      },
+      {
+        type: "ช็อตปิดการขายและพิกัดในตะกร้า (Hero Product & Call to Action)",
+        camera: "Smooth Pull-back to Hero Master Lockup",
+        motion: `Photorealistic 8K image-to-video. Camera pulls back revealing full product packaging alongside promotional offer. 24fps.`,
+        prompt: `Photorealistic 8K commercial packshot. Elegant bottle of ${effectiveProductEn} centered on sleek display pedestal with crystal water elements and soft promotional lighting, 8K --ar ${aspectRatio}`,
+        voice: `พิกัดในตะกร้าเหลืองด้านล่างเลยนะ หรือจิ้มลิงก์หน้าโปรไฟล์ด่วน ก่อนหมดโปรโมชั่นน้า!`,
+        text: `พิกัดในตะกร้า จิ้มด่วนก่อนหมดโปร! 🛒`,
+        sfx: "Triumphant brand chime."
+      }
+    ];
+
     // ==========================================
     // BASE POOL SELECTION (DOMAIN-AWARE & SCALE-AWARE)
     // ==========================================
-    const activePool = isDinosaurOrWildlife
+    const activePool = isBeautyOrSkincare
+      ? (resolvedCount <= 5 ? skincareMasterPool8.slice(0, resolvedCount) : skincareMasterPool8)
+      : isDinosaurOrWildlife
       ? (resolvedCount <= 8 ? dinosaurMasterPool16.slice(0, 8) : dinosaurMasterPool16)
       : isFishOrPlaSom
       ? (resolvedCount <= 8 ? plaSomMasterPool16.slice(0, 8) : plaSomMasterPool16)
@@ -2808,7 +2947,7 @@ export async function POST(req: Request) {
         cameraMovement: s1.camera,
         motionPrompt: (s1 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s1.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s1.prompt,
-        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isFriedRice ? "ข้าวกล้องผัดซีอิ๊วคลีน ไม่อ้วน! 🍳" : isRiceBowl ? "เบื่ออาหารคลีนจืดๆ ไหม? 🥗" : isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : "พิกัดพิเศษห้ามพลาด ✨"),
+        onScreenTextTh: userCustomTexts[0] || (s1 as any).text || (isFriedRice ? "ข้าวกล้องผัดซีอิ๊วคลีน ไม่อ้วน! 🍳" : isRiceBowl ? "เบื่ออาหารคลีนจืดๆ ไหม? 🥗" : isCleanFood ? "กินคลีนยังไงให้อร่อย ไม่อด? 🥗" : isSwimming ? "ว่ายน้ำไม่เป็น กลัวจม? 🏊" : isOatOrBreakfast ? "ข้าวโอ๊ตโฟมสุขภาพ 5 นาที 🥣" : isCooking ? `เคล็ดลับทำ ${productName} ให้อร่อย 🔥` : isTemple ? "พิกัดวัดลับสุดสงบ 🪷" : isBeautyOrSkincare ? "กู้ผิวโทรมเร่งด่วนใน 7 วัน! ✨" : isFashion ? "ไอเดียแต่งตัวพรางหุ่น ลุคตัวมัม! 👗" : isGadget ? "ของมันต้องมี! ชีวิตง่ายขึ้น 10 เท่า ⚡" : isTravel ? "แจกแพลนเที่ยวเชียงใหม่ 🚗" : `${productName} ของดีบอกต่อ! 🌟`),
         textPosition: (s1 as any).textPos || "Top Headline",
         thaiVoiceover: s1.voice,
         audioSfx: s1.sfx,
@@ -2824,7 +2963,7 @@ export async function POST(req: Request) {
         cameraMovement: s2.camera,
         motionPrompt: (s2 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s2.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s2.prompt,
-        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isFriedRice ? "หอมกลิ่นกระทะ โซเดียมต่ำ ไก่นุ่มฉ่ำ 🔥" : isRiceBowl ? "ข้าวกล้องนุ่ม ไก่ฉ่ำ ไข่เยิ้ม 🥑" : isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "สัมผัสประสบการณ์เหนือระดับ 💎"),
+        onScreenTextTh: userCustomTexts[1] || (s2 as any).text || (isFriedRice ? "หอมกลิ่นกระทะ โซเดียมต่ำ ไก่นุ่มฉ่ำ 🔥" : isRiceBowl ? "ข้าวกล้องนุ่ม ไก่ฉ่ำ ไข่เยิ้ม 🥑" : isCleanFood ? "สารอาหารครบ สดใหม่ ทำง่าย 🥑" : isSwimming ? "เทคนิคจับน้ำพุ่งตัวเร็ว 🌊" : isBeautyOrSkincare ? "ซึมไวใน 3 วิ ผิวฉ่ำโกลว์เล่นแสง 💧" : isFashion ? "คัตติ้งเนี้ยบ ทรงสวย ดูแพงเกินราคา ✨" : isGadget ? "ฟังก์ชันล้ำ ดีไซน์มินิมอล คุ้มราคา 🚀" : isOatOrBreakfast ? "เนื้อโฟมเนียนนุ่มละมุน 🍯" : "ฟังก์ชันครบ คุ้มค่าเกินราคา 💎"),
         textPosition: "Lower Third",
         thaiVoiceover: s2.voice,
         audioSfx: s2.sfx,
@@ -2840,7 +2979,7 @@ export async function POST(req: Request) {
         cameraMovement: s3.camera,
         motionPrompt: (s3 as any).motion || `Photorealistic 8K image-to-video. Camera executes ${s3.camera}. Real-world physical action, rigid object geometry, zero morphing. 24fps.`,
         visualPromptEn: s3.prompt,
-        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isFriedRice ? "เซฟสูตรทักแชตรับตารางคลีนฟรี! 🍳" : isRiceBowl ? "เซฟสูตรทักแชตรับแพลนฟรี! 🥗" : isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : "เซฟพิกัดตามรอยด่วน! 📸"),
+        onScreenTextTh: userCustomTexts[2] || (s3 as any).text || (isFriedRice ? "เซฟสูตรทักแชตรับตารางคลีนฟรี! 🍳" : isRiceBowl ? "เซฟสูตรทักแชตรับแพลนฟรี! 🥗" : isCleanFood ? "เซฟสูตรกดติดตามด่วน! 🥗" : isSwimming ? "ทักแชตจองสิทธิ์ทดลองเรียนฟรี! 🏊" : isBeautyOrSkincare ? "พิกัดในตะกร้า จิ้มด่วนก่อนหมดโปร! 🛒" : isFashion ? "พิกัดชุดในตะกร้า เช็กไซส์ด่วน! 🛍️" : isGadget ? "พิกัดในตะกร้า ชี้เป้าโปรโมชั่นด่วน! 📌" : isOatOrBreakfast ? "เซฟสูตรกดติดตามด่วน! 🥣" : isTravel ? "เซฟพิกัดตามรอยด่วน! 📸" : "พิกัดในตะกร้าและลิงก์โปรด่วน! 🛍️"),
         textPosition: (s3 as any).textPos || "Bottom Center CTA",
         thaiVoiceover: s3.voice,
         audioSfx: s3.sfx,
