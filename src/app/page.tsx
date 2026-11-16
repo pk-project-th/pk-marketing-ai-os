@@ -117,8 +117,13 @@ export default function DashboardPage() {
 
             {/* Global Workflow Step Shortcuts */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
+              <Link href="/easy">
+                <Button variant="primary" size="sm" icon={Sparkles} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm">
+                  ⚡ คิดคอนเทนต์ง่าย (1 คลิกพร้อมก๊อป)
+                </Button>
+              </Link>
               <Link href="/ideas">
-                <Button variant="primary" size="sm" icon={Lightbulb}>
+                <Button variant="outline" size="sm" icon={Lightbulb}>
                   01 · คิดไอเดีย
                 </Button>
               </Link>

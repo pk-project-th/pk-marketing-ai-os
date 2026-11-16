@@ -44,6 +44,16 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
   // Redesigned Frictionless Workflow Architecture
   const CORE_PRODUCTION_ITEMS = [
     {
+      id: "easy",
+      label: "Easy Content Creator",
+      sublabel: "พิมพ์ง่าย 1 ช่อง → ได้สูตรพร้อมก๊อป",
+      href: "/easy",
+      icon: Sparkles,
+      badge: "FAST",
+      badgeColor: "bg-emerald-600 text-white border-emerald-700 font-bold",
+      activeColor: "text-emerald-800 bg-emerald-50 border-emerald-300"
+    },
+    {
       id: "ideas",
       label: "Ideas & Strategy",
       sublabel: "คิดไอเดีย & กลยุทธ์แคมเปญ",

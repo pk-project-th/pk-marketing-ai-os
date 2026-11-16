@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { recordErrorMemory, shouldAvoidSignature } from "./error-memory";
 
 export interface AIRequestOptions {
   systemInstruction?: string;
@@ -196,6 +197,12 @@ async function callGeminiDirect(params: {
   let lastError = "";
 
   for (const m of candidateModels) {
+    const sig = `gemini-model:${m}`;
+    const avoidCheck = shouldAvoidSignature(sig);
+    if (avoidCheck.avoid) {
+      continue; // Skip model known to be failing/unavailable in cooldown
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
@@ -220,7 +227,23 @@ async function callGeminiDirect(params: {
       } else {
         lastStatus = res.status;
         lastError = await res.text().catch(() => "");
+        if (res.status === 404 || res.status === 503) {
+          recordErrorMemory({
+            category: "AI_MODEL",
+            signature: sig,
+            message: `Gemini model ${m} returned HTTP ${res.status}`,
+            resolution: `ข้ามโมเดล ${m} ชั่วคราวและสลับไปใช้โมเดลสำรองที่เสถียรกว่าอัตโนมัติ`,
+            cooldownMinutes: res.status === 404 ? 60 : 5
+          });
+        }
         if (isQuotaExhaustedError(res.status, lastError)) {
+          recordErrorMemory({
+            category: "AI_MODEL",
+            signature: sig,
+            message: `Gemini model ${m} quota exhausted (${res.status})`,
+            resolution: `หลีกเลี่ยงโมเดล ${m} ชั่วคราวและสลับไปยังโมเดล Flash หรือ Provider สำรอง`,
+            cooldownMinutes: 10
+          });
           // If a Pro/special model ran out of quota, continue to Flash models which have separate quotas
           if (!m.includes("flash")) {
             continue;
