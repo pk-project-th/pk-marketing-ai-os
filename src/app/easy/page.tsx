@@ -456,6 +456,60 @@ function EasyContentWorkspace() {
       .join("\n\n");
   };
 
+  const buildFlowToolProjectJSON = () => {
+    if (!blueprint?.video_blueprint?.scenes?.length) return "";
+    const scenes = blueprint.video_blueprint.scenes;
+    const payload = {
+      version: "4.0-LongMai-Studio",
+      exportedAt: new Date().toISOString(),
+      source: "PK-Marketing-AI-OS",
+      project: {
+        id: `proj_${Date.now()}`,
+        name: blueprint.title,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        sceneCount: scenes.length,
+        doneCount: 0
+      },
+      lyrics: scenes
+        .map((s) => `[Scene ${s.scene_number}] ${s.voiceover_text || s.on_screen_text || s.what_to_shoot}`)
+        .join("\n"),
+      style: "Cinematic",
+      targetDuration: "⚡ Dynamic Pacing",
+      subtitleMode: "none",
+      performanceMode: "acting",
+      cameraMode: "dynamic_mv",
+      firstFrameChain: true,
+      scenes: scenes.map((s) => ({
+        id: `scene_${s.scene_number}_${Date.now()}`,
+        lyrics: s.voiceover_text || s.on_screen_text || s.what_to_shoot,
+        prompt: s.flow_prompt,
+        duration: s.duration_sec || 6,
+        pacingLabel: `⏱️ ${s.duration_sec || 6}s`,
+        actBadge: `🎬 ฉากที่ ${s.scene_number}`,
+        cameraBadge: `🎥 ${s.camera_angle}`,
+        thaiStory: `${s.what_to_shoot} (${s.continuity_note})`,
+        status: "idle",
+        retryAttempt: 0,
+        variationIndex: 0
+      }))
+    };
+    return JSON.stringify(payload, null, 2);
+  };
+
+  const handleDownloadFlowToolJSON = () => {
+    const jsonStr = buildFlowToolProjectJSON();
+    if (!jsonStr || !blueprint) return;
+    const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${blueprint.title.replace(/[^\u0E00-\u0E7Fa-zA-Z0-9_-]+/g, "_")}_FlowTool.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("ดาวน์โหลดไฟล์ .JSON สำหรับโหลดเข้า Google Flow Tool แล้ว!", "success");
+  };
+
   const buildFullTextToCopy = () => {
     if (!blueprint) return "";
     const lines: string[] = [];
@@ -815,16 +869,42 @@ function EasyContentWorkspace() {
 
               <div className="flex flex-wrap items-center gap-2 shrink-0">
                 {blueprint.video_blueprint?.scenes?.length ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleCopy(buildAllPromptsOnly(), "ALL_PROMPTS", "ก๊อปปี้ Prompt ทุกฉากแล้ว!")
-                    }
-                    className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    {copiedKey === "ALL_PROMPTS" ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>Copy เฉพาะ Prompt ทุกฉาก</span>
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy(
+                          buildFlowToolProjectJSON(),
+                          "FLOW_JSON",
+                          "ก๊อปโค้ดโปรเจกต์แล้ว! ไปกด 'วางจาก OS' ใน Google Flow Tool ได้เลย"
+                        )
+                      }
+                      className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      {copiedKey === "FLOW_JSON" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-emerald-400" />}
+                      <span>Copy ส่งเข้า Flow Tool</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleDownloadFlowToolJSON}
+                      className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>ไฟล์ .JSON เข้า Flow Tool</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy(buildAllPromptsOnly(), "ALL_PROMPTS", "ก๊อปปี้ Prompt ทุกฉากแล้ว!")
+                      }
+                      className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      {copiedKey === "ALL_PROMPTS" ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>Copy Prompt ทุกฉาก</span>
+                    </button>
+                  </>
                 ) : null}
 
                 <button
