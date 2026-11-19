@@ -485,28 +485,30 @@ export default function SettingsPage() {
       {/* TAB 1: API CONFIGURATION */}
       {activeTab === "CONFIG" && (
         <form onSubmit={handleSave} className="space-y-6 animate-fade-in">
-          {/* AUTO-FAILOVER SMART RESILIENCE CONTROLLER */}
-          <div className="bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-blue-500/10 border border-amber-500/30 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/20 pb-4">
+          {/* AUTO-FAILOVER SMART RESILIENCE CONTROLLER (GEMINI-ONLY CLEAN) */}
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-500">
-                  <Zap className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+                  <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-[#17181A]">⚡ ระบบ Auto-Failover สลับผู้ให้บริการอัตโนมัติเมื่อโควต้าหมด</h3>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                      Zero Interruption
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-sm font-extrabold text-slate-900">
+                      ระบบ Auto-Failover เฉพาะ Google Gemini (สลับโมเดลอัตโนมัติไม่ให้สะดุด)
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Gemini Only
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 mt-0.5">
-                    ป้องกันระบบหยุดชะงัก: เมื่อ API โควต้าหมด (Error 429) ระบบจะสลับไปใช้คีย์สำรอง หรือโมเดลฟรี (Groq / OpenRouter) หรือ Built-in Engine ทันที
+                    หากโมเดล Gemini หลักติดโควตาหรือโหลดสูง ระบบจะสลับไปยังโมเดล Gemini ฟรีสำรองและ Local Engine ให้อัตโนมัติทันที
                   </p>
                 </div>
               </div>
 
               {/* Toggle Switch */}
-              <label className="relative inline-flex items-center cursor-pointer select-none">
+              <label className="relative inline-flex items-center cursor-pointer select-none shrink-0">
                 <input
                   type="checkbox"
                   checked={autoFailoverEnabled}
@@ -514,72 +516,14 @@ export default function SettingsPage() {
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
-                <span className="ml-2.5 text-xs font-bold text-[#17181A]">
+                <span className="ml-2.5 text-xs font-bold text-slate-900">
                   {autoFailoverEnabled ? "เปิดใช้งาน (Auto)" : "ปิดการสลับ"}
                 </span>
               </label>
             </div>
 
-            {/* Preferred Engine Selector */}
-            <div className="bg-white/90 border border-slate-200 rounded-xl p-3.5 space-y-2">
-              <label className="text-xs font-bold text-[#17181A] flex items-center justify-between">
-                <span>🎯 เลือกเครื่องยนต์หลักที่คุณต้องการให้ระบบเรียกใช้เป็นอันดับ 1 (Primary AI Engine):</span>
-                <span className="text-[10px] text-slate-500 font-normal">หากโควต้าหมดหรือติดขัด ระบบจะสลับไปเครื่องยนต์สำรองให้อัตโนมัติ</span>
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "gemini" }))}
-                  className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer flex flex-col gap-1 ${
-                    settings.default_ai_engine === "gemini"
-                      ? "bg-blue-50 border-blue-500 text-blue-900 ring-1 ring-blue-400 shadow-sm"
-                      : "bg-[#F7F8FA] border-[#E8E9EC] text-slate-700 hover:bg-slate-100"
-                  }`}
-                >
-                  <div className="flex items-center gap-1.5 font-bold">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Google Gemini (Flash / Pro)</span>
-                  </div>
-                  <span className="text-[10px] font-normal text-slate-500">วิเคราะห์บริบทลึก คิดไอเดียรอบด้าน โควตาสูง (แนะนำ)</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "chatgpt" }))}
-                  className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer flex flex-col gap-1 ${
-                    settings.default_ai_engine === "chatgpt"
-                      ? "bg-emerald-50 border-emerald-500 text-emerald-900 ring-1 ring-emerald-400 shadow-sm"
-                      : "bg-[#F7F8FA] border-[#E8E9EC] text-slate-700 hover:bg-slate-100"
-                  }`}
-                >
-                  <div className="flex items-center gap-1.5 font-bold">
-                    <Bot className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>OpenAI (GPT-4o)</span>
-                  </div>
-                  <span className="text-[10px] font-normal text-slate-500">กลยุทธ์การตลาดและ Copywriting ภาษาไทยระดับสูง</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setSettings(s => ({ ...s, default_ai_engine: "groq" }))}
-                  className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer flex flex-col gap-1 ${
-                    settings.default_ai_engine === "groq"
-                      ? "bg-amber-50 border-amber-500 text-amber-900 ring-1 ring-amber-400 shadow-sm"
-                      : "bg-[#F7F8FA] border-[#E8E9EC] text-slate-700 hover:bg-slate-100"
-                  }`}
-                >
-                  <div className="flex items-center gap-1.5 font-bold">
-                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    <span>Groq Cloud (ความเร็วสูง & ฟรี)</span>
-                  </div>
-                  <span className="text-[10px] font-normal text-slate-500">ความเร็วสูงสุด ~300ms ฟรี 14,400 ครั้ง/วัน</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Failover Tier Pipeline Badges (Dynamically ordered without duplication) */}
+            {/* Clean 3-Tier Gemini Pipeline Badges */}
             {(() => {
-              const currentEngine = settings.default_ai_engine || "gemini";
               const formatGeminiModelLabel = (m?: string) => {
                 if (!m || m === "gemini-4-hydrogen") return "Gemini 4 Hydrogen";
                 if (m === "gemini-4-neon") return "Gemini 4 Neon";
@@ -588,106 +532,45 @@ export default function SettingsPage() {
                 if (m === "gemini-3-flash-preview") return "Gemini 3 Flash";
                 return m;
               };
-              const geminiLabel = `Google Gemini (${formatGeminiModelLabel(settings.gemini_model)})`;
-              
-              let tier1 = {
-                title: "Tier 1: อันดับ 1 (หลัก)",
-                name: geminiLabel,
-                hasKey: !!settings.has_gemini_key,
-                color: "bg-blue-500",
-                pulse: true,
-                desc: settings.has_gemini_key ? "✓ มีคีย์พร้อมใช้" : "⚠️ ยังไม่มีคีย์"
-              };
-              let tier2 = {
-                title: "Tier 2: อันดับ 2 (สำรอง 1)",
-                name: "OpenAI (GPT-4o)",
-                hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
-                color: "bg-emerald-500",
-                pulse: false,
-                desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
-              };
-              let tier3 = {
-                title: "Tier 3: อันดับ 3 (สำรอง 2)",
-                name: "Groq Cloud / OpenRouter",
-                hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
-                color: "bg-amber-500",
-                pulse: false,
-                desc: "สแตนด์บาย Free Tier 14.4k/วัน"
-              };
+              const primaryLabel = `Google Gemini (${formatGeminiModelLabel(settings.gemini_model)})`;
 
-              if (currentEngine === "chatgpt") {
-                tier1 = {
-                  title: "Tier 1: อันดับ 1 (หลัก)",
-                  name: "OpenAI (GPT-4o)",
-                  hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
+              const pipelineBadges = [
+                {
+                  title: "Tier 1: โมเดลหลัก",
+                  name: primaryLabel,
+                  hasKey: !!settings.has_gemini_key,
                   color: "bg-emerald-500",
                   pulse: true,
-                  desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ มีคีย์พร้อมใช้" : "⚠️ ยังไม่มีคีย์"
-                };
-                tier2 = {
-                  title: "Tier 2: อันดับ 2 (สำรอง 1)",
-                  name: geminiLabel,
+                  desc: settings.has_gemini_key ? "✓ มีคีย์พร้อมใช้งาน" : "⚠️ กรุณาใส่ Gemini API Key"
+                },
+                {
+                  title: "Tier 2: โมเดล Gemini สำรอง",
+                  name: "Gemini 3 Flash Preview",
                   hasKey: !!settings.has_gemini_key,
                   color: "bg-blue-500",
                   pulse: false,
-                  desc: settings.has_gemini_key ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
-                };
-                tier3 = {
-                  title: "Tier 3: อันดับ 3 (สำรอง 2)",
-                  name: "Groq Cloud / OpenRouter",
-                  hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
-                  color: "bg-amber-500",
+                  desc: "✓ สลับอัตโนมัติเมื่อโมเดลหลักติดโควตา"
+                },
+                {
+                  title: "Tier 3: Zero-Quota Local",
+                  name: "สแตนด์บาย 100%",
+                  hasKey: true,
+                  color: "bg-slate-800",
                   pulse: false,
-                  desc: "สแตนด์บาย Free Tier 14.4k/วัน"
-                };
-              } else if (currentEngine === "groq") {
-                tier1 = {
-                  title: "Tier 1: อันดับ 1 (หลัก)",
-                  name: "Groq Cloud (ความเร็วสูง)",
-                  hasKey: !!(settings.has_groq_key || settings.has_openrouter_key),
-                  color: "bg-amber-500",
-                  pulse: true,
-                  desc: (settings.has_groq_key || settings.has_openrouter_key) ? "✓ มีคีย์พร้อมใช้" : "⚠️ ใช้โควตาฟรี"
-                };
-                tier2 = {
-                  title: "Tier 2: อันดับ 2 (สำรอง 1)",
-                  name: geminiLabel,
-                  hasKey: !!settings.has_gemini_key,
-                  color: "bg-blue-500",
-                  pulse: false,
-                  desc: settings.has_gemini_key ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
-                };
-                tier3 = {
-                  title: "Tier 3: อันดับ 3 (สำรอง 2)",
-                  name: "OpenAI (GPT-4o)",
-                  hasKey: !!(settings.has_openai_key || settings.has_openai_backup_key),
-                  color: "bg-emerald-500",
-                  pulse: false,
-                  desc: (settings.has_openai_key || settings.has_openai_backup_key) ? "✓ สแตนด์บายพร้อมสลับทันที" : "สำรองเมื่อมีคีย์"
-                };
-              }
-
-              const tier4 = {
-                title: "Tier 4: Zero-Quota Local",
-                name: "สแตนด์บาย 100%",
-                hasKey: true,
-                color: "bg-emerald-600",
-                pulse: false,
-                desc: "ทำงานได้ตลอดแม้เน็ตหลุด/โควต้าหมด"
-              };
-
-              const pipelineBadges = [tier1, tier2, tier3, tier4];
+                  desc: "ทำงานได้ตลอดแม้เน็ตหลุด/API ขัดข้อง"
+                }
+              ];
 
               return (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
                   {pipelineBadges.map((badge, idx) => (
-                    <div key={idx} className="bg-white/80 border border-[#E8E9EC] rounded-xl p-3 shadow-xs">
-                      <div className="text-[10px] text-slate-500 font-semibold mb-1">{badge.title}</div>
-                      <div className="font-bold text-[#17181A] flex items-center gap-1.5">
+                    <div key={idx} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 shadow-2xs">
+                      <div className="text-[10px] text-slate-500 font-bold mb-1">{badge.title}</div>
+                      <div className="font-extrabold text-slate-900 flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${badge.hasKey ? badge.color : "bg-slate-300"} ${badge.pulse ? "animate-pulse" : ""}`}></span>
                         <span>{badge.name}</span>
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-1">{badge.desc}</div>
+                      <div className="text-[11px] text-slate-500 mt-1">{badge.desc}</div>
                     </div>
                   ))}
                 </div>
@@ -824,299 +707,65 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* SECTION 2: OPENAI CHATGPT ENGINE (OPTIONAL) */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#E8E9EC] pb-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#17181A]">
-                <Bot className="w-4 h-4 text-emerald-400" />
-                <span>2. OpenAI ChatGPT Engine (ออปชันเสริมสำหรับเปรียบเทียบมุมมอง)</span>
+          {/* SECTION 2: GEMINI BACKUP KEY (OPTIONAL) */}
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-slate-900">
+                <Key className="w-4 h-4 text-blue-600" />
+                <span>2. Gemini Backup API Key (คีย์สำรอง Google Gemini — ไม่จำเป็นต้องกรอก)</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950/60 border border-emerald-800 text-emerald-300">
-                GPT-4o / ChatGPT
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                Optional Backup
               </span>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-slate-800 mb-1">
-                OpenAI API Key (sk-proj-... หรือ sk-...)
-              </label>
+            <div className="space-y-2">
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <input
-                    type={showOpenaiKey ? "text" : "password"}
-                    placeholder="sk-..."
-                    value={openaiKeyInput}
-                    onChange={e => setOpenaiKeyInput(e.target.value)}
-                    className="w-full pl-3 pr-9 py-2 bg-[#F7F8FA] border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] font-mono focus:outline-none focus:border-emerald-500"
+                    type={showGeminiBackupKey ? "text" : "password"}
+                    placeholder="AQ.... หรือ AIzaSy... (คีย์ Gemini สำรองถ้ามีอีกบัญชี)"
+                    value={geminiBackupKeyInput}
+                    onChange={e => setGeminiBackupKeyInput(e.target.value)}
+                    className="w-full pl-3 pr-9 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 font-mono focus:outline-none focus:border-emerald-500"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowOpenaiKey(!showOpenaiKey)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-900"
+                    onClick={() => setShowGeminiBackupKey(!showGeminiBackupKey)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900"
                   >
-                    {showOpenaiKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    {showGeminiBackupKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
                 </div>
                 <button
                   type="button"
-                  onClick={handleTestOpenai}
-                  disabled={testingOpenai}
-                  className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 border border-emerald-500 text-white text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5 flex-shrink-0 shadow-md shadow-emerald-600/20"
+                  onClick={handleTestGeminiBackup}
+                  disabled={testingGeminiBackup}
+                  className="px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1.5"
                 >
-                  <Sparkles className={`w-3.5 h-3.5 ${testingOpenai ? "animate-spin" : ""}`} />
-                  <span>{testingOpenai ? "กำลังทดสอบ..." : "ทดสอบ OpenAI"}</span>
+                  <Sparkles className={`w-3.5 h-3.5 ${testingGeminiBackup ? "animate-spin" : ""}`} />
+                  <span>{testingGeminiBackup ? "ทดสอบ..." : "ทดสอบคีย์สำรอง"}</span>
                 </button>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mt-1.5">
-                <p className="text-[11px] text-slate-700">
-                  หากไม่ได้ใส่ OpenAI API Key ระบบจะใช้ <strong>Google Gemini (Pro / Flash)</strong> คิดให้แทนอัตโนมัติ 100%
-                </p>
-                {openaiTestResult && (
-                  <span className={`text-[11px] font-medium flex items-center gap-1 ${openaiTestResult.success ? "text-emerald-400" : "text-amber-400"}`}>
-                    {openaiTestResult.success ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
-                    {openaiTestResult.message}
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-slate-500">ใช้แทนอัตโนมัติเมื่อคีย์ Gemini หลักติดโควตา (หากไม่กรอก ระบบจะสลับโมเดลในคีย์หลักแทน)</span>
+                {geminiBackupTestResult && (
+                  <span className={`font-medium ${geminiBackupTestResult.success ? "text-emerald-600" : "text-amber-600"}`}>
+                    {geminiBackupTestResult.message}
                   </span>
                 )}
               </div>
             </div>
           </div>
 
-          {/* SECTION 3: FREE TIER PROVIDERS & BACKUP KEYS */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8E9EC] pb-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#17181A]">
-                <Zap className="w-4 h-4 text-amber-500" />
-                <span>3. โมเดลฟรี & คีย์สำรอง (Free Providers & Backup Keys)</span>
+          {/* SECTION 3: CUSTOM IMAGE & MOTION GENERATION */}
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-slate-900">
+                <ImageIcon className="w-4 h-4 text-emerald-600" />
+                <span>3. Image &amp; Motion Engines (Google Flow, Nano Banana, Imagen)</span>
               </div>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950/70 text-emerald-300 border border-emerald-800">
-                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                <span>Failover Chain สำรองอัตโนมัติ</span>
-              </span>
-            </div>
-
-            <p className="text-xs text-slate-600">
-              💡 <strong>ความสำคัญของคีย์สำรองและโมเดลฟรี:</strong> หาก OpenAI หรือ Gemini โควต้าหมด (Error 429) ระบบจะสลับมาดึงข้อมูลจากโมเดลฟรีของ <strong>Groq</strong> หรือ <strong>OpenRouter</strong> หรือคีย์สำรองที่คุณกรอกไว้ทันที โดยไม่มีการหยุดชะงัก
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {/* GROQ CLOUD (FREE TIER) */}
-              <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-xs text-[#17181A] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span>Groq Cloud API Key (อันดับ 1 แนะนำ - Qwen 3.8 & GPT-OSS)</span>
-                  </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">
-                    เร็วสุด 300ms • ฟรี 14,400 RPD
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <input
-                      type={showGroqKey ? "text" : "password"}
-                      placeholder="gsk_..."
-                      value={groqKeyInput}
-                      onChange={e => setGroqKeyInput(e.target.value)}
-                      className="w-full pl-3 pr-9 py-2 bg-white border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] font-mono focus:outline-none focus:border-amber-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowGroqKey(!showGroqKey)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-900"
-                    >
-                      {showGroqKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleTestGroq}
-                    disabled={testingGroq}
-                    className="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1 shadow-sm"
-                  >
-                    <Sparkles className={`w-3.5 h-3.5 ${testingGroq ? "animate-spin" : ""}`} />
-                    <span>{testingGroq ? "ทดสอบ..." : "ทดสอบ"}</span>
-                  </button>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <a
-                    href="https://console.groq.com/keys"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-amber-600 hover:underline flex items-center gap-1"
-                  >
-                    <span>รับ API Key ฟรีที่ console.groq.com</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                  {groqTestResult && (
-                    <span className={`font-medium ${groqTestResult.success ? "text-emerald-600" : "text-amber-600"}`}>
-                      {groqTestResult.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* OPENROUTER (FREE TIER) */}
-              <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-xs text-[#17181A] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-                    <span>OpenRouter API Key (รวมโมเดลฟรีหลากหลายค่าย)</span>
-                  </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-700 font-bold">
-                    ฟรี Free Models
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <input
-                      type={showOpenrouterKey ? "text" : "password"}
-                      placeholder="sk-or-v1-..."
-                      value={openrouterKeyInput}
-                      onChange={e => setOpenrouterKeyInput(e.target.value)}
-                      className="w-full pl-3 pr-9 py-2 bg-white border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] font-mono focus:outline-none focus:border-purple-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowOpenrouterKey(!showOpenrouterKey)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-900"
-                    >
-                      {showOpenrouterKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleTestOpenrouter}
-                    disabled={testingOpenrouter}
-                    className="px-3 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1 shadow-sm"
-                  >
-                    <Sparkles className={`w-3.5 h-3.5 ${testingOpenrouter ? "animate-spin" : ""}`} />
-                    <span>{testingOpenrouter ? "ทดสอบ..." : "ทดสอบ"}</span>
-                  </button>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <a
-                    href="https://openrouter.ai/keys"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-purple-600 hover:underline flex items-center gap-1"
-                  >
-                    <span>รับ API Key ฟรีที่ openrouter.ai/keys</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                  {openrouterTestResult && (
-                    <span className={`font-medium ${openrouterTestResult.success ? "text-emerald-600" : "text-amber-600"}`}>
-                      {openrouterTestResult.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* OPENAI BACKUP KEY */}
-              <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-xs text-[#17181A] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span>OpenAI Backup API Key (คีย์สำรอง)</span>
-                  </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold">
-                    Backup 2nd Key
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <input
-                      type={showOpenaiBackupKey ? "text" : "password"}
-                      placeholder="sk-proj-... (คีย์สำรอง)"
-                      value={openaiBackupKeyInput}
-                      onChange={e => setOpenaiBackupKeyInput(e.target.value)}
-                      className="w-full pl-3 pr-9 py-2 bg-white border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] font-mono focus:outline-none focus:border-emerald-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowOpenaiBackupKey(!showOpenaiBackupKey)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-900"
-                    >
-                      {showOpenaiBackupKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleTestOpenaiBackup}
-                    disabled={testingOpenaiBackup}
-                    className="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1 shadow-sm"
-                  >
-                    <Sparkles className={`w-3.5 h-3.5 ${testingOpenaiBackup ? "animate-spin" : ""}`} />
-                    <span>{testingOpenaiBackup ? "ทดสอบ..." : "ทดสอบ"}</span>
-                  </button>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">ใช้แทนเมื่อคีย์ OpenAI หลักติด Rate Limit หรือหมดโควต้า</span>
-                  {openaiBackupTestResult && (
-                    <span className={`font-medium ${openaiBackupTestResult.success ? "text-emerald-600" : "text-amber-600"}`}>
-                      {openaiBackupTestResult.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* GEMINI BACKUP KEY */}
-              <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-xs text-[#17181A] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                    <span>Gemini Backup API Key (คีย์สำรอง)</span>
-                  </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold">
-                    Backup 2nd Key
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <input
-                      type={showGeminiBackupKey ? "text" : "password"}
-                      placeholder="AIzaSy... (คีย์สำรอง)"
-                      value={geminiBackupKeyInput}
-                      onChange={e => setGeminiBackupKeyInput(e.target.value)}
-                      className="w-full pl-3 pr-9 py-2 bg-white border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] font-mono focus:outline-none focus:border-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowGeminiBackupKey(!showGeminiBackupKey)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-slate-900"
-                    >
-                      {showGeminiBackupKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleTestGeminiBackup}
-                    disabled={testingGeminiBackup}
-                    className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1 shadow-sm"
-                  >
-                    <Sparkles className={`w-3.5 h-3.5 ${testingGeminiBackup ? "animate-spin" : ""}`} />
-                    <span>{testingGeminiBackup ? "ทดสอบ..." : "ทดสอบ"}</span>
-                  </button>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">ใช้แทนเมื่อคีย์ Gemini หลักโควต้าหมด</span>
-                  {geminiBackupTestResult && (
-                    <span className={`font-medium ${geminiBackupTestResult.success ? "text-emerald-600" : "text-amber-600"}`}>
-                      {geminiBackupTestResult.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* SECTION 4: CUSTOM IMAGE & MOTION GENERATION */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#E8E9EC] pb-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#17181A]">
-                <ImageIcon className="w-4 h-4 text-purple-400" />
-                <span>4. Image & Motion Engines (Pollinations, Nano Banana, Veo, Replicate)</span>
-              </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-950/60 border border-purple-800 text-purple-300">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 border border-emerald-200 text-emerald-700">
                 พร้อมใช้งานในระบบ
               </span>
             </div>
@@ -1148,10 +797,10 @@ export default function SettingsPage() {
           </div>
 
           {/* SECTION 4: N8N & WEBHOOKS */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#17181A] border-b border-[#E8E9EC] pb-3">
-              <Network className="w-4 h-4 text-indigo-400" />
-              <span>5. ระบบอัตโนมัติ n8n (Social Auto-Publish Engine)</span>
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+            <div className="flex items-center gap-2 text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3">
+              <Network className="w-4 h-4 text-slate-600" />
+              <span>4. ระบบอัตโนมัติ n8n (Optional — Social Auto-Publish)</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
