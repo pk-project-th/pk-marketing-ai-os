@@ -435,50 +435,50 @@ export default function SettingsPage() {
         )}
       </div>
 
-      {/* TABS NAVIGATION (Dimensional Segmented Control) */}
-      <div className="inline-flex flex-wrap w-full sm:w-auto p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/90 gap-1.5 shadow-inner">
+      {/* TABS NAVIGATION (Symmetric 3-Column Segmented Control for iPhone 17 & Desktop) */}
+      <div className="grid grid-cols-3 w-full sm:max-w-2xl p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/90 gap-1.5 shadow-inner">
         <button
           type="button"
           onClick={() => setActiveTab("CONFIG")}
-          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+          className={`min-h-[44px] px-2 sm:px-4 py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center ${
             activeTab === "CONFIG"
               ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
               : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <Key className={`w-4 h-4 ${activeTab === "CONFIG" ? "text-emerald-600" : "text-slate-400"}`} />
-          <span>การตั้งค่าโมเดล &amp; API</span>
+          <Key className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${activeTab === "CONFIG" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span className="truncate">ตั้งค่า API</span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab("USAGE")}
-          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+          className={`min-h-[44px] px-2 sm:px-4 py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center ${
             activeTab === "USAGE"
               ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
               : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <Activity className={`w-4 h-4 ${activeTab === "USAGE" ? "text-emerald-600" : "text-slate-400"}`} />
-          <span>ปริมาณการใช้งาน &amp; โควตา</span>
-          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+          <Activity className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${activeTab === "USAGE" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span className="truncate">สถิติใช้ AI</span>
+          <span className={`hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
             activeTab === "USAGE"
               ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
               : "bg-slate-200/80 text-slate-700"
           }`}>
-            {usageStats.totalCalls} ครั้ง
+            {usageStats.totalCalls}
           </span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab("GUIDE")}
-          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+          className={`min-h-[44px] px-2 sm:px-4 py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center ${
             activeTab === "GUIDE"
               ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
               : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <BookOpen className={`w-4 h-4 ${activeTab === "GUIDE" ? "text-emerald-600" : "text-slate-400"}`} />
-          <span>คู่มือเชื่อมต่อ &amp; โมเดล</span>
+          <BookOpen className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${activeTab === "GUIDE" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span className="truncate">คู่มือโมเดล</span>
         </button>
       </div>
 
@@ -836,7 +836,7 @@ export default function SettingsPage() {
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/30 transition-all disabled:opacity-50"
+              className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-xs font-bold shadow-sm transition-all disabled:opacity-50 cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>{saving ? "กำลังบันทึก..." : "บันทึกการตั้งค่าทั้งหมด (Save Settings)"}</span>
@@ -874,8 +874,8 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* STATS CARDS (Dimensional High-Contrast Cards) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* STATS CARDS (Symmetric 2x2 on iPhone 17, 4x1 on Desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.08)] hover:shadow-[0_8px_20px_-6px_rgba(15,23,42,0.12)] transition-all space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-slate-500">จำนวนครั้งที่เรียกใช้</span>
@@ -1036,56 +1036,85 @@ export default function SettingsPage() {
                 ยังไม่มีประวัติการเรียกใช้ AI — เมื่อคุณสั่งคิดคอนเทนต์ ระบบจะเริ่มเก็บสถิติจริงที่นี่
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="border-b border-slate-200 text-slate-500 font-bold">
-                      <th className="pb-2.5">เวลา</th>
-                      <th className="pb-2.5">เวิร์กโฟลว์ (Workflow)</th>
-                      <th className="pb-2.5">โมเดลที่ทำงาน</th>
-                      <th className="pb-2.5">Tokens</th>
-                      <th className="pb-2.5">เวลาตอบสนอง</th>
-                      <th className="pb-2.5 text-right">สถานะ</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 font-mono">
-                    {aiGenerations.slice(0, 15).map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-2.5 text-slate-500 text-[11px]">
-                          {log.timestamp ? log.timestamp.split("T")[1]?.slice(0, 8) : "-"}
-                        </td>
-                        <td className="py-2.5 text-slate-900 font-sans font-semibold">
-                          {log.workflow || "General Request"}
-                        </td>
-                        <td className="py-2.5">
-                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${
-                            log.model?.includes("pro")
-                              ? "bg-purple-50 text-purple-800 border-purple-200"
-                              : "bg-blue-50 text-blue-800 border-blue-200"
-                          }`}>
-                            {log.model}
-                          </span>
-                        </td>
-                        <td className="py-2.5 text-slate-700">
-                          {log.total_tokens?.toLocaleString() || 0}
-                        </td>
-                        <td className="py-2.5 text-slate-700">
-                          {log.latency_ms >= 1000 ? `${(log.latency_ms / 1000).toFixed(1)}s` : `${log.latency_ms}ms`}
-                        </td>
-                        <td className="py-2.5 text-right">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-sans font-bold border ${
-                            log.status === "SUCCESS"
-                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                              : "bg-rose-50 text-rose-700 border-rose-200"
-                          }`}>
-                            {log.status === "SUCCESS" ? "✓ สำเร็จ" : "✕ ผิดพลาด"}
-                          </span>
-                        </td>
+              <>
+                {/* Mobile Stacked Cards (iPhone 17 Zero Horizontal Scroll) */}
+                <div className="md:hidden space-y-2.5">
+                  {aiGenerations.slice(0, 15).map((log) => (
+                    <div key={log.id} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-slate-900 truncate">{log.workflow || "General Request"}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${
+                          log.status === "SUCCESS"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-rose-50 text-rose-700 border-rose-200"
+                        }`}>
+                          {log.status === "SUCCESS" ? "✓ สำเร็จ" : "✕ ผิดพลาด"}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600 font-mono">
+                        <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 font-bold text-[10px]">
+                          {log.model}
+                        </span>
+                        <span>
+                          {log.total_tokens?.toLocaleString() || 0} tok · {log.latency_ms >= 1000 ? `${(log.latency_ms / 1000).toFixed(1)}s` : `${log.latency_ms}ms`}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-200 text-slate-500 font-bold">
+                        <th className="pb-2.5">เวลา</th>
+                        <th className="pb-2.5">เวิร์กโฟลว์ (Workflow)</th>
+                        <th className="pb-2.5">โมเดลที่ทำงาน</th>
+                        <th className="pb-2.5">Tokens</th>
+                        <th className="pb-2.5">เวลาตอบสนอง</th>
+                        <th className="pb-2.5 text-right">สถานะ</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-mono">
+                      {aiGenerations.slice(0, 15).map((log) => (
+                        <tr key={log.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="py-2.5 text-slate-500 text-[11px]">
+                            {log.timestamp ? log.timestamp.split("T")[1]?.slice(0, 8) : "-"}
+                          </td>
+                          <td className="py-2.5 text-slate-900 font-sans font-semibold">
+                            {log.workflow || "General Request"}
+                          </td>
+                          <td className="py-2.5">
+                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${
+                              log.model?.includes("pro")
+                                ? "bg-purple-50 text-purple-800 border-purple-200"
+                                : "bg-blue-50 text-blue-800 border-blue-200"
+                            }`}>
+                              {log.model}
+                            </span>
+                          </td>
+                          <td className="py-2.5 text-slate-700">
+                            {log.total_tokens?.toLocaleString() || 0}
+                          </td>
+                          <td className="py-2.5 text-slate-700">
+                            {log.latency_ms >= 1000 ? `${(log.latency_ms / 1000).toFixed(1)}s` : `${log.latency_ms}ms`}
+                          </td>
+                          <td className="py-2.5 text-right">
+                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-sans font-bold border ${
+                              log.status === "SUCCESS"
+                                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                : "bg-rose-50 text-rose-700 border-rose-200"
+                            }`}>
+                              {log.status === "SUCCESS" ? "✓ สำเร็จ" : "✕ ผิดพลาด"}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </div>

@@ -20,7 +20,7 @@ export default function RootLayout({
       <head>
         <title>PK OS · Marketing AI</title>
         <meta name="description" content="AI Marketing Operating System for Multi-Brand Automotive Strategy and Content Creation" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon-32x32.png" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -33,7 +33,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-[#F8F9FA] text-[#0F172A] min-h-screen antialiased flex selection:bg-emerald-500/20 selection:text-emerald-950">
+      <body className="bg-[#F8F9FA] text-[#0F172A] min-h-[100dvh] antialiased flex selection:bg-emerald-500/20 selection:text-emerald-950">
         <BrandProvider>
           <ToastProvider>
             {/* Workspace Sidebar */}
@@ -42,7 +42,7 @@ export default function RootLayout({
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
               <WorkspaceHeader onOpenMobile={() => setMobileOpen(true)} />
-              <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 lg:pb-10">
+              <main className="flex-1 px-4 py-5 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-12">
                 {children}
               </main>
             </div>

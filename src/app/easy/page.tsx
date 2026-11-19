@@ -524,19 +524,19 @@ function EasyContentWorkspace() {
   const progressPct = totalScenes > 0 ? Math.round((completedCount / totalScenes) * 100) : 0;
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-20">
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-20">
       {/* 1. Clean Editorial Creator Command Card */}
-      <section className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+      <section className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-8 shadow-xs space-y-5 sm:space-y-6">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-md">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Solo AI Creator Workspace</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
               พิมพ์ไอเดียช่องเดียว → พร้อมเจนใน Google Flow
             </h1>
-            <p className="text-sm text-slate-600 leading-relaxed max-w-2xl">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
               คิด Hook หยุดนิ้ว 3 วิแรก ผสมกระแสไวรัล/มีม จัด Prompt รายฉาก 5–8 วิ และสร้างเสียงพากย์ MP3 จบในหน้าเดียว
             </p>
           </div>
@@ -545,7 +545,7 @@ function EasyContentWorkspace() {
             type="button"
             onClick={handleFetchTrends}
             disabled={loadingTrends}
-            className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
+            className="w-full md:w-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
           >
             {loadingTrends ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Flame className="w-3.5 h-3.5 text-amber-400" />}
             <span>{loadingTrends ? "กำลังสแกนเทรนด์..." : "ดึงเทรนด์ไวรัล & มีมวันนี้"}</span>
@@ -627,13 +627,13 @@ function EasyContentWorkspace() {
             </button>
           </div>
 
-          {/* Minimal, Clean Controls Bar */}
-          <div className="flex flex-wrap items-center gap-2 pt-0.5">
-            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
+          {/* Symmetric Controls Bar (Flush Grid on iPhone 17, Clean Inline on Desktop) */}
+          <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-2 pt-0.5">
+            <div className="grid grid-cols-2 sm:inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 gap-1">
               <button
                 type="button"
                 onClick={() => setAiMode("AI_FLOW")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[38px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-center ${
                   aiMode === "AI_FLOW" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -642,7 +642,7 @@ function EasyContentWorkspace() {
               <button
                 type="button"
                 onClick={() => setAiMode("REAL_SHOOT")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[38px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-center ${
                   aiMode === "REAL_SHOOT" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -650,7 +650,7 @@ function EasyContentWorkspace() {
               </button>
             </div>
 
-            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
+            <div className="grid grid-cols-3 sm:inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 gap-1">
               {[
                 { id: "VIDEO", label: "วิดีโอ", icon: Video },
                 { id: "PHOTO", label: "ภาพนิ่ง", icon: Camera },
@@ -663,7 +663,7 @@ function EasyContentWorkspace() {
                     key={item.id}
                     type="button"
                     onClick={() => setFormat(item.id as any)}
-                    className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
+                    className={`min-h-[38px] px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1 ${
                       active ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
@@ -674,41 +674,43 @@ function EasyContentWorkspace() {
               })}
             </div>
 
-            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
+              <div className="grid grid-cols-2 sm:inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setAspectRatio("9:16")}
+                  className={`min-h-[38px] px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1 ${
+                    aspectRatio === "9:16" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
+                  }`}
+                >
+                  <Smartphone className="w-3.5 h-3.5" />
+                  <span>9:16</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAspectRatio("16:9")}
+                  className={`min-h-[38px] px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1 ${
+                    aspectRatio === "16:9" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
+                  }`}
+                >
+                  <Monitor className="w-3.5 h-3.5" />
+                  <span>16:9</span>
+                </button>
+              </div>
+
               <button
                 type="button"
-                onClick={() => setAspectRatio("9:16")}
-                className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
-                  aspectRatio === "9:16" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
+                onClick={() => setIncludeTrends(!includeTrends)}
+                className={`min-h-[44px] sm:min-h-[42px] px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer inline-flex items-center justify-center gap-1.5 ${
+                  includeTrends
+                    ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                    : "bg-white border-slate-200 text-slate-500"
                 }`}
               >
-                <Smartphone className="w-3.5 h-3.5" />
-                <span>9:16</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setAspectRatio("16:9")}
-                className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
-                  aspectRatio === "16:9" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
-                }`}
-              >
-                <Monitor className="w-3.5 h-3.5" />
-                <span>16:9</span>
+                <Flame className={`w-3.5 h-3.5 shrink-0 ${includeTrends ? "text-emerald-600" : "text-slate-400"}`} />
+                <span className="truncate">{includeTrends ? "Hook + มีมไวรัล" : "โหมดปกติ"}</span>
               </button>
             </div>
-
-            <button
-              type="button"
-              onClick={() => setIncludeTrends(!includeTrends)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 ${
-                includeTrends
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-800"
-                  : "bg-white border-slate-200 text-slate-500"
-              }`}
-            >
-              <Flame className={`w-3.5 h-3.5 ${includeTrends ? "text-emerald-600" : "text-slate-400"}`} />
-              <span>{includeTrends ? "เปิด Hook + มีมไวรัล" : "โหมดปกติ"}</span>
-            </button>
           </div>
 
           {/* Quick Examples */}
