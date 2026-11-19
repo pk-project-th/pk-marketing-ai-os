@@ -463,6 +463,8 @@ function EasyContentWorkspace() {
       version: "4.0-LongMai-Studio",
       exportedAt: new Date().toISOString(),
       source: "PK-Marketing-AI-OS",
+      isCustomOSProject: true,
+      aspectRatio,
       project: {
         id: `proj_${Date.now()}`,
         name: blueprint.title,
