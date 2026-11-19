@@ -20,6 +20,17 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenMobile }
   } | null>(null);
 
   useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCommandBarOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
+  useEffect(() => {
     const checkTask = () => {
       if (typeof window === "undefined") return;
       try {
@@ -81,15 +92,15 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenMobile }
             </kbd>
           </button>
 
-          {/* Quick AI Video Studio Button */}
+          {/* Quick Easy AI Creator Button */}
           <Link
-            href="/studio"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-sm shadow-blue-500/25 transition-all active:scale-95 cursor-pointer shrink-0"
-            title="เปิดสตูดิโอสร้างวิดีโออัตโนมัติ (Google Veo 3.1 & FlowKit)"
+            href="/easy"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
+            title="เปิดโหมดคิดคอนเทนต์ง่าย + ก๊อป Prompt ลง Google Flow"
           >
-            <Film className="w-3.5 h-3.5 fill-current" />
-            <span className="hidden sm:inline">🎬 AI Video Studio (Veo 3.1)</span>
-            <span className="sm:hidden">🎬 Video</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">⚡ คิดคอนเทนต์ AI</span>
+            <span className="sm:hidden">⚡ Easy AI</span>
           </Link>
         </div>
 
@@ -136,15 +147,15 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenMobile }
             <span className="text-slate-500">{campaignName}</span>
           </div>
 
-          {/* AiPASS Link */}
+          {/* Google Flow Quick Open */}
           <a
-            href="https://de.aipass.net"
+            href="https://flow.google.com"
             target="_blank"
-            rel="noreferrer"
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-[11px] font-medium transition-colors"
+            rel="noopener noreferrer"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-semibold transition-colors"
           >
-            <Sparkles className="w-3 h-3 text-purple-600" />
-            <span>AiPASS: 10,000 เครดิต/วัน</span>
+            <Film className="w-3.5 h-3.5 text-emerald-400" />
+            <span>เปิด Google Flow</span>
           </a>
 
           {/* User Profile */}

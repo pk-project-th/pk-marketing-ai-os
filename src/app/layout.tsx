@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import "./globals.css";
 import { BrandProvider } from "@/context/BrandContext";
+import { ToastProvider } from "@/components/ui/ToastProvider";
 import { WorkspaceSidebar } from "@/components/layout/WorkspaceSidebar";
 import { WorkspaceHeader } from "@/components/layout/WorkspaceHeader";
 import { WorkspaceBottomNav } from "@/components/layout/WorkspaceBottomNav";
@@ -32,21 +33,23 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-[#F7F8FA] text-[#17181A] min-h-screen antialiased flex selection:bg-[#C9A96E]/20 selection:text-[#17181A]">
+      <body className="bg-[#F8F9FA] text-[#0F172A] min-h-screen antialiased flex selection:bg-emerald-500/20 selection:text-emerald-950">
         <BrandProvider>
-          {/* Workspace Sidebar */}
-          <WorkspaceSidebar mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)} />
+          <ToastProvider>
+            {/* Workspace Sidebar */}
+            <WorkspaceSidebar mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)} />
 
-          {/* Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
-            <WorkspaceHeader onOpenMobile={() => setMobileOpen(true)} />
-            <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 lg:pb-8">
-              {children}
-            </main>
-          </div>
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
+              <WorkspaceHeader onOpenMobile={() => setMobileOpen(true)} />
+              <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 lg:pb-10">
+                {children}
+              </main>
+            </div>
 
-          {/* Mobile Bottom Navigation */}
-          <WorkspaceBottomNav />
+            {/* Mobile Bottom Navigation */}
+            <WorkspaceBottomNav />
+          </ToastProvider>
         </BrandProvider>
       </body>
     </html>

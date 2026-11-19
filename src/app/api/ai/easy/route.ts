@@ -171,9 +171,70 @@ export async function POST(req: Request) {
     });
 
     if (aiRes.data && typeof aiRes.data === "object") {
+      const raw = aiRes.data;
+      const rawScenes = Array.isArray(raw.video_blueprint?.scenes) ? raw.video_blueprint.scenes : [];
+      const normalizedScenes = rawScenes.map((s: any, idx: number) => ({
+        scene_number: Number(s?.scene_number) || idx + 1,
+        duration_sec: Number(s?.duration_sec) || 6,
+        flow_mode: String(s?.flow_mode || (idx === 0 ? "Text to Video" : "Frames to Video / Text to Video")),
+        what_to_shoot: String(s?.what_to_shoot || "ภาพประกอบเนื้อหาหลัก"),
+        camera_angle: String(s?.camera_angle || "Cinematic eye-level movement"),
+        continuity_note: String(s?.continuity_note || "คุมโทนแสงและสีต่อเนื่องจากฉากก่อนหน้า"),
+        voiceover_text: String(s?.voiceover_text || ""),
+        on_screen_text: String(s?.on_screen_text || ""),
+        flow_prompt: String(s?.flow_prompt || `Cinematic shot of ${prompt.trim()}, ${aspectRatio} framing, 4k photorealistic, no text`)
+      }));
+
+      const rawShots = Array.isArray(raw.photo_blueprint?.shots) ? raw.photo_blueprint.shots : [];
+      const normalizedShots = rawShots.map((sh: any, idx: number) => ({
+        shot_number: Number(sh?.shot_number) || idx + 1,
+        role: String(sh?.role || `ภาพที่ ${idx + 1}`),
+        angle_and_framing: String(sh?.angle_and_framing || "มุมระดับสายตา จัดองค์ประกอบสมดุล"),
+        lighting_and_props: String(sh?.lighting_and_props || "แสงธรรมชาติ โทนสะอาดตา"),
+        text_overlay: String(sh?.text_overlay || ""),
+        image_prompt: String(sh?.image_prompt || `Photorealistic editorial photo of ${prompt.trim()}, ${aspectRatio}, 8k, no text`)
+      }));
+
+      const normalizedBlueprint = {
+        title: String(raw.title || `คอนเทนต์: ${prompt.trim()}`),
+        hook_3sec: String(raw.hook_3sec || ""),
+        viral_meme_angle: String(raw.viral_meme_angle || ""),
+        concept: String(raw.concept || ""),
+        flow_setup_guide: {
+          tool_mode: String(raw.flow_setup_guide?.tool_mode || "Text to Video (ฉาก 1) → Frames to Video (ฉากถัดไป)"),
+          aspect_ratio: String(raw.flow_setup_guide?.aspect_ratio || aspectRatio),
+          recommended_model: String(raw.flow_setup_guide?.recommended_model || "Veo 3.1 - Fast"),
+          quick_steps: Array.isArray(raw.flow_setup_guide?.quick_steps) && raw.flow_setup_guide.quick_steps.length > 0
+            ? raw.flow_setup_guide.quick_steps.map(String)
+            : [
+                "1. เปิด Google Flow → กด + New Project",
+                `2. ตั้งค่าสัดส่วน ${aspectRatio} และเลือกโมเดล Veo 3.1`,
+                "3. กด Copy Prompt ทีละฉากไปวางในช่อง Describe your video",
+                "4. โหลดคลิปมารวมกับเสียงพากย์ ElevenLabs ใน CapCut"
+              ]
+        },
+        video_blueprint: normalizedScenes.length > 0 ? {
+          total_duration_sec: Number(raw.video_blueprint?.total_duration_sec) || normalizedScenes.reduce((acc: number, s: any) => acc + s.duration_sec, 0),
+          scene_count: normalizedScenes.length,
+          mood_and_music: String(raw.video_blueprint?.mood_and_music || "เพลงจังหวะทันสมัย เข้ากับอารมณ์คลิป"),
+          scenes: normalizedScenes,
+          editing_guide: Array.isArray(raw.video_blueprint?.editing_guide) ? raw.video_blueprint.editing_guide.map(String) : [],
+          full_voiceover_script: String(
+            raw.video_blueprint?.full_voiceover_script ||
+            normalizedScenes.map((s: any) => s.voiceover_text).filter(Boolean).join(" ")
+          )
+        } : undefined,
+        photo_blueprint: normalizedShots.length > 0 ? {
+          photo_style: String(raw.photo_blueprint?.photo_style || "Editorial Clean Look"),
+          shots: normalizedShots
+        } : undefined,
+        social_caption: String(raw.social_caption || ""),
+        hashtags: Array.isArray(raw.hashtags) ? raw.hashtags.map(String) : []
+      };
+
       return NextResponse.json({
         success: true,
-        blueprint: aiRes.data,
+        blueprint: normalizedBlueprint,
         meta: {
           modelUsed: aiRes.modelUsed,
           providerUsed: aiRes.providerUsed,

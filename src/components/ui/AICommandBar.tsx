@@ -41,24 +41,27 @@ export const AICommandBar: React.FC<AICommandBarProps> = ({ isOpen, onClose }) =
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-slate-900/30 backdrop-blur-sm animate-fade-in">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in"
+    >
       <div 
-        className="w-full max-w-2xl bg-white border border-[#E8E9EC] rounded-2xl shadow-luxury-lg overflow-hidden animate-fade-in-up"
+        className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden animate-fade-in-up"
         onClick={e => e.stopPropagation()}
       >
         {/* Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E8E9EC]">
-          <Sparkles className="w-5 h-5 text-[#8B7CF6] shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200">
+          <Sparkles className="w-5 h-5 text-emerald-600 shrink-0" />
           <input
             autoFocus
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="✦ วันนี้อยากให้ AI ช่วยทำอะไร? (เช่น สร้างแคมเปญ, เขียนแคปชัน, ตรวจคิวโพสต์)..."
-            className="flex-1 text-sm text-[#17181A] placeholder-[#9CA3AF] bg-transparent outline-none"
+            placeholder="พิมพ์สิ่งที่อยากทำคอนเทนต์แล้วกด Enter (เช่น เที่ยววัด, รีวิวคาเฟ่, มีมแมวบ่นงาน)..."
+            className="flex-1 text-sm text-slate-900 placeholder-slate-400 bg-transparent outline-none"
             onKeyDown={e => {
               if (e.key === "Enter" && query.trim()) {
-                handleRunCommand(`/ideas?brand=${encodeURIComponent(activeBrand === "ALL" ? "Mazda & BYD" : activeBrand)}&prompt=${encodeURIComponent(query)}`);
+                handleRunCommand(`/easy?prompt=${encodeURIComponent(query.trim())}&autoRun=true`);
               }
             }}
           />
@@ -89,35 +92,43 @@ export const AICommandBar: React.FC<AICommandBarProps> = ({ isOpen, onClose }) =
 
           {[
             {
-              title: "STAGE 01 · คิดไอเดียคอนเทนต์ใหม่ 5 ตอน",
-              desc: "AI วิเคราะห์เทรนด์และวางแผนหัวข้อตามบรีฟทันที",
+              title: "⚡ Easy Content Creator (แนะนำสำหรับทำคนเดียว)",
+              desc: "พิมพ์ภาษาคนช่องเดียว → ได้ Hook 3 วิ + Prompt วางใน Google Flow + เสียงพากย์",
+              href: "/easy",
+              icon: Sparkles,
+              color: "text-emerald-600",
+              badge: "FAST AI"
+            },
+            {
+              title: "01 · คิดไอเดียคอนเทนต์ใหม่ 5 ตอน",
+              desc: "AI วิเคราะห์เทรนด์และวางแผนหัวข้อตามบรีฟแบรนด์",
               href: "/ideas",
               icon: Lightbulb,
-              color: "text-amber-500",
+              color: "text-amber-600",
               badge: "01 IDEA"
             },
             {
-              title: "STAGE 02 · สตูดิโอสื่อ & เจนภาพ AI",
-              desc: "สร้างภาพถ่ายสมจริงด้วย Imagen 3 / Flux Engine",
-              href: "/content",
-              icon: FileText,
-              color: "text-blue-500",
-              badge: "02 CREATE"
-            },
-            {
-              title: "COMMERCIAL · สตูดิโอสร้างโฆษณา & วิดีโอเสมือนจริง (Google Flow)",
-              desc: "สร้าง Storyboard 6 ฉาก สคริปต์พากย์ไทย ส่งต่อ Google Flow Tool",
+              title: "02 · Commercial Video Studio (Google Flow + เสียงพากย์)",
+              desc: "สร้าง Storyboard หลายฉาก สคริปต์พากย์ไทย ElevenLabs และ Prompt",
               href: "/commercial",
               icon: Film,
-              color: "text-indigo-500",
-              badge: "AI ADS"
+              color: "text-emerald-600",
+              badge: "02 VIDEO"
             },
             {
-              title: "STAGE 03 · ดัดแปลง 1 คอนเทนต์ลง 5 แพลตฟอร์ม",
+              title: "03 · สตูดิโอแคปชัน & ภาพกราฟิกโซเชียล",
+              desc: "สร้างภาพถ่ายสมจริงและอัลบั้มภาพสไลด์ 3-5 รูป",
+              href: "/content",
+              icon: FileText,
+              color: "text-blue-600",
+              badge: "03 POST"
+            },
+            {
+              title: "04 · ดัดแปลง 1 คอนเทนต์ลง 5 แพลตฟอร์ม",
               desc: "ปรับแคปชันให้เข้ากับ Facebook, IG, TikTok, X, Lemon8",
               href: "/repurpose",
               icon: Repeat,
-              color: "text-purple-500",
+              color: "text-slate-600",
               badge: "03 ADAPT"
             },
             {

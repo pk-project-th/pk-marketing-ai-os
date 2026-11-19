@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Sparkles,
   Copy,
@@ -16,14 +17,20 @@ import {
   ExternalLink,
   ShieldCheck,
   RefreshCw,
-  Wand2,
   AlertTriangle,
   Trash2,
   Flame,
   Zap,
   Smartphone,
-  Monitor
+  Monitor,
+  Volume2,
+  Download,
+  History,
+  CheckCircle2,
+  Circle,
+  Pencil
 } from "lucide-react";
+import { useToast } from "@/components/ui/ToastProvider";
 
 interface SceneItem {
   scene_number: number;
@@ -73,6 +80,18 @@ interface EasyBlueprint {
   hashtags: string[];
 }
 
+interface SavedEasyProject {
+  id: string;
+  prompt: string;
+  format: "VIDEO" | "PHOTO" | "BOTH";
+  aiMode: "AI_FLOW" | "REAL_SHOOT";
+  aspectRatio: "9:16" | "16:9";
+  createdAt: string;
+  blueprint: EasyBlueprint;
+  meta?: { modelUsed?: string; isFailover?: boolean } | null;
+  completedScenes?: number[];
+}
+
 interface TrendIdea {
   tag: string;
   title: string;
@@ -90,14 +109,42 @@ interface ErrorMemoryItem {
   lastOccurredAt: string;
 }
 
+const STORAGE_KEY = "pk_easy_projects_v1";
+
 const QUICK_EXAMPLES = [
   "ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย",
-  "อยากถ่ายคลิปรีวิวคาเฟ่เปิดใหม่ สไตล์มินิมอล",
-  "ส่งมอบรถใหม่ป้ายแดงให้ลูกค้า อยากได้คลิปซึ้งๆ",
+  "รีวิวคาเฟ่มินิมอลเปิดใหม่ แสงสวย",
+  "ส่งมอบรถใหม่ป้ายแดงให้ลูกค้า ฟีลอบอุ่นซึ้งๆ",
   "แมวอ้วนใส่สูทบ่นเรื่องงานวันจันทร์ แบบมีมฮาๆ"
 ];
 
+const VOICE_OPTIONS = [
+  { id: "ErXwobaYiN019PkySvjV", label: "🎙️ Antoni — ผู้บรรยายพรีเมียม" },
+  { id: "21m00Tcm4TlvDq8ikWAM", label: "👩 Rachel — หญิงสดใส เป็นมิตร" },
+  { id: "pNInz6obpgDQGcFmaJgB", label: "👨 Adam — ชายอบอุ่น น่าเชื่อถือ" },
+  { id: "EXAVITQu4vr4xnSDxMaL", label: "✨ Bella — สาวรีวิวตื่นเต้น ชวนดู" },
+  { id: "TxGEqnHWrfWFTfGW9XjX", label: "🔥 Josh — หนุ่มวัยรุ่น สนุกกระชับ" }
+];
+
 export default function EasyContentPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-5xl mx-auto p-10 text-center text-xs text-slate-500 font-medium">
+          กำลังเตรียมสตูดิโอ Easy Content Creator...
+        </div>
+      }
+    >
+      <EasyContentWorkspace />
+    </Suspense>
+  );
+}
+
+function EasyContentWorkspace() {
+  const searchParams = useSearchParams();
+  const { showToast } = useToast();
+  const autoRunTriggered = useRef(false);
+
   const [prompt, setPrompt] = useState("");
   const [format, setFormat] = useState<"VIDEO" | "PHOTO" | "BOTH">("VIDEO");
   const [aiMode, setAiMode] = useState<"AI_FLOW" | "REAL_SHOOT">("AI_FLOW");
@@ -107,11 +154,78 @@ export default function EasyContentPage() {
   const [loading, setLoading] = useState(false);
   const [loadingTrends, setLoadingTrends] = useState(false);
   const [trends, setTrends] = useState<TrendIdea[]>([]);
+
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [savedProjects, setSavedProjects] = useState<SavedEasyProject[]>([]);
   const [blueprint, setBlueprint] = useState<EasyBlueprint | null>(null);
   const [meta, setMeta] = useState<{ modelUsed?: string; isFailover?: boolean } | null>(null);
+  const [completedScenes, setCompletedScenes] = useState<number[]>([]);
+  const [editingSceneNum, setEditingSceneNum] = useState<number | null>(null);
+
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [errorMemories, setErrorMemories] = useState<ErrorMemoryItem[]>([]);
+
+  // Voiceover TTS state
+  const [selectedVoice, setSelectedVoice] = useState(VOICE_OPTIONS[0].id);
+  const [ttsLoading, setTtsLoading] = useState(false);
+  const [ttsAudioUrl, setTtsAudioUrl] = useState<string | null>(null);
+  const [sceneTtsLoading, setSceneTtsLoading] = useState<number | null>(null);
+  const [sceneAudioUrls, setSceneAudioUrls] = useState<Record<number, string>>({});
+
+  // Persist helper
+  const persistProjects = (projects: SavedEasyProject[]) => {
+    const trimmed = projects.slice(0, 20);
+    setSavedProjects(trimmed);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+    } catch {
+      // ignore quota error
+    }
+  };
+
+  // Load saved projects & error memories
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed: SavedEasyProject[] = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSavedProjects(parsed);
+          // Load most recent project automatically if no URL prompt
+          if (!searchParams.get("prompt")) {
+            const latest = parsed[0];
+            setActiveProjectId(latest.id);
+            setPrompt(latest.prompt);
+            setFormat(latest.format);
+            setAiMode(latest.aiMode);
+            setAspectRatio(latest.aspectRatio);
+            setBlueprint(latest.blueprint);
+            setMeta(latest.meta || null);
+            setCompletedScenes(latest.completedScenes || []);
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+    loadMemories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Support ?prompt=...&autoRun=true from Home or Cmd+K
+  useEffect(() => {
+    const urlPrompt = searchParams.get("prompt");
+    const autoRun = searchParams.get("autoRun");
+    if (urlPrompt && !autoRunTriggered.current) {
+      autoRunTriggered.current = true;
+      setPrompt(urlPrompt);
+      if (autoRun === "true") {
+        handleGenerate(urlPrompt);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const loadMemories = async () => {
     try {
@@ -125,17 +239,15 @@ export default function EasyContentPage() {
     }
   };
 
-  useEffect(() => {
-    loadMemories();
-  }, []);
-
-  const handleCopy = async (text: string, key: string) => {
+  const handleCopy = async (text: string, key: string, toastLabel?: string) => {
+    if (!text) return;
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
-      setTimeout(() => setCopiedKey(null), 2500);
+      showToast(toastLabel || "ก๊อปปี้ลงคลิปบอร์ดเรียบร้อย", "success");
+      setTimeout(() => setCopiedKey(null), 2200);
     } catch {
-      // Fallback
+      showToast("ไม่สามารถก๊อปปี้ได้ กรุณาลากคลุมแล้วกด Ctrl+C", "error");
     }
   };
 
@@ -150,9 +262,10 @@ export default function EasyContentPage() {
       const data = await res.json();
       if (data.success && Array.isArray(data.trends)) {
         setTrends(data.trends);
+        showToast("ดึงไอเดียเทรนด์ไวรัล & มีมล่าสุดแล้ว", "info");
       }
     } catch {
-      // ignore
+      showToast("ไม่สามารถดึงเทรนด์ได้ชั่วคราว", "error");
     } finally {
       setLoadingTrends(false);
     }
@@ -165,6 +278,10 @@ export default function EasyContentPage() {
 
     setLoading(true);
     setErrorMsg(null);
+    setTtsAudioUrl(null);
+    setSceneAudioUrls({});
+    setEditingSceneNum(null);
+
     try {
       const res = await fetch("/api/ai/easy", {
         method: "POST",
@@ -180,8 +297,24 @@ export default function EasyContentPage() {
       });
       const data = await res.json();
       if (data.success && data.blueprint) {
+        const newId = `proj-${Date.now()}`;
+        const newProject: SavedEasyProject = {
+          id: newId,
+          prompt: targetPrompt,
+          format,
+          aiMode,
+          aspectRatio,
+          createdAt: new Date().toISOString(),
+          blueprint: data.blueprint,
+          meta: data.meta || null,
+          completedScenes: []
+        };
+        setActiveProjectId(newId);
         setBlueprint(data.blueprint);
         setMeta(data.meta || null);
+        setCompletedScenes([]);
+        persistProjects([newProject, ...savedProjects.filter((p) => p.id !== newId)]);
+        showToast("ถอดสูตรคอนเทนต์และบันทึกอัตโนมัติเรียบร้อย!", "success");
         loadMemories();
       } else {
         setErrorMsg(data.error || "ไม่สามารถสร้างแผนคอนเทนต์ได้ กรุณาลองใหม่");
@@ -191,6 +324,136 @@ export default function EasyContentPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSelectSavedProject = (proj: SavedEasyProject) => {
+    setActiveProjectId(proj.id);
+    setPrompt(proj.prompt);
+    setFormat(proj.format);
+    setAiMode(proj.aiMode);
+    setAspectRatio(proj.aspectRatio);
+    setBlueprint(proj.blueprint);
+    setMeta(proj.meta || null);
+    setCompletedScenes(proj.completedScenes || []);
+    setTtsAudioUrl(null);
+    setSceneAudioUrls({});
+    setEditingSceneNum(null);
+    showToast(`เปิดโปรเจกต์ "${proj.blueprint.title}"`, "info");
+  };
+
+  const handleDeleteSavedProject = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    const updated = savedProjects.filter((p) => p.id !== id);
+    persistProjects(updated);
+    if (activeProjectId === id) {
+      if (updated.length > 0) {
+        handleSelectSavedProject(updated[0]);
+      } else {
+        setActiveProjectId(null);
+        setBlueprint(null);
+      }
+    }
+    showToast("ลบโปรเจกต์ออกจากประวัติแล้ว", "info");
+  };
+
+  const toggleSceneComplete = (sceneNumber: number) => {
+    const next = completedScenes.includes(sceneNumber)
+      ? completedScenes.filter((n) => n !== sceneNumber)
+      : [...completedScenes, sceneNumber];
+    setCompletedScenes(next);
+    if (activeProjectId) {
+      const updated = savedProjects.map((p) =>
+        p.id === activeProjectId ? { ...p, completedScenes: next } : p
+      );
+      persistProjects(updated);
+    }
+  };
+
+  const updateSceneField = (sceneNumber: number, field: "flow_prompt" | "voiceover_text", value: string) => {
+    if (!blueprint?.video_blueprint) return;
+    const updatedScenes = blueprint.video_blueprint.scenes.map((s) =>
+      s.scene_number === sceneNumber ? { ...s, [field]: value } : s
+    );
+    const updatedFullVo =
+      field === "voiceover_text"
+        ? updatedScenes.map((s) => s.voiceover_text).filter(Boolean).join(" ")
+        : blueprint.video_blueprint.full_voiceover_script;
+
+    const updatedBlueprint: EasyBlueprint = {
+      ...blueprint,
+      video_blueprint: {
+        ...blueprint.video_blueprint,
+        scenes: updatedScenes,
+        full_voiceover_script: updatedFullVo
+      }
+    };
+    setBlueprint(updatedBlueprint);
+    if (activeProjectId) {
+      const updatedProjects = savedProjects.map((p) =>
+        p.id === activeProjectId ? { ...p, blueprint: updatedBlueprint } : p
+      );
+      persistProjects(updatedProjects);
+    }
+  };
+
+  const handleGenerateVoiceover = async (text: string, sceneNum?: number) => {
+    if (!text.trim()) {
+      showToast("ไม่มีข้อความสำหรับสร้างเสียงพากย์", "error");
+      return;
+    }
+    if (sceneNum !== undefined) {
+      setSceneTtsLoading(sceneNum);
+    } else {
+      setTtsLoading(true);
+    }
+    try {
+      let storedKey = "";
+      try {
+        storedKey = localStorage.getItem("pk_elevenlabs_api_key") || "";
+      } catch {
+        // ignore
+      }
+      const res = await fetch("/api/ai/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: text.trim(),
+          voiceId: selectedVoice,
+          apiKey: storedKey || undefined,
+          mode: "generate_single"
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.audioBase64) {
+        throw new Error(data.error || "ไม่สามารถสร้างเสียงพากย์ได้");
+      }
+      const dataUrl = `data:audio/mpeg;base64,${data.audioBase64}`;
+      if (sceneNum !== undefined) {
+        setSceneAudioUrls((prev) => ({ ...prev, [sceneNum]: dataUrl }));
+        showToast(`สร้างเสียงพากย์ฉากที่ ${sceneNum} สำเร็จ!`, "success");
+      } else {
+        setTtsAudioUrl(dataUrl);
+        showToast("สร้างไฟล์เสียงพากย์ MP3 ทั้งคลิปสำเร็จ!", "success");
+      }
+    } catch (err: any) {
+      showToast(err.message || "เกิดข้อผิดพลาดในการสร้างเสียงพากย์", "error");
+    } finally {
+      if (sceneNum !== undefined) {
+        setSceneTtsLoading(null);
+      } else {
+        setTtsLoading(false);
+      }
+    }
+  };
+
+  const buildAllPromptsOnly = () => {
+    if (!blueprint?.video_blueprint?.scenes?.length) return "";
+    return blueprint.video_blueprint.scenes
+      .map(
+        (s) =>
+          `[Scene ${s.scene_number} - ${s.duration_sec}s | ${s.flow_mode || "Text to Video"}]\n${s.flow_prompt}`
+      )
+      .join("\n\n");
   };
 
   const buildFullTextToCopy = () => {
@@ -248,26 +511,33 @@ export default function EasyContentPage() {
         body: JSON.stringify({ action: "CLEAR" })
       });
       setErrorMemories([]);
+      showToast("ล้างประวัติความจำข้อผิดพลาดเรียบร้อย", "info");
     } catch {
       // ignore
     }
   };
 
+  const totalScenes = blueprint?.video_blueprint?.scenes?.length || 0;
+  const completedCount = completedScenes.filter((n) =>
+    blueprint?.video_blueprint?.scenes?.some((s) => s.scene_number === n)
+  ).length;
+  const progressPct = totalScenes > 0 ? Math.round((completedCount / totalScenes) * 100) : 0;
+
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-20">
-      {/* Header Banner */}
-      <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 md:p-8 shadow-luxury-card">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-5">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold mb-2">
-              <Wand2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>SOLO AI CREATOR • คิดใน OS → เจนต่อใน Google Flow</span>
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
+      {/* 1. Clean Editorial Creator Command Card */}
+      <section className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-md">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Solo AI Creator Workspace</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-[#17181A]">
-              คิดคอนเทนต์มี Hook หยุดนิ้ว + ก๊อป Prompt ลง Google Flow ทันที
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              พิมพ์ไอเดียช่องเดียว → พร้อมเจนใน Google Flow
             </h1>
-            <p className="text-xs md:text-sm text-slate-600 mt-1">
-              ออกแบบมาเพื่อคนทำงานคนเดียว: พิมพ์ภาษาคนง่ายๆ AI จะคิด Hook 3 วิแรก ผสมกระแสไวรัล/มีมฮิต และจัด Prompt แยกทีละฉากให้ก๊อปไปวางในช่องของ Google Flow ได้เลย
+            <p className="text-sm text-slate-600 leading-relaxed max-w-2xl">
+              คิด Hook หยุดนิ้ว 3 วิแรก ผสมกระแสไวรัล/มีม จัด Prompt รายฉาก 5–8 วิ และสร้างเสียงพากย์ MP3 จบในหน้าเดียว
             </p>
           </div>
 
@@ -275,21 +545,28 @@ export default function EasyContentPage() {
             type="button"
             onClick={handleFetchTrends}
             disabled={loadingTrends}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer shrink-0 transition-all"
+            className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
           >
-            {loadingTrends ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Flame className="w-4 h-4" />}
-            <span>{loadingTrends ? "กำลังสแกนเทรนด์..." : "🔥 ดึงเทรนด์ไวรัล & มีมวันนี้"}</span>
+            {loadingTrends ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Flame className="w-3.5 h-3.5 text-amber-400" />}
+            <span>{loadingTrends ? "กำลังสแกนเทรนด์..." : "ดึงเทรนด์ไวรัล & มีมวันนี้"}</span>
           </button>
         </div>
 
-        {/* Trend & Viral Radar Cards */}
+        {/* Trend & Viral Radar */}
         {trends.length > 0 && (
-          <div className="mb-5 p-4 rounded-xl bg-orange-50/70 border border-orange-200 space-y-3">
+          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 animate-fade-in">
             <div className="flex items-center justify-between">
-              <div className="text-xs font-extrabold text-orange-900 flex items-center gap-1.5">
-                <Flame className="w-4 h-4 text-orange-600" />
-                <span>เทรนด์ไวรัล & มีมน่าเล่น (กดเลือกเพื่อนำไปถอดสูตรทำคลิปต่อทันที)</span>
-              </div>
+              <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <Flame className="w-3.5 h-3.5 text-amber-500" />
+                ไอเดียตามกระแส & มีมน่าเล่น (คลิกเพื่อนำไปถอดสูตรทันที)
+              </span>
+              <button
+                type="button"
+                onClick={() => setTrends([])}
+                className="text-[11px] text-slate-400 hover:text-slate-700 cursor-pointer"
+              >
+                ซ่อน
+              </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {trends.map((t, idx) => (
@@ -298,18 +575,18 @@ export default function EasyContentPage() {
                   type="button"
                   onClick={() => handleGenerate(t.prompt_idea)}
                   disabled={loading}
-                  className="text-left p-3 rounded-xl bg-white border border-orange-200 hover:border-orange-400 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between gap-2"
+                  className="text-left p-3.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-xs transition-all cursor-pointer flex flex-col justify-between gap-2"
                 >
                   <div>
-                    <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 mb-1.5">
+                    <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 mb-1.5">
                       {t.tag}
                     </span>
-                    <div className="text-xs font-extrabold text-slate-900 leading-snug">{t.title}</div>
-                    <p className="text-[11px] text-slate-600 mt-1 line-clamp-2">{t.why_viral}</p>
+                    <div className="text-xs font-bold text-slate-900 leading-snug">{t.title}</div>
+                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{t.why_viral}</p>
                   </div>
-                  <div className="text-[11px] font-bold text-orange-600 flex items-center gap-1">
+                  <div className="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
                     <Zap className="w-3 h-3" />
-                    <span>กดใช้ไอเดียนี้เลย →</span>
+                    <span>ใช้ไอเดียนี้ →</span>
                   </div>
                 </button>
               ))}
@@ -317,9 +594,9 @@ export default function EasyContentPage() {
           </div>
         )}
 
-        {/* Simple 1-Box Input */}
+        {/* Main Prompt Input */}
         <div className="space-y-3">
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2.5">
             <input
               type="text"
               value={prompt}
@@ -327,140 +604,123 @@ export default function EasyContentPage() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !loading) handleGenerate();
               }}
-              placeholder="พิมพ์ไอเดียง่ายๆ เช่น: ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย หรือ แมวอ้วนใส่สูทบ่นเรื่องงาน..."
-              className="flex-1 px-4 py-3.5 rounded-xl bg-[#F7F8FA] border border-[#E8E9EC] text-sm md:text-base text-[#17181A] font-medium focus:outline-none focus:border-emerald-500 focus:bg-white transition-all"
+              placeholder="พิมพ์สิ่งที่อยากทำเป็นภาษาคน เช่น: ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย..."
+              className="flex-1 px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-3 focus:ring-emerald-500/10 transition-all"
             />
             <button
               type="button"
               onClick={() => handleGenerate()}
               disabled={loading || !prompt.trim()}
-              className="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
+              className="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
             >
               {loading ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>กำลังคิด Hook & Prompt...</span>
+                  <span>กำลังถอดสูตร...</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>ถอดสูตรลง Google Flow</span>
+                  <span>สร้างสูตรคอนเทนต์</span>
                 </>
               )}
             </button>
           </div>
 
-          {/* Controls Row: AI Mode, Format, Aspect Ratio, Trend Toggle */}
-          <div className="flex flex-wrap items-center gap-2 pt-1">
-            {/* Production Mode */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+          {/* Minimal, Clean Controls Bar */}
+          <div className="flex flex-wrap items-center gap-2 pt-0.5">
+            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
               <button
                 type="button"
                 onClick={() => setAiMode("AI_FLOW")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  aiMode === "AI_FLOW"
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                  aiMode === "AI_FLOW" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                🤖 เจน AI ใน Google Flow
+                เจน AI ใน Google Flow
               </button>
               <button
                 type="button"
                 onClick={() => setAiMode("REAL_SHOOT")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  aiMode === "REAL_SHOOT"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                  aiMode === "REAL_SHOOT" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                📱 ถ่ายทำเอง
+                ถ่ายทำเอง
               </button>
             </div>
 
-            {/* Format */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
-              <button
-                type="button"
-                onClick={() => setFormat("VIDEO")}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                  format === "VIDEO" ? "bg-blue-600 text-white" : "text-slate-600"
-                }`}
-              >
-                <Video className="w-3.5 h-3.5" />
-                <span>วิดีโอ</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setFormat("PHOTO")}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                  format === "PHOTO" ? "bg-amber-600 text-white" : "text-slate-600"
-                }`}
-              >
-                <Camera className="w-3.5 h-3.5" />
-                <span>ภาพนิ่ง</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setFormat("BOTH")}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                  format === "BOTH" ? "bg-emerald-600 text-white" : "text-slate-600"
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>ทั้งคู่</span>
-              </button>
+            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
+              {[
+                { id: "VIDEO", label: "วิดีโอ", icon: Video },
+                { id: "PHOTO", label: "ภาพนิ่ง", icon: Camera },
+                { id: "BOTH", label: "ทั้งคู่", icon: Layers }
+              ].map((item) => {
+                const Icon = item.icon;
+                const active = format === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setFormat(item.id as any)}
+                    className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
+                      active ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Aspect Ratio */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <div className="inline-flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200/80">
               <button
                 type="button"
                 onClick={() => setAspectRatio("9:16")}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
                   aspectRatio === "9:16" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
                 }`}
               >
                 <Smartphone className="w-3.5 h-3.5" />
-                <span>9:16 แนวตั้ง</span>
+                <span>9:16</span>
               </button>
               <button
                 type="button"
                 onClick={() => setAspectRatio("16:9")}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1 ${
                   aspectRatio === "16:9" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
                 }`}
               >
                 <Monitor className="w-3.5 h-3.5" />
-                <span>16:9 แนวนอน</span>
+                <span>16:9</span>
               </button>
             </div>
 
-            {/* Viral & Meme Toggle */}
             <button
               type="button"
               onClick={() => setIncludeTrends(!includeTrends)}
-              className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                 includeTrends
-                  ? "bg-rose-50 border-rose-300 text-rose-800"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-800"
                   : "bg-white border-slate-200 text-slate-500"
               }`}
             >
-              <Flame className={`w-3.5 h-3.5 ${includeTrends ? "text-rose-600" : "text-slate-400"}`} />
-              <span>{includeTrends ? "🔥 เปิดโหมด Hook + มีมไวรัล" : "โหมดปกติ"}</span>
+              <Flame className={`w-3.5 h-3.5 ${includeTrends ? "text-emerald-600" : "text-slate-400"}`} />
+              <span>{includeTrends ? "เปิด Hook + มีมไวรัล" : "โหมดปกติ"}</span>
             </button>
           </div>
 
           {/* Quick Examples */}
           <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            <span className="text-[11px] text-slate-400 font-medium">ตัวอย่างกดลองเลย:</span>
+            <span className="text-[11px] text-slate-400 font-medium">ลองกด:</span>
             {QUICK_EXAMPLES.map((ex, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => handleGenerate(ex)}
                 disabled={loading}
-                className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-600 border border-slate-200 transition-colors cursor-pointer"
+                className="text-[11px] px-2.5 py-1 rounded-md bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 text-slate-600 border border-slate-200 transition-colors cursor-pointer"
               >
                 {ex}
               </button>
@@ -469,82 +729,156 @@ export default function EasyContentPage() {
         </div>
 
         {errorMsg && (
-          <div className="mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Results Blueprint */}
-      {blueprint && (
-        <div className="space-y-6">
-          {/* Hook & Viral Angle Highlight */}
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-5 space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-extrabold text-emerald-950">{blueprint.title}</h2>
+      {/* 2. Auto-Saved Project History Strip */}
+      {savedProjects.length > 0 && (
+        <section className="space-y-2.5">
+          <div className="flex items-center justify-between px-1">
+            <div className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <History className="w-3.5 h-3.5 text-emerald-600" />
+              <span>งานที่บันทึกอัตโนมัติ ({savedProjects.length} โปรเจกต์ — รีเฟรชไม่หาย)</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 overflow-x-auto pb-1 custom-scrollbar">
+            {savedProjects.map((proj) => {
+              const isSelected = proj.id === activeProjectId;
+              return (
+                <div
+                  key={proj.id}
+                  onClick={() => handleSelectSavedProject(proj)}
+                  className={`group shrink-0 max-w-[240px] px-3.5 py-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 ${
+                    isSelected
+                      ? "bg-slate-900 border-slate-900 text-white shadow-xs"
+                      : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold truncate">{proj.blueprint.title}</div>
+                    <div className={`text-[10px] mt-0.5 ${isSelected ? "text-slate-400" : "text-slate-400"}`}>
+                      {proj.aspectRatio} · {new Date(proj.createdAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => handleDeleteSavedProject(e, proj.id)}
+                    className={`p-1 rounded-md opacity-60 hover:opacity-100 transition-opacity cursor-pointer ${
+                      isSelected ? "hover:bg-slate-800 text-slate-300" : "hover:bg-rose-50 hover:text-rose-600 text-slate-400"
+                    }`}
+                    title="ลบโปรเจกต์นี้"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* 3. Loading Skeleton */}
+      {loading && (
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 space-y-4 animate-pulse">
+          <div className="h-6 bg-slate-200 rounded w-1/3" />
+          <div className="h-4 bg-slate-100 rounded w-2/3" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3">
+            <div className="h-28 bg-slate-100 rounded-xl" />
+            <div className="h-28 bg-slate-100 rounded-xl" />
+          </div>
+        </div>
+      )}
+
+      {/* 4. Generated Blueprint Result */}
+      {!loading && blueprint && (
+        <div className="space-y-6 animate-fade-in-up">
+          {/* Header Summary + Hook + Viral Angle */}
+          <section className="bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-100 pb-5">
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">{blueprint.title}</h2>
                   {meta?.modelUsed && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/80 border border-emerald-200 text-emerald-700 font-semibold">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                       {meta.modelUsed}
                     </span>
                   )}
                 </div>
-                <p className="text-xs md:text-sm text-emerald-900/80">{blueprint.concept}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{blueprint.concept}</p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => handleCopy(buildFullTextToCopy(), "ALL")}
-                className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer shrink-0"
-              >
-                {copiedKey === "ALL" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedKey === "ALL" ? "ก๊อปปี้ทั้งหมดแล้ว!" : "Copy สูตรทั้งหมด"}</span>
-              </button>
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                {blueprint.video_blueprint?.scenes?.length ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleCopy(buildAllPromptsOnly(), "ALL_PROMPTS", "ก๊อปปี้ Prompt ทุกฉากแล้ว!")
+                    }
+                    className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    {copiedKey === "ALL_PROMPTS" ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>Copy เฉพาะ Prompt ทุกฉาก</span>
+                  </button>
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleCopy(buildFullTextToCopy(), "ALL", "ก๊อปปี้สูตรทั้งหมดพร้อมส่งลง LINE / Note แล้ว!")
+                  }
+                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  {copiedKey === "ALL" ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>Copy สูตรทั้งหมด</span>
+                </button>
+              </div>
             </div>
 
             {(blueprint.hook_3sec || blueprint.viral_meme_angle) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {blueprint.hook_3sec && (
-                  <div className="bg-white/90 border border-rose-200 rounded-xl p-3.5 text-xs">
-                    <div className="font-extrabold text-rose-700 mb-1 flex items-center gap-1">
-                      <Zap className="w-3.5 h-3.5" />
+                  <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Hook 3 วินาทีแรก (หยุดนิ้วคนดู)</span>
                     </div>
-                    <div className="text-slate-800 font-medium leading-relaxed">{blueprint.hook_3sec}</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">{blueprint.hook_3sec}</p>
                   </div>
                 )}
                 {blueprint.viral_meme_angle && (
-                  <div className="bg-white/90 border border-orange-200 rounded-xl p-3.5 text-xs">
-                    <div className="font-extrabold text-orange-700 mb-1 flex items-center gap-1">
-                      <Flame className="w-3.5 h-3.5" />
+                  <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Flame className="w-3.5 h-3.5 text-amber-500" />
                       <span>มุมเล่นกระแส / มีมไวรัล</span>
                     </div>
-                    <div className="text-slate-800 font-medium leading-relaxed">{blueprint.viral_meme_angle}</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">{blueprint.viral_meme_angle}</p>
                   </div>
                 )}
               </div>
             )}
-          </div>
+          </section>
 
           {/* Google Flow Bridge Setup Guide */}
           {blueprint.flow_setup_guide && aiMode === "AI_FLOW" && (
-            <div className="bg-slate-900 text-white rounded-2xl p-5 shadow-sm space-y-3">
+            <section className="bg-slate-900 text-white rounded-2xl p-6 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <div className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                    🔗 Google Flow Connection Guide (วิธีตั้งค่าก่อนวาง Prompt)
+                <div className="space-y-1.5">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                    Google Flow Bridge · ตั้งค่าก่อนวาง Prompt
                   </div>
-                  <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs">
-                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700">
-                      โหมด: <strong className="text-emerald-400">{blueprint.flow_setup_guide.tool_mode}</strong>
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200">
+                      โหมด: <strong className="text-white">{blueprint.flow_setup_guide.tool_mode}</strong>
                     </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700">
-                      สัดส่วน: <strong className="text-blue-400">{blueprint.flow_setup_guide.aspect_ratio}</strong>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200">
+                      สัดส่วน: <strong className="text-emerald-400">{blueprint.flow_setup_guide.aspect_ratio}</strong>
                     </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700">
-                      โมเดล: <strong className="text-amber-300">{blueprint.flow_setup_guide.recommended_model}</strong>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200">
+                      โมเดล: <strong className="text-white">{blueprint.flow_setup_guide.recommended_model}</strong>
                     </span>
                   </div>
                 </div>
@@ -553,240 +887,358 @@ export default function EasyContentPage() {
                   href="https://flow.google.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold transition-colors shrink-0"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold transition-colors shrink-0"
                 >
-                  <span>เปิดหน้าเว็บ Google Flow</span>
+                  <span>เปิด Google Flow</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {blueprint.flow_setup_guide.quick_steps?.map((st, idx) => (
-                  <div key={idx} className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 leading-relaxed">
+                  <div key={idx} className="bg-slate-800/70 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 leading-relaxed">
                     {st}
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
-          {/* 1. VIDEO BLUEPRINT */}
+          {/* 5. Video Production Scenes with Checklist + Inline Edit + Per-Scene Audio */}
           {blueprint.video_blueprint && (format === "VIDEO" || format === "BOTH") && (
-            <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-sm space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
-                    <Video className="w-5 h-5" />
+            <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div className="space-y-1">
+                  <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <Video className="w-4 h-4 text-emerald-600" />
+                    <span>รายการฉากสำหรับ Google Flow ({blueprint.video_blueprint.scene_count} ฉาก)</span>
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                    <span className="inline-flex items-center gap-1 font-medium">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" /> รวม ~{blueprint.video_blueprint.total_duration_sec} วิ
+                    </span>
+                    <span className="inline-flex items-center gap-1 font-medium">
+                      <Music className="w-3.5 h-3.5 text-slate-400" /> {blueprint.video_blueprint.mood_and_music}
+                    </span>
                   </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-[#17181A]">
-                      ฉากต่อฉากสำหรับ Google Flow & การตัดต่อ
-                    </h3>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 mt-0.5">
-                      <span className="inline-flex items-center gap-1 font-semibold text-blue-700">
-                        <Layers className="w-3.5 h-3.5" /> {blueprint.video_blueprint.scene_count} ฉาก
-                      </span>
-                      <span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
-                        <Clock className="w-3.5 h-3.5" /> รวม ~{blueprint.video_blueprint.total_duration_sec} วินาที
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <Music className="w-3.5 h-3.5 text-amber-600" /> {blueprint.video_blueprint.mood_and_music}
-                      </span>
-                    </div>
+                </div>
+
+                {/* Progress Indicator */}
+                <div className="min-w-[180px] space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] font-bold">
+                    <span className="text-slate-600">ความคืบหน้าเจนใน Flow</span>
+                    <span className="text-emerald-700">{completedCount}/{totalScenes} ฉาก ({progressPct}%)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-600 transition-all duration-300"
+                      style={{ width: `${progressPct}%` }}
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* Scenes */}
-              <div className="grid grid-cols-1 gap-4">
-                {blueprint.video_blueprint.scenes?.map((scene) => (
-                  <div
-                    key={scene.scene_number}
-                    className="border border-slate-200 rounded-xl p-4 bg-[#FAFBFC] space-y-3"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-extrabold">
-                          ฉากที่ {scene.scene_number}
-                        </span>
-                        <span className="px-2 py-0.5 rounded-md bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold">
-                          ⏱️ {scene.duration_sec} วินาที
-                        </span>
-                        {scene.flow_mode && (
-                          <span className="px-2 py-0.5 rounded-md bg-slate-900 text-amber-300 text-xs font-bold">
-                            โหมดใน Flow: {scene.flow_mode}
+              {/* Scene Cards */}
+              <div className="space-y-4">
+                {blueprint.video_blueprint.scenes?.map((scene) => {
+                  const isDone = completedScenes.includes(scene.scene_number);
+                  const isEditing = editingSceneNum === scene.scene_number;
+                  return (
+                    <div
+                      key={scene.scene_number}
+                      className={`border rounded-xl p-4 sm:p-5 space-y-3.5 transition-all ${
+                        isDone
+                          ? "bg-emerald-50/30 border-emerald-200/80"
+                          : "bg-slate-50/60 border-slate-200"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggleSceneComplete(scene.scene_number)}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+                              isDone
+                                ? "bg-emerald-600 border-emerald-600 text-white"
+                                : "bg-white border-slate-300 text-slate-800 hover:border-emerald-500"
+                            }`}
+                          >
+                            {isDone ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5 text-slate-400" />}
+                            <span>ฉากที่ {scene.scene_number}</span>
+                          </button>
+
+                          <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 text-xs font-semibold">
+                            {scene.duration_sec} วิ
                           </span>
-                        )}
-                        <span className="text-xs font-bold text-slate-800">
-                          ขึ้นจอ: &ldquo;{scene.on_screen_text}&rdquo;
-                        </span>
-                      </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-white p-3 rounded-lg border border-slate-200">
-                        <div className="font-bold text-slate-500 mb-1">📷 ภาพในฉากนี้</div>
-                        <div className="text-slate-800 leading-relaxed">{scene.what_to_shoot}</div>
-                      </div>
-                      <div className="bg-white p-3 rounded-lg border border-slate-200">
-                        <div className="font-bold text-slate-500 mb-1">🎥 มุมกล้อง & การขยับ</div>
-                        <div className="text-slate-800 leading-relaxed">{scene.camera_angle}</div>
-                      </div>
-                      <div className="bg-white p-3 rounded-lg border border-slate-200">
-                        <div className="font-bold text-slate-500 mb-1">🔗 ความต่อเนื่องกับฉากถัดไป</div>
-                        <div className="text-slate-800 leading-relaxed">{scene.continuity_note}</div>
-                      </div>
-                    </div>
+                          {scene.flow_mode && (
+                            <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-100 text-[11px] font-semibold">
+                              {scene.flow_mode}
+                            </span>
+                          )}
 
-                    {/* Voiceover + Prompt Copy Boxes */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      <div className="bg-emerald-50/70 border border-emerald-200 rounded-lg p-3 flex items-start justify-between gap-2">
-                        <div>
-                          <div className="font-bold text-emerald-800 mb-1 flex items-center gap-1">
-                            <Mic className="w-3.5 h-3.5" /> เสียงพากย์ฉากนี้
-                          </div>
-                          <div className="text-emerald-950 font-medium">&ldquo;{scene.voiceover_text}&rdquo;</div>
+                          {scene.on_screen_text && (
+                            <span className="text-xs font-semibold text-slate-700">
+                              ขึ้นจอ: &ldquo;{scene.on_screen_text}&rdquo;
+                            </span>
+                          )}
                         </div>
+
                         <button
                           type="button"
-                          onClick={() => handleCopy(scene.voiceover_text, `vo-${scene.scene_number}`)}
-                          className="px-2.5 py-1.5 rounded-lg bg-white border border-emerald-300 hover:bg-emerald-100 text-emerald-800 font-bold flex items-center gap-1 cursor-pointer shrink-0"
+                          onClick={() => setEditingSceneNum(isEditing ? null : scene.scene_number)}
+                          className="text-[11px] font-semibold text-slate-500 hover:text-slate-900 inline-flex items-center gap-1 px-2 py-1 rounded-md hover:bg-slate-200/60 cursor-pointer"
                         >
-                          {copiedKey === `vo-${scene.scene_number}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                          <span>{copiedKey === `vo-${scene.scene_number}` ? "แล้ว" : "Copy"}</span>
+                          <Pencil className="w-3 h-3" />
+                          <span>{isEditing ? "เสร็จสิ้น" : "แก้ไขข้อความ"}</span>
                         </button>
                       </div>
 
-                      <div className="bg-slate-900 text-slate-100 rounded-lg p-3 flex flex-col justify-between gap-2">
-                        <div>
-                          <div className="font-bold text-amber-400 mb-1 flex items-center justify-between">
-                            <span>⚡ ช่อง Prompt → ก๊อปวางใน Google Flow</span>
-                          </div>
-                          <div className="text-slate-200 font-mono text-[11px] break-words">{scene.flow_prompt}</div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div className="bg-white p-3 rounded-lg border border-slate-200/80">
+                          <div className="text-[11px] font-bold text-slate-500 mb-1">ภาพในฉากนี้</div>
+                          <div className="text-slate-800 leading-relaxed">{scene.what_to_shoot}</div>
                         </div>
-                        <div className="flex items-center justify-end gap-2 pt-1">
-                          <button
-                            type="button"
-                            onClick={() => handleCopy(scene.flow_prompt, `fp-${scene.scene_number}`)}
-                            className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold flex items-center gap-1.5 cursor-pointer"
-                          >
-                            {copiedKey === `fp-${scene.scene_number}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                            <span>
-                              {copiedKey === `fp-${scene.scene_number}`
-                                ? "ก๊อปแล้ว! ไปวางใน Google Flow ได้เลย"
-                                : `Copy Prompt ฉากที่ ${scene.scene_number}`}
-                            </span>
-                          </button>
-                          <a
-                            href="https://flow.google.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold inline-flex items-center gap-1"
-                            title="เปิดหน้า Google Flow"
-                          >
-                            <span>ไปวาง</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
+                        <div className="bg-white p-3 rounded-lg border border-slate-200/80">
+                          <div className="text-[11px] font-bold text-slate-500 mb-1">มุมกล้อง & การขยับ</div>
+                          <div className="text-slate-800 leading-relaxed">{scene.camera_angle}</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-slate-200/80">
+                          <div className="text-[11px] font-bold text-slate-500 mb-1">ความต่อเนื่อง</div>
+                          <div className="text-slate-800 leading-relaxed">{scene.continuity_note}</div>
+                        </div>
+                      </div>
+
+                      {/* Voiceover & Flow Prompt */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div className="bg-white border border-slate-200 rounded-lg p-3.5 flex flex-col justify-between gap-2.5">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                              <Mic className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>บทพากย์ฉากนี้</span>
+                            </div>
+                            {isEditing ? (
+                              <textarea
+                                rows={2}
+                                value={scene.voiceover_text}
+                                onChange={(e) => updateSceneField(scene.scene_number, "voiceover_text", e.target.value)}
+                                className="w-full p-2 text-xs border border-emerald-400 rounded-lg focus:outline-none"
+                              />
+                            ) : (
+                              <div className="text-slate-900 font-medium leading-relaxed">&ldquo;{scene.voiceover_text}&rdquo;</div>
+                            )}
+                          </div>
+
+                          {sceneAudioUrls[scene.scene_number] && (
+                            <audio controls src={sceneAudioUrls[scene.scene_number]} className="w-full h-8" />
+                          )}
+
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleGenerateVoiceover(scene.voiceover_text, scene.scene_number)}
+                              disabled={sceneTtsLoading === scene.scene_number}
+                              className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold inline-flex items-center gap-1 cursor-pointer"
+                            >
+                              {sceneTtsLoading === scene.scene_number ? (
+                                <RefreshCw className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Volume2 className="w-3 h-3 text-emerald-600" />
+                              )}
+                              <span>เจนเสียงฉากนี้</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleCopy(scene.voiceover_text, `vo-${scene.scene_number}`, `ก๊อปบทพากย์ฉาก ${scene.scene_number} แล้ว`)
+                              }
+                              className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold inline-flex items-center gap-1 cursor-pointer"
+                            >
+                              {copiedKey === `vo-${scene.scene_number}` ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                              <span>Copy</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-900 text-slate-100 rounded-lg p-3.5 flex flex-col justify-between gap-2.5">
+                          <div>
+                            <div className="text-[11px] font-bold text-emerald-400 mb-1">
+                              Google Flow Prompt (ก๊อปไปวางช่อง Describe your video)
+                            </div>
+                            {isEditing ? (
+                              <textarea
+                                rows={3}
+                                value={scene.flow_prompt}
+                                onChange={(e) => updateSceneField(scene.scene_number, "flow_prompt", e.target.value)}
+                                className="w-full p-2 text-[11px] font-mono bg-slate-800 text-white border border-emerald-500 rounded-lg focus:outline-none"
+                              />
+                            ) : (
+                              <div className="text-slate-200 font-mono text-[11px] leading-relaxed break-words">
+                                {scene.flow_prompt}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleCopy(
+                                  scene.flow_prompt,
+                                  `fp-${scene.scene_number}`,
+                                  `ก๊อป Prompt ฉาก ${scene.scene_number} แล้ว! วางลง Google Flow ได้เลย`
+                                )
+                              }
+                              className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold inline-flex items-center gap-1.5 cursor-pointer"
+                            >
+                              {copiedKey === `fp-${scene.scene_number}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                              <span>Copy Prompt ฉาก {scene.scene_number}</span>
+                            </button>
+                            <a
+                              href="https://flow.google.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold inline-flex items-center gap-1"
+                            >
+                              <span>ไปวาง</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
-              {/* Editing Guide + Full Voiceover */}
+              {/* Full Voiceover Studio (ElevenLabs) + Editing Guide */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-2">
-                  <div className="font-bold text-amber-900 text-sm flex items-center gap-1.5">
-                    <Scissors className="w-4 h-4 text-amber-600" />
-                    <span>วิธีตัดต่อคลิปนี้ให้น่าดู (CapCut / Editing Guide)</span>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-amber-950">
-                    {blueprint.video_blueprint.editing_guide?.map((step, i) => (
-                      <li key={i} className="leading-relaxed">• {step}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
-                      <Mic className="w-4 h-4 text-emerald-600" />
-                      <span>บทพากย์รวมทั้งคลิป (อ่านรวดเดียว)</span>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                      <Volume2 className="w-4 h-4 text-emerald-600" />
+                      <span>สร้างเสียงพากย์ MP3 ทั้งคลิป (ElevenLabs)</span>
                     </div>
                     <button
                       type="button"
-                      onClick={() => handleCopy(blueprint.video_blueprint?.full_voiceover_script || "", "vo-all")}
-                      className="px-2.5 py-1 rounded-lg bg-white border border-emerald-300 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                      onClick={() =>
+                        handleCopy(blueprint.video_blueprint?.full_voiceover_script || "", "vo-all", "ก๊อปบทพากย์รวมแล้ว")
+                      }
+                      className="text-xs px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold inline-flex items-center gap-1 cursor-pointer"
                     >
-                      {copiedKey === "vo-all" ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedKey === "vo-all" ? "ก๊อปปี้แล้ว" : "Copy บทพากย์"}</span>
+                      <Copy className="w-3 h-3" />
+                      <span>Copy บทพากย์</span>
                     </button>
                   </div>
-                  <p className="text-xs text-emerald-950 leading-relaxed whitespace-pre-line">
+
+                  <p className="text-xs text-slate-700 leading-relaxed bg-white p-3 rounded-lg border border-slate-200/80 whitespace-pre-line">
                     {blueprint.video_blueprint.full_voiceover_script}
                   </p>
+
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <select
+                      value={selectedVoice}
+                      onChange={(e) => setSelectedVoice(e.target.value)}
+                      className="flex-1 px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-800 focus:outline-none focus:border-emerald-500"
+                    >
+                      {VOICE_OPTIONS.map((v) => (
+                        <option key={v.id} value={v.id}>
+                          {v.label}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={() => handleGenerateVoiceover(blueprint.video_blueprint?.full_voiceover_script || "")}
+                      disabled={ttsLoading}
+                      className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300 text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                    >
+                      {ttsLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Mic className="w-3.5 h-3.5 text-emerald-400" />}
+                      <span>{ttsLoading ? "กำลังสร้างเสียง..." : "สร้างเสียงพากย์ MP3"}</span>
+                    </button>
+                  </div>
+
+                  {ttsAudioUrl && (
+                    <div className="bg-white border border-emerald-200 rounded-xl p-3 space-y-2 animate-fade-in">
+                      <audio controls src={ttsAudioUrl} className="w-full h-9" />
+                      <a
+                        href={ttsAudioUrl}
+                        download={`${blueprint.title.replace(/[^\wก-๙]+/g, "_")}_voiceover.mp3`}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:underline"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>ดาวน์โหลดไฟล์เสียง MP3 ไปใส่ CapCut</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5">
+                  <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                    <Scissors className="w-4 h-4 text-slate-600" />
+                    <span>คู่มือตัดต่อใน CapCut (Editing Guide)</span>
+                  </div>
+                  <ul className="space-y-2 text-xs text-slate-700">
+                    {blueprint.video_blueprint.editing_guide?.map((step, i) => (
+                      <li key={i} className="leading-relaxed bg-white p-2.5 rounded-lg border border-slate-200/80">
+                        {step}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            </div>
+            </section>
           )}
 
-          {/* 2. PHOTO BLUEPRINT */}
+          {/* 6. Photo Blueprint */}
           {blueprint.photo_blueprint && (format === "PHOTO" || format === "BOTH") && (
-            <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-sm space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
-                    <Camera className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold text-[#17181A]">
-                      แผนภาพนิ่ง & อัลบั้มสไลด์ (ก๊อป Prompt ไปเจนภาพใน Google Flow ได้เลย)
-                    </h3>
-                    <p className="text-xs text-slate-600">สไตล์ภาพ: {blueprint.photo_blueprint.photo_style}</p>
-                  </div>
-                </div>
+            <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <Camera className="w-4 h-4 text-emerald-600" />
+                  <span>แผนภาพนิ่ง & อัลบั้มสไลด์</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">สไตล์ภาพ: {blueprint.photo_blueprint.photo_style}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {blueprint.photo_blueprint.shots?.map((shot) => (
-                  <div key={shot.shot_number} className="border border-slate-200 rounded-xl p-4 bg-[#FAFBFC] space-y-2.5 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-lg bg-amber-600 text-white font-extrabold">
+                  <div key={shot.shot_number} className="border border-slate-200 rounded-xl p-4 bg-slate-50/60 space-y-2.5 text-xs">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="px-2.5 py-1 rounded-md bg-slate-900 text-white font-bold">
                         รูปที่ {shot.shot_number}: {shot.role}
                       </span>
-                      <span className="font-bold text-slate-700">พาดหัว: &ldquo;{shot.text_overlay}&rdquo;</span>
+                      {shot.text_overlay && (
+                        <span className="font-semibold text-slate-700 truncate">&ldquo;{shot.text_overlay}&rdquo;</span>
+                      )}
                     </div>
-                    <div>
-                      <span className="font-bold text-slate-500">📐 มุมกล้อง & องค์ประกอบ: </span>
-                      <span className="text-slate-800">{shot.angle_and_framing}</span>
+                    <div className="text-slate-700 leading-relaxed">
+                      <strong className="text-slate-900">มุมกล้อง: </strong>{shot.angle_and_framing}
                     </div>
-                    <div>
-                      <span className="font-bold text-slate-500">💡 แสง & พร็อพ: </span>
-                      <span className="text-slate-800">{shot.lighting_and_props}</span>
+                    <div className="text-slate-700 leading-relaxed">
+                      <strong className="text-slate-900">แสง & พร็อพ: </strong>{shot.lighting_and_props}
                     </div>
-                    <div className="bg-slate-900 text-slate-100 rounded-lg p-2.5 flex items-start justify-between gap-2">
-                      <span className="font-mono text-[11px] text-slate-200 break-words">{shot.image_prompt}</span>
+                    <div className="bg-slate-900 text-slate-100 rounded-lg p-3 flex items-start justify-between gap-2">
+                      <span className="font-mono text-[11px] text-slate-200 break-words leading-relaxed">{shot.image_prompt}</span>
                       <button
                         type="button"
-                        onClick={() => handleCopy(shot.image_prompt, `img-${shot.shot_number}`)}
-                        className="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1 cursor-pointer shrink-0"
+                        onClick={() => handleCopy(shot.image_prompt, `img-${shot.shot_number}`, `ก๊อป Prompt รูปที่ ${shot.shot_number} แล้ว`)}
+                        className="px-2.5 py-1 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold inline-flex items-center gap-1 cursor-pointer shrink-0"
                       >
                         {copiedKey === `img-${shot.shot_number}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                        <span>{copiedKey === `img-${shot.shot_number}` ? "แล้ว" : "Copy"}</span>
+                        <span>Copy</span>
                       </button>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
-          {/* 3. SOCIAL CAPTION */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-sm space-y-3">
+          {/* 7. Social Caption */}
+          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 font-extrabold text-base text-[#17181A]">
-                <FileText className="w-5 h-5 text-purple-600" />
+              <div className="flex items-center gap-2 font-extrabold text-base text-slate-900">
+                <FileText className="w-4 h-4 text-emerald-600" />
                 <span>แคปชัน & แฮชแท็กพร้อมโพสต์</span>
               </div>
               <button
@@ -794,35 +1246,36 @@ export default function EasyContentPage() {
                 onClick={() =>
                   handleCopy(
                     `${blueprint.social_caption}\n\n${(blueprint.hashtags || []).join(" ")}`,
-                    "caption"
+                    "caption",
+                    "ก๊อปปี้แคปชันและแฮชแท็กเรียบร้อย!"
                   )
                 }
-                className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
               >
-                {copiedKey === "caption" ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedKey === "caption" ? "ก๊อปปี้แคปชันแล้ว!" : "Copy แคปชัน + แฮชแท็ก"}</span>
+                {copiedKey === "caption" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>Copy แคปชัน</span>
               </button>
             </div>
-            <div className="bg-[#F7F8FA] border border-slate-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line leading-relaxed">
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line leading-relaxed">
               {blueprint.social_caption}
               {"\n\n"}
-              <span className="text-blue-600 font-semibold">{(blueprint.hashtags || []).join(" ")}</span>
+              <span className="text-emerald-700 font-semibold">{(blueprint.hashtags || []).join(" ")}</span>
             </div>
-          </div>
+          </section>
         </div>
       )}
 
-      {/* Self-Healing Error Memory Panel */}
-      <div className="bg-white border border-[#E8E9EC] rounded-2xl p-5 shadow-sm space-y-3">
+      {/* 8. Compact Self-Healing Error Memory Panel */}
+      <section className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <div>
-              <h3 className="text-sm font-extrabold text-[#17181A]">
-                ระบบจำข้อผิดพลาด & แก้ไขตัวเองอัตโนมัติ (Self-Healing Error Memory)
+              <h3 className="text-xs font-extrabold text-slate-900">
+                ระบบป้องกันข้อผิดพลาดอัตโนมัติ (Self-Healing Error Memory)
               </h3>
               <p className="text-[11px] text-slate-500">
-                บันทึกปัญหาที่เคยเกิดขึ้น (เช่น โมเดลล่ม, โควตาหมด, Google Flow ขัดข้อง) เพื่อข้ามไปใช้ทางเลือกที่เสถียรกว่าทันทีโดยไม่ทำพลาดซ้ำ
+                จำจุดที่เคยขัดข้องและข้ามไปใช้โมเดลสำรองที่เสถียรกว่าทันที
               </p>
             </div>
           </div>
@@ -830,7 +1283,7 @@ export default function EasyContentPage() {
             <button
               type="button"
               onClick={handleClearMemories}
-              className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 font-semibold flex items-center gap-1 cursor-pointer"
+              className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 font-semibold inline-flex items-center gap-1 cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>ล้างประวัติ</span>
@@ -839,27 +1292,27 @@ export default function EasyContentPage() {
         </div>
 
         {errorMemories.length === 0 ? (
-          <div className="text-xs text-emerald-700 bg-emerald-50/70 border border-emerald-200 rounded-xl p-3 font-medium">
-            ✓ ระบบทำงานปกติ ยังไม่มีข้อผิดพลาดที่ต้องหลีกเลี่ยงในขณะนี้
+          <div className="text-xs text-emerald-800 bg-emerald-50/70 border border-emerald-200/80 rounded-xl px-3.5 py-2.5 font-medium">
+            ✓ ระบบทำงานปกติทุกโมเดล ไม่มีข้อผิดพลาดค้างอยู่
           </div>
         ) : (
           <div className="space-y-2">
             {errorMemories.slice(0, 5).map((mem) => (
-              <div key={mem.id} className="text-xs bg-amber-50/60 border border-amber-200 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div key={mem.id} className="text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <span className="font-bold text-amber-900">[{mem.category}] {mem.message}</span>
-                  <div className="text-emerald-800 font-medium mt-0.5">
-                    ↳ วิธีแก้ไขอัตโนมัติ: {mem.resolution}
+                  <span className="font-bold text-slate-900">[{mem.category}] {mem.message}</span>
+                  <div className="text-emerald-700 font-medium mt-0.5">
+                    ↳ แก้ไขอัตโนมัติ: {mem.resolution}
                   </div>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border border-amber-200 text-amber-800 font-bold shrink-0">
-                  จำแล้ว ({mem.occurrences} ครั้ง)
+                <span className="text-[10px] px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-600 font-semibold shrink-0">
+                  ป้องกันแล้ว ({mem.occurrences} ครั้ง)
                 </span>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

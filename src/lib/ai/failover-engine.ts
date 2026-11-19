@@ -167,7 +167,7 @@ async function callGeminiDirect(params: {
   reasoningEffort?: "high" | "low";
   timeoutMs?: number;
 }): Promise<{ ok: boolean; status: number; text: string; data: any; usage: any; modelUsed: string; error?: string }> {
-  const { apiKey, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 45000 } = params;
+  const { apiKey, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 22000 } = params;
 
   const candidateModels = [
     model || "gemini-3.1-flash-lite-preview",
