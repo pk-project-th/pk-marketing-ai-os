@@ -3715,7 +3715,7 @@
     }
   ],
   "settings": {
-    "gemini_model": "gemini-3.8-flash",
+    "gemini_model": "gemini-4-hydrogen",
     "gemini_thinking_effort": "high",
     "google_drive_status": "NOT_CONNECTED",
     "google_sheets_status": "NOT_CONNECTED",
@@ -3735,7 +3735,7 @@
     "openai_api_key": "",
     "has_openai_key": false,
     "has_custom_image_key": false,
-    "default_ai_engine": "groq",
+    "default_ai_engine": "gemini",
     "auto_failover_enabled": true,
     "groq_api_key": "",
     "has_groq_key": false

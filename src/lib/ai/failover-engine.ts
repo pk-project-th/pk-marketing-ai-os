@@ -170,15 +170,15 @@ async function callGeminiDirect(params: {
   const { apiKey, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 22000 } = params;
 
   const candidateModels = [
-    model || "gemini-3.1-flash-lite-preview",
-    "gemini-3.1-flash-lite-preview",
+    model || "gemini-4-hydrogen",
+    "gemini-4-hydrogen",
     "gemini-3-flash-preview",
+    "gemini-3.1-flash-lite-preview",
     "gemini-3.8-flash",
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
-    "gemini-flash-lite-latest",
-    "gemini-2.0-flash"
+    "gemini-flash-lite-latest"
   ].filter((m, idx, arr) => arr.indexOf(m) === idx);
 
   const body: any = {
@@ -244,11 +244,8 @@ async function callGeminiDirect(params: {
             resolution: `หลีกเลี่ยงโมเดล ${m} ชั่วคราวและสลับไปยังโมเดล Flash หรือ Provider สำรอง`,
             cooldownMinutes: 10
           });
-          // If a Pro/special model ran out of quota, continue to Flash models which have separate quotas
-          if (!m.includes("flash")) {
-            continue;
-          }
-          break;
+          // Continue trying other candidate models (e.g., Neon/Pro 429 -> Hydrogen/Flash 200 OK)
+          continue;
         }
       }
     } catch (err: any) {
@@ -380,12 +377,12 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
 
   const tierPrimaryGemini: ExecutionTier = {
     id: "gemini",
-    name: `Google Gemini Primary (${options.preferredModel || settings.gemini_model || "gemini-3.1-flash-lite-preview"})`,
+    name: `Google Gemini Primary (${options.preferredModel || settings.gemini_model || "gemini-4-hydrogen"})`,
     hasKey: !!primaryGeminiKey && primaryGeminiKey.trim().length > 5,
     execute: async () => {
       const res = await callGeminiDirect({
         apiKey: primaryGeminiKey!,
-        model: options.preferredModel || settings.gemini_model || "gemini-3.1-flash-lite-preview",
+        model: options.preferredModel || settings.gemini_model || "gemini-4-hydrogen",
         prompt: options.prompt,
         systemInstruction: defaultSystem,
         responseSchema: options.responseSchema,
@@ -608,7 +605,7 @@ export async function testProviderConnection(
     }
 
     if (provider === "gemini" || provider === "gemini_backup") {
-      const targetModel = model || "gemini-3-flash-preview";
+      const targetModel = model || "gemini-4-hydrogen";
       const res = await callGeminiDirect({
         apiKey: key,
         model: targetModel,

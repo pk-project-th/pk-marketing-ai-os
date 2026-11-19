@@ -254,8 +254,8 @@ function getInitialState(): DBState {
     ],
     settings: {
       gemini_api_key: "",
-      default_ai_engine: "groq",
-      gemini_model: "gemini-3.8-flash",
+      default_ai_engine: "gemini",
+      gemini_model: "gemini-4-hydrogen",
       gemini_thinking_effort: "high",
       auto_failover_enabled: true,
       google_drive_status: "NOT_CONNECTED",

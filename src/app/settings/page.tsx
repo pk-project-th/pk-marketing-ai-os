@@ -43,8 +43,8 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<SystemSettings>({
     gemini_api_key: "",
     openai_api_key: "",
-    default_ai_engine: "groq",
-    gemini_model: "gemini-3.8-flash",
+    default_ai_engine: "gemini",
+    gemini_model: "gemini-4-hydrogen",
     gemini_thinking_effort: "high",
     n8n_base_url: "",
     n8n_api_key: "",
@@ -580,10 +580,19 @@ export default function SettingsPage() {
             {/* Failover Tier Pipeline Badges (Dynamically ordered without duplication) */}
             {(() => {
               const currentEngine = settings.default_ai_engine || "gemini";
+              const formatGeminiModelLabel = (m?: string) => {
+                if (!m || m === "gemini-4-hydrogen") return "Gemini 4 Hydrogen";
+                if (m === "gemini-4-neon") return "Gemini 4 Neon";
+                if (m === "gemini-4-carbon") return "Gemini 4 Carbon";
+                if (m === "gemini-4-argon") return "Gemini 4 Argon";
+                if (m === "gemini-3-flash-preview") return "Gemini 3 Flash";
+                return m;
+              };
+              const geminiLabel = `Google Gemini (${formatGeminiModelLabel(settings.gemini_model)})`;
               
               let tier1 = {
                 title: "Tier 1: อันดับ 1 (หลัก)",
-                name: "Google Gemini (Gemini 3 Flash)",
+                name: geminiLabel,
                 hasKey: !!settings.has_gemini_key,
                 color: "bg-blue-500",
                 pulse: true,
@@ -617,7 +626,7 @@ export default function SettingsPage() {
                 };
                 tier2 = {
                   title: "Tier 2: อันดับ 2 (สำรอง 1)",
-                  name: "Google Gemini (Gemini 3 Flash)",
+                  name: geminiLabel,
                   hasKey: !!settings.has_gemini_key,
                   color: "bg-blue-500",
                   pulse: false,
@@ -642,7 +651,7 @@ export default function SettingsPage() {
                 };
                 tier2 = {
                   title: "Tier 2: อันดับ 2 (สำรอง 1)",
-                  name: "Google Gemini (Gemini 3 Flash)",
+                  name: geminiLabel,
                   hasKey: !!settings.has_gemini_key,
                   color: "bg-blue-500",
                   pulse: false,
@@ -693,9 +702,9 @@ export default function SettingsPage() {
                 <Key className="w-4 h-4 text-blue-400" />
                 <span>1. Google Gemini AI Engine (เครื่องยนต์หลัก Pro & Flash)</span>
               </div>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-950/70 text-blue-300 border border-blue-800">
-                <Sparkles className="w-3 h-3 text-cyan-400" />
-                <span>รองรับ Gemini Pro 3.1 & Flash ทุกซีรีส์</span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <Sparkles className="w-3 h-3 text-emerald-600" />
+                <span>รองรับ Gemini 4 Hydrogen / Neon &amp; Flash ทุกซีรีส์</span>
               </span>
             </div>
 
@@ -754,17 +763,21 @@ export default function SettingsPage() {
                   onChange={e => setSettings({ ...settings, gemini_model: e.target.value })}
                   className="w-full px-3 py-2 bg-[#F7F8FA] border border-[#E8E9EC] rounded-lg text-xs text-[#17181A] focus:outline-none focus:border-blue-500"
                 >
-                  <optgroup label="🌟 Gemini Pro Tier (โมเดลเรือธง - วิเคราะห์ลึกซึ้ง / วางแผนกลยุทธ์)">
-                    <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (ฉลาดสูงสุด ลอจิกซับซ้อน เหมาะกับกลยุทธ์)</option>
-                    <option value="gemini-pro-latest">Gemini Pro Latest (โมเดล Pro อัปเดตล่าสุดอัตโนมัติ)</option>
+                  <optgroup label="🚀 Gemini 4 Series (รุ่นใหม่ล่าสุด — แนะนำ Hydrogen ใช้ฟรีได้ทันที!)">
+                    <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (แนะนำที่สุด! ฉลาดรุ่นใหม่ ใช้งานฟรีผ่าน API ได้ทันที)</option>
+                    <option value="gemini-4-neon">Gemini 4 Neon (เรือธงสูงสุด — ต้องผูกบัตร Billing ใน Google Cloud)</option>
+                    <option value="gemini-4-carbon">Gemini 4 Carbon (งานซับซ้อน/วิเคราะห์ลึก — ต้องผูกบัตร Billing)</option>
+                    <option value="gemini-4-argon">Gemini 4 Argon (โมเดลเฉพาะทาง — ต้องผูกบัตร Billing)</option>
                   </optgroup>
-                  <optgroup label="⚡ Gemini Flash Tier (สูงสุด & ความเร็วสูง - สร้างคอนเทนต์ / โควตาฟรี 1,500 RPD)">
-                    <option value="gemini-3.8-flash">Gemini 3.8 Flash (สูงสุด แนะนำ - ความเร็วและความจุบริบทสูงสุด)</option>
-                    <option value="gemini-flash-latest">Gemini Flash Latest (อัปเดตเวอร์ชัน Flash ล่าสุดเสมอ)</option>
-                    <option value="gemini-3.7-flash">Gemini 3.7 Flash (โมเดลสมดุลสำหรับคอนเทนต์และโค้ด)</option>
-                    <option value="gemini-3.5-flash">Gemini 3.5 Flash (เสถียรสูง โควตาฟรี 15 RPM)</option>
-                    <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (เร็วสุด ประหยัดโควตาและโทเคนสูงสุด)</option>
-                    <option value="gemini-3-flash-preview">Gemini 3 Flash Preview (โมเดลสถาปัตยกรรมใหม่)</option>
+                  <optgroup label="⚡ Gemini 3 Flash Tier (สำรองความเร็วสูง โควตาฟรี)">
+                    <option value="gemini-3-flash-preview">Gemini 3 Flash Preview (เสถียรสูง ใช้ฟรีได้ทันที เป็นตัวสำรองหลัก)</option>
+                    <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite Preview (เร็วมาก ประหยัดโทเคน)</option>
+                    <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
+                    <option value="gemini-flash-latest">Gemini Flash Latest</option>
+                  </optgroup>
+                  <optgroup label="🌟 Gemini 3 Pro Tier">
+                    <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (ต้องผูกบัตร Billing)</option>
+                    <option value="gemini-pro-latest">Gemini Pro Latest</option>
                   </optgroup>
                   <optgroup label="🔬 Research & Analysis (การค้นคว้าเฉพาะทาง)">
                     <option value="deep-research-pro-preview-12-2025">Deep Research Pro Preview (การวิจัยตลาดและการแข่งขัน)</option>
