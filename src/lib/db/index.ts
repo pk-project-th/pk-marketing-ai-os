@@ -240,20 +240,7 @@ function getInitialState(): DBState {
         output_result: { ideas_generated: 15 }
       }
     ],
-    ai_generations: [
-      {
-        id: "gen-001",
-        model: "gemini-3.8-flash",
-        workflow: "Idea Generation",
-        prompt_tokens: 1240,
-        completion_tokens: 1850,
-        total_tokens: 3090,
-        latency_ms: 2150,
-        status: "SUCCESS",
-        cost_usd: 0.00077,
-        timestamp: "2026-09-05T10:30:00Z"
-      }
-    ],
+    ai_generations: [],
     audit_logs: [
       {
         id: "audit-001",
@@ -621,6 +608,12 @@ export const db = {
     state.ai_generations.unshift(log);
     writeDB(state);
     return log;
+  },
+  resetAIGenerations: () => {
+    const state = readDB();
+    state.ai_generations = [];
+    writeDB(state);
+    return true;
   },
 
   getAuditLogs: () => readDB().audit_logs,

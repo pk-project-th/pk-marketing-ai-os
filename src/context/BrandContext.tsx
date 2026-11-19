@@ -179,12 +179,20 @@ interface BrandContextType {
   campaignName: string;
 }
 
+const getCurrentMonthYear = () => {
+  try {
+    return new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  } catch {
+    return "Current Cycle";
+  }
+};
+
 const BrandContext = createContext<BrandContextType>({
   activeBrand: "ALL",
   setActiveBrand: () => {},
   selectedBrandData: null,
   brands: ALL_BRANDS,
-  campaignName: "September 2026",
+  campaignName: getCurrentMonthYear(),
 });
 
 export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -214,7 +222,7 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setActiveBrand,
         selectedBrandData,
         brands: ALL_BRANDS,
-        campaignName: "September 2026",
+        campaignName: getCurrentMonthYear(),
       }}
     >
       {children}

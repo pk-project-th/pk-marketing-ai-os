@@ -31,11 +31,15 @@ import {
   DollarSign,
   ChevronRight,
   HelpCircle,
-  Check
+  Check,
+  Trash2
 } from "lucide-react";
 import { SystemSettings, AuditLog, AIGenerationLog } from "@/types";
+import { useToast } from "@/components/ui/ToastProvider";
 
 export default function SettingsPage() {
+  const { showToast } = useToast();
+  const [resettingUsage, setResettingUsage] = useState(false);
   const [settings, setSettings] = useState<SystemSettings>({
     gemini_api_key: "",
     openai_api_key: "",
@@ -126,9 +130,12 @@ export default function SettingsPage() {
   // Usage statistics calculations
   const usageStats = useMemo(() => {
     const totalCalls = aiGenerations.length;
-    const totalTokens = aiGenerations.reduce((acc, g) => acc + (g.total_tokens || 0), 0);
+    const successCalls = aiGenerations.filter((g) => g.status === "SUCCESS").length;
+    const successRate = totalCalls > 0 ? Math.round((successCalls / totalCalls) * 100) : 100;
     const promptTokens = aiGenerations.reduce((acc, g) => acc + (g.prompt_tokens || 0), 0);
     const completionTokens = aiGenerations.reduce((acc, g) => acc + (g.completion_tokens || 0), 0);
+    const rawTotalTokens = aiGenerations.reduce((acc, g) => acc + (g.total_tokens || 0), 0);
+    const totalTokens = rawTotalTokens > 0 ? rawTotalTokens : promptTokens + completionTokens;
     const avgLatency = totalCalls > 0 ? Math.round(aiGenerations.reduce((acc, g) => acc + (g.latency_ms || 0), 0) / totalCalls) : 0;
     const totalCostUsd = aiGenerations.reduce((acc, g) => acc + (g.cost_usd || 0), 0);
 
@@ -143,6 +150,8 @@ export default function SettingsPage() {
 
     return {
       totalCalls,
+      successCalls,
+      successRate,
       totalTokens,
       promptTokens,
       completionTokens,
@@ -151,6 +160,29 @@ export default function SettingsPage() {
       modelBreakdown
     };
   }, [aiGenerations]);
+
+  const handleResetUsage = async () => {
+    setResettingUsage(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "RESET_USAGE" })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAiGenerations([]);
+        showToast("รีเซ็ตสถิติการใช้งาน AI เป็น 0 เรียบร้อยแล้ว!", "success");
+        fetchSettings();
+      } else {
+        showToast("ไม่สามารถรีเซ็ตสถิติได้", "error");
+      }
+    } catch {
+      showToast("เกิดข้อผิดพลาดในการเชื่อมต่อ", "error");
+    } finally {
+      setResettingUsage(false);
+    }
+  };
 
   const handleTestGemini = async () => {
     setTestingGemini(true);
@@ -381,63 +413,72 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-20">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E8E9EC] pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 border border-[#E8E9EC] text-slate-800 text-xs font-semibold mb-2">
-            <Settings className="w-3.5 h-3.5 text-blue-400" />
-            <span>SYSTEM HUB & API ORCHESTRATION</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/90 text-emerald-800 text-[11px] font-bold tracking-wide mb-2.5 shadow-2xs">
+            <Settings className="w-3.5 h-3.5 text-emerald-600" />
+            <span>SYSTEM HUB &amp; API ORCHESTRATION</span>
           </div>
-          <h2 className="text-2xl font-extrabold text-[#17181A] tracking-tight">การตั้งค่าและศูนย์ควบคุม API (Settings & Usage)</h2>
-          <p className="text-xs text-slate-700 mt-1">
-            เลือกโมเดล Gemini Pro / Flash, ตรวจสอบปริมาณการใช้งาน API Usage, ดูคำแนะนำการเชื่อมต่อ และจัดการ Credentials
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            การตั้งค่าและศูนย์ควบคุม API (Settings &amp; Usage)
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 mt-1">
+            เลือกโมเดล AI หลัก, ตรวจสอบปริมาณการใช้งานจริง, รีเซ็ตสถิติ และจัดการ API Keys
           </p>
         </div>
 
         {notification && (
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-950/80 border border-emerald-700 text-emerald-300 text-xs shadow-lg animate-fade-in">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-semibold shadow-lg animate-fade-in">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>{notification}</span>
           </div>
         )}
       </div>
 
-      {/* TABS NAVIGATION */}
-      <div className="flex border-b border-[#E8E9EC] gap-2">
+      {/* TABS NAVIGATION (Dimensional Segmented Control) */}
+      <div className="inline-flex flex-wrap w-full sm:w-auto p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/90 gap-1.5 shadow-inner">
         <button
+          type="button"
           onClick={() => setActiveTab("CONFIG")}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all flex items-center gap-2 border-b-2 ${
+          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === "CONFIG"
-              ? "bg-[#17181A] border-[#17181A] text-white font-bold"
-              : "border-transparent text-slate-700 hover:text-slate-950"
+              ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <Key className="w-4 h-4 text-blue-400" />
-          <span>การตั้งค่าโมเดล & API (API Config)</span>
+          <Key className={`w-4 h-4 ${activeTab === "CONFIG" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span>การตั้งค่าโมเดล &amp; API</span>
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab("USAGE")}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all flex items-center gap-2 border-b-2 ${
+          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === "USAGE"
-              ? "bg-[#17181A] border-[#17181A] text-white font-bold"
-              : "border-transparent text-slate-700 hover:text-slate-950"
+              ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <Activity className="w-4 h-4 text-cyan-400" />
-          <span>ปริมาณการใช้งาน (API Usage & Quota)</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-cyan-950 border border-cyan-800 text-[10px] text-cyan-300">
+          <Activity className={`w-4 h-4 ${activeTab === "USAGE" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span>ปริมาณการใช้งาน &amp; โควตา</span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+            activeTab === "USAGE"
+              ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+              : "bg-slate-200/80 text-slate-700"
+          }`}>
             {usageStats.totalCalls} ครั้ง
           </span>
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab("GUIDE")}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all flex items-center gap-2 border-b-2 ${
+          className={`flex-1 sm:flex-initial px-4 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === "GUIDE"
-              ? "bg-[#17181A] border-[#17181A] text-white font-bold"
-              : "border-transparent text-slate-700 hover:text-slate-950"
+              ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/50 border border-transparent"
           }`}
         >
-          <BookOpen className="w-4 h-4 text-purple-400" />
-          <span>คู่มือเชื่อมต่อ & คำแนะนำโมเดล (Guide)</span>
+          <BookOpen className={`w-4 h-4 ${activeTab === "GUIDE" ? "text-emerald-600" : "text-slate-400"}`} />
+          <span>คู่มือเชื่อมต่อ &amp; โมเดล</span>
         </button>
       </div>
 
@@ -1145,156 +1186,235 @@ export default function SettingsPage() {
       {/* TAB 2: API USAGE & QUOTA MONITOR */}
       {activeTab === "USAGE" && (
         <div className="space-y-6 animate-fade-in">
-          {/* STATS CARDS */}
+          {/* Action Toolbar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200/90 rounded-2xl px-5 py-3.5 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.05)]">
+            <div className="text-xs text-slate-600">
+              <strong className="text-slate-900">สถิติการใช้งานจริงในระบบ (Local Usage Log)</strong> — นับเฉพาะคำสั่ง AI ที่ถูกเรียกใช้งานจากหน้าเว็บนี้
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={fetchSettings}
+                className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>รีเฟรช</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleResetUsage}
+                disabled={resettingUsage || usageStats.totalCalls === 0}
+                className="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 disabled:opacity-40 border border-rose-200 text-rose-700 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{resettingUsage ? "กำลังรีเซ็ต..." : "รีเซ็ตค่าเป็น 0"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* STATS CARDS (Dimensional High-Contrast Cards) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E9EC] shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-slate-700 text-xs">
-                <span>จำนวนครั้งที่เรียกใช้ (Total Requests)</span>
-                <Cpu className="w-4 h-4 text-blue-400" />
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.08)] hover:shadow-[0_8px_20px_-6px_rgba(15,23,42,0.12)] transition-all space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-500">จำนวนครั้งที่เรียกใช้</span>
+                <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center">
+                  <Cpu className="w-4 h-4" />
+                </div>
               </div>
-              <div className="text-2xl font-extrabold text-[#17181A] tracking-tight">
-                {usageStats.totalCalls} <span className="text-xs font-normal text-slate-700">ครั้ง</span>
+              <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                {usageStats.totalCalls.toLocaleString()}{" "}
+                <span className="text-xs font-semibold text-slate-500">ครั้ง</span>
               </div>
-              <div className="text-[11px] text-slate-700 pt-1 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>สำเร็จ 100% (No Critical Failures)</span>
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E9EC] shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-slate-700 text-xs">
-                <span>โทเคนสะสม (Total Tokens)</span>
-                <BarChart3 className="w-4 h-4 text-cyan-400" />
-              </div>
-              <div className="text-2xl font-extrabold text-[#17181A] tracking-tight">
-                {usageStats.totalTokens.toLocaleString()} <span className="text-xs font-normal text-slate-700">Tokens</span>
-              </div>
-              <div className="text-[11px] text-slate-700 pt-1">
-                Prompt: {usageStats.promptTokens.toLocaleString()} | Output: {usageStats.completionTokens.toLocaleString()}
+              <div className="text-[11px] font-semibold text-emerald-700 flex items-center gap-1.5 pt-0.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>
+                  {usageStats.totalCalls === 0
+                    ? "เริ่มต้นใหม่พร้อมใช้งาน"
+                    : `สำเร็จ ${usageStats.successRate}% (${usageStats.successCalls}/${usageStats.totalCalls})`}
+                </span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E9EC] shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-slate-700 text-xs">
-                <span>ความเร็วเฉลี่ย (Avg Latency)</span>
-                <Clock className="w-4 h-4 text-amber-400" />
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.08)] hover:shadow-[0_8px_20px_-6px_rgba(15,23,42,0.12)] transition-all space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-500">โทเคนสะสม (Tokens)</span>
+                <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4" />
+                </div>
               </div>
-              <div className="text-2xl font-extrabold text-[#17181A] tracking-tight">
-                {usageStats.avgLatency} <span className="text-xs font-normal text-slate-700">ms</span>
+              <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                {usageStats.totalTokens.toLocaleString()}
               </div>
-              <div className="text-[11px] text-emerald-400 pt-1 flex items-center gap-1">
-                <Zap className="w-3 h-3" /> ตอบสนองรวดเร็วมาก
+              <div className="text-[11px] text-slate-500 font-medium pt-0.5">
+                ส่งเข้า: <strong className="text-slate-700">{usageStats.promptTokens.toLocaleString()}</strong> · ตอบกลับ:{" "}
+                <strong className="text-slate-700">{usageStats.completionTokens.toLocaleString()}</strong>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E9EC] shadow-xl space-y-1">
-              <div className="flex items-center justify-between text-slate-700 text-xs">
-                <span>ค่าใช้จ่ายโดยประมาณ (Est. Cost)</span>
-                <DollarSign className="w-4 h-4 text-emerald-400" />
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.08)] hover:shadow-[0_8px_20px_-6px_rgba(15,23,42,0.12)] transition-all space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-500">ความเร็วเฉลี่ย (Latency)</span>
+                <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center">
+                  <Clock className="w-4 h-4" />
+                </div>
               </div>
-              <div className="text-2xl font-bold text-emerald-400 tracking-tight">
-                $0.00 <span className="text-xs font-normal text-slate-700">USD</span>
+              <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                {usageStats.avgLatency >= 1000
+                  ? `${(usageStats.avgLatency / 1000).toFixed(1)}`
+                  : usageStats.avgLatency}{" "}
+                <span className="text-xs font-semibold text-slate-500">
+                  {usageStats.avgLatency >= 1000 ? "วินาที" : "ms"}
+                </span>
               </div>
-              <div className="text-[11px] text-slate-700 pt-1">
-                ครอบคลุมโดย Google AI Studio Free Quota
+              <div
+                className={`text-[11px] font-semibold pt-0.5 flex items-center gap-1 ${
+                  usageStats.totalCalls === 0
+                    ? "text-slate-500"
+                    : usageStats.avgLatency <= 3500
+                    ? "text-emerald-700"
+                    : usageStats.avgLatency <= 8000
+                    ? "text-blue-700"
+                    : "text-amber-700"
+                }`}
+              >
+                <Zap className="w-3.5 h-3.5" />
+                <span>
+                  {usageStats.totalCalls === 0
+                    ? "ยังไม่มีข้อมูลความเร็ว"
+                    : usageStats.avgLatency <= 3500
+                    ? "ตอบสนองรวดเร็วมาก"
+                    : usageStats.avgLatency <= 8000
+                    ? "ความเร็วปกติ (โหมดคิดละเอียด)"
+                    : "ใช้เวลารอโมเดล/สลับตัวสำรอง"}
+                </span>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.08)] hover:shadow-[0_8px_20px_-6px_rgba(15,23,42,0.12)] transition-all space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-500">ค่าใช้จ่ายประมาณการ</span>
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center">
+                  <DollarSign className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="text-3xl font-extrabold text-emerald-600 tracking-tight">
+                ${usageStats.totalCostUsd.toFixed(4)}{" "}
+                <span className="text-xs font-semibold text-slate-500">USD</span>
+              </div>
+              <div className="text-[11px] text-slate-500 font-medium pt-0.5">
+                คำนวณเบื้องต้น (ไม่รวม Free Quota)
               </div>
             </div>
           </div>
 
-          {/* QUOTA LIMITS CARD */}
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border border-[#E8E9EC] space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[#17181A] flex items-center gap-2">
-                <Shield className="w-4 h-4 text-blue-400" />
-                <span>อัตราโควตาความปลอดภัย (Google AI Studio Rate Limits)</span>
-              </h3>
-              <button
-                onClick={fetchSettings}
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold"
-              >
-                <RefreshCw className="w-3 h-3" />
-                <span>รีเฟรชข้อมูล</span>
-              </button>
+          {/* QUOTA LIMITS REFERENCE CARD (High-Contrast Dimensional Slate Navy) */}
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-700/80 shadow-xl space-y-4 text-white">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 className="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-emerald-400" />
+                  <span>เพดานโควตาฟรีมาตรฐาน (Google AI Studio Reference Limits)</span>
+                </h3>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  ค่ามาตรฐานอ้างอิงสำหรับโมเดล Gemini Flash ฟรี (ไม่ใช่ยอดคงเหลือเรียลไทม์จากบัญชี Google)
+                </p>
+              </div>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 self-start sm:self-center">
+                Reference Spec
+              </span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-              <div className="p-3 rounded-xl bg-slate-950/60 border border-[#E8E9EC]">
-                <div className="text-slate-700 mb-1">Requests Per Minute (RPM)</div>
-                <div className="text-base font-bold text-[#17181A]">15 RPM <span className="text-[11px] font-normal text-emerald-400">(ฟรี)</span></div>
-                <div className="text-[10px] text-slate-500 mt-1">อัตราการส่งคำขอต่อ 1 นาทีสำหรับโมเดล Flash</div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/10 shadow-inner space-y-1">
+                <div className="text-slate-300 font-medium">Requests Per Minute (RPM)</div>
+                <div className="text-xl font-extrabold text-white tracking-tight">
+                  15 RPM <span className="text-xs font-bold text-emerald-400">(ฟรี)</span>
+                </div>
+                <div className="text-[11px] text-slate-400 leading-relaxed pt-0.5">
+                  สั่งงานได้สูงสุด ~15 ครั้งต่อ 1 นาทีสำหรับโมเดลตระกูล Flash
+                </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950/60 border border-[#E8E9EC]">
-                <div className="text-slate-700 mb-1">Requests Per Day (RPD)</div>
-                <div className="text-base font-bold text-[#17181A]">1,500 RPD <span className="text-[11px] font-normal text-emerald-400">(ฟรี)</span></div>
-                <div className="text-[10px] text-slate-500 mt-1">ส่งได้สูงสุดถึง 1,500 ครั้งต่อวันโดยไม่มีค่าใช้จ่าย</div>
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/10 shadow-inner space-y-1">
+                <div className="text-slate-300 font-medium">Requests Per Day (RPD)</div>
+                <div className="text-xl font-extrabold text-white tracking-tight">
+                  1,500 RPD <span className="text-xs font-bold text-emerald-400">(ฟรี)</span>
+                </div>
+                <div className="text-[11px] text-slate-400 leading-relaxed pt-0.5">
+                  สร้างคอนเทนต์ได้สูงสุด ~1,500 ครั้งต่อวันโดยไม่มีค่าใช้จ่าย
+                </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950/60 border border-[#E8E9EC]">
-                <div className="text-slate-700 mb-1">Tokens Per Minute (TPM)</div>
-                <div className="text-base font-bold text-[#17181A]">1,000,000 TPM</div>
-                <div className="text-[10px] text-slate-500 mt-1">รองรับเอกสารหรือโจทย์ขนาดยาวระดับ 1 ล้านตัวอักษร</div>
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/10 shadow-inner space-y-1">
+                <div className="text-slate-300 font-medium">Tokens Per Minute (TPM)</div>
+                <div className="text-xl font-extrabold text-white tracking-tight">
+                  1,000,000 <span className="text-xs font-bold text-sky-400">TPM</span>
+                </div>
+                <div className="text-[11px] text-slate-400 leading-relaxed pt-0.5">
+                  รองรับบรีฟและเอกสารขนาดยาวระดับ 1 ล้านโทเคนต่อนาที
+                </div>
               </div>
             </div>
           </div>
 
           {/* GENERATION HISTORY LOGS */}
-          <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#E8E9EC] pb-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#17181A]">
-                <Activity className="w-4 h-4 text-cyan-400" />
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-slate-900">
+                <Activity className="w-4 h-4 text-emerald-600" />
                 <span>ประวัติการเรียกใช้ AI ล่าสุด (Recent AI Generation Logs)</span>
               </div>
-              <span className="text-xs text-slate-700 font-mono">
+              <span className="text-xs text-slate-500 font-mono font-semibold">
                 {aiGenerations.length} รายการ
               </span>
             </div>
 
             {aiGenerations.length === 0 ? (
-              <div className="text-center py-10 text-slate-500 text-xs">
-                ยังไม่มีประวัติการเรียกใช้ AI ในระบบ
+              <div className="text-center py-10 text-slate-500 text-xs bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                ยังไม่มีประวัติการเรียกใช้ AI — เมื่อคุณสั่งคิดคอนเทนต์ ระบบจะเริ่มเก็บสถิติจริงที่นี่
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E8E9EC] text-slate-700 font-semibold">
-                      <th className="pb-2">เวลา</th>
-                      <th className="pb-2">เวิร์กโฟลว์ (Workflow)</th>
-                      <th className="pb-2">โมเดลที่ทำงาน (Model)</th>
-                      <th className="pb-2">Tokens</th>
-                      <th className="pb-2">เวลาตอบสนอง</th>
-                      <th className="pb-2 text-right">สถานะ</th>
+                    <tr className="border-b border-slate-200 text-slate-500 font-bold">
+                      <th className="pb-2.5">เวลา</th>
+                      <th className="pb-2.5">เวิร์กโฟลว์ (Workflow)</th>
+                      <th className="pb-2.5">โมเดลที่ทำงาน</th>
+                      <th className="pb-2.5">Tokens</th>
+                      <th className="pb-2.5">เวลาตอบสนอง</th>
+                      <th className="pb-2.5 text-right">สถานะ</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 font-mono">
-                    {aiGenerations.slice().reverse().slice(0, 15).map((log) => (
-                      <tr key={log.id} className="hover:bg-[#F7F8FA]/50 transition-colors">
-                        <td className="py-2.5 text-slate-700 text-[11px]">
+                  <tbody className="divide-y divide-slate-100 font-mono">
+                    {aiGenerations.slice(0, 15).map((log) => (
+                      <tr key={log.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="py-2.5 text-slate-500 text-[11px]">
                           {log.timestamp ? log.timestamp.split("T")[1]?.slice(0, 8) : "-"}
                         </td>
-                        <td className="py-2.5 text-[#17181A] font-sans font-medium">
+                        <td className="py-2.5 text-slate-900 font-sans font-semibold">
                           {log.workflow || "General Request"}
                         </td>
                         <td className="py-2.5">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${
                             log.model?.includes("pro")
-                              ? "bg-purple-950/80 text-purple-300 border border-purple-800"
-                              : "bg-blue-950/80 text-blue-300 border border-blue-800"
+                              ? "bg-purple-50 text-purple-800 border-purple-200"
+                              : "bg-blue-50 text-blue-800 border-blue-200"
                           }`}>
                             {log.model}
                           </span>
                         </td>
-                        <td className="py-2.5 text-slate-800">
+                        <td className="py-2.5 text-slate-700">
                           {log.total_tokens?.toLocaleString() || 0}
                         </td>
-                        <td className="py-2.5 text-slate-800">
-                          {log.latency_ms} ms
+                        <td className="py-2.5 text-slate-700">
+                          {log.latency_ms >= 1000 ? `${(log.latency_ms / 1000).toFixed(1)}s` : `${log.latency_ms}ms`}
                         </td>
                         <td className="py-2.5 text-right">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-semibold ${
+                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-sans font-bold border ${
                             log.status === "SUCCESS"
-                              ? "bg-emerald-950/70 text-emerald-400 border border-emerald-800"
-                              : "bg-rose-950/70 text-rose-400 border border-rose-800"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                              : "bg-rose-50 text-rose-700 border-rose-200"
                           }`}>
                             {log.status === "SUCCESS" ? "✓ สำเร็จ" : "✕ ผิดพลาด"}
                           </span>
@@ -1324,32 +1444,32 @@ export default function SettingsPage() {
                 API Key 1 ดอกของ Google AI Studio สามารถใช้งานโมเดล AI ของ Google ได้ทุกตัวในบัญชีของคุณ:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                <div className="p-3.5 rounded-xl bg-[#F7F8FA] border border-[#E8E9EC] space-y-1.5">
-                  <div className="font-bold text-cyan-300 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs">1</span>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <div className="font-bold text-slate-900 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 font-extrabold flex items-center justify-center text-xs">1</span>
                     <span>รับ API Key ฟรี</span>
                   </div>
-                  <p className="text-[11px] text-slate-700">
-                    เปิดเว็บ <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer" className="text-blue-400 underline">aistudio.google.com/apikey</a> ล็อกอินด้วยบัญชี Google แล้วคลิก <strong>&quot;Create API Key&quot;</strong>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    เปิดเว็บ <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer" className="text-emerald-700 font-semibold underline">aistudio.google.com/apikey</a> ล็อกอินด้วยบัญชี Google แล้วคลิก <strong>&quot;Create API Key&quot;</strong>
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#F7F8FA] border border-[#E8E9EC] space-y-1.5">
-                  <div className="font-bold text-blue-300 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">2</span>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <div className="font-bold text-slate-900 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 font-extrabold flex items-center justify-center text-xs">2</span>
                     <span>นำมากรอกในระบบ</span>
                   </div>
-                  <p className="text-[11px] text-slate-700">
-                    คัดลอกคีย์ที่ขึ้นต้นด้วย <code className="text-cyan-400">AQ....</code> หรือ <code className="text-blue-400">AIzaSy...</code> นำมาวางในช่อง <strong>Google Gemini API Key</strong> ด้านบน แล้วกด &quot;ทดสอบ API&quot;
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    คัดลอกคีย์ที่ขึ้นต้นด้วย <code className="text-emerald-700 font-semibold">AQ....</code> หรือ <code className="text-blue-700 font-semibold">AIzaSy...</code> นำมาวางในช่อง <strong>Google Gemini API Key</strong> แล้วกด &quot;ทดสอบ API&quot;
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#F7F8FA] border border-[#E8E9EC] space-y-1.5">
-                  <div className="font-bold text-purple-300 flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">3</span>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <div className="font-bold text-slate-900 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-800 font-extrabold flex items-center justify-center text-xs">3</span>
                     <span>วิธีปลดล็อก Pro ไม่จำกัด</span>
                   </div>
-                  <p className="text-[11px] text-slate-700">
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
                     โมเดล Pro ใน Google AI Studio ต้องการการผูกบัตร (Pay-as-you-go) ใน Google Cloud เพื่อปลดล็อก Quota (หากยังไม่ได้ผูก ระบบจะใช้ Flash ทำงานให้แทนอย่างราบรื่น)
                   </p>
                 </div>
@@ -1422,24 +1542,26 @@ export default function SettingsPage() {
       )}
 
       {/* FOOTER AUDIT LOGS SUMMARY */}
-      <div className="bg-white border border-[#E8E9EC] rounded-2xl p-6 shadow-xl space-y-4">
-        <div className="flex items-center gap-2 text-sm font-bold text-[#17181A] border-b border-[#E8E9EC] pb-3">
-          <History className="w-4 h-4 text-slate-700" />
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-[0_4px_14px_-4px_rgba(15,23,42,0.06)] space-y-4">
+        <div className="flex items-center gap-2 text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3">
+          <History className="w-4 h-4 text-slate-600" />
           <span>บันทึกความปลอดภัยและการเปลี่ยนแปลงล่าสุด (System Audit Logs)</span>
         </div>
 
         <div className="space-y-2 text-xs">
           {auditLogs.slice(0, 5).map((log) => (
-            <div key={log.id} className="p-3 rounded-xl bg-[#F7F8FA] border border-[#E8E9EC] flex items-start justify-between gap-4">
+            <div key={log.id} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-cyan-400 font-bold">{log.action}</span>
-                  <span className="text-[10px] text-slate-700 bg-slate-800 px-1.5 py-0.5 rounded">{log.entity_type}</span>
+                  <span className="font-mono text-emerald-700 font-bold">{log.action}</span>
+                  <span className="text-[10px] font-semibold text-slate-700 bg-white border border-slate-200 px-2 py-0.5 rounded-md">
+                    {log.entity_type}
+                  </span>
                 </div>
-                <div className="mt-1 text-slate-800">{log.details}</div>
+                <div className="mt-1 text-slate-700">{log.details}</div>
               </div>
-              <div className="text-right flex-shrink-0 text-[11px] text-slate-700 font-mono">
-                <div>{log.actor}</div>
+              <div className="text-right flex-shrink-0 text-[11px] text-slate-500 font-mono">
+                <div className="font-semibold text-slate-700">{log.actor}</div>
                 <div>{log.timestamp ? log.timestamp.split("T")[1]?.slice(0, 8) : ""}</div>
               </div>
             </div>

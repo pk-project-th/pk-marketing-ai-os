@@ -145,6 +145,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, status });
     }
 
+    // Action: Reset AI Usage Statistics
+    if (body.action === "RESET_USAGE") {
+      db.resetAIGenerations();
+      db.logAudit("RESET_USAGE", "SETTINGS", "system", "รีเซ็ตประวัติและสถิติการใช้งาน AI API ทั้งหมดเป็น 0");
+      return NextResponse.json({
+        success: true,
+        message: "รีเซ็ตสถิติการใช้งาน AI API เรียบร้อยแล้ว"
+      });
+    }
+
     // Standard settings update
     const sanitizedUpdates = { ...body };
 
