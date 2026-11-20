@@ -44,7 +44,21 @@ interface SceneItem {
   popup_badge?: string;
   subtitle_line?: string;
   scene_role?: string;
+  act_badge?: string;
+  camera_badge?: string;
+  thai_story_beats?: string;
+  sound_fx?: string;
   flow_prompt: string;
+}
+
+interface FilmBible {
+  genre: string;
+  logline: string;
+  visual_style: string;
+  subject_identity_lock: string;
+  acts_overview: string[];
+  characters: Array<{ name: string; role: string; appearance_thai: string; character_sheet_prompt: string }>;
+  locations: Array<{ name: string; mood: string; location_ref_prompt: string }>;
 }
 
 interface ShotItem {
@@ -78,8 +92,10 @@ interface ResearchBrief {
 
 interface EasyBlueprint {
   title: string;
+  content_mode?: "SOCIAL" | "SHORT_FILM";
   location_and_facts_summary?: string;
   content_goal_label?: string;
+  film_bible?: FilmBible;
   text_overlay_pack?: Array<{ scene_number: number; time_range: string; popup_badge: string; on_screen_text: string; subtitle_line: string }>;
   hook_3sec?: string;
   viral_meme_angle?: string;
@@ -144,6 +160,16 @@ const QUICK_EXAMPLES = [
   "แมวอ้วนใส่สูทบ่นเรื่องงานวันจันทร์ แบบมีมฮาๆ"
 ];
 
+const SHORT_FILM_EXAMPLES = [
+  "หนังสั้นดราม่าพ่อลูกในร้านก๋วยเตี๋ยวโบราณ หักมุมซึ้งๆ",
+  "หนังสั้นโรแมนติกพบกันโดยบังเอิญที่วัดร่องขุ่น เชียงราย",
+  "หนังสั้นระทึกขวัญในคอนโดร้าง หักมุมตอนจบ",
+  "หนังสั้นไซไฟกรุงเทพปี 2099 ชายหนุ่มตามหาความทรงจำ"
+];
+
+const PKFLOW_PRO_FILM_URL =
+  "https://flow.google.com/project/06056731-4488-47e7-b13d-72c2792c4def/tool/1612491d-a170-4e9d-884d-93194cad1c4f?fromViewSource=tools";
+
 const VOICE_OPTIONS = [
   { id: "ErXwobaYiN019PkySvjV", label: "🎙️ Antoni — ผู้บรรยายพรีเมียม" },
   { id: "21m00Tcm4TlvDq8ikWAM", label: "👩 Rachel — หญิงสดใส เป็นมิตร" },
@@ -181,6 +207,7 @@ function EasyContentWorkspace() {
   const [loadingTrends, setLoadingTrends] = useState(false);
   const [brainstorming, setBrainstorming] = useState(false);
   const [sceneCount, setSceneCount] = useState<string>("AUTO");
+  const [contentMode, setContentMode] = useState<"SOCIAL" | "SHORT_FILM">("SOCIAL");
   const [angles, setAngles] = useState<AngleIdea[]>([]);
   const [researchBrief, setResearchBrief] = useState<ResearchBrief | null>(null);
   const [activeAngleId, setActiveAngleId] = useState<string | null>(null);
@@ -315,7 +342,7 @@ function EasyContentWorkspace() {
       const res = await fetch("/api/ai/easy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "BRAINSTORM", prompt: targetPrompt, aspectRatio })
+        body: JSON.stringify({ action: "BRAINSTORM", prompt: targetPrompt, aspectRatio, contentMode })
       });
       const data = await res.json();
       if (data.success && Array.isArray(data.angles)) {
@@ -357,7 +384,8 @@ function EasyContentWorkspace() {
           aspectRatio,
           includeTrends,
           sceneCount,
-          contentGoal: angle?.goal || "COMMERCIAL",
+          contentMode,
+          contentGoal: angle?.goal || (contentMode === "SHORT_FILM" ? "FILM_DRAMA" : "COMMERCIAL"),
           selectedAngle: angle || undefined,
           researchBrief: researchBrief || undefined
         })
@@ -526,10 +554,12 @@ function EasyContentWorkspace() {
   const buildFlowToolProjectJSON = () => {
     if (!blueprint?.video_blueprint?.scenes?.length) return "";
     const scenes = blueprint.video_blueprint.scenes;
+    const isFilm = blueprint.content_mode === "SHORT_FILM" || contentMode === "SHORT_FILM" || !!blueprint.film_bible;
     const payload = {
-      version: "4.0-LongMai-Studio",
+      version: "5.1-PKFLOW-PRO-FILM",
       exportedAt: new Date().toISOString(),
       source: "PK-Marketing-AI-OS",
+      projectType: isFilm ? "SHORT_FILM" : "COMMERCIAL_SOCIAL",
       isCustomOSProject: true,
       aspectRatio,
       project: {
@@ -540,14 +570,15 @@ function EasyContentWorkspace() {
         sceneCount: scenes.length,
         doneCount: 0
       },
+      filmBible: blueprint.film_bible || undefined,
       lyrics: scenes
-        .map((s) => `[Scene ${s.scene_number}] ${s.voiceover_text || s.on_screen_text || s.what_to_shoot}`)
+        .map((s) => `[Scene ${s.scene_number}${s.act_badge ? ` | ${s.act_badge}` : ""}] ${s.voiceover_text || s.on_screen_text || s.what_to_shoot}`)
         .join("\n"),
-      style: "Cinematic",
-      targetDuration: "⚡ Dynamic Pacing",
+      style: blueprint.film_bible?.visual_style || "Cinematic",
+      targetDuration: isFilm ? "🎬 Cinematic Film Pacing" : "⚡ Dynamic Pacing",
       subtitleMode: "none",
       performanceMode: "acting",
-      cameraMode: "dynamic_mv",
+      cameraMode: isFilm ? "smooth_pov" : "dynamic_mv",
       firstFrameChain: true,
       scenes: scenes.map((s) => ({
         id: `scene_${s.scene_number}_${Date.now()}`,
@@ -555,12 +586,13 @@ function EasyContentWorkspace() {
         popupBadge: s.popup_badge || "",
         onScreenText: s.on_screen_text || "",
         subtitleLine: s.subtitle_line || "",
+        soundFx: s.sound_fx || "",
         prompt: s.flow_prompt,
-        duration: s.duration_sec || 6,
-        pacingLabel: `⏱️ ${s.duration_sec || 6}s`,
-        actBadge: `🎬 ฉากที่ ${s.scene_number}`,
-        cameraBadge: `🎥 ${s.camera_angle}`,
-        thaiStory: `${s.what_to_shoot} (${s.continuity_note})`,
+        duration: s.duration_sec || 5,
+        pacingLabel: `⏱️ ${s.duration_sec || 5}s`,
+        actBadge: s.act_badge || `🎬 ฉากที่ ${s.scene_number}`,
+        cameraBadge: s.camera_badge || `🎥 ${s.camera_angle}`,
+        thaiStory: s.thai_story_beats || `${s.what_to_shoot} (${s.continuity_note})`,
         status: "idle",
         retryAttempt: 0,
         variationIndex: 0
@@ -725,6 +757,42 @@ function EasyContentWorkspace() {
           </div>
         )}
 
+        {/* Mode Switcher: Social/Commercial vs Short Film (PKFLOW PRO FILM) */}
+        <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80">
+          <button
+            type="button"
+            onClick={() => {
+              setContentMode("SOCIAL");
+              setAspectRatio("9:16");
+              setAngles([]);
+              setResearchBrief(null);
+            }}
+            className={`min-h-[44px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              contentMode === "SOCIAL"
+                ? "bg-slate-900 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <span>⚡ คอนเทนต์โซเชียล / ขายของ</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setContentMode("SHORT_FILM");
+              setAspectRatio("16:9");
+              setAngles([]);
+              setResearchBrief(null);
+            }}
+            className={`min-h-[44px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              contentMode === "SHORT_FILM"
+                ? "bg-indigo-600 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <span>🎬 หนังสั้น (PKFLOW PRO FILM)</span>
+          </button>
+        </div>
+
         {/* Main Prompt Input */}
         <div className="space-y-3">
           <div className="flex flex-col sm:flex-row gap-2.5">
@@ -735,7 +803,7 @@ function EasyContentWorkspace() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !loading && !brainstorming) handleBrainstorm();
               }}
-              placeholder="พิมพ์สิ่งที่อยากทำเป็นภาษาคน เช่น: ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย..."
+              placeholder={contentMode === "SHORT_FILM" ? "พิมพ์ไอเดียหนังสั้น เช่น: หนังสั้นดราม่าพ่อลูกในร้านก๋วยเตี๋ยว หักมุมซึ้งๆ..." : "พิมพ์สิ่งที่อยากทำเป็นภาษาคน เช่น: ช่วยคิดคอนเทนต์ไปวัดร่องขุ่น เชียงราย..."}
               className="flex-1 px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-3 focus:ring-emerald-500/10 transition-all"
             />
             <button
@@ -860,7 +928,7 @@ function EasyContentWorkspace() {
           {/* Quick Examples */}
           <div className="flex flex-wrap items-center gap-1.5 pt-1">
             <span className="text-[11px] text-slate-400 font-medium">ลองกด:</span>
-            {QUICK_EXAMPLES.map((ex, i) => (
+            {(contentMode === "SHORT_FILM" ? SHORT_FILM_EXAMPLES : QUICK_EXAMPLES).map((ex, i) => (
               <button
                 key={i}
                 type="button"
@@ -1029,8 +1097,19 @@ function EasyContentWorkspace() {
                       className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
                       {copiedKey === "FLOW_JSON" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-emerald-400" />}
-                      <span>Copy ส่งเข้า Flow Tool</span>
+                      <span>{blueprint.film_bible || contentMode === "SHORT_FILM" ? "🎬 Copy ส่งเข้า PKFLOW PRO FILM" : "Copy ส่งเข้า Flow Tool"}</span>
                     </button>
+
+                    {(blueprint.film_bible || contentMode === "SHORT_FILM") && (
+                      <a
+                        href={PKFLOW_PRO_FILM_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors"
+                      >
+                        <span>เปิด PKFLOW PRO FILM ↗</span>
+                      </a>
+                    )}
 
                     <button
                       type="button"
@@ -1069,6 +1148,83 @@ function EasyContentWorkspace() {
 
             {(blueprint.hook_3sec || blueprint.viral_meme_angle) && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {blueprint.film_bible && (
+                  <div className="rounded-2xl bg-indigo-50/70 border border-indigo-200 p-4 sm:p-5 space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-indigo-600 text-white text-[11px] font-bold mb-1">
+                          🎬 คัมภีร์หนังสั้นสำหรับ PKFLOW PRO FILM Studio
+                        </span>
+                        <div className="text-sm font-extrabold text-slate-900">
+                          {blueprint.film_bible.genre} • {blueprint.film_bible.visual_style}
+                        </div>
+                      </div>
+                    </div>
+                    {blueprint.film_bible.logline && (
+                      <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                        <b>Logline:</b> {blueprint.film_bible.logline}
+                      </p>
+                    )}
+                    {blueprint.film_bible.acts_overview?.length > 0 && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        {blueprint.film_bible.acts_overview.map((act, i) => (
+                          <div key={i} className="rounded-xl bg-white border border-indigo-100 p-3 text-xs text-slate-700 leading-relaxed">
+                            {act}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {blueprint.film_bible.characters?.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="text-xs font-bold text-indigo-900">🎭 ตัวละครหลัก (ก๊อป Prompt ไปเจนรูป Character Sheet ใน PKFLOW PRO FILM)</div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                          {blueprint.film_bible.characters.map((ch, i) => (
+                            <div key={i} className="rounded-xl bg-white border border-indigo-100 p-3 space-y-1.5">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="text-xs font-extrabold text-slate-900">{ch.name} ({ch.role})</span>
+                                {ch.character_sheet_prompt && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopy(ch.character_sheet_prompt, `CHAR_${i}`, `ก๊อป Prompt ตัวละคร ${ch.name} แล้ว!`)}
+                                    className="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold cursor-pointer shrink-0"
+                                  >
+                                    {copiedKey === `CHAR_${i}` ? "✓ ก๊อปแล้ว" : "Copy Prompt ตัวละคร"}
+                                  </button>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-slate-600">{ch.appearance_thai}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {blueprint.film_bible.locations?.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="text-xs font-bold text-indigo-900">📍 โลเคชันหลัก (ก๊อป Prompt ไปใส่ช่อง Scene Reference)</div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                          {blueprint.film_bible.locations.map((loc, i) => (
+                            <div key={i} className="rounded-xl bg-white border border-indigo-100 p-3 space-y-1.5">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="text-xs font-extrabold text-slate-900">{loc.name}</span>
+                                {loc.location_ref_prompt && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopy(loc.location_ref_prompt, `LOC_${i}`, `ก๊อป Prompt โลเคชัน ${loc.name} แล้ว!`)}
+                                    className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold cursor-pointer shrink-0"
+                                  >
+                                    {copiedKey === `LOC_${i}` ? "✓ ก๊อปแล้ว" : "Copy Prompt ฉากหลัก"}
+                                  </button>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-slate-600">{loc.mood}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {blueprint.hook_3sec && (
                   <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 space-y-1">
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
@@ -1206,8 +1362,14 @@ function EasyContentWorkspace() {
                             </span>
                           )}
 
+                          {scene.act_badge && (
+                            <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 text-[11px] font-bold">{scene.act_badge}</span>
+                          )}
                           {scene.popup_badge && (
                             <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-bold">{scene.popup_badge}</span>
+                          )}
+                          {scene.sound_fx && (
+                            <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">🔊 {scene.sound_fx}</span>
                           )}
                           {scene.on_screen_text && (
                             <span className="text-xs font-semibold text-slate-700">

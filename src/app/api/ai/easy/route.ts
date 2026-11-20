@@ -29,8 +29,12 @@ export async function POST(req: Request) {
       platform = "TikTok / Reels / YouTube Shorts",
       selectedAngle,
       researchBrief,
-      sceneCount = "AUTO"
+      sceneCount = "AUTO",
+      contentMode = "SOCIAL", // "SOCIAL" | "SHORT_FILM"
+      filmGenre = "AUTO"
     } = body;
+
+    const isShortFilm = contentMode === "SHORT_FILM";
 
     const currentDateThai = new Date().toLocaleDateString("th-TH", {
       year: "numeric",
@@ -111,7 +115,52 @@ export async function POST(req: Request) {
 
       const research: WebResearchResult = await researchTopicOnline(prompt.trim());
 
-      const brainstormSystem = `คุณคือ "Creative Director & นักกลยุทธ์คอนเทนต์โซเชียลไทยระดับมืออาชีพ" (TikTok / Instagram Reels / YouTube Shorts)
+      const brainstormSystem = isShortFilm
+        ? `คุณคือ "ผู้กำกับหนังสั้นและนักเขียนบทภาพยนตร์ไทยระดับมืออาชีพ" สำหรับระบบ PKFLOW PRO FILM Studio (Google Flow)
+วันนี้คือวันที่ ${currentDateThai}
+
+หน้าที่ของคุณ:
+1. วิเคราะห์โจทย์/สถานที่/ธีมของผู้ใช้ (ใช้ข้อมูลจริงที่ค้นมาประกอบให้สมจริงที่สุด)
+2. สรุป "ข้อมูลตั้งต้นก่อนสร้างหนังสั้น" (โลกของเรื่อง/โลเคชันจริง, ธีมและจุดน่าสนใจ, ข้อควรคุมโทน, และช็อตภาพยนตร์ที่ควรมี)
+3. เสนอ **5 พล็อตหนังสั้น (Short Film Treatments) ที่แตกต่างกันชัดเจน** พร้อมโครงสร้าง 3 องก์ (ปูเรื่อง -> ไคลแมกซ์ -> บทสรุป/หักมุม) ที่สามารถสร้างด้วย AI ใน PKFLOW PRO FILM Studio ได้สวยเหมือนหนังโรงจริง ได้แก่:
+   - แนวที่ 1 (goal: "FILM_DRAMA"): 💔 ดราม่า / ฮีลใจ (Emotional Drama)
+   - แนวที่ 2 (goal: "FILM_ROMANCE"): 💘 โรแมนติก / ฟีลกู๊ด (Thai Indie Romance)
+   - แนวที่ 3 (goal: "FILM_COMEDY"): 😂 คอมเมดี้ / หักมุมฮา (Thai Comedy Twist)
+   - แนวที่ 4 (goal: "FILM_THRILLER"): 👻 ลึกลับ / หักมุมระทึก (Thriller & Plot Twist)
+   - แนวที่ 5 (goal: "FILM_SCIFI"): 🔥 แอ็กชัน / ไซไฟ / โลกอนาคต (Cinematic Sci-Fi/Action)
+
+ตอบเป็น JSON ที่ถูกต้องตามโครงสร้างนี้เท่านั้น:
+{
+  "research_brief": {
+    "subject": "หัวข้อ/ธีมหนังสั้นที่วิเคราะห์",
+    "location_or_context": "บริบทสถานที่/บรรยากาศ/ยุคสมัยที่เหมาะกับเรื่องนี้",
+    "highlights": [
+      "องค์ประกอบสำคัญในเรื่อง 1",
+      "องค์ประกอบสำคัญในเรื่อง 2",
+      "องค์ประกอบสำคัญในเรื่อง 3",
+      "องค์ประกอบสำคัญในเรื่อง 4"
+    ],
+    "practical_info": "คำแนะนำการคุมโทนสี แสง การแต่งกายตัวละคร และ Character Lock ใน PKFLOW PRO FILM",
+    "what_to_shoot": [
+      "ช็อตเปิดภาพยนตร์ที่ต้องมี 1",
+      "ช็อตอารมณ์ตัวละคร / Insert B-roll 2",
+      "ช็อตไคลแมกซ์ / ปิดเรื่อง 3"
+    ]
+  },
+  "angles": [
+    {
+      "id": "film-1",
+      "goal": "FILM_DRAMA",
+      "category_badge": "💔 ดราม่า / ฮีลใจ",
+      "title": "ชื่อหนังสั้นสุดปัง น่าดูตั้งแต่เห็นชื่อ",
+      "hook_preview": "Logline 1 ประโยค + ฉากเปิด 3 วิแรกที่ดึงคนดูเข้าสู่เรื่องทันที",
+      "description": "เล่าโครงเรื่องย่อ 3 องก์ (เปิดเรื่อง -> จุดพลิกผัน -> ตอนจบประทับใจ/หักมุม)",
+      "why_it_works": "ทำไมพล็อตนี้ถึงอินและถูกแชร์ต่อบนโซเชียล/YouTube ไทย",
+      "suggested_prompt": "คำสั่งพร้อมใช้สำหรับเขียนบทและ Storyboard หนังสั้นเรื่องนี้ใน PKFLOW PRO FILM"
+    }
+  ]
+}`
+        : `คุณคือ "Creative Director & นักกลยุทธ์คอนเทนต์โซเชียลไทยระดับมืออาชีพ" (TikTok / Instagram Reels / YouTube Shorts)
 วันนี้คือวันที่ ${currentDateThai}
 
 หน้าที่ของคุณ:
@@ -289,8 +338,10 @@ ${research.summaryText || "(ใช้ความรู้ที่ถูกต�
     const fixedCount = Number(sceneCount);
     const hasFixed = Number.isFinite(fixedCount) && fixedCount >= 3 && fixedCount <= 12;
     const sceneRule = hasFixed
-      ? `จำนวนฉาก: ${fixedCount} ฉากพอดี (ฉากละ 3-6 วินาที)`
-      : "จำนวนฉาก: ให้คุณตัดสินใจเองตามความเหมาะสมของเรื่อง ระหว่าง 5-10 ฉาก (ฉากละ 3-6 วินาที) ยิ่งมีหลายมุมกล้องหลายมุมมองยิ่งดี แต่ห้ามฉากซ้ำซาก";
+      ? `จำนวนฉาก: ${fixedCount} ฉากพอดี (ฉากละ ${isShortFilm ? "4-6" : "3-6"} วินาที)`
+      : isShortFilm
+        ? "จำนวนฉาก: ให้คุณออกแบบ 8-10 ฉาก (ฉากละ 4-6 วินาที รวม ~45-55 วินาที) แบ่งเป็น 3 องก์ชัดเจน (องก์ 1 ปูเรื่อง -> องก์ 2 ไคลแมกซ์/จุดเปลี่ยน -> องก์ 3 บทสรุป/หักมุม) สลับมุมกล้องระดับหนังโรงและช็อต Insert B-roll เพื่อความต่อเนื่อง"
+        : "จำนวนฉาก: ให้คุณตัดสินใจเองตามความเหมาะสมของเรื่อง ระหว่าง 5-10 ฉาก (ฉากละ 3-6 วินาที) ยิ่งมีหลายมุมกล้องหลายมุมมองยิ่งดี แต่ห้ามฉากซ้ำซาก";
 
     // Ground in real facts automatically if not already provided from BRAINSTORM step
     let researchContextText = "";
@@ -316,7 +367,122 @@ ${research.summaryText || "(ใช้ความรู้ที่ถูกต�
       researchSources = liveResearch.sources;
     }
 
-    const systemInstruction = `คุณคือ "ผู้กำกับโฆษณาและคอนเทนต์โซเชียลไทยระดับมืออาชีพ (Commercial Director + Thai Social Strategist)"
+    const systemInstruction = isShortFilm
+      ? `คุณคือ "ผู้กำกับภาพยนตร์และนักเขียนบทหนังสั้นมืออาชีพ (Film Director & Screenwriter)" ที่ออกแบบงานให้สอดคล้องกับ **PKFLOW PRO FILM Studio** บน Google Flow 100%
+วันนี้คือวันที่ ${currentDateThai}
+
+เป้าหมายสูงสุด: สร้าง "คัมภีร์หนังสั้น (Film Bible)" + "Storyboard 3 องก์ระดับภาพยนตร์" ที่นำไปกดวางใน **PKFLOW PRO FILM Studio** แล้วเจนตัวละครหน้าเดิมไม่เพี้ยน ภาพสวยเหมือนหนังโรง อารมณ์ถึง และเล่าเรื่องครบต้นจนจบได้ทันที!
+
+กฎเหล็กสำหรับ PKFLOW PRO FILM Studio:
+1. **Character Identity Lock (ล็อกหน้าตาตัวละครไม่ให้เปลี่ยนข้ามฉาก):**
+   - สร้าง \`subject_identity_lock\` ภาษาอังกฤษ (ขึ้นต้นด้วย \`[Subject Identity Lock]: ...\`) บรรยายตัวละครหลักให้ชัดเจน (อายุ เชื้อชาติไทย ทรงผม สีผม เสื้อผ้า เอกลักษณ์)
+   - สร้าง \`character_sheet_prompt\` ภาษาอังกฤษสำหรับเอาไปเจนรูป Character Reference ในช่อง Actor Reference ของ PKFLOW PRO FILM
+   - สร้าง \`location_ref_prompt\` ภาษาอังกฤษสำหรับโลเคชันหลัก
+2. **${sceneRule}**
+   - แบ่งฉากเป็น **3 องก์ชัดเจน** โดยใส่ \`act_badge\` ทุกฉาก เช่น:
+     - \`🎬 องก์ 1: เปิดตัวและปมเรื่อง\`
+     - \`⚡ องก์ 2: จุดเปลี่ยนและไคลแมกซ์\`
+     - \`🌅 องก์ 3: บทสรุปและอารมณ์ตกค้าง\`
+   - สลับขนาดภาพและมุมกล้องเหมือนหนังโรงทุกฉาก (Establishing Wide, Over-the-Shoulder, Dolly Push-In, Macro Insert B-Roll มือ/สิ่งของ/แววตา, Low Angle, Slow-Mo Emotional Close-Up)
+   - ช่อง \`thai_story_beats\` ให้เขียนเป็นจังหวะเวลาแบบ PKFLOW PRO FILM เช่น \`[0-2.5s] กล้องเคลื่อนเข้า... ➔ [2.5-5s] ตัวละครเงยหน้าสบตา...\`
+3. **บทพูด/เสียงบรรยาย + SFX + คำบรรยายไทย:**
+   - ใส่ \`voiceover_text\` (บทพูดตัวละครหรือเสียงบรรยายในใจ), \`sound_fx\` (ซาวด์ประกอบ/Ambient), \`popup_badge\` (ป้ายองก์หรือเวลา/สถานที่ เช่น "📍 เชียงใหม่ • 06:30 น."), \`on_screen_text\` (ชื่อเรื่องหรือซับอารมณ์), \`subtitle_line\`
+4. **กฎเขียน \`flow_prompt\` (ภาษาอังกฤษล้วน ระดับภาพยนตร์ 35mm 4K):**
+   - ทุกฉากที่มีตัวละครหลัก ให้แทรก \`[Subject Identity Lock]\` หรืออ้างอิงลักษณะตัวละครเดิมให้สอดคล้องกัน 100%
+   - ระบุ: Shot size + Camera movement + Acting/Emotion + Lighting/Color grading + Film texture (35mm cinema lens, shallow depth of field) + สัดส่วน ${aspectRatio} + "cinematic 4K film production, natural authentic acting, no garbled text, no watermark"
+
+ตอบกลับเป็น JSON ที่ถูกต้องตามโครงสร้างนี้เท่านั้น:
+{
+  "title": "ชื่อหนังสั้นภาษาไทย (พร้อมชื่ออังกฤษถ้ามี)",
+  "content_goal_label": "🎬 หนังสั้น PKFLOW PRO FILM",
+  "location_and_facts_summary": "สรุปโลกของเรื่อง/โลเคชันหลัก และโทนภาพยนตร์ 1-2 บรรทัด",
+  "hook_3sec": "ภาพเปิด 3 วินาทีแรกที่ดึงคนดูเข้าสู่โลกของหนังสั้นทันที",
+  "viral_meme_angle": "จุดพีกทางอารมณ์ / จุดหักมุมที่ทำให้คนดูอยากดูจนจบและแชร์ต่อ",
+  "concept": "Logline เรื่องย่อ 1-2 ประโยคสุดคม",
+  "film_bible": {
+    "genre": "แนวหนังสั้น เช่น ดราม่าฮีลใจ / โรแมนติกอินดี้ / ระทึกขวัญหักมุม",
+    "logline": "เรื่องย่อ 1 ประโยคแบบมืออาชีพ",
+    "visual_style": "สไตล์ภาพ แสง และเกรดสี (เช่น 35mm Warm Thai Indie Film, Golden Hour & Soft Rain)",
+    "subject_identity_lock": "[Subject Identity Lock]: English description locking main protagonist's exact face, age, hair, and outfit across all shots...",
+    "acts_overview": [
+      "องก์ 1 (ปูเรื่อง & ปม): ...",
+      "องก์ 2 (ความขัดแย้ง & ไคลแมกซ์): ...",
+      "องก์ 3 (บทสรุป & อารมณ์ตกค้าง): ..."
+    ],
+    "characters": [
+      {
+        "name": "ชื่อตัวละครหลัก",
+        "role": "บทบาท (เช่น พระเอก / นางเอก)",
+        "appearance_thai": "บุคลิก การแต่งกาย และอารมณ์เด่น",
+        "character_sheet_prompt": "Full character reference turnaround sheet of ..., neutral clean lighting, photorealistic 8k, no text"
+      }
+    ],
+    "locations": [
+      {
+        "name": "ชื่อโลเคชันหลัก",
+        "mood": "บรรยากาศ แสง และช่วงเวลา",
+        "location_ref_prompt": "Cinematic wide establishing location reference of ..., 35mm film photography, 8k, no people, no text"
+      }
+    ]
+  },
+  "flow_setup_guide": {
+    "tool_mode": "PKFLOW PRO FILM Studio (Character Sheet + First-Frame Chain)",
+    "aspect_ratio": "${aspectRatio}",
+    "recommended_model": "Omni 1.2 Flash / Veo 3.1 - Fast",
+    "quick_steps": [
+      "1. ก๊อป Character Reference Prompt ไปเจนรูปตัวละครหลักใน PKFLOW PRO FILM เพื่อล็อกหน้าตาทุกฉาก",
+      "2. กดปุ่ม 'Copy ส่งเข้า PKFLOW PRO FILM' แล้วไปกด '📋 วางจาก OS' ใน PKFLOW PRO FILM Studio",
+      "3. เปิด First-Frame Chain เพื่อเชื่อมเฟรมต่อเฟรมให้ลื่นไหลเหมือนหนังโรง แล้วกดรวมไฟล์ .MP4"
+    ]
+  },
+  "video_blueprint": {
+    "total_duration_sec": 45,
+    "scene_count": 8,
+    "mood_and_music": "แนวสกอร์ดนตรีประกอบภาพยนตร์และซาวด์ดีไซน์ (OST & Ambient SFX)",
+    "scenes": [
+      {
+        "scene_number": 1,
+        "act_badge": "🎬 องก์ 1: เปิดตัวและปมเรื่อง",
+        "scene_role": "Establishing + เปิดตัวตัวละคร",
+        "duration_sec": 5,
+        "flow_mode": "Text to Video",
+        "what_to_shoot": "คำอธิบายสิ่งที่เกิดขึ้นในฉากนี้",
+        "thai_story_beats": "[0-2.5s] ... ➔ [2.5-5s] ...",
+        "camera_angle": "Dolly Push-In ➔ Close-Up",
+        "camera_badge": "🎥 Dolly Push-In ➔ Close-Up | 🎭 Acting",
+        "continuity_note": "จุดเชื่อมเฟรมสุดท้ายไปยังฉากถัดไป (First-Frame Chain)",
+        "sound_fx": "เสียงบรรยากาศ / SFX ประจำฉาก",
+        "voiceover_text": "บทพูดตัวละคร หรือ เสียงบรรยายในใจ",
+        "popup_badge": "🎬 องก์ 1 • สถานที่/เวลา",
+        "on_screen_text": "ข้อความขึ้นจอ / ชื่อตอน / ซับอารมณ์",
+        "subtitle_line": "คำบรรยายซับไตเติลไทย",
+        "flow_prompt": "Cinematic 35mm English film prompt with Subject Identity Lock..."
+      }
+    ],
+    "editing_guide": [
+      "ขั้นตอนตัดต่อหนังสั้น 1...",
+      "ขั้นตอนตัดต่อหนังสั้น 2...",
+      "ขั้นตอนตัดต่อหนังสั้น 3..."
+    ],
+    "full_voiceover_script": "บทพูดและเสียงบรรยายรวมทั้งเรื่องตามลำดับฉาก"
+  },
+  "photo_blueprint": {
+    "photo_style": "Film Poster & Still Frame Look",
+    "shots": [
+      {
+        "shot_number": 1,
+        "role": "โปสเตอร์หนังสั้น (Official Movie Poster Still)",
+        "angle_and_framing": "มุมภาพยนตร์ระดับโปสเตอร์ มีพื้นที่ด้านบน/ล่างวางชื่อเรื่อง",
+        "lighting_and_props": "แสงและโทนสีภาพยนตร์",
+        "text_overlay": "ชื่อหนังสั้น + คำโปรย",
+        "image_prompt": "Cinematic movie poster key art photograph of ..., 35mm film grain, dramatic lighting, ${aspectRatio}, 8k, no text"
+      }
+    ]
+  },
+  "social_caption": "แคปชันเปิดตัวหนังสั้นพร้อมคำโปรยชวนดูจนจบและถามความรู้สึกคนดู",
+  "hashtags": ["#หนังสั้น", "#PKFLOWPROFILM", "#หนังสั้นAI", "#ShortFilmThailand", "#ภาพยนตร์สั้น"]
+}`
+      : `คุณคือ "ผู้กำกับโฆษณาและคอนเทนต์โซเชียลไทยระดับมืออาชีพ (Commercial Director + Thai Social Strategist)"
 วันนี้คือวันที่ ${currentDateThai}
 
 เป้าหมายสูงสุด: สร้างสคริปต์และ Prompt วิดีโอที่ **"ใช้งานจริงได้ทันที ดูออกชัดเจนว่าคือสถานที่ไหน/ขายอะไร เชิญชวนให้คนดูอยากมา/อยากซื้อจริง และสอดคล้องกับโซเชียลไทย (TikTok/Reels/Shorts)"**
@@ -427,6 +593,10 @@ ${researchContextText || "(ใช้ข้อมูลจริงที่แ�
       const rawScenes = Array.isArray(raw.video_blueprint?.scenes) ? raw.video_blueprint.scenes : [];
       const normalizedScenes = rawScenes.map((s: any, idx: number) => ({
         scene_number: Number(s?.scene_number) || idx + 1,
+        act_badge: s?.act_badge ? String(s.act_badge) : isShortFilm ? (idx < 3 ? "🎬 องก์ 1: ปูเรื่อง" : idx < rawScenes.length - 2 ? "⚡ องก์ 2: ไคลแมกซ์" : "🌅 องก์ 3: บทสรุป") : undefined,
+        camera_badge: s?.camera_badge ? String(s.camera_badge) : undefined,
+        thai_story_beats: s?.thai_story_beats ? String(s.thai_story_beats) : undefined,
+        sound_fx: s?.sound_fx ? String(s.sound_fx) : undefined,
         scene_role: String(
           s?.scene_role ||
             (idx === 0
@@ -477,11 +647,41 @@ ${researchContextText || "(ใช้ข้อมูลจริงที่แ�
         };
       });
 
+      const normalizedFilmBible =
+        raw.film_bible && typeof raw.film_bible === "object"
+          ? {
+              genre: String(raw.film_bible.genre || filmGenre || "Cinematic Short Film"),
+              logline: String(raw.film_bible.logline || raw.concept || ""),
+              visual_style: String(raw.film_bible.visual_style || "Cinematic 35mm Film"),
+              subject_identity_lock: String(raw.film_bible.subject_identity_lock || ""),
+              acts_overview: Array.isArray(raw.film_bible.acts_overview)
+                ? raw.film_bible.acts_overview.map(String)
+                : [],
+              characters: Array.isArray(raw.film_bible.characters)
+                ? raw.film_bible.characters.map((c: any) => ({
+                    name: String(c?.name || "ตัวละครหลัก"),
+                    role: String(c?.role || "Protagonist"),
+                    appearance_thai: String(c?.appearance_thai || ""),
+                    character_sheet_prompt: String(c?.character_sheet_prompt || "")
+                  }))
+                : [],
+              locations: Array.isArray(raw.film_bible.locations)
+                ? raw.film_bible.locations.map((l: any) => ({
+                    name: String(l?.name || "โลเคชันหลัก"),
+                    mood: String(l?.mood || ""),
+                    location_ref_prompt: String(l?.location_ref_prompt || "")
+                  }))
+                : []
+            }
+          : undefined;
+
       const normalizedBlueprint = {
         title: String(raw.title || `คอนเทนต์: ${prompt.trim()}`),
-        content_goal_label: String(raw.content_goal_label || contentGoal),
+        content_mode: isShortFilm ? "SHORT_FILM" : "SOCIAL",
+        content_goal_label: String(raw.content_goal_label || (isShortFilm ? "🎬 หนังสั้น PKFLOW PRO FILM" : contentGoal)),
         location_and_facts_summary: String(raw.location_and_facts_summary || ""),
         research_sources: researchSources,
+        film_bible: normalizedFilmBible,
         hook_3sec: String(raw.hook_3sec || ""),
         viral_meme_angle: String(raw.viral_meme_angle || ""),
         concept: String(raw.concept || ""),
