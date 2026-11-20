@@ -170,6 +170,9 @@ const SHORT_FILM_EXAMPLES = [
 const PKFLOW_PRO_FILM_URL =
   "https://flow.google.com/project/06056731-4488-47e7-b13d-72c2792c4def/tool/1612491d-a170-4e9d-884d-93194cad1c4f?fromViewSource=tools";
 
+const PK_COMMERCIAL_STUDIO_URL =
+  "https://flow.google.com/project/41fad0b2-d63b-402d-9398-9160fb591592/tool/0706859a-d6a4-4391-a879-77f386fb5699?fromViewSource=tools/browser";
+
 const VOICE_OPTIONS = [
   { id: "ErXwobaYiN019PkySvjV", label: "🎙️ Antoni — ผู้บรรยายพรีเมียม" },
   { id: "21m00Tcm4TlvDq8ikWAM", label: "👩 Rachel — หญิงสดใส เป็นมิตร" },
@@ -549,6 +552,17 @@ function EasyContentWorkspace() {
           `[Scene ${s.scene_number} - ${s.duration_sec}s | ${s.flow_mode || "Text to Video"}]\n${s.flow_prompt}`
       )
       .join("\n\n");
+  };
+
+  const buildSingleMasterMultiShotPrompt = () => {
+    if (!blueprint?.video_blueprint?.scenes?.length) return "";
+    const scenes = blueprint.video_blueprint.scenes;
+    const styleLine = blueprint.film_bible?.visual_style || "Cinematic 4K commercial photorealism";
+    const lockLine = blueprint.film_bible?.subject_identity_lock ? `${blueprint.film_bible.subject_identity_lock} ` : "";
+    const shotSequence = scenes
+      .map((s, i) => `Shot ${i + 1} (${s.camera_angle}): ${s.flow_prompt.replace(/no garbled text,?\s*no watermark\.?/gi, "").trim()}`)
+      .join(" -> CUT TO: ");
+    return `A seamless multi-shot cinematic sequence (${aspectRatio}, ${styleLine}). ${lockLine}${shotSequence}. Consistent lighting, cohesive color grading, smooth transitions, photorealistic 4K, no garbled text, no watermark.`;
   };
 
   const buildFlowToolProjectJSON = () => {
@@ -1067,83 +1081,133 @@ function EasyContentWorkspace() {
 
       {!loading && blueprint && (
         <div className="space-y-6 animate-fade-in-up">
-          {/* Header Summary + Hook + Viral Angle */}
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-xs">
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-100 pb-5">
-              <div className="space-y-1.5">
+          {/* Header Summary + Clean Symmetric Action Bar */}
+          <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-5 shadow-xs">
+            <div className="space-y-4 border-b border-slate-100 pb-5">
+              {/* Full-Width Title & Concept (Never Squished) */}
+              <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">{blueprint.title}</h2>
+                  <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                    blueprint.film_bible || contentMode === "SHORT_FILM"
+                      ? "bg-indigo-100 text-indigo-800"
+                      : "bg-emerald-100 text-emerald-800"
+                  }`}>
+                    {blueprint.film_bible || contentMode === "SHORT_FILM" ? "🎬 โหมดหนังสั้น PKFLOW PRO FILM" : "⚡ โหมดคอนเทนต์โซเชียล"}
+                  </span>
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                    {aspectRatio} • {blueprint.video_blueprint?.scenes?.length || 0} ฉาก
+                  </span>
                   {meta?.modelUsed && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
                       {meta.modelUsed}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-slate-600 leading-relaxed">{blueprint.concept}</p>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                  {blueprint.title}
+                </h2>
+                <p className="text-sm text-slate-600 leading-relaxed max-w-4xl">
+                  {blueprint.concept}
+                </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 shrink-0">
-                {blueprint.video_blueprint?.scenes?.length ? (
-                  <>
+              {/* Primary 1-Click Multi-Scene Flow Export */}
+              {blueprint.video_blueprint?.scenes?.length ? (
+                <div className="rounded-xl bg-slate-50 border border-slate-200/80 p-3.5 space-y-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() =>
                         handleCopy(
                           buildFlowToolProjectJSON(),
                           "FLOW_JSON",
-                          "ก๊อปโค้ดโปรเจกต์แล้ว! ไปกด 'วางจาก OS' ใน Google Flow Tool ได้เลย"
+                          `ก๊อปครบทั้ง ${blueprint.video_blueprint?.scenes?.length || 0} ฉากในครั้งเดียวแล้ว! ไปกด 'วางจาก OS' ใน Flow Tool ได้เลย`
                         )
                       }
-                      className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="min-h-[46px] px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
                     >
-                      {copiedKey === "FLOW_JSON" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-emerald-400" />}
-                      <span>{blueprint.film_bible || contentMode === "SHORT_FILM" ? "🎬 Copy ส่งเข้า PKFLOW PRO FILM" : "Copy ส่งเข้า Flow Tool"}</span>
+                      {copiedKey === "FLOW_JSON" ? <Check className="w-4 h-4 text-emerald-400 shrink-0" /> : <Copy className="w-4 h-4 text-emerald-400 shrink-0" />}
+                      <span>
+                        {blueprint.film_bible || contentMode === "SHORT_FILM"
+                          ? `⚡ ก๊อปทุกฉากทีเดียว (${blueprint.video_blueprint.scenes.length} ฉาก) ➔ PKFLOW PRO FILM`
+                          : `⚡ ก๊อปทุกฉากทีเดียว (${blueprint.video_blueprint.scenes.length} ฉาก) ➔ Flow Tool`}
+                      </span>
                     </button>
 
-                    {(blueprint.film_bible || contentMode === "SHORT_FILM") && (
-                      <a
-                        href={PKFLOW_PRO_FILM_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors"
-                      >
-                        <span>เปิด PKFLOW PRO FILM ↗</span>
-                      </a>
-                    )}
+                    <a
+                      href={blueprint.film_bible || contentMode === "SHORT_FILM" ? PKFLOW_PRO_FILM_URL : PK_COMMERCIAL_STUDIO_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`min-h-[46px] px-4 py-2.5 rounded-xl text-white text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-colors shadow-xs ${
+                        blueprint.film_bible || contentMode === "SHORT_FILM"
+                          ? "bg-indigo-600 hover:bg-indigo-700"
+                          : "bg-emerald-600 hover:bg-emerald-700"
+                      }`}
+                    >
+                      <span>
+                        {blueprint.film_bible || contentMode === "SHORT_FILM"
+                          ? "🎬 เปิด PKFLOW PRO FILM Studio ↗"
+                          : "🚀 เปิด PK Commercial Studio ↗"}
+                      </span>
+                    </a>
+                  </div>
+
+                  <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+                    💡 <b>ไม่ต้องก๊อปทีละฉาก:</b> กดปุ่มสีดำด้านบนแค่ <b>1 ครั้ง</b> ➔ กดเปิด Tool ด้านขวา ➔ กด <b>&ldquo;วางจาก OS&rdquo;</b> ทุกฉากจะเรียงคิวอัตโนมัติพร้อมเจนรวดเดียว ไม่มีตกหล่น
+                  </p>
+
+                  {/* Secondary Utility Actions (Symmetric 3-Column Row) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy(
+                          buildSingleMasterMultiShotPrompt(),
+                          "MASTER_MULTI",
+                          "ก๊อป Master Prompt ใบเดียว (รวบทุกฉาก) แล้ว!"
+                        )
+                      }
+                      className="min-h-[42px] px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      {copiedKey === "MASTER_MULTI" ? <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : <Copy className="w-3.5 h-3.5 text-indigo-600 shrink-0" />}
+                      <span>Copy Master Prompt เดียว (รวบทุกฉาก)</span>
+                    </button>
 
                     <button
                       type="button"
                       onClick={handleDownloadFlowToolJSON}
-                      className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="min-h-[42px] px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Download className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>ไฟล์ .JSON เข้า Flow Tool</span>
+                      <Download className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>โหลดไฟล์ .JSON เข้า Flow Tool</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() =>
-                        handleCopy(buildAllPromptsOnly(), "ALL_PROMPTS", "ก๊อปปี้ Prompt ทุกฉากแล้ว!")
+                        handleCopy(buildFullTextToCopy(), "ALL", "ก๊อปปี้สูตรทั้งหมดพร้อมส่งลง LINE / Note แล้ว!")
                       }
-                      className="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="min-h-[42px] px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      {copiedKey === "ALL_PROMPTS" ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>Copy Prompt ทุกฉาก</span>
+                      {copiedKey === "ALL" ? <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : <Copy className="w-3.5 h-3.5 text-slate-600 shrink-0" />}
+                      <span>Copy สูตรทั้งหมด (LINE / Note)</span>
                     </button>
-                  </>
-                ) : null}
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleCopy(buildFullTextToCopy(), "ALL", "ก๊อปปี้สูตรทั้งหมดพร้อมส่งลง LINE / Note แล้ว!")
-                  }
-                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  {copiedKey === "ALL" ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>Copy สูตรทั้งหมด</span>
-                </button>
-              </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleCopy(buildFullTextToCopy(), "ALL", "ก๊อปปี้สูตรทั้งหมดพร้อมส่งลง LINE / Note แล้ว!")
+                    }
+                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    {copiedKey === "ALL" ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>Copy สูตรทั้งหมด</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {(blueprint.hook_3sec || blueprint.viral_meme_angle) && (
