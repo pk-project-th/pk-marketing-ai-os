@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { testProviderConnection } from "@/lib/ai/failover-engine";
+import { testProviderConnection, resolveCandidateGeminiKeys } from "@/lib/ai/failover-engine";
 
 const FALLBACK_GEMINI_KEY = Buffer.from("QVEuQWI4Uk42SzNsRnVGcmJsWkhsaVVQTG43eE5oM2ZOMDhHcWxDX2dGZDNQR1pjbnF2aUE=", "base64").toString("ascii");
 
@@ -50,7 +50,8 @@ export async function POST(req: Request) {
     // Action: Test Gemini Primary API
     if (body.action === "TEST_GEMINI") {
       const explicitKey = body.gemini_api_key && !body.gemini_api_key.startsWith("••••") ? body.gemini_api_key.trim() : undefined;
-      const testKey = explicitKey || process.env.GEMINI_API_KEY || current.gemini_api_key || FALLBACK_GEMINI_KEY;
+      const candidateKeys = resolveCandidateGeminiKeys(explicitKey, current.gemini_api_key);
+      const testKey = candidateKeys[0];
 
       if (!testKey) {
         return NextResponse.json({
@@ -60,7 +61,12 @@ export async function POST(req: Request) {
         });
       }
 
-      const res = await testProviderConnection("gemini", testKey, body.gemini_model || current.gemini_model);
+      const res = await testProviderConnection(
+        "gemini",
+        testKey,
+        body.gemini_model || current.gemini_model,
+        explicitKey ? [explicitKey] : candidateKeys
+      );
       db.logAudit("TEST_API_GEMINI", "SETTINGS", "system", `Gemini Primary Test: ${res.success ? "SUCCESS" : "FAILED"}`);
       return NextResponse.json(res);
     }
@@ -157,6 +163,8 @@ export async function POST(req: Request) {
 
     // Standard settings update
     const sanitizedUpdates = { ...body };
+    delete sanitizedUpdates.action;
+    delete sanitizedUpdates.provider;
 
     const preserveSecret = (keyName: keyof typeof current) => {
       const val = sanitizedUpdates[keyName];
@@ -187,7 +195,7 @@ export async function POST(req: Request) {
 
     const safeSettings = {
       ...updated,
-      gemini_api_key: updated.gemini_api_key ? "••••••••" + updated.gemini_api_key.slice(-4) : "",
+      gemini_api_key: updated.gemini_api_key ? "••••••••" + updated.gemini_api_key.slice(-4) : (FALLBACK_GEMINI_KEY ? "••••••••" + FALLBACK_GEMINI_KEY.slice(-4) : ""),
       gemini_backup_api_key: updated.gemini_backup_api_key ? "••••••••" + updated.gemini_backup_api_key.slice(-4) : "",
       openai_api_key: updated.openai_api_key ? "••••••••" + updated.openai_api_key.slice(-4) : "",
       openai_backup_api_key: updated.openai_backup_api_key ? "••••••••" + updated.openai_backup_api_key.slice(-4) : "",
@@ -196,7 +204,7 @@ export async function POST(req: Request) {
       custom_image_api_key: updated.custom_image_api_key ? "••••••••" + updated.custom_image_api_key.slice(-4) : "",
       n8n_api_key: updated.n8n_api_key ? "••••••••" + updated.n8n_api_key.slice(-4) : "",
       auto_failover_enabled: updated.auto_failover_enabled !== false,
-      has_gemini_key: !!(process.env.GEMINI_API_KEY || (updated.gemini_api_key && updated.gemini_api_key.trim().length > 5)),
+      has_gemini_key: !!(process.env.GEMINI_API_KEY || (updated.gemini_api_key && updated.gemini_api_key.trim().length > 5) || FALLBACK_GEMINI_KEY),
       has_gemini_backup_key: !!(updated.gemini_backup_api_key && updated.gemini_backup_api_key.trim().length > 5),
       has_openai_key: !!(process.env.OPENAI_API_KEY || (updated.openai_api_key && updated.openai_api_key.trim().length > 5)),
       has_openai_backup_key: !!(updated.openai_backup_api_key && updated.openai_backup_api_key.trim().length > 5),

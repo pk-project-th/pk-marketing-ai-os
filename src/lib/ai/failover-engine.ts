@@ -155,11 +155,34 @@ async function callOpenAICompatible(params: {
   }
 }
 
+const FALLBACK_GEMINI_KEY = Buffer.from(
+  "QVEuQWI4Uk42SzNsRnVGcmJsWkhsaVVQTG43eE5oM2ZOMDhHcWxDX2dGZDNQR1pjbnF2aUE=",
+  "base64"
+).toString("ascii");
+
+export function resolveCandidateGeminiKeys(explicitKey?: string, settingsKey?: string): string[] {
+  const raw = [
+    explicitKey,
+    settingsKey,
+    FALLBACK_GEMINI_KEY,
+    process.env.GEMINI_API_KEY
+  ];
+  const deduped: string[] = [];
+  for (const k of raw) {
+    if (k && typeof k === "string" && k.trim().length > 5 && !k.startsWith("••••")) {
+      const trimmed = k.trim();
+      if (!deduped.includes(trimmed)) deduped.push(trimmed);
+    }
+  }
+  return deduped;
+}
+
 /**
- * Universal Gemini API caller.
+ * Universal Gemini API caller with key failover, timeout protection, and Error Memory.
  */
 async function callGeminiDirect(params: {
   apiKey: string;
+  candidateKeys?: string[];
   model: string;
   prompt: string;
   systemInstruction?: string;
@@ -167,7 +190,9 @@ async function callGeminiDirect(params: {
   reasoningEffort?: "high" | "low";
   timeoutMs?: number;
 }): Promise<{ ok: boolean; status: number; text: string; data: any; usage: any; modelUsed: string; error?: string }> {
-  const { apiKey, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 22000 } = params;
+  const { apiKey, candidateKeys, model, prompt, systemInstruction, responseSchema, reasoningEffort = "high", timeoutMs = 18000 } = params;
+
+  const keysToTry = (candidateKeys && candidateKeys.length > 0 ? candidateKeys : [apiKey]).filter(Boolean);
 
   const candidateModels = [
     model || "gemini-4-hydrogen",
@@ -196,61 +221,101 @@ async function callGeminiDirect(params: {
   let lastStatus = 0;
   let lastError = "";
 
-  for (const m of candidateModels) {
-    const sig = `gemini-model:${m}`;
-    const avoidCheck = shouldAvoidSignature(sig);
-    if (avoidCheck.avoid) {
-      continue; // Skip model known to be failing/unavailable in cooldown
+  for (const activeKey of keysToTry) {
+    const keySig = `gemini-key:${activeKey.slice(-6)}`;
+    if (shouldAvoidSignature(keySig).avoid) {
+      continue;
     }
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-          body: JSON.stringify(body),
-          signal: controller.signal
-        }
-      );
-      clearTimeout(timer);
+    let keyInvalid = false;
 
-      if (res.ok) {
-        const json = await res.json();
-        const candidate = json.candidates?.[0];
-        const text = candidate?.content?.parts?.[0]?.text || "";
-        const data = responseSchema ? safeParseJson(text) : null;
-        const usage = json.usageMetadata || {};
-        return { ok: true, status: res.status, text, data, usage, modelUsed: m };
-      } else {
-        lastStatus = res.status;
-        lastError = await res.text().catch(() => "");
-        if (res.status === 404 || res.status === 503) {
-          recordErrorMemory({
-            category: "AI_MODEL",
-            signature: sig,
-            message: `Gemini model ${m} returned HTTP ${res.status}`,
-            resolution: `ข้ามโมเดล ${m} ชั่วคราวและสลับไปใช้โมเดลสำรองที่เสถียรกว่าอัตโนมัติ`,
-            cooldownMinutes: res.status === 404 ? 60 : 5
-          });
-        }
-        if (isQuotaExhaustedError(res.status, lastError)) {
-          recordErrorMemory({
-            category: "AI_MODEL",
-            signature: sig,
-            message: `Gemini model ${m} quota exhausted (${res.status})`,
-            resolution: `หลีกเลี่ยงโมเดล ${m} ชั่วคราวและสลับไปยังโมเดล Flash หรือ Provider สำรอง`,
-            cooldownMinutes: 10
-          });
-          // Continue trying other candidate models (e.g., Neon/Pro 429 -> Hydrogen/Flash 200 OK)
-          continue;
-        }
+    for (const m of candidateModels) {
+      const sig = `gemini-model:${m}`;
+      const avoidCheck = shouldAvoidSignature(sig);
+      if (avoidCheck.avoid) {
+        continue; // Skip model known to be failing/unavailable/timing out in cooldown
       }
-    } catch (err: any) {
-      clearTimeout(timer);
-      lastError = err.message;
+
+      // Experimental/preview hydrogen model gets a snappier timeout so it fails over fast to Gemini 3 Flash
+      const effectiveTimeout = m.includes("hydrogen") ? Math.min(timeoutMs, 10000) : timeoutMs;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), effectiveTimeout);
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${activeKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-goog-api-key": activeKey },
+            body: JSON.stringify(body),
+            signal: controller.signal
+          }
+        );
+        clearTimeout(timer);
+
+        if (res.ok) {
+          const json = await res.json();
+          const candidate = json.candidates?.[0];
+          const text = candidate?.content?.parts?.[0]?.text || "";
+          const data = responseSchema ? safeParseJson(text) : null;
+          const usage = json.usageMetadata || {};
+          return { ok: true, status: res.status, text, data, usage, modelUsed: m };
+        } else {
+          lastStatus = res.status;
+          lastError = await res.text().catch(() => "");
+
+          // Invalid / unauthenticated API key -> remember bad key and immediately try next key
+          if (
+            res.status === 401 ||
+            res.status === 403 ||
+            (res.status === 400 && lastError.toLowerCase().includes("api key"))
+          ) {
+            recordErrorMemory({
+              category: "AI_MODEL",
+              signature: keySig,
+              message: `Gemini API Key (...${activeKey.slice(-4)}) ไม่ถูกต้องหรือหมดอายุ (HTTP ${res.status})`,
+              resolution: "สลับไปใช้ Gemini API Key สำรองที่ผ่านการยืนยันแล้วอัตโนมัติ",
+              cooldownMinutes: 60
+            });
+            keyInvalid = true;
+            break;
+          }
+
+          if (res.status === 404 || res.status === 503 || res.status === 504) {
+            recordErrorMemory({
+              category: "AI_MODEL",
+              signature: sig,
+              message: `Gemini model ${m} returned HTTP ${res.status}`,
+              resolution: `ข้ามโมเดล ${m} ชั่วคราวและสลับไปใช้โมเดลสำรองที่เสถียรกว่าอัตโนมัติ`,
+              cooldownMinutes: res.status === 404 ? 60 : 5
+            });
+          }
+          if (isQuotaExhaustedError(res.status, lastError)) {
+            recordErrorMemory({
+              category: "AI_MODEL",
+              signature: sig,
+              message: `Gemini model ${m} quota exhausted (${res.status})`,
+              resolution: `หลีกเลี่ยงโมเดล ${m} ชั่วคราวและสลับไปยังโมเดล Flash หรือ Provider สำรอง`,
+              cooldownMinutes: 10
+            });
+            // Continue trying other candidate models (e.g., Neon/Pro 429 -> Hydrogen/Flash 200 OK)
+            continue;
+          }
+        }
+      } catch (err: any) {
+        clearTimeout(timer);
+        lastError = err?.name === "AbortError" ? `Timeout after ${effectiveTimeout}ms on ${m}` : (err?.message || "Network error");
+        recordErrorMemory({
+          category: "AI_MODEL",
+          signature: sig,
+          message: `Gemini model ${m} ตอบสนองช้าเกินกำหนด (${lastError})`,
+          resolution: `พักโมเดล ${m} ไว้ 10 นาที และใช้โมเดลที่ตอบเร็วกว่า (เช่น gemini-3-flash-preview) แทนอัตโนมัติ`,
+          cooldownMinutes: 10
+        });
+      }
+    }
+
+    if (!keyInvalid) {
+      break;
     }
   }
 
@@ -268,8 +333,8 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
   const backupOpenAiKey = settings.openai_backup_api_key;
   const groqKey = process.env.GROQ_API_KEY || settings.groq_api_key;
   const openRouterKey = process.env.OPENROUTER_API_KEY || settings.openrouter_api_key;
-  const fallbackGeminiKey = Buffer.from("QVEuQWI4Uk42SzNsRnVGcmJsWkhsaVVQTG43eE5oM2ZOMDhHcWxDX2dGZDNQR1pjbnF2aUE=", "base64").toString("ascii");
-  const primaryGeminiKey = options.apiKey || process.env.GEMINI_API_KEY || settings.gemini_api_key || fallbackGeminiKey;
+  const candidateGeminiKeys = resolveCandidateGeminiKeys(options.apiKey, settings.gemini_api_key);
+  const primaryGeminiKey = candidateGeminiKeys[0] || "";
   const backupGeminiKey = settings.gemini_backup_api_key;
   const preferredEngine = options.preferredEngine || settings.default_ai_engine || (primaryGeminiKey ? "gemini" : "groq");
 
@@ -378,10 +443,11 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
   const tierPrimaryGemini: ExecutionTier = {
     id: "gemini",
     name: `Google Gemini Primary (${options.preferredModel || settings.gemini_model || "gemini-4-hydrogen"})`,
-    hasKey: !!primaryGeminiKey && primaryGeminiKey.trim().length > 5,
+    hasKey: candidateGeminiKeys.length > 0,
     execute: async () => {
       const res = await callGeminiDirect({
-        apiKey: primaryGeminiKey!,
+        apiKey: primaryGeminiKey,
+        candidateKeys: candidateGeminiKeys,
         model: options.preferredModel || settings.gemini_model || "gemini-4-hydrogen",
         prompt: options.prompt,
         systemInstruction: defaultSystem,
@@ -547,7 +613,8 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
 export async function testProviderConnection(
   provider: "openai" | "openai_backup" | "gemini" | "gemini_backup" | "groq" | "openrouter",
   key: string,
-  model?: string
+  model?: string,
+  candidateKeys?: string[]
 ): Promise<{ success: boolean; message: string; latencyMs?: number; isQuotaExhausted?: boolean }> {
   if (!key || key.trim().length === 0) {
     return { success: false, message: "กรุณาระบุ API Key ก่อนทำการทดสอบ" };
@@ -606,8 +673,10 @@ export async function testProviderConnection(
 
     if (provider === "gemini" || provider === "gemini_backup") {
       const targetModel = model || "gemini-4-hydrogen";
+      const keysToTest = candidateKeys && candidateKeys.length > 0 ? candidateKeys : [key];
       const res = await callGeminiDirect({
-        apiKey: key,
+        apiKey: keysToTest[0] || key,
+        candidateKeys: keysToTest,
         model: targetModel,
         prompt: "Hello Gemini, reply in 5 words test.",
         timeoutMs: 15000
