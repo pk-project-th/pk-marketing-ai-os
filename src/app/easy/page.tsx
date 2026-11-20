@@ -132,6 +132,8 @@ interface SavedEasyProject {
   blueprint: EasyBlueprint;
   meta?: { modelUsed?: string; isFailover?: boolean } | null;
   completedScenes?: number[];
+  contentMode?: "SOCIAL" | "SHORT_FILM";
+  updatedAt?: string;
 }
 
 interface TrendIdea {
@@ -236,7 +238,7 @@ function EasyContentWorkspace() {
 
   // Persist helper
   const persistProjects = (projects: SavedEasyProject[]) => {
-    const trimmed = projects.slice(0, 20);
+    const trimmed = projects.slice(0, 50);
     setSavedProjects(trimmed);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
@@ -261,6 +263,7 @@ function EasyContentWorkspace() {
             setFormat(latest.format);
             setAiMode(latest.aiMode);
             setAspectRatio(latest.aspectRatio);
+            setContentMode(latest.contentMode || (latest.blueprint?.film_bible ? "SHORT_FILM" : "SOCIAL"));
             setBlueprint(latest.blueprint);
             setMeta(latest.meta || null);
             setCompletedScenes(latest.completedScenes || []);
@@ -405,7 +408,9 @@ function EasyContentWorkspace() {
           createdAt: new Date().toISOString(),
           blueprint: data.blueprint,
           meta: data.meta || null,
-          completedScenes: []
+          completedScenes: [],
+          contentMode,
+          updatedAt: new Date().toISOString()
         };
         setActiveProjectId(newId);
         setBlueprint(data.blueprint);
@@ -430,6 +435,9 @@ function EasyContentWorkspace() {
     setFormat(proj.format);
     setAiMode(proj.aiMode);
     setAspectRatio(proj.aspectRatio);
+    setContentMode(proj.contentMode || (proj.blueprint?.film_bible ? "SHORT_FILM" : "SOCIAL"));
+    setAngles([]);
+    setResearchBrief(null);
     setBlueprint(proj.blueprint);
     setMeta(proj.meta || null);
     setCompletedScenes(proj.completedScenes || []);
@@ -437,6 +445,43 @@ function EasyContentWorkspace() {
     setSceneAudioUrls({});
     setEditingSceneNum(null);
     showToast(`เปิดโปรเจกต์ "${proj.blueprint.title}"`, "info");
+  };
+
+  const handleExportBackup = () => {
+    const blob = new Blob([JSON.stringify({ app: "PK-Marketing-AI-OS", version: 1, projects: savedProjects }, null, 2)], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `PK-OS-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("ดาวน์โหลดไฟล์สำรองงานทั้งหมดแล้ว", "success");
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || ""));
+        const incoming: SavedEasyProject[] = Array.isArray(parsed) ? parsed : parsed.projects;
+        if (!Array.isArray(incoming)) throw new Error("bad");
+        const byId = new Map<string, SavedEasyProject>();
+        [...savedProjects, ...incoming].forEach((p) => {
+          if (p?.id && p?.blueprint) byId.set(p.id, p);
+        });
+        const merged = Array.from(byId.values()).sort(
+          (a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime()
+        );
+        persistProjects(merged);
+        showToast(`นำเข้างานสำรองแล้ว (รวม ${merged.length} โปรเจกต์)`, "success");
+      } catch {
+        showToast("ไฟล์สำรองไม่ถูกต้อง", "error");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
   };
 
   const handleDeleteSavedProject = (e: React.MouseEvent, id: string) => {
@@ -461,7 +506,7 @@ function EasyContentWorkspace() {
     setCompletedScenes(next);
     if (activeProjectId) {
       const updated = savedProjects.map((p) =>
-        p.id === activeProjectId ? { ...p, completedScenes: next } : p
+        p.id === activeProjectId ? { ...p, completedScenes: next, updatedAt: new Date().toISOString() } : p
       );
       persistProjects(updated);
     }
@@ -565,9 +610,13 @@ function EasyContentWorkspace() {
     return `A seamless multi-shot cinematic sequence (${aspectRatio}, ${styleLine}). ${lockLine}${shotSequence}. Consistent lighting, cohesive color grading, smooth transitions, photorealistic 4K, no garbled text, no watermark.`;
   };
 
-  const buildFlowToolProjectJSON = () => {
+  const buildFlowToolProjectJSON = (onlyRemaining = false) => {
     if (!blueprint?.video_blueprint?.scenes?.length) return "";
-    const scenes = blueprint.video_blueprint.scenes;
+    const allScenes = blueprint.video_blueprint.scenes;
+    const scenes = onlyRemaining
+      ? allScenes.filter((sc) => !completedScenes.includes(sc.scene_number))
+      : allScenes;
+    if (scenes.length === 0) return "";
     const isFilm = blueprint.content_mode === "SHORT_FILM" || contentMode === "SHORT_FILM" || !!blueprint.film_bible;
     const payload = {
       version: "5.1-PKFLOW-PRO-FILM",
@@ -578,7 +627,7 @@ function EasyContentWorkspace() {
       aspectRatio,
       project: {
         id: `proj_${Date.now()}`,
-        name: blueprint.title,
+        name: onlyRemaining ? `${blueprint.title} (ทำต่อ ${scenes.length} ฉาก)` : blueprint.title,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         sceneCount: scenes.length,
@@ -964,44 +1013,75 @@ function EasyContentWorkspace() {
         )}
       </section>
 
-      {/* 2. Auto-Saved Project History Strip */}
+      {/* 2. Saved Projects: pick & resume */}
       {savedProjects.length > 0 && (
-        <section className="space-y-2.5">
-          <div className="flex items-center justify-between px-1">
-            <div className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <History className="w-3.5 h-3.5 text-emerald-600" />
-              <span>งานที่บันทึกอัตโนมัติ ({savedProjects.length} โปรเจกต์ — รีเฟรชไม่หาย)</span>
+        <section className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+            <div className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <History className="w-4 h-4 text-emerald-600" />
+              <span>งานที่บันทึกไว้ ({savedProjects.length}) — เลือกแล้วกดทำต่อได้เลย</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleExportBackup}
+                className="min-h-[36px] px-3 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-[11px] font-bold text-slate-700 cursor-pointer"
+              >
+                💾 สำรองงานทั้งหมด
+              </button>
+              <label className="min-h-[36px] px-3 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-[11px] font-bold text-slate-700 cursor-pointer inline-flex items-center">
+                📂 นำเข้าไฟล์สำรอง
+                <input type="file" accept="application/json,.json" className="hidden" onChange={handleImportBackup} />
+              </label>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 overflow-x-auto pb-1 custom-scrollbar">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {savedProjects.map((proj) => {
               const isSelected = proj.id === activeProjectId;
+              const total = proj.blueprint.video_blueprint?.scenes?.length || 0;
+              const done = (proj.completedScenes || []).filter((n) =>
+                proj.blueprint.video_blueprint?.scenes?.some((sc) => sc.scene_number === n)
+              ).length;
+              const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+              const isFilm = proj.contentMode === "SHORT_FILM" || !!proj.blueprint.film_bible;
+              const finished = total > 0 && done >= total;
               return (
                 <div
                   key={proj.id}
                   onClick={() => handleSelectSavedProject(proj)}
-                  className={`group shrink-0 max-w-[240px] px-3.5 py-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 ${
+                  className={`group rounded-xl border p-3.5 transition-all cursor-pointer space-y-2 ${
                     isSelected
-                      ? "bg-slate-900 border-slate-900 text-white shadow-xs"
-                      : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
+                      ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                      : "bg-white border-slate-200 text-slate-800 hover:border-emerald-400"
                   }`}
                 >
-                  <div className="min-w-0">
-                    <div className="text-xs font-bold truncate">{proj.blueprint.title}</div>
-                    <div className={`text-[10px] mt-0.5 ${isSelected ? "text-slate-400" : "text-slate-400"}`}>
-                      {proj.aspectRatio} · {new Date(proj.createdAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 space-y-1">
+                      <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${isFilm ? "bg-indigo-100 text-indigo-800" : "bg-emerald-100 text-emerald-800"}`}>
+                        {isFilm ? "🎬 หนังสั้น" : "⚡ โซเชียล"} · {proj.aspectRatio}
+                      </span>
+                      <div className="text-sm font-bold leading-snug line-clamp-2">{proj.blueprint.title}</div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => handleDeleteSavedProject(e, proj.id)}
+                      className={`p-1.5 rounded-md opacity-60 hover:opacity-100 transition-opacity cursor-pointer shrink-0 ${
+                        isSelected ? "hover:bg-slate-800 text-slate-300" : "hover:bg-rose-50 hover:text-rose-600 text-slate-400"
+                      }`}
+                      title="ลบโปรเจกต์นี้"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div className="space-y-1">
+                    <div className={`h-1.5 rounded-full overflow-hidden ${isSelected ? "bg-slate-700" : "bg-slate-100"}`}>
+                      <div className={`h-full ${finished ? "bg-emerald-500" : "bg-amber-400"}`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <div className={`flex items-center justify-between text-[11px] ${isSelected ? "text-slate-300" : "text-slate-500"}`}>
+                      <span>{finished ? "✅ เสร็จครบแล้ว" : `เสร็จ ${done}/${total} ฉาก · เหลือ ${total - done}`}</span>
+                      <span>{new Date(proj.updatedAt || proj.createdAt).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}</span>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={(e) => handleDeleteSavedProject(e, proj.id)}
-                    className={`p-1 rounded-md opacity-60 hover:opacity-100 transition-opacity cursor-pointer ${
-                      isSelected ? "hover:bg-slate-800 text-slate-300" : "hover:bg-rose-50 hover:text-rose-600 text-slate-400"
-                    }`}
-                    title="ลบโปรเจกต์นี้"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
                 </div>
               );
             })}
@@ -1110,6 +1190,54 @@ function EasyContentWorkspace() {
                   {blueprint.concept}
                 </p>
               </div>
+
+              {/* Resume banner for unfinished projects (e.g. after credits ran out) */}
+              {blueprint.video_blueprint?.scenes?.length ? (() => {
+                const totalScenes = blueprint.video_blueprint.scenes.length;
+                const remaining = blueprint.video_blueprint.scenes.filter((sc) => !completedScenes.includes(sc.scene_number));
+                if (remaining.length === 0) {
+                  return (
+                    <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-800">
+                      ✅ โปรเจกต์นี้ติ๊กเสร็จครบทุกฉากแล้ว
+                    </div>
+                  );
+                }
+                const isFilmNow = !!blueprint.film_bible || contentMode === "SHORT_FILM";
+                return (
+                  <div className="rounded-xl bg-amber-50 border border-amber-200 p-3.5 space-y-2.5">
+                    <div className="text-xs sm:text-sm font-bold text-amber-900">
+                      ▶ ทำต่อจากเดิม: เสร็จแล้ว {totalScenes - remaining.length}/{totalScenes} ฉาก · เหลือฉากที่ {remaining.map((r) => r.scene_number).join(", ")}
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(
+                            buildFlowToolProjectJSON(true),
+                            "RESUME_JSON",
+                            `ก๊อปเฉพาะ ${remaining.length} ฉากที่เหลือแล้ว! ไปกด 'วางจาก OS' ใน Flow Tool ได้เลย`
+                          )
+                        }
+                        className="min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        {copiedKey === "RESUME_JSON" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                        <span>ก๊อปเฉพาะ {remaining.length} ฉากที่เหลือ</span>
+                      </button>
+                      <a
+                        href={isFilmNow ? PKFLOW_PRO_FILM_URL : PK_COMMERCIAL_STUDIO_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="min-h-[44px] px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2"
+                      >
+                        <span>เปิด Tool แล้วกด &ldquo;วางจาก OS&rdquo; ↗</span>
+                      </a>
+                    </div>
+                    <p className="text-[11px] text-amber-800">
+                      ติ๊กถูกหน้าฉากที่เจนเสร็จแล้วด้านล่าง ระบบจำไว้ให้ เข้ามาครั้งหน้าเลือกโปรเจกต์แล้วกดทำต่อได้ทันที
+                    </p>
+                  </div>
+                );
+              })() : null}
 
               {/* Primary 1-Click Multi-Scene Flow Export */}
               {blueprint.video_blueprint?.scenes?.length ? (
