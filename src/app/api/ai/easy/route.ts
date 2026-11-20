@@ -28,7 +28,8 @@ export async function POST(req: Request) {
       includeTrends = true,
       platform = "TikTok / Reels / YouTube Shorts",
       selectedAngle,
-      researchBrief
+      researchBrief,
+      sceneCount = "AUTO"
     } = body;
 
     const currentDateThai = new Date().toLocaleDateString("th-TH", {
@@ -285,6 +286,11 @@ ${research.summaryText || "(ใช้ความรู้ที่ถูกต�
 
     const isAiFlow = aiMode === "AI_FLOW";
     const goalGuide = GOAL_INSTRUCTIONS[contentGoal] || GOAL_INSTRUCTIONS.COMMERCIAL;
+    const fixedCount = Number(sceneCount);
+    const hasFixed = Number.isFinite(fixedCount) && fixedCount >= 3 && fixedCount <= 12;
+    const sceneRule = hasFixed
+      ? `จำนวนฉาก: ${fixedCount} ฉากพอดี (ฉากละ 3-6 วินาที)`
+      : "จำนวนฉาก: ให้คุณตัดสินใจเองตามความเหมาะสมของเรื่อง ระหว่าง 5-10 ฉาก (ฉากละ 3-6 วินาที) ยิ่งมีหลายมุมกล้องหลายมุมมองยิ่งดี แต่ห้ามฉากซ้ำซาก";
 
     // Ground in real facts automatically if not already provided from BRAINSTORM step
     let researchContextText = "";
@@ -320,11 +326,11 @@ ${goalGuide}
 
 กฎเหล็กคุณภาพระดับ Commercial (ห้ามละเมิดเด็ดขาด!):
 1. **ห้ามสร้างภาพคลุมเครือที่ดูไม่ออกว่าคือที่ไหน/อะไร:** ฉากที่ 1 ต้องเปิดตัวแลนด์มาร์กจริง สถาปัตยกรรมจริง หรือสินค้าจริงที่เห็นปุ๊บจำได้ปั๊บ (อ้างอิงจากข้อมูลจริงที่ให้ไป)
-2. **โครงสร้าง 4 ฉาก (ฉากละ 5-6 วินาที รวม ~22 วินาที) ที่มีเรื่องราวครบ Commercial Arc:**
+2. **${sceneRule}** ต้องมีเรื่องราวครบ Commercial Arc และแต่ละฉากต้องใช้ มุมกล้อง/ขนาดภาพ/มุมมองที่ต่างกัน (เช่น ภาพกว้าง Drone, โคลสอัปรายละเอียด, มุมต่ำ, POV เดินเข้า, อินเสิร์ต/B-roll รายละเอียดเล็กๆ, คนจริงในฉาก, ภาพสะท้อน, Time-lapse แสง) เพื่อให้ตัดต่อแล้วดูมีมิติ ไม่เบื่อ ฉากเพิ่มเติมให้แทรกระหว่างโครงนี้:
    - ฉาก 1: **Stop-Scroll Hook + เปิดตัวสถานที่/สินค้าชัดเจน** (เห็นทันทีว่าคือที่ไหน/อะไร + ประโยคหยุดนิ้ว)
-   - ฉาก 2: **ไฮไลต์ซิกเนเจอร์ / จุดขายหลัก (Signature Feature)** (โชว์ของดี/จุดเด่นจริงแบบใกล้ชิด น่าทึ่ง)
-   - ฉาก 3: **บรรยากาศประสบการณ์จริง / How-To / ความน่าเชื่อถือ** (ให้เห็นคนเที่ยว/คนใช้จริง อารมณ์ร่วม หรือเคล็ดลับที่เอาไปใช้ได้จริง)
-   - ฉาก 4: **เชิญชวน & ปิดการขายชัดๆ (Invitation + CTA)** (ภาพกว้างประทับใจชวนมาเยือน + บอกพิกัด/เวลา/คำเชิญชวนชัดเจน)
+   - ฉากกลาง (หนึ่งหรือหลายฉาก): **ไฮไลต์ซิกเนเจอร์ / จุดขายหลัก (Signature Feature)** (โชว์ของดี/จุดเด่นจริงแบบใกล้ชิด น่าทึ่ง)
+   - ฉากกลางต่อมา (หนึ่งหรือหลายฉาก): **บรรยากาศประสบการณ์จริง / How-To / ความน่าเชื่อถือ** (ให้เห็นคนเที่ยว/คนใช้จริง อารมณ์ร่วม หรือเคล็ดลับที่เอาไปใช้ได้จริง)
+   - ฉากสุดท้าย: **เชิญชวน & ปิดการขายชัดๆ (Invitation + CTA)** (ภาพกว้างประทับใจชวนมาเยือน + บอกพิกัด/เวลา/คำเชิญชวนชัดเจน)
 3. **ตัวหนังสือป๊อปอัพ & คำบรรยายภาษาไทยทุกฉาก (สำคัญมากสำหรับโซเชียลไทย!):**
    - ทุกฉากต้องมี \`popup_badge\` (ป้ายป๊อปอัพสั้นๆ เช่น "📍 วัดร่องขุ่น จ.เชียงราย", "⏰ เปิด 08:00-17:00 น.", "✨ จุดห้ามพลาด")
    - ทุกฉากต้องมี \`on_screen_text\` (ตัวหนังสือพาดหัวเด้งกลาง/ล่างจอสั้นกระชับ 3-7 คำ อ่านจบใน 1 วิ)
@@ -353,8 +359,8 @@ ${goalGuide}
     ]
   },
   "video_blueprint": {
-    "total_duration_sec": 22,
-    "scene_count": 4,
+    "total_duration_sec": 30,
+    "scene_count": 8,
     "mood_and_music": "แนวเพลงประกอบและซาวด์เอฟเฟกต์ (SFX) ที่เข้ากับโซเชียลไทย",
     "scenes": [
       {
@@ -400,7 +406,7 @@ ${goalGuide}
 ${selectedAngle ? `แนวทางที่ผู้ใช้เลือกเจาะจง: ${selectedAngle.category_badge || ""} — ${selectedAngle.title || ""} (${selectedAngle.description || ""})` : ""}
 เป้าหมายคอนเทนต์: ${contentGoal}
 โหมดการผลิต: ${isAiFlow ? "เจนวิดีโอด้วย AI ใน Google Flow 100% + ใส่ตัวหนังสือป๊อปอัพ/เสียงพากย์ไทย" : "ถ่ายทำเองหน้างาน + ตัดต่อลงโซเชียลไทย"}
-รูปแบบ: ${format === "VIDEO" ? "วิดีโอสั้น Commercial 4 ฉาก (ฉากละ 5-6 วิ)" : format === "PHOTO" ? "ภาพนิ่ง/อัลบั้ม (3-4 ภาพ)" : "จัดเต็มทั้งวิดีโอ (4 ฉาก) และภาพนิ่ง (3 ภาพ)"}
+รูปแบบ: ${format === "VIDEO" ? `วิดีโอสั้น Commercial (${sceneRule})` : format === "PHOTO" ? "ภาพนิ่ง/อัลบั้ม (3-4 ภาพ)" : `จัดเต็มทั้งวิดีโอ (${sceneRule}) และภาพนิ่ง (3 ภาพ)`}
 สัดส่วนภาพ: ${aspectRatio}
 การใส่กระแส/จริตโซเชียลไทย: ${includeTrends ? "เน้นจริต TikTok/Reels ไทย หยุดนิ้วใน 3 วิแรก ใส่ป๊อปอัพข้อความเด้งชวนอ่าน และเชิญชวนชัดเจน" : "เน้นข้อมูลและภาพระดับโฆษณาตรงไปตรงมา"}
 แพลตฟอร์ม: ${platform}
@@ -431,7 +437,7 @@ ${researchContextText || "(ใช้ข้อมูลจริงที่แ�
                   ? "ประสบการณ์ & เคล็ดลับ"
                   : "เชิญชวน & ปิดท้าย CTA")
         ),
-        duration_sec: Number(s?.duration_sec) || 5,
+        duration_sec: Number(s?.duration_sec) || 4,
         flow_mode: String(s?.flow_mode || (idx === 0 ? "Text to Video" : "Frames to Video / Text to Video")),
         what_to_shoot: String(s?.what_to_shoot || "ภาพประกอบเนื้อหาหลัก"),
         camera_angle: String(s?.camera_angle || "Smooth commercial push-in"),

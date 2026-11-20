@@ -180,6 +180,7 @@ function EasyContentWorkspace() {
   const [loading, setLoading] = useState(false);
   const [loadingTrends, setLoadingTrends] = useState(false);
   const [brainstorming, setBrainstorming] = useState(false);
+  const [sceneCount, setSceneCount] = useState<string>("AUTO");
   const [angles, setAngles] = useState<AngleIdea[]>([]);
   const [researchBrief, setResearchBrief] = useState<ResearchBrief | null>(null);
   const [activeAngleId, setActiveAngleId] = useState<string | null>(null);
@@ -355,6 +356,7 @@ function EasyContentWorkspace() {
           aiMode,
           aspectRatio,
           includeTrends,
+          sceneCount,
           contentGoal: angle?.goal || "COMMERCIAL",
           selectedAngle: angle || undefined,
           researchBrief: researchBrief || undefined
@@ -758,6 +760,19 @@ function EasyContentWorkspace() {
 
           {/* Symmetric Controls Bar (Flush Grid on iPhone 17, Clean Inline on Desktop) */}
           <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-2 pt-0.5">
+            <label className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700">
+              จำนวนฉาก
+              <select
+                value={sceneCount}
+                onChange={(e) => setSceneCount(e.target.value)}
+                className="min-h-[38px] px-2 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-800"
+              >
+                <option value="AUTO">AI เลือกให้ (5-10 ฉาก)</option>
+                {[4, 5, 6, 8, 10, 12].map((n) => (
+                  <option key={n} value={String(n)}>{n} ฉาก</option>
+                ))}
+              </select>
+            </label>
             <div className="grid grid-cols-2 sm:inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 gap-1">
               <button
                 type="button"
