@@ -41,6 +41,9 @@ interface SceneItem {
   continuity_note: string;
   voiceover_text: string;
   on_screen_text: string;
+  popup_badge?: string;
+  subtitle_line?: string;
+  scene_role?: string;
   flow_prompt: string;
 }
 
@@ -53,8 +56,31 @@ interface ShotItem {
   image_prompt: string;
 }
 
+interface AngleIdea {
+  id: string;
+  goal: string;
+  category_badge: string;
+  title: string;
+  hook_preview: string;
+  description: string;
+  why_it_works: string;
+  suggested_prompt: string;
+}
+
+interface ResearchBrief {
+  subject: string;
+  location_or_context: string;
+  highlights: string[];
+  practical_info: string;
+  what_to_shoot: string[];
+  sources?: Array<{ title: string; url: string; snippet: string }>;
+}
+
 interface EasyBlueprint {
   title: string;
+  location_and_facts_summary?: string;
+  content_goal_label?: string;
+  text_overlay_pack?: Array<{ scene_number: number; time_range: string; popup_badge: string; on_screen_text: string; subtitle_line: string }>;
   hook_3sec?: string;
   viral_meme_angle?: string;
   concept: string;
@@ -112,7 +138,7 @@ interface ErrorMemoryItem {
 const STORAGE_KEY = "pk_easy_projects_v1";
 
 const QUICK_EXAMPLES = [
-  "ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย",
+  "ช่วยคิดคอนเทนต์ไปวัดร่องขุ่น เชียงราย",
   "รีวิวคาเฟ่มินิมอลเปิดใหม่ แสงสวย",
   "ส่งมอบรถใหม่ป้ายแดงให้ลูกค้า ฟีลอบอุ่นซึ้งๆ",
   "แมวอ้วนใส่สูทบ่นเรื่องงานวันจันทร์ แบบมีมฮาๆ"
@@ -153,6 +179,10 @@ function EasyContentWorkspace() {
 
   const [loading, setLoading] = useState(false);
   const [loadingTrends, setLoadingTrends] = useState(false);
+  const [brainstorming, setBrainstorming] = useState(false);
+  const [angles, setAngles] = useState<AngleIdea[]>([]);
+  const [researchBrief, setResearchBrief] = useState<ResearchBrief | null>(null);
+  const [activeAngleId, setActiveAngleId] = useState<string | null>(null);
   const [trends, setTrends] = useState<TrendIdea[]>([]);
 
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
@@ -221,7 +251,7 @@ function EasyContentWorkspace() {
       autoRunTriggered.current = true;
       setPrompt(urlPrompt);
       if (autoRun === "true") {
-        handleGenerate(urlPrompt);
+        handleBrainstorm(urlPrompt);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -271,10 +301,42 @@ function EasyContentWorkspace() {
     }
   };
 
-  const handleGenerate = async (customPrompt?: string) => {
+  const handleBrainstorm = async (customPrompt?: string) => {
     const targetPrompt = (customPrompt ?? prompt).trim();
     if (!targetPrompt) return;
     if (customPrompt) setPrompt(customPrompt);
+    setBrainstorming(true);
+    setErrorMsg(null);
+    setAngles([]);
+    setResearchBrief(null);
+    setActiveAngleId(null);
+    try {
+      const res = await fetch("/api/ai/easy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "BRAINSTORM", prompt: targetPrompt, aspectRatio })
+      });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.angles)) {
+        setAngles(data.angles);
+        setResearchBrief(data.research_brief || null);
+        showToast("ค้นข้อมูลจริง + คิด 5 แนวทางให้แล้ว เลือกแนวที่ชอบได้เลย", "success");
+        loadMemories();
+      } else {
+        setErrorMsg(data.error || "ไม่สามารถคิดไอเดียได้ กรุณาลองใหม่");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    } finally {
+      setBrainstorming(false);
+    }
+  };
+
+  const handleGenerate = async (customPrompt?: string, angle?: AngleIdea) => {
+    const targetPrompt = (customPrompt ?? prompt).trim();
+    if (!targetPrompt) return;
+    if (customPrompt) setPrompt(customPrompt);
+    if (angle) setActiveAngleId(angle.id);
 
     setLoading(true);
     setErrorMsg(null);
@@ -292,7 +354,10 @@ function EasyContentWorkspace() {
           format,
           aiMode,
           aspectRatio,
-          includeTrends
+          includeTrends,
+          contentGoal: angle?.goal || "COMMERCIAL",
+          selectedAngle: angle || undefined,
+          researchBrief: researchBrief || undefined
         })
       });
       const data = await res.json();
@@ -485,6 +550,9 @@ function EasyContentWorkspace() {
       scenes: scenes.map((s) => ({
         id: `scene_${s.scene_number}_${Date.now()}`,
         lyrics: s.voiceover_text || s.on_screen_text || s.what_to_shoot,
+        popupBadge: s.popup_badge || "",
+        onScreenText: s.on_screen_text || "",
+        subtitleLine: s.subtitle_line || "",
         prompt: s.flow_prompt,
         duration: s.duration_sec || 6,
         pacingLabel: `⏱️ ${s.duration_sec || 6}s`,
@@ -519,6 +587,11 @@ function EasyContentWorkspace() {
     if (blueprint.hook_3sec) lines.push(`⚡ Hook 3 วิแรก: ${blueprint.hook_3sec}`);
     if (blueprint.viral_meme_angle) lines.push(`🔥 มุมไวรัล/มีม: ${blueprint.viral_meme_angle}`);
     lines.push(`💡 แนวคิด: ${blueprint.concept}\n`);
+    if (blueprint.text_overlay_pack?.length) {
+      lines.push("💬 ตัวหนังสือป๊อปอัพในคลิป (วางใน CapCut ตามเวลา):");
+      blueprint.text_overlay_pack.forEach((t) => lines.push(`• ${t.time_range} | ${t.popup_badge} | ${t.on_screen_text} | คำบรรยาย: ${t.subtitle_line}`));
+      lines.push("");
+    }
 
     if (blueprint.video_blueprint && (format === "VIDEO" || format === "BOTH")) {
       const vb = blueprint.video_blueprint;
@@ -629,7 +702,7 @@ function EasyContentWorkspace() {
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => handleGenerate(t.prompt_idea)}
+                  onClick={() => handleBrainstorm(t.prompt_idea)}
                   disabled={loading}
                   className="text-left p-3.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-xs transition-all cursor-pointer flex flex-col justify-between gap-2"
                 >
@@ -658,26 +731,26 @@ function EasyContentWorkspace() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !loading) handleGenerate();
+                if (e.key === "Enter" && !loading && !brainstorming) handleBrainstorm();
               }}
               placeholder="พิมพ์สิ่งที่อยากทำเป็นภาษาคน เช่น: ช่วยคิดคอนเท้นไปเที่ยววัดให้หน่อย..."
               className="flex-1 px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-3 focus:ring-emerald-500/10 transition-all"
             />
             <button
               type="button"
-              onClick={() => handleGenerate()}
-              disabled={loading || !prompt.trim()}
+              onClick={() => handleBrainstorm()}
+              disabled={loading || brainstorming || !prompt.trim()}
               className="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
             >
-              {loading ? (
+              {loading || brainstorming ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>กำลังถอดสูตร...</span>
+                  <span>{brainstorming ? "กำลังค้นข้อมูลจริง..." : "กำลังถอดสูตร..."}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>สร้างสูตรคอนเทนต์</span>
+                  <span>ค้นข้อมูล + คิดไอเดีย</span>
                 </>
               )}
             </button>
@@ -776,7 +849,7 @@ function EasyContentWorkspace() {
               <button
                 key={i}
                 type="button"
-                onClick={() => handleGenerate(ex)}
+                onClick={() => handleBrainstorm(ex)}
                 disabled={loading}
                 className="text-[11px] px-2.5 py-1 rounded-md bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 text-slate-600 border border-slate-200 transition-colors cursor-pointer"
               >
@@ -852,6 +925,63 @@ function EasyContentWorkspace() {
       )}
 
       {/* 4. Generated Blueprint Result */}
+      {(brainstorming || researchBrief || angles.length > 0) && (
+        <section className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 space-y-5 shadow-sm">
+          {brainstorming && (
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <RefreshCw className="w-4 h-4 animate-spin text-emerald-600" />
+              กำลังค้นข้อมูลจริงจากเว็บ แล้วคิด 5 แนวทางให้...
+            </div>
+          )}
+          {researchBrief && (
+            <div className="rounded-xl bg-emerald-50/60 border border-emerald-200 p-4 space-y-2">
+              <div className="text-xs font-bold text-emerald-800">📍 ข้อมูลจริงที่ใช้ก่อนเขียนสคริปต์</div>
+              <div className="text-sm font-extrabold text-slate-900">{researchBrief.subject}</div>
+              {researchBrief.location_or_context && <p className="text-xs text-slate-700 leading-relaxed">{researchBrief.location_or_context}</p>}
+              {researchBrief.highlights?.length > 0 && (
+                <ul className="text-xs text-slate-700 list-disc pl-4 space-y-0.5">
+                  {researchBrief.highlights.map((h, i) => <li key={i}>{h}</li>)}
+                </ul>
+              )}
+              {researchBrief.practical_info && <p className="text-xs text-slate-700"><b>ข้อมูลที่ควรรู้:</b> {researchBrief.practical_info}</p>}
+              {researchBrief.what_to_shoot?.length > 0 && (
+                <div className="text-xs text-slate-700"><b>ควรถ่ายอะไร:</b>
+                  <ul className="list-disc pl-4 mt-0.5 space-y-0.5">{researchBrief.what_to_shoot.map((w, i) => <li key={i}>{w}</li>)}</ul>
+                </div>
+              )}
+              {researchBrief.sources && researchBrief.sources.length > 0 && (
+                <div className="text-[11px] text-slate-500">แหล่งข้อมูล: {researchBrief.sources.map((src, i) => (
+                  <a key={i} href={src.url} target="_blank" rel="noreferrer" className="underline mr-2">{src.title}</a>
+                ))}</div>
+              )}
+            </div>
+          )}
+          {angles.length > 0 && (
+            <div className="space-y-3">
+              <div className="text-sm font-extrabold text-slate-900">เลือกแนวคอนเทนต์ที่อยากทำ (กดแล้วสร้างสคริปต์ + Prompt ให้ทันที)</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {angles.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handleGenerate(prompt, a)}
+                    className={`text-left rounded-xl border p-4 space-y-1.5 transition-all cursor-pointer min-h-[44px] ${activeAngleId === a.id ? "border-emerald-600 bg-emerald-50" : "border-slate-200 bg-white hover:border-emerald-400"}`}
+                  >
+                    <span className="inline-block px-2 py-0.5 rounded bg-slate-900 text-white text-[11px] font-bold">{a.category_badge}</span>
+                    <div className="text-sm font-extrabold text-slate-900 leading-snug">{a.title}</div>
+                    <div className="text-xs text-emerald-800 font-semibold">{a.hook_preview}</div>
+                    <p className="text-xs text-slate-600 leading-relaxed">{a.description}</p>
+                    <p className="text-[11px] text-slate-500">ทำไมปัง: {a.why_it_works}</p>
+                    <div className="text-xs font-bold text-emerald-700">{loading && activeAngleId === a.id ? "กำลังสร้างสคริปต์..." : "สร้างสคริปต์แนวนี้ →"}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+
       {!loading && blueprint && (
         <div className="space-y-6 animate-fade-in-up">
           {/* Header Summary + Hook + Viral Angle */}
@@ -1061,6 +1191,9 @@ function EasyContentWorkspace() {
                             </span>
                           )}
 
+                          {scene.popup_badge && (
+                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-bold">{scene.popup_badge}</span>
+                          )}
                           {scene.on_screen_text && (
                             <span className="text-xs font-semibold text-slate-700">
                               ขึ้นจอ: &ldquo;{scene.on_screen_text}&rdquo;
