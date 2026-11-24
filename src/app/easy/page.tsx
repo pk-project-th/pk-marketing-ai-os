@@ -212,6 +212,8 @@ function EasyContentWorkspace() {
   const [loadingTrends, setLoadingTrends] = useState(false);
   const [brainstorming, setBrainstorming] = useState(false);
   const [sceneCount, setSceneCount] = useState<string>("AUTO");
+  const [episodesCount, setEpisodesCount] = useState<number>(1);
+  const [sendingToStudio, setSendingToStudio] = useState<boolean>(false);
   const [contentMode, setContentMode] = useState<"SOCIAL" | "SHORT_FILM">("SOCIAL");
   const [angles, setAngles] = useState<AngleIdea[]>([]);
   const [researchBrief, setResearchBrief] = useState<ResearchBrief | null>(null);
@@ -390,6 +392,7 @@ function EasyContentWorkspace() {
           aspectRatio,
           includeTrends,
           sceneCount,
+          episodesCount: contentMode === "SHORT_FILM" ? episodesCount : 1,
           contentMode,
           contentGoal: angle?.goal || (contentMode === "SHORT_FILM" ? "FILM_DRAMA" : "COMMERCIAL"),
           selectedAngle: angle || undefined,
@@ -625,12 +628,14 @@ function EasyContentWorkspace() {
       projectType: isFilm ? "SHORT_FILM" : "COMMERCIAL_SOCIAL",
       isCustomOSProject: true,
       aspectRatio,
+      episodesCount: isFilm ? episodesCount : 1,
       project: {
         id: `proj_${Date.now()}`,
         name: onlyRemaining ? `${blueprint.title} (ทำต่อ ${scenes.length} ฉาก)` : blueprint.title,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         sceneCount: scenes.length,
+        episodesCount: isFilm ? episodesCount : 1,
         doneCount: 0
       },
       filmBible: blueprint.film_bible || undefined,
@@ -662,6 +667,33 @@ function EasyContentWorkspace() {
       }))
     };
     return JSON.stringify(payload, null, 2);
+  };
+
+  const handleSendDirectToPKFlowStudio = async () => {
+    const jsonStr = buildFlowToolProjectJSON();
+    if (!jsonStr) return;
+    setSendingToStudio(true);
+    try {
+      const res = await fetch("http://127.0.0.1:8280/api/projects/import-os", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonStr,
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.studio_url) {
+        throw new Error(data?.detail || "ไม่สามารถส่งเข้า PKFLOW Studio ได้");
+      }
+      showToast(`ส่งครบ ${data.shots_count} ฉาก (${data.episodes_count} ตอน) เข้า PKFLOW Studio แล้ว!`, "success");
+      window.open(data.studio_url, "_blank");
+    } catch {
+      await handleCopy(
+        jsonStr,
+        "FLOW_JSON",
+        "ยังไม่ได้เปิด PKFLOW Studio — ก๊อปปี้ JSON ให้แทนแล้ว กดเปิดไอคอน PKFLOW บนหน้าจอแล้ววางได้เลย!"
+      );
+    } finally {
+      setSendingToStudio(false);
+    }
   };
 
   const handleDownloadFlowToolJSON = () => {
@@ -904,6 +936,22 @@ function EasyContentWorkspace() {
                 ))}
               </select>
             </label>
+            {contentMode === "SHORT_FILM" && (
+              <label className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">
+                จำนวนตอน (EP)
+                <select
+                  value={episodesCount}
+                  onChange={(e) => setEpisodesCount(Number(e.target.value))}
+                  className="min-h-[38px] px-2 rounded-lg bg-indigo-50 border border-indigo-200 text-xs font-bold text-indigo-800"
+                >
+                  <option value={1}>1 ตอนจบ</option>
+                  <option value={3}>3 ตอน (มินิซีรีส์)</option>
+                  <option value={5}>5 ตอน (ซีรีส์สั้น)</option>
+                  <option value={10}>10 ตอน (เต็มซีซัน)</option>
+                  <option value={12}>12 ตอน (ซีรีส์ยาว)</option>
+                </select>
+              </label>
+            )}
             <div className="grid grid-cols-2 sm:inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 gap-1">
               <button
                 type="button"
@@ -1262,22 +1310,18 @@ function EasyContentWorkspace() {
                       </span>
                     </button>
 
-                    <a
-                      href={blueprint.film_bible || contentMode === "SHORT_FILM" ? PKFLOW_PRO_FILM_URL : PK_COMMERCIAL_STUDIO_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`min-h-[46px] px-4 py-2.5 rounded-xl text-white text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-colors shadow-xs ${
-                        blueprint.film_bible || contentMode === "SHORT_FILM"
-                          ? "bg-indigo-600 hover:bg-indigo-700"
-                          : "bg-emerald-600 hover:bg-emerald-700"
-                      }`}
+                    <button
+                      type="button"
+                      onClick={handleSendDirectToPKFlowStudio}
+                      disabled={sendingToStudio}
+                      className="min-h-[46px] px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black text-xs sm:text-sm font-extrabold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
                     >
                       <span>
-                        {blueprint.film_bible || contentMode === "SHORT_FILM"
-                          ? "🎬 เปิด PKFLOW PRO FILM Studio ↗"
-                          : "🚀 เปิด PK Commercial Studio ↗"}
+                        {sendingToStudio
+                          ? "⏳ กำลังส่งเข้า PKFLOW Studio..."
+                          : `🚀 ส่งตรงเข้า PKFLOW Studio (${episodesCount > 1 ? `${episodesCount} ตอน` : `${blueprint.video_blueprint.scenes.length} ฉาก`}) ↗`}
                       </span>
-                    </a>
+                    </button>
                   </div>
 
                   <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">

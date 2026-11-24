@@ -397,6 +397,7 @@ export async function executeAIFailoverChain(options: AIRequestOptions): Promise
     execute: async () => {
       const candidateGroqModels = [
         ...(options.preferredModel && !options.preferredModel.includes("gemini") && !options.preferredModel.includes("gpt-4") ? [options.preferredModel] : []),
+        "llama-3.3-70b-versatile",
         "openai/gpt-oss-120b",
         "qwen/qwen3.6-27b",
         "qwen/qwen3.8-27b",
